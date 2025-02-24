@@ -245,7 +245,6 @@ public class Parser {
     private Node type() {
         consume(TokenType.TYPE);
         Token name = consume(TokenType.ID);
-        ArrayList<Token> parameters = params();
         consume(TokenType.GO);
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();

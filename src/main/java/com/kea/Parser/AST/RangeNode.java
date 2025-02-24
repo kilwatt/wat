@@ -13,6 +13,6 @@ public class RangeNode implements Node {
 
     @Override
     public void compile() {
-
+        throw new RuntimeException("no impl.");
     }
 }

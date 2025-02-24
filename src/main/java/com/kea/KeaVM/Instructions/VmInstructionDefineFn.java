@@ -24,7 +24,7 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public void run(KeaVM vm, VmFrame<String, Object> frame)  {
-        vm.getGlobals().define(addr, fn.getName(), fn);
+        frame.define(addr, fn.getName(), fn);
     }
 
     @Override

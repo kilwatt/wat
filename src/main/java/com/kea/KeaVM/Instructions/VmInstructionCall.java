@@ -163,7 +163,7 @@ public class VmInstructionCall implements VmInstruction {
         if (parameterAmount != argsAmount) {
             throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
                     "Invalid args amount for call of func: "
-                            + name + "(" + argsAmount + "/" + parameterAmount + " )",
+                            + name + "(" + argsAmount + "/" + parameterAmount + ")",
                     "Check arguments amount!");
         }
     }

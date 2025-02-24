@@ -25,10 +25,8 @@ public class VmInstance {
             Object arg = vm.pop();
             scope.define(addr, type.getConstructor().get(i), arg);
         }
-        for (String fieldName : type.getFields().getValues().keySet()) {
-            scope.define(addr, fieldName, type.getFields().lookup(addr, fieldName));
-        }
         scope.setRoot(vm.getGlobals());
+        type.getBody().execWithoutPop(vm, scope);
         if (scope.has("init")) {
             call(addr, "init", vm, false);
         }
@@ -43,7 +41,6 @@ public class VmInstance {
         // копируем и вызываем функцию
         VmFunction func = (VmFunction) getScope().lookup(addr, name);
         func.setDefinedFor(this);
-        func.getScope().get().setRoot(scope);
         func.exec(vm, shouldPushResult);
     }
 

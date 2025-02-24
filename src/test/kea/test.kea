@@ -1,8 +1,17 @@
-func test() -> {
-    i := 0
-    while i < 1000000 {
-        println(i)
-        i = i + 1
+type Test -> {
+    a := 3
+    func print() -> {
+        println(self.a)
     }
 }
+
+func test() -> {
+    test1 := new Test()
+    test2 := new Test()
+    test1.a = 5
+    test2.a = 7
+    test1.print()
+    test2.print()
+}
 test()
+println(test3)

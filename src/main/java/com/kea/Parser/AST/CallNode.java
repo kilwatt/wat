@@ -29,12 +29,15 @@ public class CallNode implements AccessNode {
 
     @Override
     public void compile() {
+        // аргументы
         VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
         KeaCompiler.code.writeTo(argsBox);
         for (Node node : args) {
             node.compile();
         }
         KeaCompiler.code.endWrite();
+        // компиляция
+        if (previous != null) previous.compile();
         KeaCompiler.code.visitInstruction(
                 new VmInstructionCall(
                         name.asAddress(),

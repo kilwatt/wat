@@ -26,10 +26,13 @@ public class VarDefineNode implements AccessNode {
 
     @Override
     public void compile() {
+        // аргументы
         VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
         KeaCompiler.code.writeTo(argsBox);
         value.compile();
         KeaCompiler.code.endWrite();
+        // компиляция
+        if (previous != null) previous.compile();
         KeaCompiler.code.visitInstruction(
                 new VmInstructionDefine(
                         name.asAddress(),

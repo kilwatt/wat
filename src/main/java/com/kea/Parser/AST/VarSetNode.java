@@ -25,11 +25,13 @@ public class VarSetNode implements AccessNode {
 
     @Override
     public void compile() {
+        // аргументы
         VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
         KeaCompiler.code.writeTo(argsBox);
         value.compile();
         KeaCompiler.code.endWrite();
-        System.out.println(argsBox.getVarContainer());
+        // компиляция
+        if (previous != null) previous.compile();
         KeaCompiler.code.visitInstruction(
                 new VmInstructionSet(
                         new VmAddress(name.fileName, name.line),

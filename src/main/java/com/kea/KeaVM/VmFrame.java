@@ -111,6 +111,13 @@ public class VmFrame<K, V> {
         current.root = rootFrame;
     }
 
+    /**
+     * Удаленние фрейма
+     */
+    public void delRoot() {
+        root = null;
+    }
+
     // в строку
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package com.kea.KeaVM.Instructions;
 
+import com.kea.Errors.KeaRuntimeError;
+import com.kea.KeaVM.Entities.VmInstance;
 import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.Entities.VmUnit;
 import com.kea.KeaVM.KeaVM;
@@ -37,14 +39,20 @@ public class VmInstructionLoad implements VmInstruction {
                 vm.push(frame.lookup(addr, name));
             } else if (vm.getTypeDefinitions().has(name)) {
                 vm.push(vm.getTypeDefinitions().lookup(addr, name));
-            } else if (vm.getTypeDefinitions().has(name)) {
-                vm.push(vm.getTypeDefinitions().lookup(addr, name));
+            } else if (vm.getUnitDefinitions().has(name)) {
+                vm.push(vm.getUnitDefinitions().lookup(addr, name));
+            } else {
+                throw new KeaRuntimeError(
+                        addr.getLine(), addr.getFileName(),
+                        "Not found: " + name + ".",
+                        "Did you do mistake in variable name?"
+                );
             }
         } else {
             Object last = vm.pop();
             switch (last) {
-                case VmType type -> {
-                    vm.push(type.getFields().lookup(addr, name));
+                case VmInstance type -> {
+                    vm.push(type.getScope().lookup(addr, name));
                     break;
                 }
                 case VmUnit unit -> {

@@ -14,14 +14,10 @@ import java.util.HashMap;
 @Getter
 public class VmUnit {
     private final String name;
-    private final ArrayList<String> constructor;
-    private final String fullName;
     private final VmFrame<String, Object> fields;
 
-    public VmUnit(String name, String fullName, ArrayList<String> constructor, VmFrame<String, Object> fields) {
+    public VmUnit(String name, VmFrame<String, Object> fields) {
         this.name = name;
-        this.fullName = fullName;
-        this.constructor = constructor;
         this.fields = fields;
     }
 }

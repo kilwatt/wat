@@ -25,6 +25,7 @@ public class VarNode implements AccessNode {
 
     @Override
     public void compile() {
+        if (previous != null) previous.compile();
         KeaCompiler.code.visitInstruction(
                 new VmInstructionLoad(
                         name.asAddress(),

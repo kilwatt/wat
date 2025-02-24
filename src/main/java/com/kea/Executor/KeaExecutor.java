@@ -7,6 +7,7 @@ import com.kea.Errors.KeaParsingError;
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Lexer;
+import com.kea.Parser.AST.BlockNode;
 import com.kea.Parser.AST.Node;
 import com.kea.Parser.Parser;
 
@@ -23,10 +24,10 @@ public class KeaExecutor {
         try {
             // парсим
             Lexer lexer = new Lexer("test.kea", new String(Files.readAllBytes(Path.of(path))));
-            Node result = null;
             Parser parser = new Parser("test.kea", lexer.scan());
+            Node result = parser.parse();
             // компилируем
-            KeaCompiler.compile(parser.parse());
+            KeaCompiler.compile(result);
             // объявляем функции
             KeaBuiltinProvider.provide();
             // запускаем код
@@ -34,6 +35,7 @@ public class KeaExecutor {
         } catch (KeaParsingError | KeaRuntimeError error) {
             // если есть ошибка - выводим
             error.print();
+            // error.printStackTrace();
         }
     }
 }
