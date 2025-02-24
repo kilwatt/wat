@@ -1,5 +1,10 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
+import com.kea.KeaVM.Instructions.VmInstructionDefine;
+import com.kea.KeaVM.Instructions.VmInstructionSet;
+import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Token;
 import lombok.Getter;
 
@@ -20,7 +25,19 @@ public class VarSetNode implements AccessNode {
 
     @Override
     public void compile() {
-
+        VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
+        KeaCompiler.code.writeTo(argsBox);
+        value.compile();
+        KeaCompiler.code.endWrite();
+        System.out.println(argsBox.getVarContainer());
+        KeaCompiler.code.visitInstruction(
+                new VmInstructionSet(
+                        new VmAddress(name.fileName, name.line),
+                        name.getValue(),
+                        previous != null,
+                        argsBox
+                )
+        );
     }
 
     @Override

@@ -50,7 +50,11 @@ public class VmFunction implements VmInstructionsBox {
      */
     public void exec(KeaVM vm, boolean shouldPushResult)  {
         scope.set(new VmFrame<>());
-        scope.get().setRoot(definedFor.getScope());
+        if (definedFor != null) {
+            scope.get().setRoot(definedFor.getScope());
+        } else {
+            scope.get().setRoot(vm.getGlobals());
+        }
         if (getClosure().get() != null) {
             getScope().get().getValues().putAll(closure.get().getValues());
         }

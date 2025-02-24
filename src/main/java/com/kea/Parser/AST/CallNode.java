@@ -1,5 +1,10 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
+import com.kea.KeaVM.Instructions.VmInstructionCall;
+import com.kea.KeaVM.Instructions.VmInstructionLoopEnd;
+import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +29,21 @@ public class CallNode implements AccessNode {
 
     @Override
     public void compile() {
-
+        VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
+        KeaCompiler.code.writeTo(argsBox);
+        for (Node node : args) {
+            node.compile();
+        }
+        KeaCompiler.code.endWrite();
+        KeaCompiler.code.visitInstruction(
+                new VmInstructionCall(
+                        name.asAddress(),
+                        name.getValue(),
+                        argsBox,
+                        previous != null,
+                        shouldPushResult
+                )
+        );
     }
 
     @Override

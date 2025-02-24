@@ -16,12 +16,14 @@ public class KeaParsingError extends RuntimeException implements KeaError {
 
     @Override
     public void print() {
+        System.out.print(KeaColors.ANSI_RED);
         System.out.println("╭ 🦜 Parsing error occurred.");
         System.out.println("│ Error?: " + this.message);
         System.out.println("│ Where?: " + filename + "::" + line);
         System.out.println("│ ");
         System.out.println("│ 💡 Hint: " + hint);
         System.out.println("╰");
+        System.out.print(KeaColors.ANSI_RESET);
     }
 
     @Override

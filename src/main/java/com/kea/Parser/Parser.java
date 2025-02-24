@@ -348,13 +348,13 @@ public class Parser {
     }
 
     private Node continueNode() {
-        consume(TokenType.CONTINUE);
-        return new ContinueNode();
+        Token loc = consume(TokenType.CONTINUE);
+        return new ContinueNode(loc);
     }
 
     private Node breakNode() {
-        consume(TokenType.BREAK);
-        return new BreakNode();
+        Token loc = consume(TokenType.BREAK);
+        return new BreakNode(loc);
     }
 
     private Node assertion() {
@@ -363,29 +363,29 @@ public class Parser {
     }
 
     private Node whileLoop() {
-        consume(TokenType.WHILE);
+        Token location = consume(TokenType.WHILE);
         Node expr = expression();
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
-        return new WhileNode(node, expr);
+        return new WhileNode(location, node, expr);
     }
 
     private IfNode elseNode() {
-        consume(TokenType.ELSE);
+        Token elseTok = consume(TokenType.ELSE);
         consume(TokenType.RIGHT_BRACE);
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
-        return new IfNode(node, new BoolNode(new Token(TokenType.BOOL, "true", -1)), null);
+        return new IfNode(elseTok, node, new BoolNode(new Token(TokenType.BOOL, "true", elseTok.line, filename)), null);
     }
 
     private IfNode elifNode() {
-        consume(TokenType.ELIF);
+        Token location = consume(TokenType.ELIF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
-        IfNode ifNode = new IfNode(node, logical, null);
+        IfNode ifNode = new IfNode(location, node, logical, null);
         // else
         if (check(TokenType.ELIF)) {
             ifNode.setElseNode(elifNode());
@@ -397,12 +397,13 @@ public class Parser {
     }
 
     private Node ifNode() {
+        Token location = consume(TokenType.ELIF);
         consume(TokenType.IF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
-        IfNode ifNode = new IfNode(node, logical, null);
+        IfNode ifNode = new IfNode(location, node, logical, null);
         // else
         if (check(TokenType.ELIF)) {
             ifNode.setElseNode(elifNode());

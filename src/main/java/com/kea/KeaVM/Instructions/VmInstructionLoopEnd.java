@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @SuppressWarnings("UnnecessaryToStringCall")
 @Getter
-public class VmInstructionLoopEnd extends RuntimeException implements VmInstr {
+public class VmInstructionLoopEnd extends RuntimeException implements VmInstruction {
     // адресс
     private final VmAddress addr;
     // только текущую итерацию
@@ -28,10 +28,5 @@ public class VmInstructionLoopEnd extends RuntimeException implements VmInstr {
     @Override
     public String toString() {
         return "LOOP_END(CURRENT_ITERATION:"+ currentIteration +")";
-    }
-
-    @Override
-    public void print() {
-        System.out.println(toString());
     }
 }

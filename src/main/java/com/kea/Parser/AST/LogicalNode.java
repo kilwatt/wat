@@ -1,5 +1,7 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.KeaVM.Instructions.VmInstructionLogicalOp;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 
@@ -14,6 +16,6 @@ public class LogicalNode implements Node {
 
     @Override
     public void compile() {
-        
+        KeaCompiler.code.visitInstruction(new VmInstructionLogicalOp(operator.asAddress(), operator.value));
     }
 }

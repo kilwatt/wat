@@ -2,6 +2,7 @@ package com.kea.KeaVM.Instructions;
 
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
+import com.kea.KeaVM.Entities.VmInstance;
 import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.KeaVM;
 import com.kea.KeaVM.VmAddress;

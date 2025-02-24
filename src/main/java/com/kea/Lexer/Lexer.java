@@ -251,7 +251,7 @@ public class Lexer {
                 break;
             }
         }
-        return new Token(TokenType.NUM, text.toString(), line);
+        return new Token(TokenType.NUM, text.toString(), line, filename);
     }
 
     // сканируем идентификатор или ключевое слово
@@ -268,7 +268,7 @@ public class Lexer {
             }
         }
         TokenType type = keywords.getOrDefault(text.toString(), TokenType.ID);
-        return new Token(type, text.toString(), line);
+        return new Token(type, text.toString(), line, filename);
     }
 
     // в конце ли
@@ -297,7 +297,7 @@ public class Lexer {
 
     // добавление токена
     private void addToken(TokenType type, String value) {
-        tokens.add(new Token(type, value, line));
+        tokens.add(new Token(type, value, line, filename));
     }
 
     // проверка на текущий

@@ -1,5 +1,8 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.KeaVM.Instructions.VmInstructionBinOp;
+import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +19,10 @@ public class BinNode implements Node {
 
     @Override
     public void compile() {
-
+        left.compile();
+        right.compile();
+        KeaCompiler.code.visitInstruction(new VmInstructionBinOp(
+                new VmAddress(operator.fileName, operator.line), operator.value
+        ));
     }
 }

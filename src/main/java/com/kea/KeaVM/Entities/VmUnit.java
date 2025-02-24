@@ -12,7 +12,7 @@ import java.util.HashMap;
 Кастомный тип VM
  */
 @Getter
-public class VmUnit implements VmInstructionsBox {
+public class VmUnit {
     private final String name;
     private final ArrayList<String> constructor;
     private final String fullName;
@@ -23,9 +23,5 @@ public class VmUnit implements VmInstructionsBox {
         this.fullName = fullName;
         this.constructor = constructor;
         this.fields = fields;
-    }
-    @Override
-    public void visitInstr(VmInstruction instruction) {
-
     }
 }

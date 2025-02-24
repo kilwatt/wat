@@ -14,13 +14,8 @@ LOOP для VM
 public class VmInstructionLoop implements VmInstruction {
     // адресс
     private final VmAddress addr;
-    // инструкции условий
-    private final VmBaseInstructionsBox conditional = new VmBaseInstructionsBox();
     // инструкции
     private final VmBaseInstructionsBox instructions = new VmBaseInstructionsBox();
-    // else
-    @Setter
-    private VmInstructionLoop elseStatement;
 
     public VmInstructionLoop(VmAddress addr) {
         this.addr = addr;
@@ -34,7 +29,7 @@ public class VmInstructionLoop implements VmInstruction {
     public void run(KeaVM vm, VmFrame<String, Object> frame) {
         while (true) {
             try {
-                instructions.exec(vm, frame);
+                instructions.execWithoutPop(vm, frame);
             } catch (VmInstructionLoopEnd loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;

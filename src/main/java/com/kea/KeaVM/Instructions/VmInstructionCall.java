@@ -2,6 +2,7 @@ package com.kea.KeaVM.Instructions;
 
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
+import com.kea.KeaVM.Builtins.VmBuiltinFunction;
 import com.kea.KeaVM.Entities.VmFunction;
 import com.kea.KeaVM.Entities.VmInstance;
 import com.kea.KeaVM.Entities.VmUnit;
@@ -14,7 +15,6 @@ import lombok.SneakyThrows;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /*
 Вызов функции в VM
@@ -112,8 +112,10 @@ public class VmInstructionCall implements VmInstruction {
                     vm.push(returned);
                 }
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                System.out.println("Captured reflection error");
-                e.printStackTrace();
+                throw new KeaRuntimeError(
+                        addr.getLine(), addr.getFileName(),
+                        "Reflection error: " + e, "Check your code!"
+                );
             }
         }
     }
@@ -123,17 +125,31 @@ public class VmInstructionCall implements VmInstruction {
         if (frame.has(name)) {
             // аргументы
             int argsAmount = passArgs(vm, frame);
-            VmFunction fn = ((VmFunction)frame.lookup(addr, name));
-            checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
-            // вызов
-            fn.exec(vm, shouldPushResult);
+            Object o = frame.lookup(addr, name);
+            if (o instanceof VmFunction fn) {
+                checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
+                fn.exec(vm, shouldPushResult);
+            }
+            else if (o instanceof VmBuiltinFunction fn) {
+                checkArgs(fn.getName(), fn.args(), argsAmount);
+                fn.exec(vm, addr);
+            } else {
+                throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
+                        "Can't call: " + o.getClass().getSimpleName(),
+                        "Check your code!");
+            }
         } else {
             // аргументы
             int argsAmount = passArgs(vm, frame);
             // вызов
             Object o = vm.getGlobals().lookup(addr, name);
             if (o instanceof VmFunction fn) {
+                checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
                 fn.exec(vm, shouldPushResult);
+            }
+            else if (o instanceof VmBuiltinFunction fn) {
+                checkArgs(fn.getName(), fn.args(), argsAmount);
+                fn.exec(vm, addr);
             } else {
                 throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
                         "Can't call: " + o.getClass().getSimpleName(),

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 Блок
@@ -17,5 +18,9 @@ public class BlockNode implements Node {
         for (Node node : nodes) {
             node.compile();
         }
+    }
+
+    public static BlockNode of(Node... nodes) {
+        return new BlockNode(new ArrayList<>(List.of(nodes)));
     }
 }

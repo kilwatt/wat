@@ -28,10 +28,7 @@ public class VmInstructionBinOp implements VmInstruction {
         Object l = vm.pop();
         if (r instanceof String || l instanceof String) {
             switch (operator) {
-                case "+" -> {
-                    vm.push(l.toString() + r.toString());
-                    break;
-                }
+                case "+" -> vm.push(l.toString() + r.toString());
                 case "*" -> {
                     if (r instanceof Number number) {
                         vm.push(l.toString().repeat(number.intValue()));
@@ -40,27 +37,18 @@ public class VmInstructionBinOp implements VmInstruction {
                                 "Can't use * operator with string if right side is not a number",
                                 "Check types!");
                     }
-                    break;
                 }
-                default -> {
-                    throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Can't use operator: " + operator + " with strings!",
-                            "Check your code!");
-                }
+                default -> throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
+                        "Can't use operator: " + operator + " with strings!",
+                        "Check your code!");
             }
         } else {
             if (l instanceof Number lNumber) {
                 if (r instanceof Number rNumber) {
                     switch (operator) {
-                        case "+" -> {
-                            vm.push(add(lNumber, rNumber));
-                        }
-                        case "-" -> {
-                            vm.push(sub(lNumber, rNumber));
-                        }
-                        case "*" -> {
-                            vm.push(mul(lNumber, rNumber));
-                        }
+                        case "+" -> vm.push(add(lNumber, rNumber));
+                        case "-" -> vm.push(sub(lNumber, rNumber));
+                        case "*" -> vm.push(mul(lNumber, rNumber));
                         case "/" -> {
                             if (rNumber.floatValue() == 0) {
                                 throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),

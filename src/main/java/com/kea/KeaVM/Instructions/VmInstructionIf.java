@@ -22,13 +22,13 @@ IF для VM
 public class VmInstructionIf implements VmInstruction {
     // адресс
     private final VmAddress addr;
-    // инструкции условий
-    private final VmBaseInstructionsBox conditional = new VmBaseInstructionsBox();
     // инструкции
+    @Setter
+    private VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
     private final VmBaseInstructionsBox instructions = new VmBaseInstructionsBox();
     // else
     @Setter
-    private VmInstructionIf elseStatement;
+    private VmInstructionIf elseInstruction;
 
     public VmInstructionIf(VmAddress addr) {
         this.addr = addr;
@@ -40,8 +40,14 @@ public class VmInstructionIf implements VmInstruction {
 
     @Override
     public void run(KeaVM vm, VmFrame<String, Object> frame) {
-        Object val = vm.pop();
-
+        Object val = conditions.exec(vm, frame);
+        if (((Boolean) val)) {
+            instructions.execWithoutPop(vm, frame);
+        } else {
+            if (elseInstruction != null) {
+                elseInstruction.run(vm, frame);
+            }
+        }
     }
 
     @Override

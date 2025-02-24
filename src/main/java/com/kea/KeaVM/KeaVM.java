@@ -1,5 +1,6 @@
 package com.kea.KeaVM;
 
+import com.kea.KeaVM.Benchmark.VmBenchmark;
 import com.kea.KeaVM.Codegen.KeaVmCode;
 import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.Entities.VmUnit;
@@ -40,7 +41,10 @@ public class KeaVM {
 
     // запуск
     public void run(KeaVmCode code) {
+        VmBenchmark mark = new VmBenchmark();
+        mark.start();
         initForThread();
-        code.run();
+        code.run(this);
+        System.out.println("Exec time: " + mark.end() + " ms ");
     }
 }

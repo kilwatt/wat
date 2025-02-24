@@ -32,4 +32,10 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
         }
         return vm.pop();
     }
+
+    public void execWithoutPop(KeaVM vm, VmFrame<String, Object> frame)  {
+        for (VmInstruction instr : varContainer) {
+            instr.run(vm, frame);
+        }
+    }
 }

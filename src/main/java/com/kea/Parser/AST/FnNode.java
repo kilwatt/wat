@@ -1,5 +1,11 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.KeaVM.Entities.VmFunction;
+import com.kea.KeaVM.Instructions.VmInstructionDefine;
+import com.kea.KeaVM.Instructions.VmInstructionDefineFn;
+import com.kea.KeaVM.Instructions.VmInstructionLoopEnd;
+import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 
@@ -17,6 +23,23 @@ public class FnNode implements Node {
 
     @Override
     public void compile() {
+        KeaCompiler.code.visitInstruction(
+                new VmInstructionDefineFn(
+                        name.asAddress(),
+                        compileFn()
+                )
+        );
+    }
 
+    public VmFunction compileFn() {
+        ArrayList<String> parsed = new ArrayList<>();
+        for (Token tk : parameters) {
+            parsed.add(tk.value);
+        }
+        VmFunction fn = new VmFunction(name.value, parsed, name.asAddress());
+        KeaCompiler.code.writeTo(fn);
+        node.compile();
+        KeaCompiler.code.endWrite();
+        return fn;
     }
 }

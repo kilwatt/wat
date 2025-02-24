@@ -12,7 +12,7 @@ import lombok.Getter;
 /*
 Кодишен VM
  */
-@SuppressWarnings("ConstantValue")
+@SuppressWarnings({"ConstantValue", "ClassCanBeRecord"})
 @Getter
 public class VmInstructionCondOp implements VmInstruction {
     // адресс
@@ -23,10 +23,6 @@ public class VmInstructionCondOp implements VmInstruction {
     public VmInstructionCondOp(VmAddress addr, String operator) {
         this.addr = addr;
         this.operator = operator;
-    }
-
-    public static <T> T cast(Class<T> clazz, Object o) {
-        return clazz.cast(o);
     }
 
     @Override
@@ -79,9 +75,9 @@ public class VmInstructionCondOp implements VmInstruction {
     }
 
     // равны ли два объекта
-    public static boolean equal(Object l, Object r) {
-        if (l instanceof String && r instanceof String) {
-            return ((String)l).equals(((String)r));
+    public boolean equal(Object l, Object r) {
+        if (l instanceof String left && r instanceof String right) {
+            return left.equals(right);
         }
         else if (l == null && r != null) {
             return false;
@@ -92,23 +88,22 @@ public class VmInstructionCondOp implements VmInstruction {
         else if (l == null && r == null) {
             return true;
         }
-        else if (l instanceof VmType && r instanceof VmType) {
-            return ((VmType)l) == ((VmType)r);
+        else if (l instanceof VmType left && r instanceof VmType right) {
+            return left == right;
         }
-        else if (l instanceof VmInstance && r instanceof VmInstance) {
-            return ((VmInstance)l) == ((VmInstance)r);
+        else if (l instanceof VmInstance left && r instanceof VmInstance right) {
+            return left == right;
         }
-        else if (l instanceof VmUnit && r instanceof VmUnit) {
-            return ((VmUnit)l) == ((VmUnit)r);
+        else if (l instanceof VmUnit left && r instanceof VmUnit right) {
+            return left == right;
         }
-        else if (l instanceof Boolean && r instanceof Boolean) {
-            return (((boolean)l) == ((boolean)r));
+        else if (l instanceof Boolean left && r instanceof Boolean right) {
+            return left == right;
         }
-        else if (l instanceof Float && r instanceof Float) {
-            return (((float) l) == ((float) r));
+        else if (l instanceof Number a && r instanceof Number b) {
+            return compare(a, b) == 0;
         }
         else {
-            // throw new RuntimeException("invalid comparables: " + l + ", " + r);
             return false;
         }
     }
