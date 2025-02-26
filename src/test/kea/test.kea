@@ -1,11 +1,11 @@
-type Bird(speed) -> {
+type Bird(speed, name) -> {
     func fly() -> {
-        println('🕊️ Bird flying with speed:')
+        println('🕊️ Bird: ' + name + ' flying with speed:')
         println(speed)
     }
 }
 
-bird := new Bird(1.64)
-bird2 := new Bird(1.67)
+bird := new Bird(1.64, input('Enter bird 1 name: '))
+bird2 := new Bird(1.67, input('Enter bird 2 name: '))
 bird.fly()
 bird2.fly()

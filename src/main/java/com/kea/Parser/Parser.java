@@ -33,6 +33,9 @@ public class Parser {
 
         if (!check(TokenType.RIGHT_PAREN)) {
             do {
+                if (check(TokenType.COMMA)) {
+                    consume(TokenType.COMMA);
+                }
                 nodes.add(expression());
             } while (!isAtEnd() && check(TokenType.COMMA));
         }
@@ -147,10 +150,10 @@ public class Parser {
     private Node multiplicative() {
         Node left = primary();
 
-        if (check(TokenType.OPERATOR) && (match("*") || match("/"))) {
+        while(check(TokenType.OPERATOR) && (match("*") || match("/"))) {
             Token operator = consume(TokenType.OPERATOR);
             Node right = primary();
-            return new BinNode(left, right, operator);
+            left = new BinNode(left, right, operator);
         }
 
         return left;
@@ -159,10 +162,10 @@ public class Parser {
     private Node additive() {
         Node left = multiplicative();
 
-        if (check(TokenType.OPERATOR) && (match("+") || match("-"))) {
+        while(check(TokenType.OPERATOR) && (match("+") || match("-"))) {
             Token operator = consume(TokenType.OPERATOR);
             Node right = multiplicative();
-            return new BinNode(left, right, operator);
+            left = new BinNode(left, right, operator);
         }
 
         return left;

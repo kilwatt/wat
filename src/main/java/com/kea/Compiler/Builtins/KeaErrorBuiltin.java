@@ -22,6 +22,6 @@ public class KeaErrorBuiltin implements VmBuiltinFunction {
 
     @Override
     public String getName() {
-        return "println";
+        return "error";
     }
 }
