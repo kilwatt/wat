@@ -69,11 +69,10 @@ public class Lexer {
                 case '+': {
                     if (match('=')) {
                         addToken(TokenType.ASSIGN_ADD, "+=");
-                        break;
                     } else {
                         addToken(TokenType.OPERATOR, "+");
-                        break;
                     }
+                    break;
                 }
                 case '-': {
                     if (match('=')) {
@@ -93,11 +92,10 @@ public class Lexer {
                 case '*': {
                     if (match('=')) {
                         addToken(TokenType.ASSIGN_MUL, "*=");
-                        break;
                     } else {
                         addToken(TokenType.OPERATOR, "*");
-                        break;
                     }
+                    break;
                 }
                 case '%': addToken(TokenType.OPERATOR, "%"); break;
                 case '#': {
@@ -109,7 +107,11 @@ public class Lexer {
                         addToken(TokenType.ASSIGN_DIVIDE, "/=");
                         break;
                     } else if (match('/')) {
-
+                        while (!match('\n')) {
+                            advance();
+                        }
+                        advance();
+                        break;
                     } else {
                         addToken(TokenType.OPERATOR, "/");
                         break;
