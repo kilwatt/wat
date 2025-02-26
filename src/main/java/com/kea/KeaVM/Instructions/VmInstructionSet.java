@@ -53,6 +53,6 @@ public class VmInstructionSet implements VmInstruction {
 
     @Override
     public String toString() {
-        return "SET_VARIABLE(" + name + ")";
+        return "SET_VARIABLE(" + name + ", " + value + ")";
     }
 }

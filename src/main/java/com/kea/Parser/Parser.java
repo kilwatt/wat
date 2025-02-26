@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /*
 Парсер
  */
+@SuppressWarnings({"BooleanMethodIsAlwaysInverted", "CommentedOutCode"})
 @Getter
 public class Parser {
     private final String filename;
@@ -23,7 +24,7 @@ public class Parser {
     }
 
     public Node parse() {
-        return block();
+        return block(false);
     }
 
     private ArrayList<Node> args() {
@@ -99,7 +100,7 @@ public class Parser {
             consume(TokenType.DOT);
             left.setShouldPushResult(true);
             left = accessPart(left);
-            if (left instanceof VarDefineNode defineNode) {
+            if (left instanceof VarDefineNode) {
                 break;
             }
         }
@@ -135,13 +136,11 @@ public class Parser {
             case LEFT_PAREN -> {
                 return grouping();
             }
-            default -> {
-               throw new KeaParsingError(
-                        peek().line,
-                        filename,
-                        "Invalid token for primary parsing: " + peek().type + "::" + peek().value,
-                       "Did you write wrong expression?");
-            }
+            default -> throw new KeaParsingError(
+                     peek().line,
+                     filename,
+                     "Invalid token for primary parsing: " + peek().type + "::" + peek().value,
+                    "Did you write wrong expression?");
         }
     }
 
@@ -177,13 +176,11 @@ public class Parser {
             case BIGGER -> consume(TokenType.BIGGER);
             case LOWER_EQUAL -> consume(TokenType.LOWER_EQUAL);
             case BIGGER_EQUAL -> consume(TokenType.BIGGER_EQUAL);
-            default -> {
-                throw new KeaParsingError(
-                        peek().line,
-                        filename,
-                        "Invalid conditional operator! " + peek().type + "::" + peek().value,
-                        "Available operators: ==, !=, >, <, >=, <=");
-            }
+            default -> throw new KeaParsingError(
+                    peek().line,
+                    filename,
+                    "Invalid conditional operator! " + peek().type + "::" + peek().value,
+                    "Available operators: ==, !=, >, <, >=, <=");
         };
     }
 
@@ -221,11 +218,11 @@ public class Parser {
         return check(TokenType.RIGHT_BRACE);
     }
 
-    private BlockNode block() {
+    private BlockNode block(boolean isFunction) {
         ArrayList<Node> nodes = new ArrayList<>();
 
         while (!isAtEnd() && !itsClosingBrace()) {
-            nodes.add(statement());
+            nodes.add(statement(isFunction));
         }
 
         return new BlockNode(nodes);
@@ -237,7 +234,7 @@ public class Parser {
         ArrayList<Token> parameters = params();
         consume(TokenType.GO);
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block();
+        BlockNode node = block(true);
         consume(TokenType.RIGHT_BRACE);
         return new FnNode(node,name,parameters);
     }
@@ -249,7 +246,7 @@ public class Parser {
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
-            Node node = statement();
+            Node node = statement(false);
             if (node instanceof FnNode || node instanceof VarDefineNode ||
                 node instanceof VarSetNode) {
                 nodes.add(node);
@@ -272,7 +269,7 @@ public class Parser {
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
-            Node node = statement();
+            Node node = statement(false);
             if (node instanceof FnNode || node instanceof VarDefineNode ||
                     node instanceof VarSetNode) {
                 nodes.add(node);
@@ -298,7 +295,7 @@ public class Parser {
         return new NewInstanceNode(name, args());
     }
 
-    private Node statement() {
+    private Node statement(boolean isFunction) {
         switch (peek().type) {
             case TokenType.ID -> {
                 return accessStatement();
@@ -323,6 +320,19 @@ public class Parser {
             }
             case TokenType.IF -> {
                 return ifNode();
+            }
+            case TokenType.RETURN -> {
+                if (isFunction) {
+                    return returnNode();
+                } else {
+                    Token token = peek();
+                    throw new KeaParsingError(
+                            token.line,
+                            token.fileName,
+                            "Can't use return outside function",
+                            "Remove this from your code!"
+                    );
+                }
             }
             /*
             case TokenType.MATCH -> {
@@ -356,6 +366,11 @@ public class Parser {
         return new BreakNode(loc);
     }
 
+    private Node returnNode() {
+        Token loc = consume(TokenType.RETURN);
+        return new ReturnNode(loc, expression());
+    }
+
     private Node assertion() {
         Token loc = consume(TokenType.ASSERT);
         return new AssertNode(loc, expression());
@@ -365,15 +380,15 @@ public class Parser {
         Token location = consume(TokenType.WHILE);
         Node expr = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block();
+        BlockNode node = block(false);
         consume(TokenType.RIGHT_BRACE);
         return new WhileNode(location, node, expr);
     }
 
     private IfNode elseNode() {
         Token elseTok = consume(TokenType.ELSE);
-        consume(TokenType.RIGHT_BRACE);
-        BlockNode node = block();
+        consume(TokenType.LEFT_BRACE);
+        BlockNode node = block(false);
         consume(TokenType.RIGHT_BRACE);
         return new IfNode(elseTok, node, new BoolNode(new Token(TokenType.BOOL, "true", elseTok.line, filename)), null);
     }
@@ -382,7 +397,7 @@ public class Parser {
         Token location = consume(TokenType.ELIF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block();
+        BlockNode node = block(false);
         consume(TokenType.RIGHT_BRACE);
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else
@@ -396,11 +411,10 @@ public class Parser {
     }
 
     private Node ifNode() {
-        Token location = consume(TokenType.ELIF);
-        consume(TokenType.IF);
+        Token location = consume(TokenType.IF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block();
+        BlockNode node = block(false);
         consume(TokenType.RIGHT_BRACE);
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else
@@ -418,7 +432,6 @@ public class Parser {
         Token name = consume(TokenType.ID);
         consume(TokenType.IN);
         Node from = expression();
-        System.out.println(from);
         boolean isDecrement = false;
         if (check(TokenType.TO)) {
             consume(TokenType.TO);
@@ -428,7 +441,7 @@ public class Parser {
         }
         Node to = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block();
+        BlockNode node = block(false);
         consume(TokenType.RIGHT_BRACE);
         return new ForNode(node, name, new RangeNode(from, to, isDecrement));
     }

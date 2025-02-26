@@ -22,8 +22,8 @@ public class ForNode implements Node {
         compileDefinition(range.isDecrement());
         VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(name.fileName, name.line));
         KeaCompiler.code.writeTo(loop.getInstructions());
-        compileLogical(range.isDecrement());
         compileIncrement(range.isDecrement());
+        compileLogical(range.isDecrement());
         KeaCompiler.code.endWrite();
         KeaCompiler.code.visitInstruction(loop);
     }
@@ -33,8 +33,12 @@ public class ForNode implements Node {
         KeaCompiler.code.writeTo(box);
         if (!isDecrement) {
             range.getFrom().compile();
+            KeaCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
+            KeaCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), "-"));
         } else {
             range.getTo().compile();
+            KeaCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
+            KeaCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), "+"));
         }
         KeaCompiler.code.endWrite();
         KeaCompiler.code.visitInstruction(
@@ -74,32 +78,6 @@ public class ForNode implements Node {
                         new Token(
                                 isDecrement ? TokenType.BIGGER : TokenType.LOWER,
                                 isDecrement ? ">" : "<",
-                                name.line, name.getFileName()
-                        )
-                ),
-                new IfNode(
-                        name,
-                        BlockNode.of(new BreakNode(name)),
-                        new BoolNode(
-                                new Token(TokenType.BOOL,
-                                        "true",
-                                        name.getLine(),
-                                        name.getFileName())
-                        ),
-                        null
-                )
-        ).compile();
-    }
-
-    private void compileLogicalDecrement() {
-        new IfNode(
-                name,
-                body,
-                new ConditionalNode(
-                        new VarNode(null, name, true),
-                        range.getFrom(),
-                        new Token(
-                                TokenType.LOWER,">",
                                 name.line, name.getFileName()
                         )
                 ),

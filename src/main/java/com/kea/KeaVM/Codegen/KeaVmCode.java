@@ -3,7 +3,6 @@ package com.kea.KeaVM.Codegen;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
 import com.kea.KeaVM.Boxes.VmInstructionsBox;
 import com.kea.KeaVM.Instructions.VmInstruction;
-import com.kea.KeaVM.Instructions.VmInstructionIf;
 import com.kea.KeaVM.KeaVM;
 import lombok.Getter;
 import lombok.Setter;

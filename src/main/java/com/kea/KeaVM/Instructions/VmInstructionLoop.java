@@ -32,6 +32,8 @@ public class VmInstructionLoop implements VmInstruction {
             } catch (VmInstructionLoopEnd loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;
+                } else {
+                    continue;
                 }
             }
         }
