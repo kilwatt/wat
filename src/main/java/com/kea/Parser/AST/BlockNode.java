@@ -23,4 +23,5 @@ public class BlockNode implements Node {
     public static BlockNode of(Node... nodes) {
         return new BlockNode(new ArrayList<>(List.of(nodes)));
     }
+    public static BlockNode empty() { return new BlockNode(new ArrayList<>()); }
 }

@@ -51,6 +51,7 @@ public class Lexer {
         put("in", TokenType.IN);
         put("unit", TokenType.UNIT);
         put("to", TokenType.TO);
+        put("from", TokenType.FROM);
     }};
 
     // сканнер

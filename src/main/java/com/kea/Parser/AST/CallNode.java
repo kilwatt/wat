@@ -9,6 +9,7 @@ import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -57,5 +58,9 @@ public class CallNode implements AccessNode {
     @Override
     public void setShouldPushResult(boolean value) {
         this.shouldPushResult = value;
+    }
+
+    public static List<Node> args(Node... args) {
+        return new ArrayList<Node>(List.of(args));
     }
 }

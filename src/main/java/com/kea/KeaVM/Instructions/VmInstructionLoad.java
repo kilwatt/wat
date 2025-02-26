@@ -67,6 +67,6 @@ public class VmInstructionLoad implements VmInstruction {
 
     @Override
     public String toString() {
-        return "LOAD_VARIABLE(" + name + ")";
+        return "LOAD_VARIABLE(" + name + ",push:" + shouldPushResult + ")";
     }
 }

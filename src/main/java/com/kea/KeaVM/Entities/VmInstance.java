@@ -26,7 +26,7 @@ public class VmInstance {
             scope.define(addr, type.getConstructor().get(i), arg);
         }
         scope.setRoot(vm.getGlobals());
-        type.getBody().execWithoutPop(vm, scope);
+        type.getBody().run(vm, scope);
         if (scope.has("init")) {
             call(addr, "init", vm, false);
         }

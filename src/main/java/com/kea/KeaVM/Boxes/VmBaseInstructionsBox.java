@@ -7,6 +7,7 @@ import com.kea.KeaVM.VmFrame;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 Временный контейнер переменных для вызова функции
@@ -26,16 +27,34 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
         this.varContainer.add(instr);
     }
 
-    public Object exec(KeaVM vm, VmFrame<String, Object> frame)  {
+    // выполнение и получение результата
+    public Object runAndGet(KeaVM vm, VmFrame<String, Object> frame)  {
         for (VmInstruction instr : varContainer) {
             instr.run(vm, frame);
         }
         return vm.pop();
     }
 
-    public void execWithoutPop(KeaVM vm, VmFrame<String, Object> frame)  {
+    // запуск простой
+    public void run(KeaVM vm, VmFrame<String, Object> frame)  {
         for (VmInstruction instr : varContainer) {
             instr.run(vm, frame);
         }
+    }
+
+    // создание бокса инструкций из их списка
+    public static VmBaseInstructionsBox of(VmInstruction... instructions) {
+        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
+        for (VmInstruction instruction : instructions) {
+            box.visitInstr(instruction);
+        }
+        return box;
+    }
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return getVarContainer().toString();
     }
 }

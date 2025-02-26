@@ -41,6 +41,7 @@ public class KeaVM {
 
     // запуск
     public void run(KeaVmCode code) {
+        // code.print();
         VmBenchmark mark = new VmBenchmark();
         mark.start();
         initForThread();

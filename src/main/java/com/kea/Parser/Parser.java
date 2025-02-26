@@ -357,8 +357,8 @@ public class Parser {
     }
 
     private Node assertion() {
-        consume(TokenType.ASSERT);
-        return new AssertNode(expression());
+        Token loc = consume(TokenType.ASSERT);
+        return new AssertNode(loc, expression());
     }
 
     private Node whileLoop() {
@@ -418,12 +418,19 @@ public class Parser {
         Token name = consume(TokenType.ID);
         consume(TokenType.IN);
         Node from = expression();
-        consume(TokenType.TO);
+        System.out.println(from);
+        boolean isDecrement = false;
+        if (check(TokenType.TO)) {
+            consume(TokenType.TO);
+        } else if (check(TokenType.FROM)) {
+            consume(TokenType.FROM);
+            isDecrement = true;
+        }
         Node to = expression();
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
-        return new ForNode(node, name, new RangeNode(from, to));
+        return new ForNode(node, name, new RangeNode(from, to, isDecrement));
     }
 
     private boolean isAtEnd() {

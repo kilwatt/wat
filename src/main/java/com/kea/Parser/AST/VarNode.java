@@ -23,6 +23,12 @@ public class VarNode implements AccessNode {
         this.name = name;
     }
 
+    public VarNode(AccessNode previous, Token name, boolean shouldPushResult) {
+        this.previous = previous;
+        this.name = name;
+        this.shouldPushResult = shouldPushResult;
+    }
+
     @Override
     public void compile() {
         if (previous != null) previous.compile();

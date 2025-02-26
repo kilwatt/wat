@@ -2,16 +2,11 @@ package com.kea.KeaVM.Instructions;
 
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
-import com.kea.KeaVM.Boxes.VmInstructionsBox;
-import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.Entities.VmUnit;
 import com.kea.KeaVM.KeaVM;
 import com.kea.KeaVM.VmAddress;
 import com.kea.KeaVM.VmFrame;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /*
 Определение юнита
@@ -41,7 +36,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
         }
         VmUnit unit = new VmUnit(name, new VmFrame<>());
         unit.getFields().setRoot(frame);
-        body.execWithoutPop(vm, unit.getFields());
+        body.run(vm, unit.getFields());
         unit.getFields().delRoot();
         unit.getFields().setRoot(vm.getGlobals());
         vm.getUnitDefinitions().define(addr, name, unit);

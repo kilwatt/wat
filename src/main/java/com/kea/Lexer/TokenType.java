@@ -57,5 +57,6 @@ public enum TokenType {
     THROW, // throw
     GO, // ->
     UNIT, // unit
-    TO // to
+    TO, // to
+    FROM // from
 }

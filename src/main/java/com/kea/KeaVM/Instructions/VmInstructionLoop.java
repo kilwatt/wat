@@ -5,7 +5,6 @@ import com.kea.KeaVM.KeaVM;
 import com.kea.KeaVM.VmAddress;
 import com.kea.KeaVM.VmFrame;
 import lombok.Getter;
-import lombok.Setter;
 
 /*
 LOOP для VM
@@ -29,7 +28,7 @@ public class VmInstructionLoop implements VmInstruction {
     public void run(KeaVM vm, VmFrame<String, Object> frame) {
         while (true) {
             try {
-                instructions.execWithoutPop(vm, frame);
+                instructions.run(vm, frame);
             } catch (VmInstructionLoopEnd loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;
@@ -40,6 +39,6 @@ public class VmInstructionLoop implements VmInstruction {
 
     @Override
     public String toString() {
-        return "START_LOOP()";
+        return "START_LOOP(" + instructions + ")";
     }
 }

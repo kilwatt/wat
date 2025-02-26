@@ -2,7 +2,6 @@ package com.kea.KeaVM.Instructions;
 
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
 import com.kea.KeaVM.Entities.VmInstance;
-import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.Entities.VmUnit;
 import com.kea.KeaVM.KeaVM;
 import com.kea.KeaVM.VmAddress;
@@ -34,16 +33,16 @@ public class VmInstructionSet implements VmInstruction {
     @Override
     public void run(KeaVM vm, VmFrame<String, Object> frame)  {
         if (!hasPrevious) {
-            frame.set(addr, name, value.exec(vm, frame));
+            frame.set(addr, name, value.runAndGet(vm, frame));
         } else {
             Object last = vm.pop();
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getScope().set(addr, name, value.exec(vm, frame));
+                    instance.getScope().set(addr, name, value.runAndGet(vm, frame));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().set(addr, name, value.exec(vm, frame));
+                    unit.getFields().set(addr, name, value.runAndGet(vm, frame));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +
