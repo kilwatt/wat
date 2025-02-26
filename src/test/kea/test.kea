@@ -2,7 +2,11 @@
 type Test -> {
     a := 3
     func print() -> {
-        println(self.a)
+        i := 0
+        while i < 1000000 {
+            println(self.a)
+            i = i + 1
+        }
     }
 }
 

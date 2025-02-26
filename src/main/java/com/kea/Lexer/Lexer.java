@@ -110,6 +110,7 @@ public class Lexer {
                         while (!match('\n')) {
                             advance();
                         }
+                        line += 1;
                         break;
                     } else {
                         addToken(TokenType.OPERATOR, "/");
