@@ -35,7 +35,7 @@ public enum TokenType {
     ELSE, // else
     AND, // logical and
     OR, // logical or
-    USE, // use
+    IMPORT, // import
     ASSIGN_ADD, // assign add
     ASSIGN_SUB, // assign sub
     ASSIGN_MUL, // assign mul

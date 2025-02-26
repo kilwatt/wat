@@ -23,7 +23,7 @@ public class Parser {
         this.tokenList = tokenList;
     }
 
-    public Node parse() {
+    public BlockNode parse() {
         return block(false);
     }
 
@@ -328,6 +328,9 @@ public class Parser {
             case TokenType.IF -> {
                 return ifNode();
             }
+            case TokenType.IMPORT -> {
+                return importNode();
+            }
             case TokenType.RETURN -> {
                 if (isFunction) {
                     return returnNode();
@@ -381,6 +384,11 @@ public class Parser {
     private Node assertion() {
         Token loc = consume(TokenType.ASSERT);
         return new AssertNode(loc, expression());
+    }
+
+    private Node importNode() {
+        consume(TokenType.IMPORT);
+        return new ImportNode(consume(TokenType.TEXT));
     }
 
     private Node whileLoop() {

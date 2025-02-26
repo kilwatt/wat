@@ -1,6 +1,7 @@
 package com.kea.Parser.AST;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 Блок
  */
 @AllArgsConstructor
+@Getter
 public class BlockNode implements Node {
     private final ArrayList<Node> nodes;
 

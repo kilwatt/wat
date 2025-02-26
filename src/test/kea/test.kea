@@ -1,9 +1,4 @@
-type Bird(speed, name) -> {
-    func fly() -> {
-        println('🕊️ Bird: ' + name + ' flying with speed:')
-        println(speed)
-    }
-}
+import 'another.kea'
 
 bird := new Bird(1.64, input('Enter bird 1 name: '))
 bird2 := new Bird(1.67, input('Enter bird 2 name: '))

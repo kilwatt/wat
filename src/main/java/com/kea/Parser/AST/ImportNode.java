@@ -1,5 +1,7 @@
 package com.kea.Parser.AST;
 
+import com.kea.Compiler.KeaCompiler;
+import com.kea.Executor.KeaExecutor;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +18,6 @@ public class ImportNode implements Node {
 
     @Override
     public void compile() {
-
+        KeaExecutor.resolve(name.asAddress(), name.value);
     }
 }

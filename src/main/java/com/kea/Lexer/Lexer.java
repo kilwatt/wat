@@ -37,7 +37,7 @@ public class Lexer {
         put("else", TokenType.ELSE);
         put("and", TokenType.AND);
         put("or", TokenType.OR);
-        put("use", TokenType.USE);
+        put("import", TokenType.IMPORT);
         put("break", TokenType.BREAK);
         put("match", TokenType.MATCH);
         put("case", TokenType.CASE);

@@ -2,11 +2,7 @@ package com.kea.Compiler;
 
 import com.kea.KeaVM.Codegen.KeaVmCode;
 import com.kea.KeaVM.KeaVM;
-import com.kea.Lexer.Token;
-import com.kea.Lexer.TokenType;
-import com.kea.Parser.AST.BoolNode;
-import com.kea.Parser.AST.IfNode;
-import com.kea.Parser.AST.Node;
+import com.kea.Parser.AST.*;
 import lombok.Getter;
 
 /*
@@ -14,9 +10,18 @@ import lombok.Getter;
  */
 @Getter
 public class KeaCompiler {
-    public static final KeaVmCode code = new KeaVmCode();
+    public static KeaVmCode code = new KeaVmCode();
     public static final KeaVM vm = new KeaVM();
     public static void compile(Node parse) {
         parse.compile();
+    }
+    public static void importDefinitions(BlockNode parse) {
+        for (Node node : parse.getNodes()) {
+            if (node instanceof UnitNode ||
+                node instanceof TypeNode ||
+                node instanceof FnNode) {
+                node.compile();
+            }
+        }
     }
 }
