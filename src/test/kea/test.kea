@@ -1,17 +1,17 @@
-//import 'another.kea'
-//list := [3, 5, 4]
-//println(list.get(1))
+/*import 'another.kea'
+list := [3, 5, 4]
+println(list.get(1))
 
-//func test() -> {
-//    a := 5
-//    func inner(b) -> {
-//        println(a * b)
-//   }
-//   return inner
-//}
-//example := test()
-//example(4)
-
+func test() -> {
+    a := 5
+    func inner(b) -> {
+        println(a * b)
+   }
+   return inner
+}
+example := test()
+example(4)
+*/
 test := {
     'example': 1,
     true: false

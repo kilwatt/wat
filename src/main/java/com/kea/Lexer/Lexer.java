@@ -113,6 +113,20 @@ public class Lexer {
                         }
                         line += 1;
                         break;
+                    } else if (match('*')) {
+                        while(!(peek() == '*' && next() == '/') && !isAtEnd()) {
+                            if (match('\n')) {
+                                line += 1;
+                                continue;
+                            }
+                            advance();
+                        }
+                        // пропускаем *
+                        advance();
+                        // пропускаем /
+                        advance();
+                        line += 1;
+                        break;
                     } else {
                         addToken(TokenType.OPERATOR, "/");
                         break;
