@@ -53,6 +53,6 @@ public class VmInstructionDefine implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_VARIABLE(" + name + ")";
+        return "DEFINE_VARIABLE(" + name + ", " + value + ")";
     }
 }

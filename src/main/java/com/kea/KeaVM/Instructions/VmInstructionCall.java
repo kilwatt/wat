@@ -88,23 +88,24 @@ public class VmInstructionCall implements VmInstruction {
             Object arg = vm.pop();
             callArgs.addFirst(arg);
         }
+        callArgs.addFirst(addr);
         // рефлексийный вызов
         Method[] methods = last.getClass().getMethods();
         Method func = null;
         for (Method m : methods) {
-            // System.out.println("name: " + name + ":" + m.getParameterCount() + ", " + args.getVarContainer());
             if (m.getName().equals(name) &&
-                    m.getParameterCount() == argsAmount) {
+                    m.getParameterCount() == callArgs.size()) {
                 func = m;
             }
         }
         if (func == null) {
             throw new KeaRuntimeError(addr.getLine(), addr.getFileName(),
                     "Jvm func not found: " + last.getClass().getName() + "->" + name,
-                    "Check name for mistakes!");
+                    "Check name for mistakes and args amount!");
         }
         else {
-            checkArgs(last.getClass().getName() + "->" + name, func.getParameterCount(), callArgs.size());
+            checkArgs(last.getClass().getName() + "->" + name,
+                    func.getParameterCount()-1, callArgs.size()-1);
             try {
                 // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
                 Object returned = func.invoke(last, callArgs.toArray());
@@ -179,6 +180,6 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public String toString() {
-        return "CALL_FUNCTION -> " + name + " -> (" + args.getVarContainer().size() + ")";
+        return "CALL_FUNCTION(" + name + ",instrs:" + args.getVarContainer().size() + ")";
     }
 }

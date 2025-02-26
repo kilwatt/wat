@@ -45,6 +45,6 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
 
     @Override
     public String toString() {
-        return "RETURN_VALUE()";
+        return "RETURN_VALUE(" + getRet() + ")";
     }
 }

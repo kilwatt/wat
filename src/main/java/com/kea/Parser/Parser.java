@@ -7,6 +7,7 @@ import com.kea.Parser.AST.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
 Парсер
@@ -139,12 +140,53 @@ public class Parser {
             case LEFT_PAREN -> {
                 return grouping();
             }
+            case LEFT_BRACKET -> {
+                return listNode();
+            }
+            case LEFT_BRACE -> {
+                return mapNode();
+            }
             default -> throw new KeaParsingError(
                      peek().line,
                      filename,
                      "Invalid token for primary parsing: " + peek().type + "::" + peek().value,
                     "Did you write wrong expression?");
         }
+    }
+
+    private Node listNode() {
+        Token location = consume(TokenType.LEFT_BRACKET);
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        do {
+            if (check(TokenType.COMMA)) {
+                consume(TokenType.COMMA);
+            }
+            nodes.add(expression());
+        }
+        while (check(TokenType.COMMA));
+
+        consume(TokenType.RIGHT_BRACKET);
+        return new ListNode(location, nodes);
+    }
+
+    private Node mapNode() {
+        Token location = consume(TokenType.LEFT_BRACE);
+        HashMap<Node, Node> nodes = new HashMap<>();
+
+        do {
+            if (check(TokenType.COMMA)) {
+                consume(TokenType.COMMA);
+            }
+            Node key = expression();
+            consume(TokenType.COLON);
+            Node value = expression();
+            nodes.put(key, value);
+        }
+        while (check(TokenType.COMMA));
+
+        consume(TokenType.RIGHT_BRACE);
+        return new MapNode(location, nodes);
     }
 
     private Node multiplicative() {

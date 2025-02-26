@@ -29,6 +29,6 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_FUNC(" + fn.getName() + ")";
+        return "DEFINE_FUNC(" + fn.getName() + "," + fn.getInstructions() + ")";
     }
 }

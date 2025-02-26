@@ -1,6 +1,21 @@
-import 'another.kea'
+//import 'another.kea'
+//list := [3, 5, 4]
+//println(list.get(1))
 
-bird := new Bird(1.64, input('Enter bird 1 name: '))
-bird2 := new Bird(1.67, input('Enter bird 2 name: '))
-bird.fly()
-bird2.fly()
+//func test() -> {
+//    a := 5
+//    func inner(b) -> {
+//        println(a * b)
+//   }
+//   return inner
+//}
+//example := test()
+//example(4)
+
+test := {
+    'example': 1,
+    true: false
+}
+
+println(test.get('example'))
+println(test.get(true))

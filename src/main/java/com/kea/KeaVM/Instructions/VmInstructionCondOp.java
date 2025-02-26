@@ -30,8 +30,8 @@ public class VmInstructionCondOp implements VmInstruction {
         Object r = vm.pop();
         Object l = vm.pop();
         switch (operator) {
-            case "==" -> vm.push(equal(l, r));
-            case "!=" -> vm.push(!equal(l, r));
+            case "==" -> vm.push(equal(addr, l, r));
+            case "!=" -> vm.push(!equal(addr, l, r));
             case "<" -> {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isLessThan(lNumber, rNumber));
@@ -75,7 +75,7 @@ public class VmInstructionCondOp implements VmInstruction {
     }
 
     // равны ли два объекта
-    public boolean equal(Object l, Object r) {
+    public static boolean equal(VmAddress addr, Object l, Object r) {
         if (l instanceof String left && r instanceof String right) {
             return left.equals(right);
         }
@@ -101,14 +101,14 @@ public class VmInstructionCondOp implements VmInstruction {
             return left == right;
         }
         else if (l instanceof Number a && r instanceof Number b) {
-            return compare(a, b) == 0;
+            return compare(addr, a, b) == 0;
         }
         else {
             return false;
         }
     }
 
-    private int compare(Number a, Number b) {
+    private static int compare(VmAddress addr, Number a, Number b) {
         if (a instanceof Double || b instanceof Double) {
             return Double.compare(a.doubleValue(), b.doubleValue());
         } else if (a instanceof Float || b instanceof Float) {
@@ -125,19 +125,19 @@ public class VmInstructionCondOp implements VmInstruction {
     }
 
     private boolean isGreaterThan(Number a, Number b) {
-        return compare(a, b) > 0;
+        return compare(addr, a, b) > 0;
     }
 
     private boolean isGreaterOrEqual(Number a, Number b) {
-        return compare(a, b) >= 0;
+        return compare(addr, a, b) >= 0;
     }
 
     private boolean isLessOrEqual(Number a, Number b) {
-        return compare(a, b) <= 0;
+        return compare(addr, a, b) <= 0;
     }
 
     private boolean isLessThan(Number a, Number b) {
-        return compare(a, b) < 0;
+        return compare(addr, a, b) < 0;
     }
 
     @Override

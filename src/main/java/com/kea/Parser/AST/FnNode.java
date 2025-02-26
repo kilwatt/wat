@@ -5,6 +5,7 @@ import com.kea.KeaVM.Entities.VmFunction;
 import com.kea.KeaVM.Instructions.VmInstructionDefine;
 import com.kea.KeaVM.Instructions.VmInstructionDefineFn;
 import com.kea.KeaVM.Instructions.VmInstructionLoopEnd;
+import com.kea.KeaVM.Instructions.VmInstructionMakeClosure;
 import com.kea.KeaVM.VmAddress;
 import com.kea.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,9 @@ public class FnNode implements Node {
                         name.asAddress(),
                         compileFn()
                 )
+        );
+        KeaCompiler.code.visitInstruction(
+                new VmInstructionMakeClosure(name.asAddress(), name.value)
         );
     }
 
