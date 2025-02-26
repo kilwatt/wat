@@ -12,6 +12,7 @@ func test() -> {
 example := test()
 example(4)
 */
+
 test := {
     'example': 1,
     true: false
