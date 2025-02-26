@@ -1,8 +1,11 @@
-a := 10
-for i in 1 to 4 {
-    println(i)
+type Bird(speed) -> {
+    func fly() -> {
+        println('🕊️ Bird flying with speed:')
+        println(speed)
+    }
 }
 
-// i = a
-// пока i > 0
-// i--
+bird := new Bird(1.64)
+bird2 := new Bird(1.67)
+bird.fly()
+bird2.fly()

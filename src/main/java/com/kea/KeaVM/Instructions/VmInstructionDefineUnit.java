@@ -44,6 +44,6 @@ public class VmInstructionDefineUnit implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_UNIT(" + name + ")";
+        return "DEFINE_UNIT(" + name + ", body: " + body + ")";
     }
 }

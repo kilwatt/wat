@@ -242,6 +242,10 @@ public class Parser {
     private Node type() {
         consume(TokenType.TYPE);
         Token name = consume(TokenType.ID);
+        ArrayList<Token> constructor = new ArrayList<>();
+        if (check(TokenType.LEFT_PAREN)) {
+            constructor = params();
+        }
         consume(TokenType.GO);
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
@@ -259,7 +263,7 @@ public class Parser {
             }
         }
         consume(TokenType.RIGHT_BRACE);
-        return new TypeNode(name, nodes);
+        return new TypeNode(name, nodes, constructor);
     }
 
     private Node unit() {

@@ -32,6 +32,6 @@ public class VmInstructionDefineType implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_TYPE(" + name + ")";
+        return "DEFINE_TYPE(" + name + "," + type + ")";
     }
 }

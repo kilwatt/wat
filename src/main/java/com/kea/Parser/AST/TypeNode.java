@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class TypeNode implements Node {
     private final Token name;
     private final ArrayList<Node> locals;
+    private final ArrayList<Token> constructor;
 
     @Override
     public void compile() {
@@ -28,7 +29,11 @@ public class TypeNode implements Node {
 
     // компиляция типа
     private VmType compileType() {
-        return new VmType(name.value, new ArrayList<>(), compileFields());
+        ArrayList<String> newConstructor = new ArrayList<>();
+        for (Token token : constructor) {
+            newConstructor.add(token.getValue());
+        }
+        return new VmType(name.value, newConstructor, compileFields());
     }
 
     // компиляция полей

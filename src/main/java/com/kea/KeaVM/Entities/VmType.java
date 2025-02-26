@@ -19,4 +19,13 @@ public class VmType {
         this.constructor = constructor;
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "VmType(" +
+                "name='" + name + '\'' +
+                ", constructor=" + constructor +
+                ", body=" + body +
+                ')';
+    }
 }
