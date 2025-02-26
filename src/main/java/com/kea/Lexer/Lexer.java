@@ -108,7 +108,7 @@ public class Lexer {
                         addToken(TokenType.ASSIGN_DIVIDE, "/=");
                         break;
                     } else if (match('/')) {
-                        while (!match('\n')) {
+                        while (!match('\n') && !isAtEnd()) {
                             advance();
                         }
                         line += 1;

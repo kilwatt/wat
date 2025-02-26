@@ -19,7 +19,7 @@ public class ForNode implements Node {
 
     @Override
     public void compile() {
-        compileDefinition();
+        compileDefinition(range.isDecrement());
         VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(name.fileName, name.line));
         KeaCompiler.code.writeTo(loop.getInstructions());
         compileLogical(range.isDecrement());
@@ -28,12 +28,14 @@ public class ForNode implements Node {
         KeaCompiler.code.visitInstruction(loop);
     }
 
-    private void compileDefinition() {
+    private void compileDefinition(boolean isDecrement) {
         VmBaseInstructionsBox box = new VmBaseInstructionsBox();
         KeaCompiler.code.writeTo(box);
-        range.getFrom().compile();
-        KeaCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
-        KeaCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), "-"));
+        if (!isDecrement) {
+            range.getFrom().compile();
+        } else {
+            range.getTo().compile();
+        }
         KeaCompiler.code.endWrite();
         KeaCompiler.code.visitInstruction(
                 new VmInstructionDefine(
@@ -63,16 +65,41 @@ public class ForNode implements Node {
     }
 
     private void compileLogical(boolean isDecrement) {
-        Node first = isDecrement ? range.getTo() : new VarNode(null, name, true);
-        Node second = isDecrement ? new VarNode(null, name, true) : range.getTo();
         new IfNode(
                 name,
                 body,
                 new ConditionalNode(
-                        first,
-                        second,
+                        new VarNode(null, name, true),
+                        isDecrement ? range.getFrom() : range.getTo(),
                         new Token(
-                                TokenType.LOWER, "<",
+                                isDecrement ? TokenType.BIGGER : TokenType.LOWER,
+                                isDecrement ? ">" : "<",
+                                name.line, name.getFileName()
+                        )
+                ),
+                new IfNode(
+                        name,
+                        BlockNode.of(new BreakNode(name)),
+                        new BoolNode(
+                                new Token(TokenType.BOOL,
+                                        "true",
+                                        name.getLine(),
+                                        name.getFileName())
+                        ),
+                        null
+                )
+        ).compile();
+    }
+
+    private void compileLogicalDecrement() {
+        new IfNode(
+                name,
+                body,
+                new ConditionalNode(
+                        new VarNode(null, name, true),
+                        range.getFrom(),
+                        new Token(
+                                TokenType.LOWER,">",
                                 name.line, name.getFileName()
                         )
                 ),
