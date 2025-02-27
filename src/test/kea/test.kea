@@ -12,7 +12,7 @@ func test() -> {
 example := test()
 example(4)
 */
-
+/*
 test := {
     'example': 1,
     true: false
@@ -20,3 +20,29 @@ test := {
 
 println(test.get('example'))
 println(test.get(true))
+*/
+
+type Bird(name, speed) -> {
+    func fly() -> {
+        println('🕊️ Bird: ' + self.name + ' is flying with speed: ' + speed)
+    }
+}
+
+unit Nest -> {
+    birds := []
+    func add_bird(bird) -> {
+        self.birds.add(bird)
+    }
+    func print_birds() -> {
+        println('🎖️ Birds list: ')
+        for i in 0 to birds.size() {
+            println(
+                birds.get(i).name + ' :: ' + birds.get(i).speed
+            )
+        }
+    }
+}
+
+bird := new Bird('Sofy', 4.67)
+Nest.add_bird(bird)
+Nest.print_birds()

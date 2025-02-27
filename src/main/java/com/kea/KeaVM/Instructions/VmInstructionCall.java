@@ -69,13 +69,13 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызывает функцю юнита
-    private void callUnitFunc(KeaVM vm, VmFrame<String, Object> frame, VmUnit unit)  {
+    private void callUnitFunc(KeaVM vm, VmFrame<String, Object> frame, VmUnit vmUnit)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        VmFunction fn = (VmFunction) unit.getFields().lookup(addr, name);
-        checkArgs(unit.getName() + "->" + name, fn.getArguments().size(), argsAmount);
+        VmFunction fn = (VmFunction) vmUnit.getFields().lookup(addr, name);
+        checkArgs(vmUnit.getName() + "->" + name, fn.getArguments().size(), argsAmount);
         // вызов
-        fn.exec(vm, shouldPushResult);
+        vmUnit.call(addr, name, vm, shouldPushResult);
     }
 
     // Вызывает рефлексийную функцию

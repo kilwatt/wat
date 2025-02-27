@@ -27,13 +27,13 @@ public class VmFunction implements VmInstructionsBox {
     private final ArrayList<String> arguments;
     // скоуп
     private final ThreadLocal<VmFrame<String, Object>> scope = new ThreadLocal<>();
-    // объект чья функция
+    // владелец функций
     @Setter
-    private VmInstance definedFor;
+    private VmFunctionOwner definedFor;
     // адрес
     private final VmAddress addr;
     // замыкание
-    private ThreadLocal<VmFrame<String, Object>> closure = new ThreadLocal<>();
+    private final ThreadLocal<VmFrame<String, Object>> closure = new ThreadLocal<>();
 
     // конструкция
     public VmFunction(String name, ArrayList<String> arguments, VmAddress addr) {
@@ -51,7 +51,7 @@ public class VmFunction implements VmInstructionsBox {
     public void exec(KeaVM vm, boolean shouldPushResult)  {
         scope.set(new VmFrame<>());
         if (definedFor != null) {
-            scope.get().setRoot(definedFor.getScope());
+            scope.get().setRoot(definedFor.getLocalScope());
         } else {
             scope.get().setRoot(vm.getGlobals());
         }

@@ -9,7 +9,7 @@ import lombok.Getter;
 Инстанс класса ВМ
  */
 @Getter
-public class VmInstance {
+public class VmInstance implements VmFunctionOwner {
     // скоуп
     private final VmFrame<String, Object> scope = new VmFrame<>();
     // класс
@@ -39,7 +39,7 @@ public class VmInstance {
      */
     public void call(VmAddress inAddr, String name, KeaVM vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
-        VmFunction func = (VmFunction) getScope().lookup(addr, name);
+        VmFunction func = (VmFunction) getScope().lookup(inAddr, name);
         func.setDefinedFor(this);
         func.exec(vm, shouldPushResult);
     }
@@ -48,10 +48,16 @@ public class VmInstance {
 
     @Override
     public String toString() {
-        return "VmObj{" +
+        return "VmInstance(" +
                 "scope=" + scope +
                 ", clazz=" + type +
                 ", addr=" + addr +
-                '}';
+                ')';
+    }
+
+    // получение локального скоупа
+    @Override
+    public VmFrame<String, Object> getLocalScope() {
+        return scope;
     }
 }

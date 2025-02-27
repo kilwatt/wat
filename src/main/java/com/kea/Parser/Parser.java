@@ -158,6 +158,11 @@ public class Parser {
         Token location = consume(TokenType.LEFT_BRACKET);
         ArrayList<Node> nodes = new ArrayList<>();
 
+        if (check(TokenType.RIGHT_BRACKET)) {
+            consume(TokenType.RIGHT_BRACKET);
+            return new ListNode(location, nodes);
+        }
+
         do {
             if (check(TokenType.COMMA)) {
                 consume(TokenType.COMMA);
@@ -173,6 +178,11 @@ public class Parser {
     private Node mapNode() {
         Token location = consume(TokenType.LEFT_BRACE);
         HashMap<Node, Node> nodes = new HashMap<>();
+
+        if (check(TokenType.RIGHT_BRACE)) {
+            consume(TokenType.RIGHT_BRACE);
+            return new MapNode(location, nodes);
+        }
 
         do {
             if (check(TokenType.COMMA)) {
