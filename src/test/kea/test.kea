@@ -37,7 +37,8 @@ unit Nest -> {
         println('🎖️ Birds list: ')
         for i in 0 to birds.size() {
             println(
-                birds.get(i).name + ' :: ' + birds.get(i).speed
+                birds.get(i).name
+                + ' :: ' + birds.get(i).speed
             )
         }
     }

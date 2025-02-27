@@ -125,7 +125,6 @@ public class Lexer {
                         advance();
                         // пропускаем /
                         advance();
-                        line += 1;
                         break;
                     } else {
                         addToken(TokenType.OPERATOR, "/");
