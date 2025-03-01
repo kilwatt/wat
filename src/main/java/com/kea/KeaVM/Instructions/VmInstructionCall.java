@@ -1,5 +1,6 @@
 package com.kea.KeaVM.Instructions;
 
+import com.kea.Errors.KeaParsingError;
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
 import com.kea.KeaVM.Builtins.VmBuiltinFunction;
@@ -112,11 +113,21 @@ public class VmInstructionCall implements VmInstruction {
                 if (shouldPushResult) {
                     vm.push(returned);
                 }
-            } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
+            } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new KeaRuntimeError(
                         addr.getLine(), addr.getFileName(),
                         "Reflection error: " + e, "Check your code!"
                 );
+            } catch (InvocationTargetException e) {
+                if (e.getCause() instanceof KeaRuntimeError ||
+                        e.getCause() instanceof KeaParsingError) {
+                    throw e.getCause();
+                } else {
+                    throw new KeaRuntimeError(
+                            addr.getLine(), addr.getFileName(),
+                            "Reflection error: " + e, "Check your code!"
+                    );
+                }
             }
         }
     }

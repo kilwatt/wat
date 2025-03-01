@@ -9,7 +9,7 @@ import com.kea.KeaVM.VmAddress;
 Провайдер функций
  */
 public class KeaBuiltinProvider {
-    private final static VmAddress builtinAddress = new VmAddress("builtin", -1);
+    public final static VmAddress builtinAddress = new VmAddress("builtin", -1);
     public static void provide() {
         KeaCompiler.vm.getGlobals().define(builtinAddress, "println", new KeaPrintlnBuiltin());
         KeaCompiler.vm.getGlobals().define(builtinAddress, "error", new KeaErrorBuiltin());

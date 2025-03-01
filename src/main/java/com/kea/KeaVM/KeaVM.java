@@ -1,9 +1,11 @@
 package com.kea.KeaVM;
 
+import com.kea.Compiler.KeaBuiltinProvider;
 import com.kea.KeaVM.Benchmark.VmBenchmark;
 import com.kea.KeaVM.Codegen.KeaVmCode;
 import com.kea.KeaVM.Entities.VmType;
 import com.kea.KeaVM.Entities.VmUnit;
+import com.kea.KeaVM.Reflection.VmReflection;
 import lombok.Getter;
 
 import java.util.Stack;
@@ -41,11 +43,21 @@ public class KeaVM {
 
     // запуск
     public void run(KeaVmCode code) {
-        code.print();
+        // code.print();
+        // переменная для рефлексии
+        globals.define(
+            KeaBuiltinProvider.builtinAddress,
+        "reflection",
+                new VmReflection(this)
+        );
+        // бенчмарк
         VmBenchmark mark = new VmBenchmark();
         mark.start();
+        // инициализация под поток
         initForThread();
+        // запуск кода
         code.run(this);
-        System.out.println("Exec time: " + mark.end() + " ms ");
+        // время выполнение
+        System.out.println("Exec time: " + mark.end() + " ms. Stack: " + stack.get());
     }
 }

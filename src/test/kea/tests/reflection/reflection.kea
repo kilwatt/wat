@@ -1,0 +1,8 @@
+unit Test -> {
+    example := reflection.reflect(
+        'com.kea.KeaVM.VmAddress',
+        ['example.kea', 12]
+    )
+}
+
+println(Test.example)

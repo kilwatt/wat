@@ -2,6 +2,7 @@ package com.kea.Compiler.Builtins.Libraries;
 
 import com.kea.KeaVM.Instructions.VmInstructionCondOp;
 import com.kea.KeaVM.VmAddress;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /*
 Списки
  */
+@Getter
 public class KeaList {
     private List<Object> array = new ArrayList<>();
 
@@ -38,8 +40,8 @@ public class KeaList {
         array.set(i, v);
     }
 
-    public Object size(VmAddress address) {
-        return ((Integer)array.size()).floatValue();
+    public int size(VmAddress address) {
+        return array.size();
     }
 
     public Object stringify(VmAddress address) {
@@ -53,7 +55,7 @@ public class KeaList {
         array.add(i, v);
     }
 
-    public float index_of(VmAddress address, Object obj) {
+    public int index_of(VmAddress address, Object obj) {
         for (Object o : array) {
             if (VmInstructionCondOp.equal(address, o, obj)) {
                 return array.indexOf(o);
