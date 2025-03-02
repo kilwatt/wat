@@ -1,0 +1,14 @@
+unit io -> {
+    io_reflection := reflection.reflect(
+        'com.kea.Compiler.Builtins.Libraries.Std.StdIO',
+        []
+    )
+
+    func println(value) -> {
+        io_reflection.println(value)
+    }
+
+    func input(value) -> {
+        return io_reflection.input(value)
+    }
+}

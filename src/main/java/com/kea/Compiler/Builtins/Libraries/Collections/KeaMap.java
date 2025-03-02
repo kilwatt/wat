@@ -1,4 +1,4 @@
-package com.kea.Compiler.Builtins.Libraries;
+package com.kea.Compiler.Builtins.Libraries.Collections;
 
 import com.kea.Errors.KeaRuntimeError;
 import com.kea.KeaVM.Instructions.VmInstructionCondOp;

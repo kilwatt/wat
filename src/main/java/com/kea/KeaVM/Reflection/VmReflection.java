@@ -1,19 +1,16 @@
 package com.kea.KeaVM.Reflection;
 
-import com.kea.Compiler.Builtins.Libraries.KeaList;
+import com.kea.Compiler.Builtins.Libraries.Collections.KeaList;
 import com.kea.Errors.KeaParsingError;
 import com.kea.Errors.KeaRuntimeError;
-import com.kea.KeaVM.Instructions.VmInstruction;
 import com.kea.KeaVM.KeaVM;
 import com.kea.KeaVM.VmAddress;
-import com.kea.KeaVM.VmFrame;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 /*
 Рефлексия в ВМ

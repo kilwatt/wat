@@ -25,7 +25,7 @@ public class Parser {
     }
 
     public BlockNode parse() {
-        return block(false);
+        return block();
     }
 
     private ArrayList<Node> args() {
@@ -146,12 +146,20 @@ public class Parser {
             case LEFT_BRACE -> {
                 return mapNode();
             }
+            case NULL -> {
+                return nullNode();
+            }
             default -> throw new KeaParsingError(
                      peek().line,
                      filename,
                      "Invalid token for primary parsing: " + peek().type + "::" + peek().value,
                     "Did you write wrong expression?");
         }
+    }
+
+    private Node nullNode() {
+        Token location = consume(TokenType.NULL);
+        return new NullNode(location);
     }
 
     private Node listNode() {
@@ -273,11 +281,11 @@ public class Parser {
         return check(TokenType.RIGHT_BRACE);
     }
 
-    private BlockNode block(boolean isFunction) {
+    private BlockNode block() {
         ArrayList<Node> nodes = new ArrayList<>();
 
         while (!isAtEnd() && !itsClosingBrace()) {
-            nodes.add(statement(isFunction));
+            nodes.add(statement());
         }
 
         return new BlockNode(nodes);
@@ -289,7 +297,7 @@ public class Parser {
         ArrayList<Token> parameters = params();
         consume(TokenType.GO);
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(true);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new FnNode(node,name,parameters);
     }
@@ -305,7 +313,7 @@ public class Parser {
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
-            Node node = statement(false);
+            Node node = statement();
             if (node instanceof FnNode || node instanceof VarDefineNode ||
                 node instanceof VarSetNode) {
                 nodes.add(node);
@@ -328,7 +336,7 @@ public class Parser {
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
-            Node node = statement(false);
+            Node node = statement();
             if (node instanceof FnNode || node instanceof VarDefineNode ||
                     node instanceof VarSetNode) {
                 nodes.add(node);
@@ -354,7 +362,7 @@ public class Parser {
         return new NewInstanceNode(name, args());
     }
 
-    private Node statement(boolean isFunction) {
+    private Node statement() {
         switch (peek().type) {
             case TokenType.ID -> {
                 return accessStatement();
@@ -384,17 +392,7 @@ public class Parser {
                 return importNode();
             }
             case TokenType.RETURN -> {
-                if (isFunction) {
-                    return returnNode();
-                } else {
-                    Token token = peek();
-                    throw new KeaParsingError(
-                            token.line,
-                            token.fileName,
-                            "Can't use return outside function",
-                            "Remove this from your code!"
-                    );
-                }
+                return returnNode();
             }
             /*
             case TokenType.MATCH -> {
@@ -447,7 +445,7 @@ public class Parser {
         Token location = consume(TokenType.WHILE);
         Node expr = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(false);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new WhileNode(location, node, expr);
     }
@@ -455,7 +453,7 @@ public class Parser {
     private IfNode elseNode() {
         Token elseTok = consume(TokenType.ELSE);
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(false);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new IfNode(elseTok, node, new BoolNode(new Token(TokenType.BOOL, "true", elseTok.line, filename)), null);
     }
@@ -464,7 +462,7 @@ public class Parser {
         Token location = consume(TokenType.ELIF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(false);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else
@@ -481,7 +479,7 @@ public class Parser {
         Token location = consume(TokenType.IF);
         Node logical = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(false);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else
@@ -508,7 +506,7 @@ public class Parser {
         }
         Node to = expression();
         consume(TokenType.LEFT_BRACE);
-        BlockNode node = block(false);
+        BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new ForNode(node, name, new RangeNode(from, to, isDecrement));
     }

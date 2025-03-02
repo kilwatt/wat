@@ -15,7 +15,6 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /*
 Вызов функции в VM
@@ -82,20 +81,19 @@ public class VmInstructionCall implements VmInstruction {
     // Вызывает рефлексийную функцию
     @SneakyThrows
     private void callReflectionFunc(KeaVM vm, VmFrame<String, Object> frame, Object last)  {
-        // аргументы
-        int argsAmount = passArgs(vm, frame);
-        ArrayList<Object> callArgs = new ArrayList<>();
-        for (int i = argsAmount-1; i >= 0; i--) {
-            Object arg = vm.pop();
-            callArgs.addFirst(arg);
+        // аргументы с добавлением еденички - адресс.
+        int argsAmount = passArgs(vm, frame) + 1;
+        Object[] callArgs = new Object[argsAmount];
+        callArgs[0] = addr;
+        for (int i = argsAmount - 1; i > 0; i--) {
+            callArgs[i] = vm.pop();
         }
-        callArgs.addFirst(addr);
         // рефлексийный вызов
         Method[] methods = last.getClass().getMethods();
         Method func = null;
         for (Method m : methods) {
             if (m.getName().equals(name) &&
-                    m.getParameterCount() == callArgs.size()) {
+                    m.getParameterCount() == callArgs.length) {
                 func = m;
             }
         }
@@ -106,10 +104,10 @@ public class VmInstructionCall implements VmInstruction {
         }
         else {
             checkArgs(last.getClass().getName() + "->" + name,
-                    func.getParameterCount()-1, callArgs.size()-1);
+                    func.getParameterCount()-1, callArgs.length-1);
             try {
                 // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
-                Object returned = func.invoke(last, callArgs.toArray());
+                Object returned = func.invoke(last, callArgs);
                 if (shouldPushResult) {
                     vm.push(returned);
                 }

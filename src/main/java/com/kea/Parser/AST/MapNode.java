@@ -1,6 +1,6 @@
 package com.kea.Parser.AST;
 
-import com.kea.Compiler.Builtins.Libraries.KeaMap;
+import com.kea.Compiler.Builtins.Libraries.Collections.KeaMap;
 import com.kea.Compiler.KeaCompiler;
 import com.kea.KeaVM.Boxes.VmBaseInstructionsBox;
 import com.kea.KeaVM.Instructions.VmInstructionCall;

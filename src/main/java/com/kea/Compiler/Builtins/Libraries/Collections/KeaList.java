@@ -1,4 +1,4 @@
-package com.kea.Compiler.Builtins.Libraries;
+package com.kea.Compiler.Builtins.Libraries.Collections;
 
 import com.kea.KeaVM.Instructions.VmInstructionCondOp;
 import com.kea.KeaVM.VmAddress;
