@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /*
 Функция вм
@@ -25,8 +26,6 @@ public class VmFunction implements VmInstructionsBox {
     private List<VmInstruction> instructions = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
-    // скоуп
-    private final ThreadLocal<VmFrame<String, Object>> scope = new ThreadLocal<>();
     // владелец функций
     @Setter
     private VmFunctionOwner definedFor;
@@ -40,7 +39,6 @@ public class VmFunction implements VmInstructionsBox {
         this.name = name;
         this.arguments = arguments;
         this.addr = addr;
-        this.scope.set(new VmFrame<>());
     }
 
     /**
@@ -49,26 +47,26 @@ public class VmFunction implements VmInstructionsBox {
      * @param shouldPushResult - положить ли результат в стек
      */
     public void exec(KeaVM vm, boolean shouldPushResult)  {
-        scope.set(new VmFrame<>());
+        VmFrame<String, Object> scope = new VmFrame<>();
         if (definedFor != null) {
-            scope.get().setRoot(definedFor.getLocalScope());
+            scope.setRoot(definedFor.getLocalScope());
         } else {
-            scope.get().setRoot(vm.getGlobals());
+            scope.setRoot(vm.getGlobals());
         }
         if (getClosure().get() != null) {
-            getScope().get().getValues().putAll(closure.get().getValues());
+            scope.getValues().putAll(closure.get().getValues());
         }
-        loadArgs(vm);
+        loadArgs(vm, scope);
         if (definedFor != null) {
-            scope.get().define(addr, "self", definedFor);
+            scope.define(addr, "self", definedFor);
         }
         try {
             // исполняем функцию
             for (VmInstruction instr : instructions) {
-                instr.run(vm, scope.get());
+                instr.run(vm, scope);
             }
         } catch (VmInstructionReturn e) {
-            e.pushResult(vm, scope.get());
+            e.pushResult(vm, scope);
             if (!shouldPushResult) {
                 vm.pop();
             }
@@ -79,7 +77,7 @@ public class VmFunction implements VmInstructionsBox {
     /**
      * Загрузка аргументов в функции
      */
-    private void loadArgs(KeaVM vm) {
+    private void loadArgs(KeaVM vm, VmFrame<String, Object> scope) {
         // загружаем аргументы
         for (int i = arguments.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
@@ -88,7 +86,7 @@ public class VmFunction implements VmInstructionsBox {
                         "Check arguments for function!");
             }
             Object arg = vm.pop();
-            scope.get().define(addr, arguments.get(i), arg);
+            scope.define(addr, arguments.get(i), arg);
         }
     }
 
