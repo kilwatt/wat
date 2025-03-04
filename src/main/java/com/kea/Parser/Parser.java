@@ -291,6 +291,14 @@ public class Parser {
         return new BlockNode(nodes);
     }
 
+    private Node nativeFunction() {
+        consume(TokenType.NATIVE);
+        Token name = consume(TokenType.ID);
+        consume(TokenType.GO);
+        Token javaName = consume(TokenType.TEXT);
+        return new NativeNode(name,javaName);
+    }
+
     private Node function() {
         consume(TokenType.FUNC);
         Token name = consume(TokenType.ID);
@@ -314,7 +322,7 @@ public class Parser {
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
-            if (node instanceof FnNode || node instanceof VarDefineNode ||
+            if (node instanceof FnNode || node instanceof NativeNode || node instanceof VarDefineNode ||
                 node instanceof VarSetNode) {
                 nodes.add(node);
             } else {
@@ -337,7 +345,7 @@ public class Parser {
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
-            if (node instanceof FnNode || node instanceof VarDefineNode ||
+            if (node instanceof FnNode || node instanceof NativeNode || node instanceof VarDefineNode ||
                     node instanceof VarSetNode) {
                 nodes.add(node);
             } else {
@@ -369,6 +377,9 @@ public class Parser {
             }
             case TokenType.FUNC -> {
                 return function();
+            }
+            case TokenType.NATIVE -> {
+                return nativeFunction();
             }
             case TokenType.NEW -> {
                 return objectCreation();

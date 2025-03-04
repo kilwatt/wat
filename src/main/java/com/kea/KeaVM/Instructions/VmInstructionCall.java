@@ -62,20 +62,38 @@ public class VmInstructionCall implements VmInstruction {
     private void callInstanceFunc(KeaVM vm, VmFrame<String, Object> frame, VmInstance vmObj)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        VmFunction fn = (VmFunction) vmObj.getScope().lookup(addr, name);
-        checkArgs(vmObj.getType().getName() + "->" + name, fn.getArguments().size(), argsAmount);
-        // вызов
-        vmObj.call(addr, name, vm, shouldPushResult);
+        Object val = vmObj.getScope().lookup(addr, name);
+        // функция
+        if (val instanceof VmFunction fn) {
+            checkArgs(vmObj.getType().getName() + "->" + name, fn.getArguments().size(), argsAmount);
+            // вызов
+            vmObj.call(addr, name, vm, shouldPushResult);
+        }
+        // нативная функция
+        else if (val instanceof VmBuiltinFunction fn) {
+            checkArgs(vmObj.getType().getName() + "->" + name, fn.args(), argsAmount);
+            // вызов
+            fn.exec(vm, addr);
+        }
     }
 
     // Вызывает функцю юнита
     private void callUnitFunc(KeaVM vm, VmFrame<String, Object> frame, VmUnit vmUnit)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        VmFunction fn = (VmFunction) vmUnit.getFields().lookup(addr, name);
-        checkArgs(vmUnit.getName() + "->" + name, fn.getArguments().size(), argsAmount);
-        // вызов
-        vmUnit.call(addr, name, vm, shouldPushResult);
+        Object val = vmUnit.getFields().lookup(addr, name);
+        // функция
+        if (val instanceof VmFunction fn) {
+            checkArgs(vmUnit.getName() + "->" + name, fn.getArguments().size(), argsAmount);
+            // вызов
+            vmUnit.call(addr, name, vm, shouldPushResult);
+        }
+        // нативная функция
+        else if (val instanceof VmBuiltinFunction fn) {
+            checkArgs(vmUnit.getName() + "->" + name, fn.args(), argsAmount);
+            // вызов
+            fn.exec(vm, addr);
+        }
     }
 
     // Вызывает рефлексийную функцию

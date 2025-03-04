@@ -58,5 +58,6 @@ public enum TokenType {
     GO, // ->
     UNIT, // unit
     TO, // to
-    FROM // from
+    FROM, // from
+    NATIVE // native
 }
