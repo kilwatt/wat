@@ -17,12 +17,10 @@ public class WattParsingError extends RuntimeException implements WattError {
     @Override
     public void print() {
         System.out.print(WattColors.ANSI_RED);
-        System.out.println("╭ 🦜 Parsing error occurred.");
-        System.out.println("│ Error?: " + this.message);
-        System.out.println("│ Where?: " + filename + "::" + line);
-        System.out.println("│ ");
-        System.out.println("│ 💡 Hint: " + hint);
-        System.out.println("╰");
+        System.out.println("╭ ⚡ parsing error.");
+        System.out.println("│ err: " + this.message);
+        System.out.println("│ at: " + filename + ":" + line);
+        System.out.println("╰ 💡 " + hint);
         System.out.print(WattColors.ANSI_RESET);
     }
 

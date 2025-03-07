@@ -30,7 +30,7 @@ public class VmJvmClasses {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
             throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                    "jvm class is not defined: " + name, "Check class name for mistakes!");
+                    "jvm class is not defined: " + name, "check class name for mistakes.");
         }
     }
 

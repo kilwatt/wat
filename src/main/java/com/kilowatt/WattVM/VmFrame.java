@@ -30,7 +30,12 @@ public class VmFrame<K, V> {
         VmFrame<K, V> current = this;
         while (!current.getValues().containsKey(name)) {
             if (current.root == null) {
-                throw new WattRuntimeError(addr.getLine(), addr.getFileName(), "Not found: " + name.toString(), "Check this variable existence!");
+                throw new WattRuntimeError(
+                        addr.getLine(),
+                        addr.getFileName(),
+                        "not found: " + name.toString(),
+                        "check variable existence!"
+                );
             }
             current = current.root;
         }
@@ -59,7 +64,7 @@ public class VmFrame<K, V> {
         }
         else {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "Variable: " + name + " is not defined!", "Verify you already defined it with := operator.");
+                    "variable is not defined: " + name, "verify you already defined it with := op.");
         }
     }
 
@@ -75,7 +80,7 @@ public class VmFrame<K, V> {
         }
         else {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "Variable: " + name + " already defined!", "You can rename this variable!");
+                    "variable: " + name + " already defined!", "you can rename variable to define it.");
         }
     }
 

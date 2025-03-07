@@ -1,50 +1,22 @@
-/*import 'another.w'
-list := [3, 5, 4]
-println(list.get(1))
-
-func test() -> {
-    a := 5
-    func inner(b) -> {
-        println(a * b)
-   }
-   return inner
-}
-example := test()
-example(4)
-*/
-/*
-test := {
-    'example': 1,
-    true: false
-}
-
-println(test.get('example'))
-println(test.get(true))
-*/
 import 'std.io'
+import 'std.convert'
 
-type Bird(name, speed) -> {
-    func fly() -> {
-        io.println('🕊️ Bird: ' + self.name + ' is flying with speed: ' + speed)
+type Pie(weight) {
+    fun cook() -> {
+        io.println('🥧 Cooking pie...')
+        io.println('⚡ Pie cooked! Weight: '
+                    + convert.to_string(weight)
+        )
     }
 }
-
-unit Nest -> {
-    birds := []
-    func add_bird(bird) -> {
-        self.birds.add(bird)
-    }
-    func print_birds() -> {
-        io.println('🎖️ Birds list: ')
-        for i in 0 to birds.size() {
-            io.println(
-                birds.get(i).name
-                + ' :: ' + birds.get(i).speed
-            )
+unit Bakery(pies) -> {
+    fun bake() -> {
+        io.println('🍪 Cooking: ')
+        for i in 0 to pies.size() {
+            pies.get(i).cook()
         }
+        io.println('🎉 Successfully cooked all pies!')
     }
 }
-
-bird := new Bird('Sofy', 4.67)
-Nest.add_bird(bird)
-Nest.print_birds()
+pies = [new Pie(3.6)]
+Bakery.bake(pies)

@@ -23,8 +23,8 @@ public class InputFn implements VmBuiltinFunction {
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
-                    "Some IO error occurred with input function: " + e.getMessage(),
-                    "Check your code!"
+                    "io error with input fn: " + e.getMessage(),
+                    "check your code."
             );
         }
     }

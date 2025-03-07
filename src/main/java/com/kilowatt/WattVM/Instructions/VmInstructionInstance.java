@@ -56,9 +56,9 @@ public class VmInstructionInstance implements VmInstruction {
     private void checkArgs(int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "Invalid args amount for constructor of class: "
+                    "invalid constructor args to create instance: "
                     + className + "(" + argsAmount + "/" + parameterAmount + " )",
-                    "Check arguments amount!");
+                    "check args amount.");
         }
     }
 }

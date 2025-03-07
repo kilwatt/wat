@@ -81,8 +81,8 @@ public class VmFunction implements VmInstructionsBox {
         for (int i = arguments.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "Stack is empty! Can't invoke functions.",
-                        "Check arguments for function!");
+                        "stack is empty! couldn't invoke function.",
+                        "check args of function.");
             }
             Object arg = vm.pop();
             scope.define(addr, arguments.get(i), arg);

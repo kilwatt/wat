@@ -43,8 +43,8 @@ public class VmInstructionLoad implements VmInstruction {
             } else {
                 throw new WattRuntimeError(
                         addr.getLine(), addr.getFileName(),
-                        "Not found: " + name + ".",
-                        "Did you do mistake in variable name?"
+                        "not found: " + name,
+                        "did you type wrong name?"
                 );
             }
         } else {
@@ -58,7 +58,7 @@ public class VmInstructionLoad implements VmInstruction {
                     vm.push(unit.getFields().lookup(addr, name));
                     break;
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + last +
+                default -> throw new IllegalStateException("unexpected value: " + last +
                         " send this error with your code to the developer!");
             }
         }

@@ -88,8 +88,8 @@ public class Parser {
                 throw new WattParsingError(
                         defineNode.getName().line,
                         filename,
-                        "Cannot use define like expression!",
-                        "Check your code!");
+                        "couldn't use assign in expr.",
+                        "check your code.");
             }
         }
 
@@ -152,8 +152,8 @@ public class Parser {
             default -> throw new WattParsingError(
                      peek().line,
                      filename,
-                     "Invalid token for primary parsing: " + peek().type + "::" + peek().value,
-                    "Did you write wrong expression?");
+                     "invalid token in primary parsing: " + peek().type + "::" + peek().value,
+                    "did you write wrong expr?");
         }
     }
 
@@ -242,8 +242,8 @@ public class Parser {
             default -> throw new WattParsingError(
                     peek().line,
                     filename,
-                    "Invalid conditional operator! " + peek().type + "::" + peek().value,
-                    "Available operators: ==, !=, >, <, >=, <=");
+                    "invalid cond. op: " + peek().value,
+                    "available op-s: ==,!=,>,<,>=,<=");
         };
     }
 
@@ -329,8 +329,8 @@ public class Parser {
                 throw new WattParsingError(
                         peek().line,
                         filename,
-                        "Invalid node while type parsing: " + peek().type + "::" + peek().value,
-                        "Available: function, variable set, variable define.");
+                        "invalid node token for type: " + peek().type + ":" + peek().value,
+                        "available: fun, variable definition; variable set.");
             }
         }
         consume(TokenType.RIGHT_BRACE);
@@ -352,8 +352,8 @@ public class Parser {
                 throw new WattParsingError(
                         peek().line,
                         filename,
-                        "Invalid node while type parsing: " + peek().type + "::" + peek().value,
-                        "Available: function, variable set, variable define.");
+                        "invalid node token for unit: " + peek().type + "::" + peek().value,
+                        "available: fun, variable definition; variable set.");
             }
         }
         consume(TokenType.RIGHT_BRACE);
@@ -422,8 +422,8 @@ public class Parser {
             default -> throw new WattParsingError(
                     peek().line,
                     filename,
-                    "Unexpected token for statement: " + peek(),
-                    "Check your code!");
+                    "unexpected stmt token: " + peek(),
+                    "check your code.");
         }
     }
 
@@ -542,8 +542,8 @@ public class Parser {
             throw new WattParsingError(
                 token.line,
                 filename,
-                "Can't consume token because of file end!",
-                "Check your file! Last token: " + token.type + "::" + token.value);
+                "couldn't consume token.",
+                "its end of file! last token: " + token.type + ":" + token.value);
         }
         Token token = this.tokenList.get(current);
         if (token.type == expected) {
@@ -553,8 +553,8 @@ public class Parser {
             throw new WattParsingError(
                     token.line,
                     filename,
-                    "Unexpected token: " + token.type + "::" + token.value,
-                    "Did you forget to use token " + expected + "?");
+                    "unexpected token: " + token.type + ":" + token.value,
+                    "did you mean " + expected + "?");
         }
     }
 
@@ -564,8 +564,8 @@ public class Parser {
             throw new WattParsingError(
                     token.line,
                     filename,
-                    "Can't consume token because of file end!",
-                    "Check your file! Last token: " + token.type + "::" + token.value);
+                    "couldn't peek token.",
+                    "its end of file! last token: " + token.type + ":" + token.value);
         } else {
             return this.tokenList.get(current);
         }

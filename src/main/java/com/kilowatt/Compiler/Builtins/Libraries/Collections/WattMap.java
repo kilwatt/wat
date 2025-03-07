@@ -36,7 +36,7 @@ public class WattMap {
         }
         throw new WattRuntimeError(
                 address.getLine(), address.getFileName(),
-                "Key: " + k.toString() + " not found!", "Check key for mistakes!");
+                "key: " + k.toString() + " is not exists.", "check key for mistakes.");
     }
 
     public Object has_key(VmAddress address, Object obj) {

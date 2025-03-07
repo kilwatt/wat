@@ -32,7 +32,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
         if (vm.getUnitDefinitions().has(name)) {
             throw new WattRuntimeError(
                     addr.getLine(), addr.getFileName(),
-                    "Already defined unit with name: " + name, "Check your code!");
+                    "unit already defined: " + name, "did you forget to change name?");
         }
         VmUnit unit = new VmUnit(name, new VmFrame<>());
         unit.getFields().setRoot(frame);

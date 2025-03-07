@@ -171,8 +171,8 @@ public class Lexer {
                         throw new WattParsingError(
                                 line,
                                 filename,
-                                "Bang operator is not available now.",
-                                "You can use != operator instead!"
+                                "band op. is not available.",
+                                "you can use != instead."
                         );
                     }
                     break;
@@ -212,8 +212,8 @@ public class Lexer {
                         throw new WattParsingError(
                                 line,
                                 filename,
-                                "Unexpected character: " + current,
-                                "Check your code for character: " + current);
+                                "unexpected char: " + current,
+                                "delete char: " + current);
                     }
                 }
             }
@@ -232,15 +232,15 @@ public class Lexer {
                 throw new WattParsingError(
                         line,
                         filename,
-                        "Unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
-                        "Did you forgot to type \" symbol?");
+                        "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                        "did you forget to type \" symbol?");
             }
             if (isAtEnd()) {
                 throw new WattParsingError(
                         line,
                         filename,
-                        "Unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
-                        "Did you forgot to type \" symbol?");
+                        "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                        "did you forget to type \" symbol?");
             }
             text.append(advance());
         }
@@ -248,8 +248,8 @@ public class Lexer {
             throw new WattParsingError(
                     line,
                     filename,
-                    "Unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
-                    "Did you forgot to type \" symbol?");
+                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                    "did you forget to type \" symbol?");
         }
         advance();
         return text.toString();

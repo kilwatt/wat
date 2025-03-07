@@ -34,13 +34,13 @@ public class VmInstructionBinOp implements VmInstruction {
                         vm.push(l.toString().repeat(number.intValue()));
                     } else {
                         throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                                "Can't use * operator with string if right side is not a number",
-                                "Check types!");
+                                "couldn't use * operator with string && string.",
+                                "check types.");
                     }
                 }
                 default -> throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "Can't use operator: " + operator + " with strings!",
-                        "Check your code!");
+                        "couldn't " + operator + " with strings.",
+                        "check your code.");
             }
         } else {
             if (l instanceof Number lNumber) {
@@ -52,8 +52,8 @@ public class VmInstructionBinOp implements VmInstruction {
                         case "/" -> {
                             if (rNumber.floatValue() == 0) {
                                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                                        "Can't divide by zero!",
-                                        "Check your code!");
+                                        "can't divide by zero.",
+                                        "check your code.");
                             }
                             vm.push(div(lNumber, rNumber));
                         } default -> {
@@ -62,14 +62,14 @@ public class VmInstructionBinOp implements VmInstruction {
                     }
                 } else {
                     throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Can't use operator: " + operator + "! Right is not a number: " + r,
-                            "Check your code!");
+                            "couldn't use op: " + operator + ". right is not a number: " + r,
+                            "check your code.");
                 }
             }
             else {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "Can't use operator: " + operator + "! Left is not a number: " + l,
-                        "Check your code!");
+                        "couldn't use op: " + operator + ". left is not a number: " + l,
+                        "check your code.");
             }
         }
     }

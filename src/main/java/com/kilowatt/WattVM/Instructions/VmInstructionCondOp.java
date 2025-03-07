@@ -37,8 +37,8 @@ public class VmInstructionCondOp implements VmInstruction {
                     vm.push(isLessThan(lNumber, rNumber));
                 } else {
                     throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Not a number: " + (l instanceof Number ? l : r),
-                            "Check types!");
+                            "not a number: " + (l instanceof Number ? l : r),
+                            "check types.");
                 }
             }
             case ">" -> {
@@ -46,8 +46,8 @@ public class VmInstructionCondOp implements VmInstruction {
                     vm.push(isGreaterThan(lNumber, rNumber));
                 } else {
                     throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Not a number: " + (l instanceof Number ? l : r),
-                            "Check types!");
+                            "not a number: " + (l instanceof Number ? l : r),
+                            "check types.");
                 }
             }
             case "<=" -> {
@@ -55,8 +55,8 @@ public class VmInstructionCondOp implements VmInstruction {
                     vm.push(isLessOrEqual(lNumber, rNumber));
                 } else {
                     throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Not a number: " + (l instanceof Number ? l : r),
-                            "Check types!");
+                            "not a number: " + (l instanceof Number ? l : r),
+                            "check types.");
                 }
             }
             case ">=" -> {
@@ -64,13 +64,13 @@ public class VmInstructionCondOp implements VmInstruction {
                     vm.push(isGreaterOrEqual(lNumber, rNumber));
                 } else {
                     throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "Not a number: " + (l instanceof Number ? l : r),
-                            "Check types!");
+                            "not a number: " + (l instanceof Number ? l : r),
+                            "check types.");
                 }
             }
             default -> throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "Invalid operator: " + operator,
-                    "Available conditional operators: ==, !=, >, >=, <=, <");
+                    "invalid cond. op: " + operator,
+                    "available op-s: ==,!=,>,>=,<=,<");
         }
     }
 
@@ -119,8 +119,8 @@ public class VmInstructionCondOp implements VmInstruction {
             return Integer.compare(a.intValue(), b.intValue());
         } else {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "Not a number: " + (a != null ? a : b),
-                    "Check types!");
+                    "not a number: " + (a != null ? a : b),
+                    "check types.");
         }
     }
 

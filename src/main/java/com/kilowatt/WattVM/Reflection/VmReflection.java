@@ -35,14 +35,14 @@ public class VmReflection {
             return constructor.newInstance(args.getArray().toArray());
         } catch (InstantiationException | IllegalAccessException e) {
             throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                    "Error while calling jvm constructor: " + e.getMessage(), "Check your code!");
+                    "error in jvm constructor: " + e.getMessage(), "check your code.");
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof WattRuntimeError ||
                 e.getCause() instanceof WattParsingError) {
                 throw e.getCause();
             } else {
                 throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                        "Error while calling jvm constructor: " + e.getMessage(), "Check your code!");
+                        "error in jvm constructor: " + e.getMessage(), "check your code.");
             }
         }
     }
