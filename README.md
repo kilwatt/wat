@@ -25,7 +25,7 @@ type Pie(weight) {
     }
 }
 unit Bakery(pies) -> {
-    fun cook_all() -> {
+    fun bake() -> {
         io.println('🍪 Cooking: ')
         for i in 0 to pies.size() {
             pies.get(i).cook()
@@ -34,5 +34,5 @@ unit Bakery(pies) -> {
     }
 }
 pies = [new Pie(3.6)]
-bakery = new Bakery(pies)
+Bakery.bake(pies)
 ```
