@@ -1,16 +1,16 @@
-import com.kea.Errors.KeaParsingError;
-import com.kea.Errors.KeaRuntimeError;
+import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattRuntimeError;
 
 /*
 Тест ошибок
  */
-public class ErrorTests implements KeaTest {
+public class ErrorTests implements WattTest {
     public void errorTest0() {
-        new KeaRuntimeError(1, "test.kea", "test error", "Did you forget something?").print();
+        new WattRuntimeError(1, "test.w", "test error", "Did you forget something?").print();
     }
 
     public void errorTest1() {
-        new KeaParsingError(1, "test.kea", "here", "Did you forget something?").print();
+        new WattParsingError(1, "test.w", "here", "Did you forget something?").print();
     }
 
     @Override

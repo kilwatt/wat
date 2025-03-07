@@ -1,4 +1,0 @@
-unit io -> {
-    native println -> 'com.kea.Compiler.Builtins.Libraries.Std.IO.PrintlnFn'
-    native input -> 'com.kea.Compiler.Builtins.Libraries.Std.IO.InputFn'
-}
