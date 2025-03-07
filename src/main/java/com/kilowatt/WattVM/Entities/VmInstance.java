@@ -39,9 +39,9 @@ public class VmInstance implements VmFunctionOwner {
      */
     public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
-        VmFunction func = (VmFunction) getScope().lookup(inAddr, name);
-        func.setDefinedFor(this);
-        func.exec(vm, shouldPushResult);
+        VmFunction fun = (VmFunction) getScope().lookup(inAddr, name);
+        fun.setDefinedFor(this);
+        fun.exec(vm, shouldPushResult);
     }
 
     // в строку

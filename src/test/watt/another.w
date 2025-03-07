@@ -1,5 +1,5 @@
 type Bird(speed, name) -> {
-    func fly() -> {
+    fun fly() -> {
         println('🕊️ Bird: ' + name + ' flying with speed:')
         println(speed)
     }

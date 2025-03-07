@@ -108,24 +108,24 @@ public class VmInstructionCall implements VmInstruction {
         }
         // рефлексийный вызов
         Method[] methods = last.getClass().getMethods();
-        Method func = null;
+        Method fun = null;
         for (Method m : methods) {
             if (m.getName().equals(name) &&
                     m.getParameterCount() == callArgs.length) {
-                func = m;
+                fun = m;
             }
         }
-        if (func == null) {
+        if (fun == null) {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                     "jvm method not found: " + last.getClass().getName() + ":" + name,
                     "check name for mistakes & passing args amount.");
         }
         else {
             checkArgs(last.getClass().getName() + ":" + name,
-                    func.getParameterCount()-1, callArgs.length-1);
+                    fun.getParameterCount()-1, callArgs.length-1);
             try {
                 // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
-                Object returned = func.invoke(last, callArgs);
+                Object returned = fun.invoke(last, callArgs);
                 if (shouldPushResult) {
                     vm.push(returned);
                 }

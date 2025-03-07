@@ -38,8 +38,8 @@ public class VmUnit implements VmFunctionOwner {
      */
     public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
-        VmFunction func = (VmFunction) fields.lookup(inAddr, name);
-        func.setDefinedFor(this);
-        func.exec(vm, shouldPushResult);
+        VmFunction fun = (VmFunction) fields.lookup(inAddr, name);
+        fun.setDefinedFor(this);
+        fun.exec(vm, shouldPushResult);
     }
 }

@@ -24,7 +24,7 @@ public class Lexer {
     private int current = 0;
     // кейворды
     private static final Map<String, TokenType> keywords = new HashMap<>() {{
-        put("func", TokenType.FUNC);
+        put("fun", TokenType.FUN);
         put("return", TokenType.RETURN);
         put("if", TokenType.IF);
         put("true", TokenType.BOOL);

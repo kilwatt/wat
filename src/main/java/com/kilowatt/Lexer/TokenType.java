@@ -4,7 +4,7 @@ package com.kilowatt.Lexer;
 Тип токена
  */
 public enum TokenType {
-    FUNC,
+    FUN,
     OPERATOR, // +, -, *, /
     LEFT_PAREN,
     RIGHT_PAREN,

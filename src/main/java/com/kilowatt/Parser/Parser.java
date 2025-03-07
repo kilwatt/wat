@@ -300,7 +300,7 @@ public class Parser {
     }
 
     private Node function() {
-        consume(TokenType.FUNC);
+        consume(TokenType.FUN);
         Token name = consume(TokenType.ID);
         ArrayList<Token> parameters = params();
         consume(TokenType.GO);
@@ -375,7 +375,7 @@ public class Parser {
             case TokenType.ID -> {
                 return accessStatement();
             }
-            case TokenType.FUNC -> {
+            case TokenType.FUN -> {
                 return function();
             }
             case TokenType.NATIVE -> {

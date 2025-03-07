@@ -15,4 +15,7 @@ public class StdConverter {
     public long to_long(VmAddress address, Number i) {
         return i.longValue();
     }
+    public String to_string(VmAddress address, Object o) {
+        return o.toString();
+    }
 }
