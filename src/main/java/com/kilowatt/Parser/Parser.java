@@ -120,6 +120,19 @@ public class Parser {
         return expr;
     }
 
+    private Node anonFunction() {
+        Token location = consume(TokenType.FUN);
+        ArrayList<Token> parameters = params();
+        consume(TokenType.LEFT_BRACE);
+        BlockNode node = block();
+        consume(TokenType.RIGHT_BRACE);
+        return new AnonymousFnNode(
+                location,
+                node,
+                parameters
+        );
+    }
+
     private Node primary() {
         switch (peek().type) {
             case ID -> {
@@ -148,6 +161,9 @@ public class Parser {
             }
             case NULL -> {
                 return nullNode();
+            }
+            case FUN -> {
+                return anonFunction();
             }
             default -> throw new WattParsingError(
                      peek().line,
