@@ -97,7 +97,7 @@ public class Parser {
         return left;
     }
 
-    private Node accessStatement() {
+    private AccessNode accessStatement() {
         AccessNode left = accessPart(null);
 
         while (check(TokenType.DOT)) {
@@ -133,10 +133,74 @@ public class Parser {
         );
     }
 
+    private Node lambdaFunction() {
+        Token location = consume(TokenType.LAMBDA);
+        ArrayList<Token> parameters = params();
+        consume(TokenType.GO);
+        BlockNode node = BlockNode.of(
+                new ReturnNode(
+                        location,
+                        expression()
+                )
+        );
+        return new AnonymousFnNode(
+                location,
+                node,
+                parameters
+        );
+    }
+
+    private AccessNode pipeOperator(AccessNode _expr) {
+        AccessNode expr = _expr;
+        if (expr instanceof AccessNode accessExpr) {
+            accessExpr.setShouldPushResult(true);
+        } else {
+            throw new WattParsingError(
+                    peek().getLine(),
+                    peek().getFileName(),
+                    "expected call expr in pipes.",
+                    "check your code."
+            );
+        }
+        if (check(TokenType.PIPE)) {
+            while (check(TokenType.PIPE)) {
+                Token location = consume(TokenType.PIPE);
+                if (expr instanceof CallNode) {
+                    if (expression() instanceof CallNode nextCallNode) {
+                        nextCallNode.getArgs().addFirst(expr);
+                        expr = nextCallNode;
+                    } else {
+                        throw new WattParsingError(
+                                location.getLine(),
+                                location.getFileName(),
+                                "expected call expr in pipes.",
+                                "check your code."
+                        );
+                    }
+                } else {
+                    throw new WattParsingError(
+                            location.getLine(),
+                            location.getFileName(),
+                            "expected call expr in pipes.",
+                            "check your code."
+                    );
+                }
+            }
+        }
+        return expr;
+    }
+
     private Node primary() {
         switch (peek().type) {
             case ID -> {
-                return accessExpr();
+                AccessNode access = accessExpr();
+                if (check(TokenType.PIPE)) {
+                    AccessNode pipe = pipeOperator(access);
+                    pipe.setShouldPushResult(true);
+                    return pipe;
+                } else {
+                    return access;
+                }
             }
             case NEW -> {
                 return objectCreation();
@@ -164,6 +228,9 @@ public class Parser {
             }
             case FUN -> {
                 return anonFunction();
+            }
+            case LAMBDA -> {
+                return lambdaFunction();
             }
             default -> throw new WattParsingError(
                      peek().line,
@@ -389,7 +456,14 @@ public class Parser {
     private Node statement() {
         switch (peek().type) {
             case TokenType.ID -> {
-                return accessStatement();
+                AccessNode access = accessStatement();
+                if (check(TokenType.PIPE)) {
+                    AccessNode pipe = pipeOperator(access);
+                    pipe.setShouldPushResult(false);
+                    return pipe;
+                } else {
+                    return access;
+                }
             }
             case TokenType.FUN -> {
                 return function();

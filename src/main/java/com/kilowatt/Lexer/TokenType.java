@@ -10,7 +10,7 @@ public enum TokenType {
     RIGHT_PAREN,
     LEFT_BRACE,
     RIGHT_BRACE,
-    CALL, // @
+    LAMBDA, // lambda
     WALRUS, // :=
     EQUAL, // ==
     NOT_EQUAL, // !=
@@ -59,5 +59,6 @@ public enum TokenType {
     UNIT, // unit
     TO, // to
     FROM, // from
-    NATIVE // native
+    NATIVE, // native
+    PIPE // pipe
 }

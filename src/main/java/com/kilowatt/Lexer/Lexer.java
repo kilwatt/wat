@@ -53,6 +53,7 @@ public class Lexer {
         put("to", TokenType.TO);
         put("from", TokenType.FROM);
         put("native", TokenType.NATIVE);
+        put("lambda", TokenType.LAMBDA);
     }};
 
     // сканнер
@@ -201,6 +202,19 @@ public class Lexer {
                 }
                 case '\'': {
                     addToken(TokenType.TEXT, scanString());
+                    break;
+                }
+                case '|': {
+                    if (match('>')) {
+                        addToken(TokenType.PIPE, "|>");
+                    } else {
+                        throw new WattParsingError(
+                                line,
+                                filename,
+                                "expected > after | for pipe!",
+                                "check your code."
+                        );
+                    }
                     break;
                 }
                 default: {
