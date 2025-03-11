@@ -7,6 +7,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmReflection;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Stack;
 
@@ -21,6 +22,9 @@ public class WattVM {
     private final Stack<VmFrame<String, Object>> callStack = new Stack<>();
     private final VmFrame<String, VmType> typeDefinitions = new VmFrame<String, VmType>();
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<String, VmUnit>();
+    // адресс последнего вызова
+    @Setter
+    private VmAddress lastCallAddress;
 
     // инициализация стека под поток
     public void initForThread() {

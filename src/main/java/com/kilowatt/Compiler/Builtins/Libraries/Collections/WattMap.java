@@ -1,5 +1,6 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Collections;
 
+import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
 import com.kilowatt.WattVM.VmAddress;
@@ -12,23 +13,28 @@ import java.util.HashMap;
 public class WattMap {
     private final HashMap<Object, Object> map = new HashMap<Object, Object>();
 
-    public void set(VmAddress address, Object k, Object v) {
+    public void set(Object k, Object v) {
         map.put(k,v);
     }
 
-    public void del(VmAddress address, Object k) {
+    public void del(Object k) {
         for (Object o : map.keySet()) {
-            if (VmInstructionCondOp.equal(address, k, o)) {
+            if (VmInstructionCondOp.equal(
+                    WattCompiler.vm.getLastCallAddress(),
+                    k,
+                    o
+            )) {
                 map.remove(o);
             }
         }
     }
 
-    public Object stringify(VmAddress address) {
+    public Object stringify() {
         return map.toString();
     }
 
-    public Object get(VmAddress address, Object k) {
+    public Object get(Object k) {
+        VmAddress address = WattCompiler.vm.getLastCallAddress();
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(address, k, o)) {
                 return map.get(o);
@@ -39,9 +45,13 @@ public class WattMap {
                 "key: " + k.toString() + " is not exists.", "check key for mistakes.");
     }
 
-    public Object has_key(VmAddress address, Object obj) {
+    public Object has_key(Object obj) {
         for (Object o : map.keySet()) {
-            if (VmInstructionCondOp.equal(address, o, obj)) {
+            if (VmInstructionCondOp.equal(
+                    WattCompiler.vm.getLastCallAddress(),
+                    o,
+                    obj
+            )) {
                 return true;
             }
         }
@@ -49,9 +59,13 @@ public class WattMap {
         return false;
     }
 
-    public Object has_value(VmAddress address, Object obj) {
+    public Object has_value(Object obj) {
         for (Object o : map.values()) {
-            if (VmInstructionCondOp.equal(address, o, obj)) {
+            if (VmInstructionCondOp.equal(
+                    WattCompiler.vm.getLastCallAddress(),
+                    o,
+                    obj
+            )) {
                 return true;
             }
         }
@@ -59,14 +73,14 @@ public class WattMap {
         return false;
     }
 
-    public WattList keys(VmAddress address) {
+    public WattList keys() {
         return WattList.of(map.keySet().stream().toList());
     }
 
-    public WattList values(VmAddress address) {
+    public WattList values() {
         return WattList.of(map.values().stream().toList());
     }
-    public float size(VmAddress address) {
+    public float size() {
         return map.size();
     }
 }

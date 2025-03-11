@@ -1,7 +1,7 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Collections;
 
+import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
-import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -14,21 +14,25 @@ import java.util.List;
 public class WattList {
     private List<Object> array = new ArrayList<>();
 
-    public void add(VmAddress address, Object o) {
+    public void add(Object o) {
         array.add(o);
     }
 
-    public void del(VmAddress address, int index) {
+    public void del(int index) {
         array.remove(index);
     }
 
-    public Object get(VmAddress address, int index) {
+    public Object get(int index) {
         return array.get(index);
     }
 
-    public Object contains(VmAddress address, Object obj) {
+    public Object contains(Object obj) {
         for (Object o : array) {
-            if (VmInstructionCondOp.equal(address, o, obj)) {
+            if (VmInstructionCondOp.equal(
+                    WattCompiler.vm.getLastCallAddress(),
+                    o,
+                    obj
+            )) {
                 return true;
             }
         }
@@ -36,28 +40,32 @@ public class WattList {
         return false;
     }
 
-    public void set(VmAddress address, int i, Object v) {
+    public void set(int i, Object v) {
         array.set(i, v);
     }
 
-    public int size(VmAddress address) {
+    public int size() {
         return array.size();
     }
 
-    public Object stringify(VmAddress address) {
+    public Object stringify() {
         StringBuilder s = new StringBuilder();
         for (Object o : array) {
             s.append(o);
         }
         return s.toString();
     }
-    public void insert(VmAddress address, int i, Object v) {
+    public void insert(int i, Object v) {
         array.add(i, v);
     }
 
-    public int index_of(VmAddress address, Object obj) {
+    public int index_of(Object obj) {
         for (Object o : array) {
-            if (VmInstructionCondOp.equal(address, o, obj)) {
+            if (VmInstructionCondOp.equal(
+                    WattCompiler.vm.getLastCallAddress(),
+                    o,
+                    obj
+            )) {
                 return array.indexOf(o);
             }
         }
@@ -69,7 +77,7 @@ public class WattList {
         arr.array = values;
         return arr;
     }
-    public void del_all(VmAddress address, WattList arr) {
+    public void del_all(WattList arr) {
         this.array.removeAll(arr.array);
     }
 }

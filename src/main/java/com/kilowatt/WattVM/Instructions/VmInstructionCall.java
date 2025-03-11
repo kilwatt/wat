@@ -43,6 +43,8 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
+        // устанавливаем адресс последнего вызова
+        vm.setLastCallAddress(addr);
         // вызов
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
@@ -98,26 +100,28 @@ public class VmInstructionCall implements VmInstruction {
 
     // Вызывает рефлексийную функцию
     @SneakyThrows
-    private void callReflectionFunc(WattVM vm, VmFrame<String, Object> frame, Object last)  {
-        // аргументы с добавлением еденички - адресс.
-        int argsAmount = passArgs(vm, frame) + 1;
-        Object[] callArgs = new Object[argsAmount];
-        callArgs[0] = addr;
-        for (int i = argsAmount - 1; i > 0; i--) {
-            callArgs[i] = vm.pop();
-        }
+    private void callReflectionFunc(WattVM vm, VmFrame<String, Object> frame, Object last) {
+        // аргументы
+        int argsAmount = passArgs(vm, frame);
+        Object[] callArgs = null;
         // рефлексийный вызов
         Method[] methods = last.getClass().getMethods();
+        // поиск метода
         Method fun = null;
         for (Method m : methods) {
-            if (m.getName().equals(name) &&
-                    m.getParameterCount() == callArgs.length) {
-                fun = m;
+            if (m.getName().equals(name)) {
+                if (argsAmount == m.getParameterCount()) {
+                    callArgs = toJvmArgs(vm, argsAmount);
+                    fun = m;
+                    break;
+                }
             }
         }
+        // выполнение метода
         if (fun == null) {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "jvm method not found: " + last.getClass().getName() + ":" + name,
+                    "jvm method not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
+                    argsAmount + ")",
                     "check name for mistakes & passing args amount.");
         }
         else {
@@ -146,6 +150,18 @@ public class VmInstructionCall implements VmInstruction {
                 }
             }
         }
+    }
+
+    // Преобразование в аргументы для jvm метода.
+    private Object[] toJvmArgs(WattVM vm, int argsAmount) {
+        // создаём список аргументов.
+        Object[] callArgs = new Object[argsAmount];
+        // заполняем его
+        for (int i = argsAmount - 1; i >= 0; i--) {
+            callArgs[i] = vm.pop();
+        }
+        // возвращаем аргументы
+        return callArgs;
     }
 
     // Вызов функции из глобального скоупа

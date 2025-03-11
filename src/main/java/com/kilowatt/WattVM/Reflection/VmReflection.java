@@ -23,25 +23,25 @@ public class VmReflection {
 
     // рефлексия
     @SneakyThrows
-    public Object reflect(VmAddress address, String name, WattList args) {
+    public Object reflect(String name, WattList args) {
         // ищем класс
         try {
             // класс
-            Class<?> clazz = VmJvmClasses.lookup(address, name);
+            Class<?> clazz = VmJvmClasses.lookup(vm.getLastCallAddress(), name);
             // колличество аргументов
-            int argsAmount = args.size(address);
+            int argsAmount = args.size();
             // ищем конструктор
-            Constructor constructor = findConstructor(address, clazz, argsAmount);
+            Constructor constructor = findConstructor(vm.getLastCallAddress(), clazz, argsAmount);
             return constructor.newInstance(args.getArray().toArray());
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(vm.getLastCallAddress().getLine(), vm.getLastCallAddress().getFileName(),
                     "error in jvm constructor: " + e.getMessage(), "check your code.");
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof WattRuntimeError ||
                 e.getCause() instanceof WattParsingError) {
                 throw e.getCause();
             } else {
-                throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                throw new WattRuntimeError(vm.getLastCallAddress().getLine(), vm.getLastCallAddress().getFileName(),
                         "error in jvm constructor: " + e.getMessage(), "check your code.");
             }
         }
