@@ -1,6 +1,8 @@
+import 'std.io'
+
 type Bird(speed, name) -> {
     fun fly() -> {
-        println('🕊️ Bird: ' + name + ' flying with speed:')
-        println(speed)
+        io.println('🕊️ Bird: ' + name + ' flying with speed:')
+        io.println(speed)
     }
 }
