@@ -6,15 +6,15 @@ import com.kilowatt.WattVM.VmAddress;
 Стд -> Строки
  */
 public class StdStrings {
-    public int parse_int(VmAddress addr, String value) {
+    public int parse_int(String value) {
         return Integer.parseInt(value);
     }
 
-    public float parse_float(VmAddress addr, String value) {
+    public float parse_float(String value) {
         return Float.parseFloat(value);
     }
 
-    public long parse_long(VmAddress addr, String value) {
+    public long parse_long(String value) {
         return Long.parseLong(value);
     }
 }

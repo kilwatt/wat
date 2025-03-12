@@ -7,7 +7,9 @@ import java.util.HashMap;
  */
 public class WattLibraries {
     public static HashMap<String, String> libraries = new HashMap<>() {{
-        put("std.io", "std-io.w");
-        put("std.convert", "std-convert.w");
+        put("std.io", "std/std-io.w");
+        put("std.convert", "std/std-convert.w");
+        put("std.math", "std/std-math.w");
+        put("std.math.ext", "std/std-math-ext.w");
     }};
 }

@@ -1,7 +1,5 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
-import com.kilowatt.WattVM.VmAddress;
-
 /*
 Стд -> Конвертация типов
  */

@@ -28,6 +28,7 @@ public class Parser {
         return block();
     }
 
+    // аргументы
     private ArrayList<Node> args() {
         ArrayList<Node> nodes = new ArrayList<>();
         consume(TokenType.LEFT_PAREN);
@@ -45,6 +46,7 @@ public class Parser {
         return nodes;
     }
 
+    // параметры
     private ArrayList<Token> params() {
         ArrayList<Token> params = new ArrayList<>();
         consume(TokenType.LEFT_PAREN);
@@ -62,21 +64,31 @@ public class Parser {
         return params;
     }
 
+    // часть цепочки доступа
     private AccessNode accessPart(AccessNode prev) {
-        Token identifier = consume(TokenType.ID);
-        if (check(TokenType.WALRUS)) {
-            consume(TokenType.WALRUS);
-            return new VarDefineNode(prev, identifier, expression());
-        } else if (check(TokenType.ASSIGN)) {
-            consume(TokenType.ASSIGN);
-            return new VarSetNode(prev, identifier, expression());
-        } else if (check(TokenType.LEFT_PAREN)) {
-            return new CallNode(prev, identifier, args());
-        } else {
-            return new VarNode(prev, identifier);
+        // выражение с идентификатором
+        if (check(TokenType.ID)) {
+            Token identifier = consume(TokenType.ID);
+            if (check(TokenType.WALRUS)) {
+                consume(TokenType.WALRUS);
+                return new VarDefineNode(prev, identifier, expression());
+            } else if (check(TokenType.ASSIGN)) {
+                consume(TokenType.ASSIGN);
+                return new VarSetNode(prev, identifier, expression());
+            } else if (check(TokenType.LEFT_PAREN)) {
+                return new CallNode(prev, identifier, args());
+            } else {
+                return new VarNode(prev, identifier);
+            }
+        }
+        // выражение со словом new
+        else {
+            return objectCreation();
         }
     }
 
+    // доступ (вызов, получение значения переменной,
+    // установка значения переменной) в виде выражения.
     private AccessNode accessExpr() {
         AccessNode left = accessPart(null);
 
@@ -97,6 +109,9 @@ public class Parser {
         return left;
     }
 
+
+    // доступ (вызов, получение значения переменной,
+    // установка значения переменной) в виде инструкции.
     private AccessNode accessStatement() {
         AccessNode left = accessPart(null);
 
@@ -113,6 +128,7 @@ public class Parser {
         return left;
     }
 
+    // выражение в скобках
     private Node grouping() {
         consume(TokenType.LEFT_PAREN);
         Node expr = expression();
@@ -120,6 +136,7 @@ public class Parser {
         return expr;
     }
 
+    // анонимная функция
     private Node anonFunction() {
         Token location = consume(TokenType.FUN);
         ArrayList<Token> parameters = params();
@@ -133,6 +150,7 @@ public class Parser {
         );
     }
 
+    // лямбда функия
     private Node lambdaFunction() {
         Token location = consume(TokenType.LAMBDA);
         ArrayList<Token> parameters = params();
@@ -150,6 +168,7 @@ public class Parser {
         );
     }
 
+    // пайп-оператор
     private AccessNode pipeOperator(AccessNode _expr) {
         AccessNode expr = _expr;
         if (expr instanceof AccessNode accessExpr) {
@@ -190,9 +209,10 @@ public class Parser {
         return expr;
     }
 
+    // примарное выражение (базовое)
     private Node primary() {
         switch (peek().type) {
-            case ID -> {
+            case TokenType.ID, TokenType.NEW -> {
                 AccessNode access = accessExpr();
                 if (check(TokenType.PIPE)) {
                     AccessNode pipe = pipeOperator(access);
@@ -202,34 +222,31 @@ public class Parser {
                     return access;
                 }
             }
-            case NEW -> {
-                return objectCreation();
-            }
-            case NUM -> {
+            case TokenType.NUM -> {
                 return new NumberNode(consume(TokenType.NUM));
             }
-            case TEXT -> {
+            case TokenType.TEXT -> {
                 return new StringNode(consume(TokenType.TEXT));
             }
-            case BOOL -> {
+            case TokenType.BOOL -> {
                 return new BoolNode(consume(TokenType.BOOL));
             }
-            case LEFT_PAREN -> {
+            case TokenType.LEFT_PAREN -> {
                 return grouping();
             }
-            case LEFT_BRACKET -> {
+            case TokenType.LEFT_BRACKET -> {
                 return listNode();
             }
-            case LEFT_BRACE -> {
+            case TokenType.LEFT_BRACE -> {
                 return mapNode();
             }
-            case NULL -> {
+            case TokenType.NULL -> {
                 return nullNode();
             }
-            case FUN -> {
+            case TokenType.FUN -> {
                 return anonFunction();
             }
-            case LAMBDA -> {
+            case TokenType.LAMBDA -> {
                 return lambdaFunction();
             }
             default -> throw new WattParsingError(
@@ -240,11 +257,13 @@ public class Parser {
         }
     }
 
+    // нулл нода
     private Node nullNode() {
         Token location = consume(TokenType.NULL);
         return new NullNode(location);
     }
 
+    // список нод
     private Node listNode() {
         Token location = consume(TokenType.LEFT_BRACKET);
         ArrayList<Node> nodes = new ArrayList<>();
@@ -266,6 +285,7 @@ public class Parser {
         return new ListNode(location, nodes);
     }
 
+    // словарь нод
     private Node mapNode() {
         Token location = consume(TokenType.LEFT_BRACE);
         HashMap<Node, Node> nodes = new HashMap<>();
@@ -290,6 +310,7 @@ public class Parser {
         return new MapNode(location, nodes);
     }
 
+    // умножение, деление
     private Node multiplicative() {
         Node left = primary();
 
@@ -302,6 +323,7 @@ public class Parser {
         return left;
     }
 
+    // сложение, вычитание
     private Node additive() {
         Node left = multiplicative();
 
@@ -314,6 +336,7 @@ public class Parser {
         return left;
     }
 
+    // условный оператор
     private Token conditionalOperator() {
         return switch (peek().type) {
             case EQUAL -> consume(TokenType.EQUAL);
@@ -330,6 +353,7 @@ public class Parser {
         };
     }
 
+    // условное выражение
     private Node conditional() {
         Node left = additive();
 
@@ -343,6 +367,7 @@ public class Parser {
         return left;
     }
 
+    // логическое выражение
     private Node logical() {
         Node left = conditional();
 
@@ -360,10 +385,12 @@ public class Parser {
         return left;
     }
 
+    // текущий токен это закрывающая скобка?
     private boolean itsClosingBrace() {
         return check(TokenType.RIGHT_BRACE);
     }
 
+    // блок кода
     private BlockNode block() {
         ArrayList<Node> nodes = new ArrayList<>();
 
@@ -374,6 +401,7 @@ public class Parser {
         return new BlockNode(nodes);
     }
 
+    // нативная функция
     private Node nativeFunction() {
         consume(TokenType.NATIVE);
         Token name = consume(TokenType.ID);
@@ -382,17 +410,27 @@ public class Parser {
         return new NativeNode(name,javaName);
     }
 
+    // функция
     private Node function() {
-        consume(TokenType.FUN);
+        // адресс и имя
+        Token address = consume(TokenType.FUN);
         Token name = consume(TokenType.ID);
+        // параметры
         ArrayList<Token> parameters = params();
         consume(TokenType.GO);
+        // тело
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
+        // добавляем возврат null
+        node.getNodes().add(new ReturnNode(
+                address, new NullNode(address))
+        );
         consume(TokenType.RIGHT_BRACE);
+        // возвращаем функцию
         return new FnNode(node,name,parameters);
     }
 
+    // объявление типа
     private Node type() {
         consume(TokenType.TYPE);
         Token name = consume(TokenType.ID);
@@ -420,6 +458,7 @@ public class Parser {
         return new TypeNode(name, nodes, constructor);
     }
 
+    // объявление юнита
     private Node unit() {
         consume(TokenType.UNIT);
         Token name = consume(TokenType.ID);
@@ -443,19 +482,22 @@ public class Parser {
         return new UnitNode(name, nodes);
     }
 
+    // выражение (рекурсивный парсинг)
     private Node expression() {
         return logical();
     }
 
-    private Node objectCreation() {
+    // выражение создания объекта
+    private AccessNode objectCreation() {
         consume(TokenType.NEW);
         Token name = consume(TokenType.ID);
         return new NewInstanceNode(name, args());
     }
 
+    // инструкция
     private Node statement() {
         switch (peek().type) {
-            case TokenType.ID -> {
+            case TokenType.ID, TokenType.NEW -> {
                 AccessNode access = accessStatement();
                 if (check(TokenType.PIPE)) {
                     AccessNode pipe = pipeOperator(access);
@@ -470,9 +512,6 @@ public class Parser {
             }
             case TokenType.NATIVE -> {
                 return nativeFunction();
-            }
-            case TokenType.NEW -> {
-                return objectCreation();
             }
             case TokenType.TYPE -> {
                 return type();
@@ -517,31 +556,52 @@ public class Parser {
         }
     }
 
+    // стэйтмент continue
     private Node continueNode() {
         Token loc = consume(TokenType.CONTINUE);
         return new ContinueNode(loc);
     }
 
+    // стэйтмент break
     private Node breakNode() {
         Token loc = consume(TokenType.BREAK);
         return new BreakNode(loc);
     }
 
+    // стэйтмент return
     private Node returnNode() {
         Token loc = consume(TokenType.RETURN);
         return new ReturnNode(loc, expression());
     }
 
+    // стэйтмент assert
     private Node assertion() {
         Token loc = consume(TokenType.ASSERT);
         return new AssertNode(loc, expression());
     }
 
+    // стэйтмент import
     private Node importNode() {
         consume(TokenType.IMPORT);
-        return new ImportNode(consume(TokenType.TEXT));
+        ArrayList<Token> imports = new ArrayList<>();
+        if (check(TokenType.LEFT_PAREN)) {
+            consume(TokenType.LEFT_PAREN);
+            do {
+                if (check(TokenType.COMMA)) {
+                    consume(TokenType.COMMA);
+                }
+                imports.add(consume(TokenType.TEXT));
+            }
+            while (check(TokenType.COMMA));
+
+            consume(TokenType.RIGHT_PAREN);
+        } else {
+            imports.add(consume(TokenType.TEXT));
+        }
+        return new ImportNode(imports);
     }
 
+    // стэйтмент while
     private Node whileLoop() {
         Token location = consume(TokenType.WHILE);
         Node expr = expression();
@@ -551,6 +611,7 @@ public class Parser {
         return new WhileNode(location, node, expr);
     }
 
+    // стэйтмент else
     private IfNode elseNode() {
         Token elseTok = consume(TokenType.ELSE);
         consume(TokenType.LEFT_BRACE);
@@ -559,6 +620,7 @@ public class Parser {
         return new IfNode(elseTok, node, new BoolNode(new Token(TokenType.BOOL, "true", elseTok.line, filename)), null);
     }
 
+    // стэйтмент elif
     private IfNode elifNode() {
         Token location = consume(TokenType.ELIF);
         Node logical = expression();
@@ -576,6 +638,7 @@ public class Parser {
         return ifNode;
     }
 
+    // стэйтмент if
     private Node ifNode() {
         Token location = consume(TokenType.IF);
         Node logical = expression();
@@ -593,6 +656,7 @@ public class Parser {
         return ifNode;
     }
 
+    // стэйтмент for
     private Node forLoop() {
         consume(TokenType.FOR);
         Token name = consume(TokenType.ID);
@@ -612,20 +676,24 @@ public class Parser {
         return new ForNode(node, name, new RangeNode(from, to, isDecrement));
     }
 
+    // в конце ли?
     private boolean isAtEnd() {
         return current >= tokenList.size();
     }
 
+    // проверка на совпадение типа токена
     private boolean check(TokenType expected) {
         if (isAtEnd()) { return false; }
         return this.tokenList.get(current).type == expected;
     }
 
+    // проверка на совпадение значения токена
     private boolean match(String value) {
         if (isAtEnd()) { return false; }
         return this.tokenList.get(current).value.equals(value);
     }
 
+    // "съедание" токена
     private Token consume(TokenType expected) {
         if (isAtEnd()) {
             Token token = this.tokenList.get(current-1);
@@ -648,6 +716,7 @@ public class Parser {
         }
     }
 
+    // получаем текущий токен
     private Token peek() {
         if (isAtEnd()) {
             Token token = this.tokenList.get(current-1);

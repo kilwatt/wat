@@ -1,3 +1,7 @@
-import 'std.io'
+import (
+    'std.math',
+    'std.io'
+)
 
-io.println(123 * (45.67))
+a := math.pow(2, 3)
+io.println(a)

@@ -5,16 +5,20 @@ import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
+
 /*
 Импорт
  */
 @Getter
 @AllArgsConstructor
 public class ImportNode implements Node {
-    private final Token name;
+    private final ArrayList<Token> names;
 
     @Override
     public void compile() {
-        WattExecutor.resolve(name.asAddress(), name.value);
+        for (Token name : names) {
+            WattExecutor.resolve(name.asAddress(), name.value);
+        }
     }
 }
