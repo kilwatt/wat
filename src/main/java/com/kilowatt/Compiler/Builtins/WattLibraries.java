@@ -11,5 +11,6 @@ public class WattLibraries {
         put("std.convert", "std/std-convert.w");
         put("std.math", "std/std-math.w");
         put("std.math.ext", "std/std-math-ext.w");
+        put("ext.tui", "ext/ext-tui.w");
     }};
 }
