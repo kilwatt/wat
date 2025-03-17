@@ -33,12 +33,14 @@ public class ExtTUI {
     /*
     Функции рендера
      */
-    public void render_line(String line) {
+    public void render_line(Object line) {
         terminal.writer().println(line);
+        terminal.writer().flush();
     }
 
-    public void render(String line) {
+    public void render(Object line) {
         terminal.writer().print(line);
+        terminal.writer().flush();
     }
 
     /*
