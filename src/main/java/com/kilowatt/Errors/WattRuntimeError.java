@@ -34,4 +34,9 @@ public class WattRuntimeError extends RuntimeException implements WattError {
     public String message() {
         return message;
     }
+
+    @Override
+    public int address() {
+        return line;
+    }
 }

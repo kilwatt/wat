@@ -21,6 +21,14 @@ public class WattTests {
                 WattTest.builder().path(
                             "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\reflection\\reflection.w").
                         name("jvm reflection")
+                        .build(),
+                WattTest.builder().path(
+                            "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\std\\math\\std_math_base_test.w").
+                        name("std math base")
+                        .build(),
+                WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\std\\math\\std_math_ext_test.w").
+                        name("std ext base")
                         .build()
         );
         runner.run();

@@ -39,7 +39,8 @@ public class WattTestRunner {
                 if (e instanceof WattError wattError) {
                     logLine(
                             WattColors.ANSI_RESET + "[" + (i + 1) + "/" + tests.size() + "]: " + test.getName()
-                                    + WattColors.ANSI_RED + " | error: " + wattError.message() + WattColors.ANSI_RESET
+                                    + WattColors.ANSI_RED + " | error: " + wattError.message() + " at "
+                                    + wattError.address() + WattColors.ANSI_RESET
                     );
                 } else {
                     logLine(
