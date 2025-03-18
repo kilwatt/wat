@@ -5,7 +5,7 @@ fun get() -> {
 }
 
 fun hello(name) -> {
-    io.println('Hello, ' + name)
+    return 'Hello, ' + name
 }
 
-get() |> hello()
+assert((get() |> hello()) == 'Hello, World!')

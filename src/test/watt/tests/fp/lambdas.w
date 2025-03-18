@@ -5,4 +5,4 @@ fun test() -> {
 }
 
 a := test()
-io.println(a(5))
+assert(a(5) == 9)

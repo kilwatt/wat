@@ -4,4 +4,5 @@ package com.kilowatt.Errors;
 public interface WattError {
     void print();
     int errorCode();
+    String message();
 }

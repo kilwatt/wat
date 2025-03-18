@@ -2,6 +2,7 @@ package com.kilowatt;
 
 import com.kilowatt.Errors.WattColors;
 import com.kilowatt.Executor.WattExecutor;
+import com.kilowatt.Testrunner.WattTests;
 
 import java.io.IOException;
 
@@ -13,7 +14,11 @@ public class Watt {
         if (args.length != 1) {
             warning(WattColors.ANSI_YELLOW + "Invalid usage. Example: watt <script>");
         }
-        WattExecutor.run(args[0]);
+        if (args[0].equals("--tests")) {
+            WattTests.run();
+        } else {
+            WattExecutor.run(args[0]);
+        }
     }
 
     public static void warning(String warning) {

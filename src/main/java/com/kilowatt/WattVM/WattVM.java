@@ -57,7 +57,7 @@ public class WattVM {
     }
 
     // запуск
-    public void run(WattVmCode code) {
+    public void run(WattVmCode code, boolean needBenchmarkInfo) {
         // code.print();
         // переменная для рефлексии
         globals.define(
@@ -73,6 +73,8 @@ public class WattVM {
         // запуск кода
         code.run(this);
         // время выполнение
-        System.out.println("Exec time: " + mark.end() + " ms. Stack: " + stack.get());
+        if (needBenchmarkInfo) {
+            System.out.println("exec time: " + mark.end() + " ms. stack: " + stack.get());
+        }
     }
 }

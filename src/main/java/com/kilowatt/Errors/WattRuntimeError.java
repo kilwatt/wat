@@ -29,4 +29,9 @@ public class WattRuntimeError extends RuntimeException implements WattError {
     public int errorCode() {
         return 0;
     }
+
+    @Override
+    public String message() {
+        return message;
+    }
 }

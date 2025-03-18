@@ -7,4 +7,4 @@ fun test() -> {
 }
 
 anonymous_function := test()
-io.println('Hello, ' + anonymous_function() + '!')
+assert(anonymous_function() == 'world')
