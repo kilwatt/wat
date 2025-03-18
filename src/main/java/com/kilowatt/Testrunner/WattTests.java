@@ -17,8 +17,12 @@ public class WattTests {
                 WattTest.builder().path(
                                 "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\fp\\pipes.w").
                         name("pipes")
+                        .build(),
+                WattTest.builder().path(
+                            "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\reflection\\reflection.w").
+                        name("jvm reflection")
                         .build()
-                );
+        );
         runner.run();
     }
 }

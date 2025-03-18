@@ -5,4 +5,4 @@ unit Test -> {
     )
 }
 
-println(Test.example)
+assert(Test.example.getLine() == 12)
