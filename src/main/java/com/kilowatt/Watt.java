@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Watt {
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            warning(WattColors.ANSI_YELLOW + "Invalid usage. Example: watt <script>");
+            warning(WattColors.ANSI_YELLOW + "Invalid usage. Example: watt <script>" + WattColors.ANSI_RESET);
         }
         if (args[0].equals("--tests")) {
             WattTests.run();
