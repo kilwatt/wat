@@ -15,6 +15,7 @@ public class Watt {
             warning(WattColors.ANSI_YELLOW + "Invalid usage. Example: watt <script>" + WattColors.ANSI_RESET);
         }
         if (args[0].equals("--tests")) {
+            System.out.println(WattColors.ANSI_YELLOW + "Running: " + args[0] + WattColors.ANSI_RESET);
             WattTests.run();
         } else {
             WattExecutor.run(args[0]);
