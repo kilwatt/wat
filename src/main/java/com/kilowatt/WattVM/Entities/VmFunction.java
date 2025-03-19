@@ -53,7 +53,7 @@ public class VmFunction implements VmInstructionsBox {
             scope.setRoot(vm.getGlobals());
         }
         if (getClosure().get() != null) {
-            scope.getValues().putAll(closure.get().getValues());
+            scope.setRoot(closure.get());
         }
         loadArgs(vm, scope);
         if (definedFor != null) {

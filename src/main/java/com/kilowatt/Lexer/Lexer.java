@@ -288,7 +288,7 @@ public class Lexer {
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
-        while (Character.isLetter(peek()) || Character.isDigit(peek()) || peek() == '_' || peek() == '-') {
+        while (Character.isLetter(peek()) || Character.isDigit(peek()) || peek() == '_') {
             if (match('\n')) {
                 line += 1;
                 continue;
