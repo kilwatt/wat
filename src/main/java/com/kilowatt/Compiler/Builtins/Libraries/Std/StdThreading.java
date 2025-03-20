@@ -2,6 +2,8 @@ package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.VmAddress;
@@ -32,7 +34,11 @@ public class StdThreading {
             }
             fn.exec(WattCompiler.vm, false);
         });
-        thread.start();
+        try {
+            thread.start();
+        } catch (WattRuntimeError | WattParsingError | WattResolveError e) {
+            e.print();
+        }
         return thread;
     }
 }

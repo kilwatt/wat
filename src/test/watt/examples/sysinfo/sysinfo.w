@@ -7,6 +7,15 @@ import 'std.jvm'
 import 'std.threads'
 
 window := new TuiWindow()
+cpu_load := 0
+ticks := system.get_hal().getProcessor().getSystemCpuLoadTicks()
+threads.run(fun() {
+	while true {
+		threads.sleep(1000)
+		cpu_load = system.get_hal().getProcessor().getSystemCpuLoadBetweenTicks(ticks)
+		ticks = system.get_hal().getProcessor().getSystemCpuLoadTicks()
+	}
+}, [])
 
 fun os_info() -> {
     os := system.get_info().getOperatingSystem()
@@ -44,7 +53,7 @@ fun cpu_info() -> {
     )
     window.render_line(
         colors.green + '│->' + colors.lime + ' CpuLoad: '
-        + (system.get_hal().getProcessor().getSystemCpuLoad(0) * 100) + ' %'
+        + convert.to_int(cpu_load * 100.0) + ' %'
     )
     window.render_line(
         colors.green + '│->' + colors.lime + ' CpuLogicalCores: '
