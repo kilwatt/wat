@@ -51,7 +51,7 @@ public class WattList {
     public Object stringify() {
         StringBuilder s = new StringBuilder();
         for (Object o : array) {
-            s.append(o);
+            s.append(o).append(", ");
         }
         return s.toString();
     }

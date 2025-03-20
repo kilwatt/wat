@@ -8,6 +8,9 @@ import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 /*
 Загрузка переменной по имени в стек
  */
@@ -58,8 +61,30 @@ public class VmInstructionLoad implements VmInstruction {
                     vm.push(unit.getFields().lookup(addr, name));
                     break;
                 }
-                default -> throw new IllegalStateException("unexpected value: " + last +
+                case null -> throw new IllegalStateException("unexpected value: " + last +
                         " send this error with your code to the developer!");
+                default -> {
+                    Class<?> clazz = last.getClass();
+                    try {
+                        Field field = clazz.getField(name);
+                        field.setAccessible(true);
+                        vm.push(field.get(last));
+                    } catch (NoSuchFieldException e) {
+                        throw new WattRuntimeError(
+                                addr.getLine(),
+                                addr.getFileName(),
+                                "field not found: " + name,
+                                "check your reflection interaction."
+                        );
+                    } catch (IllegalAccessException e) {
+                        throw new WattRuntimeError(
+                                addr.getLine(),
+                                addr.getFileName(),
+                                "access failed: " + name,
+                                "check your reflection interaction."
+                        );
+                    }
+                }
             }
         }
     }

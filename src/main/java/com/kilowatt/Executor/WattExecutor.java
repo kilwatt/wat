@@ -3,7 +3,6 @@ package com.kilowatt.Executor;
 import com.kilowatt.Compiler.Builtins.WattLibraries;
 import com.kilowatt.Compiler.WattBuiltinProvider;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattError;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
