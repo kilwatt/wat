@@ -4,6 +4,7 @@ import 'syscolors.w'
 import 'std.io'
 import 'std.convert'
 import 'std.jvm'
+import 'std.threads'
 
 window := new TuiWindow()
 
@@ -112,5 +113,6 @@ while true {
         colors.green + '...................................'
         + colors.reset
     )
+    threads.sleep(1000)
     window.clear()
 }

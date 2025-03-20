@@ -23,8 +23,16 @@ public class WattVM {
     private final VmFrame<String, VmType> typeDefinitions = new VmFrame<String, VmType>();
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<String, VmUnit>();
     // адресс последнего вызова
-    @Setter
-    private VmAddress lastCallAddress;
+    private final ThreadLocal<VmAddress> lastCallAddress = new ThreadLocal<>();
+
+    // работа с адрессом последнего вызова
+    public VmAddress getLastCallAddress() {
+        return lastCallAddress.get();
+    }
+
+    public void setLastCallAddress(VmAddress address) {
+        lastCallAddress.set(address);
+    }
 
     // инициализация стека под поток
     public void initForThread() {

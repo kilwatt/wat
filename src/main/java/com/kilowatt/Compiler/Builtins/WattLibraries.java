@@ -14,6 +14,7 @@ public class WattLibraries {
         put("std.random", "std/std-random.w");
         put("std.sys", "std/std-sys.w");
         put("std.jvm", "std/std-jvm.w");
+        put("std.threads", "std/std-threads.w");
         put("ext.tui", "ext/ext-tui.w");
     }};
 }
