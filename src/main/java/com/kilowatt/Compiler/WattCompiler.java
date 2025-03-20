@@ -34,7 +34,8 @@ public class WattCompiler {
         for (Node node : parse.getNodes()) {
             if (node instanceof UnitNode ||
                 node instanceof TypeNode ||
-                node instanceof FnNode) {
+                node instanceof FnNode ||
+                node instanceof ImportNode) {
                 node.compile();
             }
         }
