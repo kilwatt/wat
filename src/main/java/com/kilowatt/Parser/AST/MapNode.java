@@ -5,7 +5,6 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionCall;
 import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
-import com.kilowatt.WattVM.Instructions.VmInstructionPush;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ public class MapNode implements Node {
     @Override
     public void compile() {
         VmAddress address = location.asAddress();
-        WattCompiler.code.visitInstruction(new VmInstructionPush(address, new WattMap()));
+        WattCompiler.code.visitInstruction((vm, _) -> vm.push(new WattMap()));
         for (Node node : map.keySet()) {
             WattCompiler.code.visitInstruction(new VmInstructionDuplicate(address));
             VmBaseInstructionsBox container = new VmBaseInstructionsBox();

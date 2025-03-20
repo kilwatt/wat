@@ -7,7 +7,6 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmReflection;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Stack;
 
@@ -22,6 +21,8 @@ public class WattVM {
     private final Stack<VmFrame<String, Object>> callStack = new Stack<>();
     private final VmFrame<String, VmType> typeDefinitions = new VmFrame<String, VmType>();
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<String, VmUnit>();
+    // рефлексия
+    private final VmReflection reflection = new VmReflection(this);
     // адресс последнего вызова
     private final ThreadLocal<VmAddress> lastCallAddress = new ThreadLocal<>();
 
@@ -71,7 +72,7 @@ public class WattVM {
         globals.define(
             WattBuiltinProvider.builtinAddress,
         "reflection",
-                new VmReflection(this)
+                reflection
         );
         // бенчмарк
         VmBenchmark mark = new VmBenchmark();

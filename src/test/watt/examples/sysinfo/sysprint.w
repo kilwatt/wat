@@ -1,5 +1,6 @@
 import 'syscolors.w'
 import 'ext.tui'
+import 'std.io'
 
 type Label(key, value) -> {
     fun print(window) -> {
@@ -18,8 +19,10 @@ type Title(title, labels) -> {
 
 type Printer() -> {
     window := new TuiWindow()
+    last_title := null
 
     fun refresh(titles) -> {
+        window.clear()
         for i in 0 to titles.size() {
             titles.get(i).print(window)
         }
