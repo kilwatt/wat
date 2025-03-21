@@ -371,15 +371,15 @@ public class Parser {
     private Node logical() {
         Node left = conditional();
 
-        if (check(TokenType.AND)) {
-            Token operator = consume(TokenType.AND);
+        while(check(TokenType.AND) || check(TokenType.OR)) {
+            Token operator;
+            if (check(TokenType.AND)) {
+                operator = consume(TokenType.AND);
+            } else {
+                operator = consume(TokenType.OR);
+            }
             Node right = conditional();
-            return new LogicalNode(left, right, operator);
-        }
-        else if (check(TokenType.OR)) {
-            Token operator = consume(TokenType.OR);
-            Node right = conditional();
-            return new LogicalNode(left, right, operator);
+            left = new LogicalNode(left, right, operator);
         }
 
         return left;

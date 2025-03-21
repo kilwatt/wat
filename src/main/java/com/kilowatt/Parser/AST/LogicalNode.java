@@ -16,6 +16,8 @@ public class LogicalNode implements Node {
 
     @Override
     public void compile() {
+        left.compile();
+        right.compile();
         WattCompiler.code.visitInstruction(new VmInstructionLogicalOp(operator.asAddress(), operator.value));
     }
 }

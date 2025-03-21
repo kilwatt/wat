@@ -9,7 +9,6 @@ import lombok.Getter;
 /*
 Кодишен VM
  */
-@SuppressWarnings("ConstantValue")
 @Getter
 public class VmInstructionLogicalOp implements VmInstruction {
     // адресс
@@ -21,11 +20,6 @@ public class VmInstructionLogicalOp implements VmInstruction {
         this.addr = addr;
         this.operator = operator;
     }
-
-    public static <T> T cast(Class<T> clazz, Object o) {
-        return clazz.cast(o);
-    }
-
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         Object r = vm.pop();
