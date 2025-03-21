@@ -13,7 +13,7 @@ import java.util.List;
 /*
 Парсер
  */
-@SuppressWarnings({"BooleanMethodIsAlwaysInverted", "CommentedOutCode"})
+@SuppressWarnings({"BooleanMethodIsAlwaysInverted"})
 @Getter
 public class Parser {
     private final String filename;
