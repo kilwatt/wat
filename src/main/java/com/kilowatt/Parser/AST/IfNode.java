@@ -6,15 +6,17 @@ import com.kilowatt.WattVM.Instructions.VmInstructionIf;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
 /*
 If
  */
 @AllArgsConstructor
+@Getter
 public class IfNode implements Node {
     private final Token location;
-    private final BlockNode node;
+    private final Node node;
     private final Node logical;
     @Setter
     private IfNode elseNode;

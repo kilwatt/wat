@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /*
 Парсер
@@ -248,6 +249,9 @@ public class Parser {
             }
             case TokenType.LAMBDA -> {
                 return lambdaFunction();
+            }
+            case TokenType.MATCH -> {
+                return matchExpr();
             }
             default -> throw new WattParsingError(
                      peek().line,
@@ -674,6 +678,82 @@ public class Parser {
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new ForNode(node, name, new RangeNode(from, to, isDecrement));
+    }
+
+    // выражение match
+    private Node matchExpr() {
+        Token location = consume(TokenType.MATCH);
+        Node matchable = expression();
+        List<MatchNode.Case> cases = new ArrayList<>();
+        MatchNode.Case defaultCase;
+        consume(TokenType.LEFT_BRACE);
+        while (check(TokenType.CASE)) {
+            consume(TokenType.CASE);
+            Node equality = expression();
+            consume(TokenType.GO);
+            cases.add(
+                    new MatchNode.Case(
+                            equality,
+                            expression()
+                    )
+            );
+        }
+        if (check(TokenType.DEFAULT)) {
+            consume(TokenType.DEFAULT);
+            consume(TokenType.GO);
+            defaultCase = new MatchNode.Case(null, expression());
+        } else {
+            Token token = tokenList.get(current);
+            throw new WattParsingError(
+                token.getLine(),
+                token.getFileName(),
+                "couldn't use match expr without default case.",
+                "check your code."
+            );
+        }
+        consume(TokenType.RIGHT_BRACE);
+        return new MatchNode(
+                location,
+                matchable,
+                cases,
+                defaultCase
+        );
+    }
+
+    // стэйтмент match
+    private Node matchStmt() {
+        Token location = consume(TokenType.MATCH);
+        Node matchable = expression();
+        List<MatchNode.Case> cases = new ArrayList<>();
+        MatchNode.Case defaultCase = null;
+        consume(TokenType.LEFT_BRACE);
+        while (check(TokenType.CASE)) {
+            consume(TokenType.CASE);
+            Node equality = expression();
+            consume(TokenType.GO);
+            consume(TokenType.LEFT_BRACE);
+            cases.add(
+                    new MatchNode.Case(
+                            equality,
+                            block()
+                    )
+            );
+            consume(TokenType.RIGHT_BRACE);
+        }
+        if (check(TokenType.DEFAULT)) {
+            consume(TokenType.DEFAULT);
+            consume(TokenType.GO);
+            consume(TokenType.LEFT_BRACE);
+            defaultCase = new MatchNode.Case(null, block());
+            consume(TokenType.RIGHT_BRACE);
+        }
+        consume(TokenType.RIGHT_BRACE);
+        return new MatchNode(
+                location,
+                matchable,
+                cases,
+                defaultCase
+        );
     }
 
     // в конце ли?

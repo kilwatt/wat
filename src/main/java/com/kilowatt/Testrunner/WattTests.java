@@ -11,6 +11,10 @@ public class WattTests {
                         .name("logical")
                         .build(),
                 WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\main\\match.w")
+                        .name("pattern matching")
+                        .build(),
+                WattTest.builder().path(
                                 "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\fp\\anonymous_fn.w").
                         name("anonymous fn")
                         .build(),
