@@ -538,11 +538,9 @@ public class Parser {
             case TokenType.RETURN -> {
                 return returnNode();
             }
-            /*
             case TokenType.MATCH -> {
-                return matchNode();
+                return matchStmt();
             }
-             */
             case TokenType.CONTINUE -> {
                 return continueNode();
             }
@@ -730,22 +728,24 @@ public class Parser {
         while (check(TokenType.CASE)) {
             consume(TokenType.CASE);
             Node equality = expression();
-            consume(TokenType.GO);
-            consume(TokenType.LEFT_BRACE);
-            cases.add(
-                    new MatchNode.Case(
-                            equality,
-                            block()
-                    )
-            );
-            consume(TokenType.RIGHT_BRACE);
+            if (check(TokenType.GO)) {
+                consume(TokenType.GO);
+                cases.add(new MatchNode.Case(equality, statement()));
+            } else {
+                consume(TokenType.LEFT_BRACE);
+                cases.add(new MatchNode.Case(equality, block()));
+                consume(TokenType.RIGHT_BRACE);
+            }
         }
         if (check(TokenType.DEFAULT)) {
             consume(TokenType.DEFAULT);
-            consume(TokenType.GO);
-            consume(TokenType.LEFT_BRACE);
-            defaultCase = new MatchNode.Case(null, block());
-            consume(TokenType.RIGHT_BRACE);
+            if (check(TokenType.GO)) {
+                defaultCase = new MatchNode.Case(null, statement());
+            } else {
+                consume(TokenType.LEFT_BRACE);
+                defaultCase = new MatchNode.Case(null, block());
+                consume(TokenType.RIGHT_BRACE);
+            }
         }
         consume(TokenType.RIGHT_BRACE);
         return new MatchNode(
