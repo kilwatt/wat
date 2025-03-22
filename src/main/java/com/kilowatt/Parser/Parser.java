@@ -76,6 +76,9 @@ public class Parser {
             } else if (check(TokenType.ASSIGN)) {
                 consume(TokenType.ASSIGN);
                 return new VarSetNode(prev, identifier, expression());
+            } else if (check(TokenType.ASSIGN)) {
+                consume(TokenType.ASSIGN);
+                return new VarSetNode(prev, identifier, expression());
             } else if (check(TokenType.LEFT_PAREN)) {
                 return new CallNode(prev, identifier, args());
             } else {
@@ -101,6 +104,13 @@ public class Parser {
                 throw new WattParsingError(
                         defineNode.getName().line,
                         filename,
+                        "couldn't use define in expr.",
+                        "check your code.");
+            }
+            else if (left instanceof VarSetNode defineNode) {
+                throw new WattParsingError(
+                        defineNode.getName().line,
+                        filename,
                         "couldn't use assign in expr.",
                         "check your code.");
             }
@@ -120,7 +130,8 @@ public class Parser {
             consume(TokenType.DOT);
             left.setShouldPushResult(true);
             left = accessPart(left);
-            if (left instanceof VarDefineNode) {
+            if (left instanceof VarDefineNode ||
+                    left instanceof VarSetNode) {
                 break;
             }
         }

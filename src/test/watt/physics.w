@@ -1,73 +1,7 @@
 import 'std.io'
 import 'std.math'
 
-/* #8
-m := 4
-t := 0
-l := 330
-
-io.println(
-    (m*l)/1000.0
-)
-*/
-
-/* #9
-N := 3 * math.pow(10, 10)
-e := 1.6 * math.pow(10, -19)
-q := N * e
-io.println(q * math.pow(10, -9) + ' нКл')
-*/
-
-/* #14
-q := -8 * math.pow(10, -15)
-e := 1.6 * math.pow(10, -19)
-N := q / e
-io.println(N)
-*/
-/* #5
-t2 := 32
-t1 := 7
-t := t2-t1
-m := 0.2
-c := 4100
-Q := m*c*t
-io.println(Q/1000)
-*/
-/* #6
-q := 44*math.pow(10, 6)
-Q := 123.2
-m := Q/q
-io.println(m)
-*/
-/* #7
-t := 76
-m := 3
-c := 4200
-r := 2.3 * math.pow(10,6)
-Q1 := m*c*(100-t)
-Q2 := m*r
-Q := Q1 + Q2
-io.println(Q/1000000)
-*/
-/* #8
-m := 0.3
-t := 0
-q := 330
-Q := m*q
-io.println(Q)
-*/
-/* #9
-N := 2.25 * math.pow(10, 10)
-e := 1.6 * math.pow(10, -19)
-q := N * e
-io.println(q/1000000000)
-*/
-/* #13
-q := -8 * math.pow(10, -15)
-e := 1.6 * math.pow(10, -19)
-N := q/e
-io.println(N)
-*/
+/* basic physics tests */
 fun _demo() -> {
     e := 1.6 * math.pow(10, -19)
 
