@@ -15,6 +15,22 @@ public class WattTests {
                         .name("pattern matching")
                         .build(),
                 WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\main\\types.w")
+                        .name("custom types")
+                        .build(),
+                WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\main\\units.w")
+                        .name("custom units")
+                        .build(),
+                WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\main\\while.w")
+                        .name("while")
+                        .build(),
+                WattTest.builder().path(
+                                "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\main\\for.w")
+                        .name("for")
+                        .build(),
+                WattTest.builder().path(
                                 "E:\\wat_lang\\wat\\src\\test\\watt\\tests\\fp\\anonymous_fn.w").
                         name("anonymous fn")
                         .build(),
