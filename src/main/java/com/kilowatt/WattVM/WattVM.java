@@ -18,9 +18,8 @@ public class WattVM {
     // стэк
     private final ThreadLocal<Stack<Object>> stack = new ThreadLocal<>();
     private final VmFrame<String, Object> globals = new VmFrame<>();
-    private final Stack<VmFrame<String, Object>> callStack = new Stack<>();
-    private final VmFrame<String, VmType> typeDefinitions = new VmFrame<String, VmType>();
-    private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<String, VmUnit>();
+    private final VmFrame<String, VmType> typeDefinitions = new VmFrame<>();
+    private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<>();
     // рефлексия
     private final VmReflection reflection = new VmReflection(this);
     // адресс последнего вызова
@@ -43,16 +42,6 @@ public class WattVM {
     // получение стека
     public Stack<Object> getStack() {
         return stack.get();
-    }
-
-    // помещение фрейма в стек вызовов
-    public void pushCallFrame(VmFrame<String, Object> callFrame) {
-        callStack.push(callFrame);
-    }
-
-    // удаление фрейма из стека вызовов
-    public void popCalFrame() {
-        callStack.pop();
     }
 
     // помещение в стек

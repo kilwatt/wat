@@ -76,9 +76,66 @@ public class Parser {
             } else if (check(TokenType.ASSIGN)) {
                 consume(TokenType.ASSIGN);
                 return new VarSetNode(prev, identifier, expression());
-            } else if (check(TokenType.ASSIGN)) {
-                consume(TokenType.ASSIGN);
-                return new VarSetNode(prev, identifier, expression());
+            } else if (check(TokenType.ASSIGN_ADD) ||
+                check(TokenType.ASSIGN_SUB) ||
+                check(TokenType.ASSIGN_MUL) ||
+                check(TokenType.ASSIGN_DIVIDE)
+            ) {
+                // оператор и локация
+                String op = null;
+                Token location = null;
+                // ищем оператор
+                switch (peek().type) {
+                    case TokenType.ASSIGN_SUB -> {
+                        location = consume(TokenType.ASSIGN_SUB);
+                        op = "-";
+                    }
+                    case TokenType.ASSIGN_ADD -> {
+                        location = consume(TokenType.ASSIGN_ADD);
+                        op = "+";
+                    }
+                    case TokenType.ASSIGN_MUL -> {
+                        location = consume(TokenType.ASSIGN_MUL);
+                        op = "*";
+                    }
+                    case TokenType.ASSIGN_DIVIDE -> {
+                        location = consume(TokenType.ASSIGN_DIVIDE);
+                        op = "/";
+                    }
+                    default -> {
+                        throw new WattParsingError(
+                                identifier.getLine(),
+                                identifier.getFileName(),
+                                "operator not found: " + peek(),
+                                "check your code."
+                        );
+                    }
+                }
+                // возвращаем
+                VarNode var = new VarNode(prev, identifier);
+                var.setShouldPushResult(true);
+                return new VarSetNode(prev, identifier, new BinNode(
+                        var, expression(), new Token(TokenType.OPERATOR, op,
+                        location.getLine(), location.getFileName())
+                ));
+            } else if (check(TokenType.ASSIGN_DIVIDE)) {
+                Token location = consume(TokenType.ASSIGN_DIVIDE);
+                return new VarSetNode(prev, identifier, new BinNode(
+                        prev, expression(), new Token(TokenType.OPERATOR, "/",
+                        location.getLine(), location.getFileName())
+                ));
+            } else if (check(TokenType.ASSIGN_MUL)) {
+                Token location = consume(TokenType.ASSIGN_MUL);
+                return new VarSetNode(prev, identifier, new BinNode(
+                        prev, expression(), new Token(TokenType.OPERATOR, "*",
+                        location.getLine(), location.getFileName())
+                ));
+            } else if (check(TokenType.ASSIGN_SUB)) {
+                Token location = consume(TokenType.ASSIGN_SUB);
+                return new VarSetNode(prev, identifier, new BinNode(
+                        prev, expression(), new Token(TokenType.OPERATOR, "-",
+                        location.getLine(), location.getFileName())
+                ));
             } else if (check(TokenType.LEFT_PAREN)) {
                 return new CallNode(prev, identifier, args());
             } else {
