@@ -82,8 +82,8 @@ public class Parser {
                 check(TokenType.ASSIGN_DIVIDE)
             ) {
                 // оператор и локация
-                String op = null;
-                Token location = null;
+                String op;
+                Token location;
                 // ищем оператор
                 switch (peek().type) {
                     case TokenType.ASSIGN_SUB -> {
@@ -102,38 +102,18 @@ public class Parser {
                         location = consume(TokenType.ASSIGN_DIVIDE);
                         op = "/";
                     }
-                    default -> {
-                        throw new WattParsingError(
-                                identifier.getLine(),
-                                identifier.getFileName(),
-                                "operator not found: " + peek(),
-                                "check your code."
-                        );
-                    }
+                    default -> throw new WattParsingError(
+                            identifier.getLine(),
+                            identifier.getFileName(),
+                            "operator not found: " + peek(),
+                            "check your code."
+                    );
                 }
                 // возвращаем
                 VarNode var = new VarNode(prev, identifier);
                 var.setShouldPushResult(true);
                 return new VarSetNode(prev, identifier, new BinNode(
                         var, expression(), new Token(TokenType.OPERATOR, op,
-                        location.getLine(), location.getFileName())
-                ));
-            } else if (check(TokenType.ASSIGN_DIVIDE)) {
-                Token location = consume(TokenType.ASSIGN_DIVIDE);
-                return new VarSetNode(prev, identifier, new BinNode(
-                        prev, expression(), new Token(TokenType.OPERATOR, "/",
-                        location.getLine(), location.getFileName())
-                ));
-            } else if (check(TokenType.ASSIGN_MUL)) {
-                Token location = consume(TokenType.ASSIGN_MUL);
-                return new VarSetNode(prev, identifier, new BinNode(
-                        prev, expression(), new Token(TokenType.OPERATOR, "*",
-                        location.getLine(), location.getFileName())
-                ));
-            } else if (check(TokenType.ASSIGN_SUB)) {
-                Token location = consume(TokenType.ASSIGN_SUB);
-                return new VarSetNode(prev, identifier, new BinNode(
-                        prev, expression(), new Token(TokenType.OPERATOR, "-",
                         location.getLine(), location.getFileName())
                 ));
             } else if (check(TokenType.LEFT_PAREN)) {
