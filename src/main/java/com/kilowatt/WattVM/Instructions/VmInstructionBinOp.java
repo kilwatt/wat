@@ -26,6 +26,12 @@ public class VmInstructionBinOp implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         Object r = vm.pop();
         Object l = vm.pop();
+        if (r == null || l == null) {
+            String nullSide = r == null ? "right" : "left";
+            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                    "couldn't use " + operator + " operator with null from " + nullSide + " side.",
+                    "check types.");
+        }
         if (r instanceof String || l instanceof String) {
             switch (operator) {
                 case "+" -> vm.push(l.toString() + r.toString());
