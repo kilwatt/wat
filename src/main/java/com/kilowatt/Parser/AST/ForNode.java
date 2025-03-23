@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.*;
 import com.kilowatt.WattVM.VmAddress;
@@ -26,6 +27,14 @@ public class ForNode implements Node {
         compileLogical(range.isDecrement());
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        range.analyze(analyzer);
+        body.analyze(analyzer);
+        analyzer.pop();
     }
 
     private void compileDefinition(boolean isDecrement) {

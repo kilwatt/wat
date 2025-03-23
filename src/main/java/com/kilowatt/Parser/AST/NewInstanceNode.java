@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionInstance;
 import com.kilowatt.Lexer.Token;
@@ -26,6 +27,13 @@ public class NewInstanceNode implements AccessNode {
         WattCompiler.code.visitInstruction(new VmInstructionInstance(name.asAddress(), name.value, compileArgs()));
     }
 
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        for (Node node : args) {
+            node.analyze(analyzer);
+        }
+    }
+
     private VmBaseInstructionsBox compileArgs() {
         VmBaseInstructionsBox box = new VmBaseInstructionsBox();
         WattCompiler.code.writeTo(box);
@@ -42,7 +50,5 @@ public class NewInstanceNode implements AccessNode {
     }
 
     @Override
-    public void setShouldPushResult(boolean value) {
-        return;
-    }
+    public void setShouldPushResult(boolean value) {}
 }

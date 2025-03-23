@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefine;
 import com.kilowatt.Lexer.Token;
@@ -38,6 +39,12 @@ public class VarDefineNode implements AccessNode {
                         argsBox
                 )
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.analyze(previous);
+        value.analyze(analyzer);
     }
 
     @Override

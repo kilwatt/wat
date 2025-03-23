@@ -3,6 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -57,10 +58,8 @@ public class MatchNode implements Node {
             );
             if (last != null) {
                 last.setElseNode(newIfNode);
-                last = newIfNode;
-            } else {
-                last = newIfNode;
             }
+            last = newIfNode;
         }
         // компилируем
         if (last != null) {
@@ -90,5 +89,22 @@ public class MatchNode implements Node {
                     "add some cases for match."
             );
         }
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        // анализируем значение для матча
+        matchableValue.analyze(analyzer);
+        // анализируем кейсы
+        for (Case _case : cases) {
+            _case.getBody().analyze(analyzer);
+            _case.getEquality().analyze(analyzer);
+        }
+        // анализируем дефолтный кейс
+        if (defaultCase != null) {
+            defaultCase.getBody().analyze(analyzer);
+        }
+        analyzer.pop();
     }
 }

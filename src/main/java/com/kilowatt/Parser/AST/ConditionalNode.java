@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
@@ -25,5 +26,11 @@ public class ConditionalNode implements Node {
                         operator.value
                 )
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        left.analyze(analyzer);
+        right.analyze(analyzer);
     }
 }

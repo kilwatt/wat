@@ -1,5 +1,6 @@
 package com.kilowatt.Parser.AST;
 
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,6 +19,13 @@ public class BlockNode implements Node {
     public void compile() {
         for (Node node : nodes) {
             node.compile();
+        }
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        for (Node node : nodes) {
+            node.analyze(analyzer);
         }
     }
 

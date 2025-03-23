@@ -6,6 +6,8 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Lexer;
 import com.kilowatt.Parser.AST.BlockNode;
@@ -36,13 +38,17 @@ public class WattExecutor {
             Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
             Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
             Node result = parser.parse();
+            // семантический анализ
+            SemanticAnalyzer analyzer = new SemanticAnalyzer();
+            analyzer.analyze(result);
             // компилируем
             WattCompiler.compile(result);
             // объявляем функции
             WattBuiltinProvider.provide();
             // запускаем код
             WattCompiler.vm.run(WattCompiler.code, true);
-        } catch (WattParsingError | WattRuntimeError | WattResolveError error) {
+        } catch (WattParsingError | WattRuntimeError |
+                 WattResolveError | WattSemanticError error) {
             // если есть ошибка - выводим
             error.print();
             // error.printStackTrace();
@@ -57,6 +63,9 @@ public class WattExecutor {
         Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
         Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
         Node result = parser.parse();
+        // семантический анализ
+        SemanticAnalyzer analyzer = new SemanticAnalyzer();
+        analyzer.analyze(result);
         // компилируем
         WattCompiler.compile(result);
         // объявляем функции

@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionSet;
 import com.kilowatt.WattVM.VmAddress;
@@ -42,12 +43,17 @@ public class VarSetNode implements AccessNode {
     }
 
     @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.analyze(previous);
+        value.analyze(analyzer);
+    }
+
+    @Override
     public boolean shouldPushResult() {
         return false;
     }
 
     @Override
     public void setShouldPushResult(boolean value) {
-        return;
     }
 }

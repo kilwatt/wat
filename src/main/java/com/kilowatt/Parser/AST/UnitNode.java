@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
 import com.kilowatt.Lexer.Token;
@@ -21,6 +22,15 @@ public class UnitNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefineUnit(name.asAddress(), name.value, compileBody())
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        for (Node node : body) {
+            node.analyze(analyzer);
+        }
+        analyzer.pop();
     }
 
     private VmBaseInstructionsBox compileBody() {

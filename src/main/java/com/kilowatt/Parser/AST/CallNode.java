@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionCall;
 import com.kilowatt.Lexer.Token;
@@ -45,6 +46,14 @@ public class CallNode implements AccessNode {
                         shouldPushResult
                 )
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.analyze(previous);
+        for (Node node : args) {
+            node.analyze(analyzer);
+        }
     }
 
     @Override

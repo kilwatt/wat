@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionIf;
 import com.kilowatt.WattVM.VmAddress;
@@ -37,6 +38,12 @@ public class IfNode implements Node {
         if (elseNode != null) {
             vmInstructionIf.setElseInstruction(elseNode.getCompiled());
         }
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        logical.analyze(analyzer);
+        node.analyze(analyzer);
     }
 
     public VmInstructionIf getCompiled() {

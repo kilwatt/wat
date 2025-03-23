@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineFn;
 import com.kilowatt.WattVM.Instructions.VmInstructionMakeClosure;
@@ -29,6 +30,13 @@ public class FnNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionMakeClosure(name.asAddress(), name.value)
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        node.analyze(analyzer);
+        analyzer.pop();
     }
 
     public VmFunction compileFn() {

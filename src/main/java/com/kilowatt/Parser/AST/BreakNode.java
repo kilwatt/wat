@@ -1,6 +1,8 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Instructions.VmInstructionLoopEnd;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -21,5 +23,18 @@ public class BreakNode implements Node {
                         false
                 )
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        if (!analyzer.topIs(WhileNode.class) &&
+            !analyzer.topIs(ForNode.class)) {
+            throw new WattSemanticError(
+                location.getLine(),
+                location.getFileName(),
+                "couldn't use break outside a loop",
+                "check your code."
+            );
+        }
     }
 }

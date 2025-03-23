@@ -1,6 +1,8 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionReturn;
 import com.kilowatt.Lexer.Token;
@@ -26,5 +28,20 @@ public class ReturnNode implements Node {
                         location.asAddress()
                 )
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        if (analyzer.topIs(FnNode.class) ||
+            analyzer.topIs(AnonymousFnNode.class)) {
+            forReturn.analyze(analyzer);
+        } else {
+            throw new WattSemanticError(
+                    location.getLine(),
+                    location.getFileName(),
+                    "couldn't use return outside a function",
+                    "check your code."
+            );
+        }
     }
 }

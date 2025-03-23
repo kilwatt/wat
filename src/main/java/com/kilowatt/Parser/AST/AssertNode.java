@@ -2,10 +2,14 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 /*
 Assert
  */
+@Slf4j
 @AllArgsConstructor
 public class AssertNode implements Node {
     private final Token location;
@@ -31,5 +35,10 @@ public class AssertNode implements Node {
                 null
             )
         ).compile();
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        logical.analyze(analyzer);
     }
 }

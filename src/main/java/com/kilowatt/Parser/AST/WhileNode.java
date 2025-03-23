@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Instructions.VmInstructionLoop;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
@@ -23,6 +24,14 @@ public class WhileNode implements Node {
         compileLogical();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        logical.analyze(analyzer);
+        node.analyze(analyzer);
+        analyzer.pop();
     }
 
     private void compileLogical() {

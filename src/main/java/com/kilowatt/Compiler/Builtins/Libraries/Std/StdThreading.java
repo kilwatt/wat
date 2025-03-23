@@ -5,6 +5,7 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.VmAddress;
 
@@ -36,8 +37,9 @@ public class StdThreading {
         });
         try {
             thread.start();
-        } catch (WattRuntimeError | WattParsingError | WattResolveError e) {
-            e.print();
+        } catch (WattParsingError | WattRuntimeError |
+                 WattResolveError | WattSemanticError error) {
+            error.print();
         }
         return thread;
     }

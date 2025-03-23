@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineType;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class TypeNode implements Node {
     private final Token name;
-    private final ArrayList<Node> locals;
+    private final ArrayList<Node> body;
     private final ArrayList<Token> constructor;
 
     @Override
@@ -23,6 +24,15 @@ public class TypeNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefineType(name.asAddress(), name.value, compileType())
         );
+    }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {
+        analyzer.push(this);
+        for (Node node : body) {
+            node.analyze(analyzer);
+        }
+        analyzer.pop();
     }
 
     // компиляция типа
@@ -38,7 +48,7 @@ public class TypeNode implements Node {
     private VmBaseInstructionsBox compileFields() {
         VmBaseInstructionsBox box = new VmBaseInstructionsBox();
         WattCompiler.code.writeTo(box);
-        for (Node node : locals) {
+        for (Node node : body) {
             node.compile();
         }
         WattCompiler.code.endWrite();

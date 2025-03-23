@@ -2,6 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Executor.WattExecutor;
 import com.kilowatt.Lexer.Token;
+import com.kilowatt.Semantic.SemanticAnalyzer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,4 +22,7 @@ public class ImportNode implements Node {
             WattExecutor.resolve(name.asAddress(), name.value);
         }
     }
+
+    @Override
+    public void analyze(SemanticAnalyzer analyzer) {}
 }
