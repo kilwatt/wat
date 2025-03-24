@@ -598,6 +598,12 @@ public class Parser {
             case TokenType.ASSERT -> {
                 return assertion();
             }
+            case TokenType.TRY -> {
+                return tryNode();
+            }
+            case TokenType.THROW -> {
+                return throwNode();
+            }
             default -> throw new WattParsingError(
                     peek().line,
                     filename,
@@ -659,6 +665,35 @@ public class Parser {
         BlockNode node = block();
         consume(TokenType.RIGHT_BRACE);
         return new WhileNode(location, node, expr);
+    }
+
+    // стэйтмент try
+    private Node tryNode() {
+        // try
+        consume(TokenType.TRY);
+        consume(TokenType.LEFT_BRACE);
+        BlockNode tryNode = block();
+        consume(TokenType.RIGHT_BRACE);
+        // catch
+        consume(TokenType.CATCH);
+        Token catchName = consume(TokenType.ID);
+        consume(TokenType.LEFT_BRACE);
+        BlockNode catchNode = block();
+        consume(TokenType.RIGHT_BRACE);
+        // возвращаем ноду
+        return new TryNode(
+            tryNode,
+            catchNode,
+            catchName
+        );
+    }
+
+    // стэйтмент throw
+    private Node throwNode() {
+        consume(TokenType.THROW);
+        return new ThrowNode(
+                expression()
+        );
     }
 
     // стэйтмент else

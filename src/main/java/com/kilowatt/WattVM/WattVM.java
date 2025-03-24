@@ -63,11 +63,11 @@ public class WattVM {
         "reflection",
                 reflection
         );
+        // инициализация под поток
+        initForThread();
         // бенчмарк
         VmBenchmark mark = new VmBenchmark();
         mark.start();
-        // инициализация под поток
-        initForThread();
         // запуск кода
         code.run(this);
         // время выполнение

@@ -10,7 +10,6 @@ import lombok.Setter;
 /*
 IF для VM
  */
-@SuppressWarnings("ConstantValue")
 @Getter
 public class VmInstructionIf implements VmInstruction {
     // адресс
@@ -25,10 +24,6 @@ public class VmInstructionIf implements VmInstruction {
 
     public VmInstructionIf(VmAddress addr) {
         this.addr = addr;
-    }
-
-    public static <T> T cast(Class<T> clazz, Object o) {
-        return clazz.cast(o);
     }
 
     @Override

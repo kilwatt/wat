@@ -92,16 +92,16 @@ public class WattExecutor {
                     throw new WattResolveError(
                             address.getLine(),
                             address.getFileName(),
-                            "Can't resolve name: " + name,
-                            "Check file exists!");
+                            "couldn't resolve name: " + name,
+                            "check file exists!");
                 }
             }
         } catch (IOException e) {
             throw new WattResolveError(
                     address.getLine(),
                     address.getFileName(),
-                    "Can't resolve name: " + localPath.resolve(name),
-                    "Check file exists!");
+                    "couldn't resolve name: " + localPath.resolve(name),
+                    "check file exists!");
         }
         Parser parser = new Parser(fileName, lexer.scan());
         BlockNode result = parser.parse();
