@@ -18,6 +18,7 @@ io.println('perimeter 3,4,5: ' + MathExample.perimeter([3,4,5]))
 */
 
 // fib test
+/*
 fun fib(n) -> {
     cache := {}  // Создаем словарь для кэширования
 
@@ -36,6 +37,7 @@ fun fib(n) -> {
 }
 
 io.println(fib(1000))  // Теперь выполняется за O(n), почти мгновенно
+*/
 /*
 try {
     throw 123
@@ -44,3 +46,10 @@ try {
     io.println('error value: ' + e.value())
 }
 */
+fun fib(n) -> {
+    if n <= 1 {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+fib(35)

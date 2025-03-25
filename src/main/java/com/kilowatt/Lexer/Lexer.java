@@ -272,7 +272,19 @@ public class Lexer {
     // сканируем число
     private Token scanNumber(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
+        boolean isFloat = false;
         while (Character.isDigit(peek()) || peek() == '.') {
+            if (peek() == '.') {
+                if (isFloat) {
+                    throw new WattParsingError(
+                            line,
+                            filename,
+                            "double dot number: " + text.toString() + ".",
+                            "check your code."
+                    );
+                }
+                isFloat = true;
+            }
             if (match('\n')) {
                 line += 1;
                 continue;

@@ -9,7 +9,7 @@ import lombok.Getter;
 /*
 Инструкция арифметической операции
  */
-@SuppressWarnings({"ClassCanBeRecord"})
+@SuppressWarnings({"ClassCanBeRecord", "UnnecessaryToStringCall"})
 @Getter
 public class VmInstructionBinOp implements VmInstruction {
     // адресс

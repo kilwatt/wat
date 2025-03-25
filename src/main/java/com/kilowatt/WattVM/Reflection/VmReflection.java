@@ -33,13 +33,11 @@ public class VmReflection {
             // ищем конструктор
             Constructor constructor = findConstructor(vm.getLastCallAddress(), clazz, argsAmount);
             return constructor.newInstance(args.getArray().toArray());
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new WattRuntimeError(vm.getLastCallAddress().getLine(), vm.getLastCallAddress().getFileName(),
-                    "error in jvm constructor: " + e.getMessage(), "check your code.");
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof WattRuntimeError ||
-                e.getCause() instanceof WattParsingError) {
-                throw e.getCause();
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
+            if (cause instanceof WattRuntimeError
+                    || cause instanceof WattParsingError) {
+                throw cause;
             } else {
                 throw new WattRuntimeError(vm.getLastCallAddress().getLine(), vm.getLastCallAddress().getFileName(),
                         "error in jvm constructor: " + e.getMessage(), "check your code.");
@@ -51,21 +49,17 @@ public class VmReflection {
     Поиск конструктора
      */
     private Constructor findConstructor(VmAddress addr, Class<?> clazz, int argsAmount) {
-        Constructor constructor = null;
         for (Constructor c : clazz.getConstructors()) {
             if (c.getParameterCount() == argsAmount) {
-                constructor = c;
+                return c;
             }
         }
-        if (constructor == null) {
-            throw new WattRuntimeError(
-                    addr.getLine(), addr.getFileName(),
-                    "constructor with args amount: "
-                            + argsAmount + " not found.",
-                    clazz.getSimpleName()
-            );
-        }
 
-        return constructor;
+        throw new WattRuntimeError(
+                addr.getLine(), addr.getFileName(),
+                "constructor with args amount: "
+                        + argsAmount + " not found.",
+                clazz.getSimpleName()
+        );
     }
 }
