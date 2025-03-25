@@ -47,18 +47,16 @@ public class VmFunction implements VmInstructionsBox {
      */
     public void exec(WattVM vm, boolean shouldPushResult)  {
         VmFrame<String, Object> scope = new VmFrame<>();
-        if (definedFor != null) {
-            scope.setRoot(definedFor.getLocalScope());
-        } else {
-            scope.setRoot(vm.getGlobals());
-        }
         if (getClosure().get() != null) {
             scope.setRoot(closure.get());
         }
-        loadArgs(vm, scope);
         if (definedFor != null) {
+            scope.setRoot(definedFor.getLocalScope());
             scope.define(addr, "self", definedFor);
+        } else {
+            scope.setRoot(vm.getGlobals());
         }
+        loadArgs(vm, scope);
         try {
             // исполняем функцию
             for (VmInstruction instr : instructions) {
@@ -121,8 +119,6 @@ public class VmFunction implements VmInstructionsBox {
 
     // установка замыкания
     public void setClosure(VmFrame<String, Object> closure) {
-        // удаляем из замыкания
-        closure.getValues().remove(this.getName());
         // устанавливаем замыкание
         if (this.closure.get() == null) {
             this.closure.set(closure);

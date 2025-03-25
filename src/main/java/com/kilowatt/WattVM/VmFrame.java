@@ -2,6 +2,7 @@ package com.kilowatt.WattVM;
 
 import com.kilowatt.Errors.WattRuntimeError;
 import lombok.Getter;
+
 import java.util.HashMap;
 
 /*
@@ -50,22 +51,17 @@ public class VmFrame<K, V> {
      */
     public void set(VmAddress addr, K name, V val) {
         VmFrame<K, V> current = this;
-        while (!current.getValues().containsKey(name)) {
-            if (current.root == null) {
-                break;
+
+        while (current != null) {
+            if (current.getValues().containsKey(name)) {
+                current.getValues().put(name, val);
+                return;
             }
             current = current.root;
         }
-        if (current.getValues().containsKey(name)) {
-            current.getValues().put(name, val);
-        }
-        else if (getValues().containsKey(name)) {
-            current.getValues().put(name, val);
-        }
-        else {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "variable is not defined: " + name, "verify you already defined it with := op.");
-        }
+
+        throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                "variable is not defined: " + name, "verify you already defined it with := op.");
     }
 
     /**
@@ -91,13 +87,15 @@ public class VmFrame<K, V> {
      */
     public boolean has(K name) {
         VmFrame<K, V> current = this;
-        while (!current.getValues().containsKey(name)) {
-            if (current.root == null) {
-                return false;
+
+        while (current != null) {
+            if (current.getValues().containsKey(name)) {
+                return true;
             }
             current = current.root;
         }
-        return current.getValues().containsKey(name);
+
+        return false;
     }
 
     /**
@@ -107,8 +105,8 @@ public class VmFrame<K, V> {
      * @param rootFrame - фрейм
      */
     public void setRoot(VmFrame<K, V> rootFrame) {
-        VmFrame<K, V> current = this;
         if (this.root == rootFrame) { return; }
+        VmFrame<K, V> current = this;
         while (current.getRoot() != null) {
             if (current.getRoot() == rootFrame) { return; }
             current = current.getRoot();
@@ -136,7 +134,7 @@ public class VmFrame<K, V> {
     Копирование
      */
     public VmFrame<K, V> copy() {
-        VmFrame<K, V> copied = new VmFrame<K, V>();
+        VmFrame<K, V> copied = new VmFrame<>();
         copied.values = new HashMap<>(getValues());
         return copied;
     }
