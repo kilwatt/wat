@@ -8,7 +8,7 @@ import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmReflection;
 import lombok.Getter;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
 
 /*
 ВМ языка Watt
@@ -16,7 +16,7 @@ import java.util.Stack;
 @Getter
 public class WattVM {
     // стэк
-    private final ThreadLocal<Stack<Object>> stack = new ThreadLocal<>();
+    private final ThreadLocal<ArrayDeque<Object>> stack = new ThreadLocal<>();
     private final VmFrame<String, Object> globals = new VmFrame<>();
     private final VmFrame<String, VmType> typeDefinitions = new VmFrame<>();
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<>();
@@ -36,11 +36,11 @@ public class WattVM {
 
     // инициализация стека под поток
     public void initForThread() {
-        stack.set(new Stack<>());
+        stack.set(new ArrayDeque<>());
     }
 
     // получение стека
-    public Stack<Object> getStack() {
+    public ArrayDeque<Object> getStack() {
         return stack.get();
     }
 

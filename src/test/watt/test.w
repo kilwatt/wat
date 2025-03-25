@@ -18,7 +18,6 @@ io.println('perimeter 3,4,5: ' + MathExample.perimeter([3,4,5]))
 */
 
 // fib test
-/*
 fun fib(n) -> {
     if n <= 1 {
         return n
@@ -26,10 +25,11 @@ fun fib(n) -> {
     return fib(n - 1) + fib(n - 2)
 }
 io.println(fib(15))
-*/
+/*
 try {
     throw 123
 } catch e {
     io.println('error: ' + e)
     io.println('error value: ' + e.value())
 }
+*/
