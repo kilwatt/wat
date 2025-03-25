@@ -119,7 +119,7 @@ public class VmFunction implements VmInstructionsBox {
 
     // установка замыкания
     public void setClosure(VmFrame<String, Object> closure) {
-        // устанавливаем замыкание
+        // устанавливаем замыкание функции
         if (this.closure.get() == null) {
             this.closure.set(closure);
         } else {
