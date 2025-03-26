@@ -30,16 +30,9 @@ public class VmInstructionTry implements VmInstruction {
         try {
             // выполняем тело
             tryBody.run(vm, frame);
-        } catch (WattRuntimeError e) {
+        } catch (RuntimeException e) {
             // устанавливаем переменную
             frame.define(addr, catchVariableName, new VmThrowable(e));
-            // выполняем тело исключения
-            catchBody.run(vm, frame);
-            // удаляем переменную
-            frame.getValues().remove(catchVariableName);
-        } catch (VmThrowable e) {
-            // устанавливаем переменную
-            frame.define(addr, catchVariableName, e);
             // выполняем тело исключения
             catchBody.run(vm, frame);
             // удаляем переменную

@@ -1,11 +1,5 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
-import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-
 /*
 Стд -> Конвертация типов
  */
