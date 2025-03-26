@@ -1,16 +1,16 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std.IO;
 
 import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
-import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
+import com.kilowatt.WattVM.WattVM;
 
 /*
-IO -> Функция вывода строки
+IO -> Функция вывода
  */
-public class PrintlnFn implements VmBuiltinFunction {
+public class PrintFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address) {
-        System.out.println(vm.pop());
+        System.out.print(vm.pop());
     }
 
     @Override
@@ -20,6 +20,6 @@ public class PrintlnFn implements VmBuiltinFunction {
 
     @Override
     public String getName() {
-        return "println";
+        return "print";
     }
 }
