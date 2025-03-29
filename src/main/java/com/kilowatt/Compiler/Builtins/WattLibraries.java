@@ -18,5 +18,6 @@ public class WattLibraries {
         put("ext.tui", "ext/ext-tui.w");
         put("std.refl", "std/std-reflection.w");
         put("ext.wfiglet", "ext/ext-wfiglet.w");
+        put("std.time", "std/std-time.w");
     }};
 }

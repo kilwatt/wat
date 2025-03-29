@@ -1,5 +1,5 @@
 type TuiWindow -> {
-    std_reflection_tui := reflection.reflect(
+    std_reflection_tui := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Ext.ExtTUI',
         []
     )
