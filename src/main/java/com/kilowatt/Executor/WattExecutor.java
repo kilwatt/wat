@@ -28,7 +28,7 @@ import java.util.List;
 public class WattExecutor {
     // локальный путь
     private static Path localPath;
-    // библиотеки
+    // импортированные пути
     private static final List<String> imported = new ArrayList<>();
 
     // запуск
