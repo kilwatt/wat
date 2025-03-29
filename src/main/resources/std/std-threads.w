@@ -1,6 +1,6 @@
 unit threads -> {
     // рефлекися
-    threads_reflection := reflection.reflect(
+    threads_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.StdThreading',
         []
     )

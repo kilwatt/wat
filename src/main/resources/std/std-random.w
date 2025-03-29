@@ -1,6 +1,6 @@
 unit random -> {
     // рефлекися
-    random_reflection := reflection.reflect(
+    random_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.Math.StdRandom',
         []
     )

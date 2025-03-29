@@ -64,7 +64,7 @@ public class VmInstructionCall implements VmInstruction {
     private void callInstanceFunc(WattVM vm, VmFrame<String, Object> frame, VmInstance vmObj)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        Object val = vmObj.getScope().lookup(addr, name);
+        Object val = vmObj.getFields().lookup(addr, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(vmObj.getType().getName() + ":" + name, fn.getArguments().size(), argsAmount);

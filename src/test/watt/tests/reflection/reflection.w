@@ -1,5 +1,5 @@
 unit Test -> {
-    example := reflection.reflect(
+    example := __refl__.reflect(
         'com.kilowatt.WattVM.VmAddress',
         ['example.w', 12]
     )

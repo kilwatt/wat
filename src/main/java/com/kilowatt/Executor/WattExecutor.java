@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Экзекьютер
@@ -26,6 +28,8 @@ import java.nio.file.Path;
 public class WattExecutor {
     // локальный путь
     private static Path localPath;
+    // библиотеки
+    private static final List<String> imported = new ArrayList<>();
 
     // запуск
     public static void run(String path) throws IOException {
@@ -87,14 +91,18 @@ public class WattExecutor {
         // парсим
         Lexer lexer;
         String fileName;
+        String pathString;
         try {
             if (!WattLibraries.libraries.containsKey(name)) {
                 fileName = name;
-                lexer = new Lexer(name, new String(Files.readAllBytes(localPath.resolve(name))));
+                Path path = localPath.resolve(name);
+                pathString = path.toString();
+                lexer = new Lexer(name, new String(Files.readAllBytes(path)));
             } else {
                 try {
                     fileName = WattLibraries.libraries.get(name);
-                    InputStream stream = WattExecutor.class.getResourceAsStream("/" + fileName);
+                    pathString = "/" + fileName;
+                    InputStream stream = WattExecutor.class.getResourceAsStream(pathString);
                     lexer = new Lexer(fileName, new String(stream.readAllBytes()));
                 } catch (NullPointerException e) {
                     throw new WattResolveError(
@@ -114,6 +122,9 @@ public class WattExecutor {
         Parser parser = new Parser(fileName, lexer.scan());
         BlockNode result = parser.parse();
         // компилируем
-        WattCompiler.importDefinitions(result);
+        if (!imported.contains(pathString)) {
+            WattCompiler.importDefinitions(result);
+            imported.add(pathString);
+        }
     }
 }

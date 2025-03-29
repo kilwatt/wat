@@ -1,6 +1,6 @@
 unit system -> {
     // рефлекися
-    system_reflection := reflection.reflect(
+    system_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.Sys.StdSys',
         []
     )

@@ -38,7 +38,7 @@ public class VmInstructionSet implements VmInstruction {
             Object last = vm.pop();
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getScope().set(addr, name, value.runAndGet(vm, frame));
+                    instance.getFields().set(addr, name, value.runAndGet(vm, frame));
                     break;
                 }
                 case VmUnit unit -> {

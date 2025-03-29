@@ -5,7 +5,7 @@ unit math_ext -> {
     tau := 6.283185
 
     // рефлекися
-    math_reflection := reflection.reflect(
+    math_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.Math.StdMathExt',
         []
     )

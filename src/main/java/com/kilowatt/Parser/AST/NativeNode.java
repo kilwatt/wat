@@ -23,7 +23,7 @@ public class NativeNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionLoad(
                         name.asAddress(),
-                        "reflection",
+                        "__refl__",
                         false,
                         true
                 )

@@ -1,6 +1,6 @@
 unit jvm -> {
     // рефлекися
-    jvm_reflection := reflection.reflect(
+    jvm_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.StdJvm',
         []
     )

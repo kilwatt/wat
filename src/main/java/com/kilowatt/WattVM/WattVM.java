@@ -60,7 +60,7 @@ public class WattVM {
         // переменная для рефлексии
         globals.define(
             WattBuiltinProvider.builtinAddress,
-        "reflection",
+        "__refl__",
                 reflection
         );
         // инициализация под поток

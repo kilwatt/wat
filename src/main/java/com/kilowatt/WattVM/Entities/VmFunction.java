@@ -107,7 +107,7 @@ public class VmFunction implements VmInstructionsBox {
     }
 
     // замыкание в строку
-    private final String closureString() {
+    private String closureString() {
         if (closure.get() == null)
         {
             return "null";
@@ -130,11 +130,11 @@ public class VmFunction implements VmInstructionsBox {
     // в строку
     @Override
     public String toString() {
+        System.out.println("to string call");
         return "VmFunction{" +
                 "name='" + name + '\'' +
                 ", addr=" + addr +
                 ", definedFor=" + definedFor +
-                ", closure=" + closureString() +
                 '}';
     }
 }

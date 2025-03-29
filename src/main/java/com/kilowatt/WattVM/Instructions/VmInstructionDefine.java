@@ -38,7 +38,7 @@ public class VmInstructionDefine implements VmInstruction {
             Object last = vm.pop();
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getScope().define(addr, name, value.runAndGet(vm, frame));
+                    instance.getFields().define(addr, name, value.runAndGet(vm, frame));
                     break;
                 }
                 case VmUnit unit -> {

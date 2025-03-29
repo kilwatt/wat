@@ -16,5 +16,6 @@ public class WattLibraries {
         put("std.jvm", "std/std-jvm.w");
         put("std.threads", "std/std-threads.w");
         put("ext.tui", "ext/ext-tui.w");
+        put("std.refl", "std/std-reflection.w");
     }};
 }

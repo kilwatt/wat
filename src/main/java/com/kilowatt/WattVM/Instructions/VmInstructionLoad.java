@@ -9,7 +9,6 @@ import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 /*
 Загрузка переменной по имени в стек
@@ -54,7 +53,7 @@ public class VmInstructionLoad implements VmInstruction {
             Object last = vm.pop();
             switch (last) {
                 case VmInstance type -> {
-                    vm.push(type.getScope().lookup(addr, name));
+                    vm.push(type.getFields().lookup(addr, name));
                     break;
                 }
                 case VmUnit unit -> {

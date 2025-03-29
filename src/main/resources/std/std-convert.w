@@ -1,9 +1,9 @@
 unit convert -> {
-    std_reflection_converter := reflection.reflect(
+    std_reflection_converter := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.StdConverter',
         []
     )
-    std_reflection_strings := reflection.reflect(
+    std_reflection_strings := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Std.StdStrings',
         []
     )
