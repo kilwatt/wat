@@ -8,6 +8,7 @@ import com.kilowatt.WattVM.VmAddress;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /*
 Ext -> Figlet
@@ -17,7 +18,8 @@ public class ExtFiglet {
         // генерация арта
         String asciiArt;
         try {
-            asciiArt = FigletFont.convertOneLine(new File(fontName), text);
+            Path path = Path.of(fontName);
+            asciiArt = FigletFont.convertOneLine(new File(path.toUri()), text);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getLastCallAddress();
             throw new WattRuntimeError(
