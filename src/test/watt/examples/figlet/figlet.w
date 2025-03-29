@@ -1,0 +1,6 @@
+import 'ext.wfiglet'
+
+wfiglet.println(
+    'E:\wat_lang\wat\src\test\watt\examples\figlet\beer_pub.flf',
+    'WATT FIGLET'
+)

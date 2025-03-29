@@ -15,7 +15,7 @@ Ext -> Figlet
 public class ExtFiglet {
     public void println(String fontName, String text) {
         // генерация арта
-        String asciiArt = null;
+        String asciiArt;
         try {
             asciiArt = FigletFont.convertOneLine(new File(fontName), text);
         } catch (IOException e) {

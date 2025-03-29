@@ -7,6 +7,7 @@ import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.VmNull;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -131,7 +132,11 @@ public class VmInstructionCall implements VmInstruction {
                 // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
                 Object returned = fun.invoke(last, callArgs);
                 if (shouldPushResult) {
-                    vm.push(returned);
+                    if (returned == null) {
+                        vm.push(new VmNull());
+                    } else {
+                        vm.push(returned);
+                    }
                 }
             } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new WattRuntimeError(
