@@ -101,10 +101,6 @@ public class Lexer {
                     break;
                 }
                 case '%': addToken(TokenType.OPERATOR, "%"); break;
-                case '#': {
-                    while (!isAtEnd() && !match('#')) advance();
-                    break;
-                }
                 case '/': {
                     if (match('=')) {
                         addToken(TokenType.ASSIGN_DIVIDE, "/=");
