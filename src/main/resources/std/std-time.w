@@ -12,6 +12,10 @@ unit time -> {
         return time_reflection.now()
     }
 
+    fun date() -> {
+        return time_reflection.date()
+    }
+
     /*
     форматирование
     */

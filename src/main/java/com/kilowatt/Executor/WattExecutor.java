@@ -119,8 +119,12 @@ public class WattExecutor {
                     "couldn't resolve name: " + localPath.resolve(name),
                     "check file exists!");
         }
+        // парсинг
         Parser parser = new Parser(fileName, lexer.scan());
         BlockNode result = parser.parse();
+        // семантический анализ
+        SemanticAnalyzer analyzer = new SemanticAnalyzer();
+        analyzer.analyze(result);
         // компилируем
         if (!imported.contains(pathString)) {
             WattCompiler.importDefinitions(result);

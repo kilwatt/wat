@@ -467,8 +467,14 @@ public class Parser {
         // адресс и имя
         Token address = consume(TokenType.FUN);
         Token name = consume(TokenType.ID);
-        // параметры
-        ArrayList<Token> parameters = params();
+        // парсим параметры, если они есть
+        ArrayList<Token> parameters;
+        if (check(TokenType.LEFT_PAREN)) {
+             parameters = params();
+        } else {
+             parameters = new ArrayList<>();
+        }
+        // ->
         consume(TokenType.GO);
         // тело
         consume(TokenType.LEFT_BRACE);

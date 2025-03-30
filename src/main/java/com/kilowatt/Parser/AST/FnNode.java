@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineFn;
@@ -34,6 +35,18 @@ public class FnNode implements Node {
 
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
+        // анализ самой функции
+        if (analyzer.topIs(TypeNode.class) || analyzer.topIs(UnitNode.class)) {
+            if (name.value.equals("init") && !parameters.isEmpty()) {
+                throw new WattSemanticError(
+                    name.getLine(),
+                    name.getFileName(),
+                    "couldn't create init function with args.",
+                    "check your code."
+                );
+            }
+        }
+        // анализ тела
         analyzer.push(this);
         node.analyze(analyzer);
         analyzer.pop();

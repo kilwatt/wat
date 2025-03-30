@@ -21,6 +21,11 @@ public class SemanticAnalyzer {
         context.pop();
     }
 
+    // верхний элемент
+    public Node top() {
+        return context.peek();
+    }
+
     // проверка на конкретную ноды
     public boolean topIs(Class<?> clazz) {
         return !context.isEmpty() && context.peek().getClass() == clazz;

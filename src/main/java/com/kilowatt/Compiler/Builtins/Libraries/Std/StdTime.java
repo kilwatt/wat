@@ -1,5 +1,6 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,5 +17,10 @@ public class StdTime {
     // получение текущего времени
     public LocalTime now() {
         return LocalTime.now();
+    }
+
+    // получение текущей даты
+    public LocalDate date() {
+        return LocalDate.now();
     }
 }
