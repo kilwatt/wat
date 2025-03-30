@@ -31,7 +31,7 @@ public class VmFunction implements VmInstructionsBox {
     // адрес
     private final VmAddress addr;
     // замыкание
-    private final ThreadLocal<VmFrame<String, Object>> closure = new ThreadLocal<>();
+    private VmFrame<String, Object> closure = null;
 
     // конструкция
     public VmFunction(String name, ArrayList<String> arguments, VmAddress addr) {
@@ -47,8 +47,8 @@ public class VmFunction implements VmInstructionsBox {
      */
     public void exec(WattVM vm, boolean shouldPushResult)  {
         VmFrame<String, Object> scope = new VmFrame<>();
-        if (getClosure().get() != null) {
-            scope.setRoot(closure.get());
+        if (getClosure() != null) {
+            scope.setRoot(closure);
         }
         if (definedFor != null) {
             scope.setRoot(definedFor.getLocalScope());
@@ -108,32 +108,32 @@ public class VmFunction implements VmInstructionsBox {
 
     // замыкание в строку
     private String closureString() {
-        if (closure.get() == null)
+        if (getClosure() == null)
         {
             return "null";
         }
         else{
-            return String.valueOf(closure.get());
+            return String.valueOf(closure);
         }
     }
 
     // установка замыкания
     public void setClosure(VmFrame<String, Object> closure) {
         // устанавливаем замыкание функции
-        if (this.closure.get() == null) {
-            this.closure.set(closure);
+        if (this.getClosure() == null) {
+            this.closure = closure;
         } else {
-            this.closure.get().setRoot(closure);
+            this.closure.setRoot(closure);
         }
     }
 
     // в строку
     @Override
     public String toString() {
-        System.out.println("to string call");
         return "VmFunction{" +
                 "name='" + name + '\'' +
                 ", addr=" + addr +
+                ", closure=" + closureString() +
                 ", definedFor=" + definedFor +
                 '}';
     }
