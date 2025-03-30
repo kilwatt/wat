@@ -36,12 +36,11 @@ public class VmInstructionDefineUnit implements VmInstruction {
         unit.getFields().setRoot(frame);
         body.run(vm, unit.getFields());
         unit.getFields().delRoot();
-        unit.getFields().setRoot(vm.getGlobals());
         // дефайн по имени
-        vm.getUnitDefinitions().define(addr, name, unit);
+        vm.getUnitDefinitions().forceSet(addr, name, unit);
         // дефайн по полному имени
         if (fullName != null) {
-            vm.getUnitDefinitions().define(addr, fullName, unit);
+            vm.getUnitDefinitions().forceSet(addr, fullName, unit);
         }
     }
 

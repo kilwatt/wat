@@ -10,10 +10,10 @@ import lombok.Getter;
  */
 @Getter
 public class VmInstance implements VmFunctionOwner {
-    // скоуп
-    private final VmFrame<String, Object> fields = new VmFrame<>();
     // класс
     private final VmType type;
+    // скоуп
+    private final VmFrame<String, Object> fields = new VmFrame<>();
     // адрес
     private final VmAddress addr;
 
@@ -49,7 +49,7 @@ public class VmInstance implements VmFunctionOwner {
     @Override
     public String toString() {
         return "VmInstance(" +
-                "scope=" + fields.toString() +
+                "scope=" + fields +
                 ", clazz=" + type +
                 ", addr=" + addr +
                 ')';

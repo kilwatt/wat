@@ -275,7 +275,7 @@ public class Lexer {
                     throw new WattParsingError(
                             line,
                             filename,
-                            "double dot number: " + text.toString() + ".",
+                            "double dot number: " + text + ".",
                             "check your code."
                     );
                 }
@@ -296,7 +296,8 @@ public class Lexer {
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
-        while (Character.isLetter(peek()) || Character.isDigit(peek()) || peek() == '_' || peek() == '@') {
+        while (Character.isLetter(peek()) || Character.isDigit(peek()) ||
+                peek() == '_' || peek() == '@') {
             if (match('\n')) {
                 line += 1;
                 continue;

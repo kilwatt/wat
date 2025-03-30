@@ -25,10 +25,10 @@ public class VmInstructionDefineType implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // дефайн по имени
-        vm.getTypeDefinitions().define(addr, name, type);
+        vm.getTypeDefinitions().forceSet(addr, name, type);
         // дефайн по полному имени
         if (fullName != null) {
-            vm.getTypeDefinitions().define(addr, fullName, type);
+            vm.getTypeDefinitions().forceSet(addr, fullName, type);
         }
     }
 

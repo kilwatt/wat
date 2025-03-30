@@ -496,7 +496,7 @@ public class Parser {
         String filenameWithoutExtension = filename.replace(".w", "");
         Token fullName = new Token(
             TokenType.ID,
-            filenameWithoutExtension + "@" + name.value,
+            filenameWithoutExtension + ":" + name.value,
             name.getLine(),
             name.getFileName()
         );
@@ -536,7 +536,7 @@ public class Parser {
         String filenameWithoutExtension = filename.replace(".w", "");
         Token fullName = new Token(
                 TokenType.ID,
-                filenameWithoutExtension + "@" + name.value,
+                filenameWithoutExtension + ":" + name.value,
                 name.getLine(),
                 name.getFileName()
         );
@@ -568,8 +568,22 @@ public class Parser {
 
     // выражение создания объекта
     private AccessNode objectCreation() {
+        // new
         consume(TokenType.NEW);
+        // имя типа
         Token name = consume(TokenType.ID);
+        // если полное имя типа, например testfile:A
+        if (check(TokenType.COLON)) {
+            // :
+            consume(TokenType.COLON);
+            // парсим часть после двоеточия
+            String part = consume(TokenType.ID).value;
+            // полное имя
+            name = new Token(
+                TokenType.ID, name.value + ":" + part,
+                name.getLine(), name.getFileName()
+            );
+        }
         return new NewInstanceNode(name, args());
     }
 

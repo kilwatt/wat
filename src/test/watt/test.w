@@ -60,4 +60,7 @@ type A {
         io.println('Hello, world!')
     }
 }
-object := new test@A()
+object := new test:A()
+object2 := new A()
+object.example()
+object2.example()

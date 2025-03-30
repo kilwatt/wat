@@ -24,7 +24,7 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        frame.define(addr, fn.getName(), fn);
+        frame.define(addr, fn.getName(), fn.copy());
     }
 
     @Override

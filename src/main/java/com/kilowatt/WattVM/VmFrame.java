@@ -65,6 +65,16 @@ public class VmFrame<K, V> {
     }
 
     /**
+     * Устанавливает значение в фрейм принудительно
+     * @param addr - адрес
+     * @param name - имя значения
+     * @param val - значение
+     */
+    public void forceSet(VmAddress addr, K name, V val) {
+        values.put(name, val);
+    }
+
+    /**
      * Устанавливает значение в фрейм, не учитывая предыдущие
      * @param addr - адрес
      * @param name - имя значения
@@ -105,10 +115,10 @@ public class VmFrame<K, V> {
      * @param rootFrame - фрейм
      */
     public void setRoot(VmFrame<K, V> rootFrame) {
-        if (this.root == rootFrame) { return; }
+        if (this.root == rootFrame || this == rootFrame) { return; }
         VmFrame<K, V> current = this;
         while (current.getRoot() != null) {
-            if (current.getRoot() == rootFrame) { return; }
+            if (current.getRoot() == rootFrame || current == rootFrame) { return; }
             current = current.getRoot();
         }
         current.root = rootFrame;
