@@ -24,13 +24,13 @@ public class IfNode implements Node {
 
     @Override
     public void compile() {
-        VmBaseInstructionsBox conds = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(conds);
+        VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
+        WattCompiler.code.writeTo(conditions);
         logical.compile();
         WattCompiler.code.endWrite();
         VmInstructionIf vmInstructionIf
                 = new VmInstructionIf(location.asAddress());
-        vmInstructionIf.setConditions(conds);
+        vmInstructionIf.setConditions(conditions);
         WattCompiler.code.writeTo(vmInstructionIf.getInstructions());
         node.compile();
         WattCompiler.code.endWrite();
@@ -47,13 +47,13 @@ public class IfNode implements Node {
     }
 
     public VmInstructionIf getCompiled() {
-        VmBaseInstructionsBox conds = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(conds);
+        VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
+        WattCompiler.code.writeTo(conditions);
         logical.compile();
         WattCompiler.code.endWrite();
         VmInstructionIf vmInstructionIf
                 = new VmInstructionIf(new VmAddress(location.getFileName(), location.getLine()));
-        vmInstructionIf.setConditions(conds);
+        vmInstructionIf.setConditions(conditions);
         WattCompiler.code.writeTo(vmInstructionIf.getInstructions());
         node.compile();
         WattCompiler.code.endWrite();

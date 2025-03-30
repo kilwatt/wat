@@ -67,6 +67,6 @@ public class CallNode implements AccessNode {
     }
 
     public static List<Node> args(Node... args) {
-        return new ArrayList<Node>(List.of(args));
+        return new ArrayList<>(List.of(args));
     }
 }

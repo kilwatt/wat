@@ -1,7 +1,6 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Instructions.VmInstructionPush;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;

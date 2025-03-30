@@ -2,7 +2,6 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.*;
 import com.kilowatt.Lexer.Token;
@@ -61,10 +60,5 @@ public class NativeNode implements Node {
                         value
                 )
         );
-    }
-
-    @Override
-    public void analyze(SemanticAnalyzer analyzer) {
-
     }
 }

@@ -1,6 +1,5 @@
 package com.kilowatt.Parser.AST;
 
-import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattMap;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;

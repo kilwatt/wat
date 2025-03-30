@@ -4,5 +4,5 @@ import com.kilowatt.Semantic.SemanticAnalyzer;
 
 public interface Node {
     void compile();
-    default void analyze(SemanticAnalyzer analyzer) {};
+    default void analyze(SemanticAnalyzer analyzer) {}
 }
