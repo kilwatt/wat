@@ -1,4 +1,4 @@
-type SmtpClient(login, password) -> {
+type SmtpClient(login, password) {
     // рефлексия
     smtp_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Net.NetMail',
@@ -10,12 +10,12 @@ type SmtpClient(login, password) -> {
     connection := smtp_reflection.connect(session)
 
     // отправка письма
-    fun send_mail(_to, subject, text) -> {
+    fun send_mail(_to, subject, text) {
         smtp_reflection.send_mail(session, connection, login, _to, subject, text)
     }
 
     // закрытие соеденения
-    fun close -> {
+    fun close {
         connection.close()
     }
 }

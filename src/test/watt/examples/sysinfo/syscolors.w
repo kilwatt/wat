@@ -1,4 +1,4 @@
-unit colors -> {
+unit colors {
     reset := '[0m'
     black := '[30m'
     red := '[31m'

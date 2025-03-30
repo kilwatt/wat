@@ -1,10 +1,10 @@
 import 'std.io'
 
-fun get() -> {
+fun get() {
     return 'World!'
 }
 
-fun hello(name) -> {
+fun hello(name) {
     return 'Hello, ' + name
 }
 

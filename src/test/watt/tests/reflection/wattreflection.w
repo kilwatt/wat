@@ -1,9 +1,9 @@
 import 'std.refl'
 import 'std.io'
 
-type WattReflectionTestClass(id) -> {
+type WattReflectionTestClass(id) {
     _required := 3
-    fun example(required) -> {
+    fun example(required) {
         assert(id == required)
     }
 }

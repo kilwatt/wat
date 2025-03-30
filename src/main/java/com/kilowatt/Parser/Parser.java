@@ -474,8 +474,6 @@ public class Parser {
         } else {
              parameters = new ArrayList<>();
         }
-        // ->
-        consume(TokenType.GO);
         // тело
         consume(TokenType.LEFT_BRACE);
         BlockNode node = block();
@@ -490,13 +488,24 @@ public class Parser {
 
     // объявление типа
     private Node type() {
+        // type
         consume(TokenType.TYPE);
+        // имя
         Token name = consume(TokenType.ID);
+        // полное имя
+        String filenameWithoutExtension = filename.replace(".w", "");
+        Token fullName = new Token(
+            TokenType.ID,
+            filenameWithoutExtension + "@" + name.value,
+            name.getLine(),
+            name.getFileName()
+        );
+        // аргументы конструктора если есть
         ArrayList<Token> constructor = new ArrayList<>();
         if (check(TokenType.LEFT_PAREN)) {
             constructor = params();
         }
-        consume(TokenType.GO);
+        // тело
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
@@ -513,14 +522,25 @@ public class Parser {
             }
         }
         consume(TokenType.RIGHT_BRACE);
-        return new TypeNode(name, nodes, constructor);
+        // возвращаем
+        return new TypeNode(name, fullName, nodes, constructor);
     }
 
     // объявление юнита
     private Node unit() {
+        // unit
         consume(TokenType.UNIT);
+        // имя
         Token name = consume(TokenType.ID);
-        consume(TokenType.GO);
+        // полное имя
+        String filenameWithoutExtension = filename.replace(".w", "");
+        Token fullName = new Token(
+                TokenType.ID,
+                filenameWithoutExtension + "@" + name.value,
+                name.getLine(),
+                name.getFileName()
+        );
+        // тело
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
@@ -537,7 +557,8 @@ public class Parser {
             }
         }
         consume(TokenType.RIGHT_BRACE);
-        return new UnitNode(name, nodes);
+        // возвращаем
+        return new UnitNode(name, fullName, nodes);
     }
 
     // выражение (рекурсивный парсинг)

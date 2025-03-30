@@ -16,13 +16,14 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class TypeNode implements Node {
     private final Token name;
+    private final Token fullName;
     private final ArrayList<Node> body;
     private final ArrayList<Token> constructor;
 
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineType(name.asAddress(), name.value, compileType())
+                new VmInstructionDefineType(name.asAddress(), name.value, fullName.value, compileType())
         );
     }
 

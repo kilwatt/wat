@@ -1,6 +1,6 @@
 import 'std.io'
 
-fun test() -> {
+fun test() {
     return lambda(a) -> a + 4
 }
 

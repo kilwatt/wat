@@ -2,14 +2,14 @@ import 'syscolors.w'
 import 'ext.tui'
 import 'std.io'
 
-type Label(key, value) -> {
-    fun print() -> {
+type Label(key, value) {
+    fun print() {
         tui.render_line('· ' + key + ': ' + value)
     }
 }
 
-type Title(title, labels) -> {
-    fun print() -> {
+type Title(title, labels) {
+    fun print() {
         tui.render_line(colors.green + title + colors.reset)
         for i in 0 to labels.size() {
             labels.get(i).print()
@@ -17,10 +17,10 @@ type Title(title, labels) -> {
     }
 }
 
-type Printer() -> {
+type Printer() {
     last_title := null
 
-    fun refresh(titles) -> {
+    fun refresh(titles) {
         tui.clear()
         for i in 0 to titles.size() {
             titles.get(i).print()

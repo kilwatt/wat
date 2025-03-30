@@ -6,26 +6,23 @@ import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /*
 Определение юнита
  */
 @Getter
+@AllArgsConstructor
 public class VmInstructionDefineUnit implements VmInstruction {
     // адрес
     private final VmAddress addr;
-    // имя переменной
+    // имя юнита
     private final String name;
+    // полное имя юнита
+    private final String fullName;
     // тело юнита
     private final VmBaseInstructionsBox body;
-
-    // конструктор
-    public VmInstructionDefineUnit(VmAddress addr, String name, VmBaseInstructionsBox body) {
-        this.addr = addr;
-        this.name = name;
-        this.body = body;
-    }
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
@@ -34,12 +31,18 @@ public class VmInstructionDefineUnit implements VmInstruction {
                     addr.getLine(), addr.getFileName(),
                     "unit already defined: " + name, "did you forget to change name?");
         }
+        // генерация юнита
         VmUnit unit = new VmUnit(name, new VmFrame<>());
         unit.getFields().setRoot(frame);
         body.run(vm, unit.getFields());
         unit.getFields().delRoot();
         unit.getFields().setRoot(vm.getGlobals());
+        // дефайн по имени
         vm.getUnitDefinitions().define(addr, name, unit);
+        // дефайн по полному имени
+        if (fullName != null) {
+            vm.getUnitDefinitions().define(addr, fullName, unit);
+        }
     }
 
     @Override

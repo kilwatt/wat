@@ -1,4 +1,4 @@
-unit math_ext -> {
+unit math_ext {
     // константы
     pi := 3.141592
     e := 2.718281
@@ -11,27 +11,27 @@ unit math_ext -> {
     )
 
     // функции
-    fun sin(x) -> {
+    fun sin(x) {
         return math_reflection.sin(x)
     }
 
-    fun cos(x) -> {
+    fun cos(x) {
         return math_reflection.cos(x)
     }
 
-    fun tan(x) -> {
+    fun tan(x) {
         return math_reflection.tan(x)
     }
 
-    fun asin(x) -> {
+    fun asin(x) {
         return math_reflection.asin(x)
     }
 
-    fun acos(x) -> {
+    fun acos(x) {
         return math_reflection.acos(x)
     }
 
-    fun atan(x) -> {
+    fun atan(x) {
         return math_reflection.atan(x)
     }
 }

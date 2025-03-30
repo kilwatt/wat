@@ -1,6 +1,6 @@
-type TestType(b) -> {
+type TestType(b) {
     e := ' world!'
-    fun a() -> {
+    fun a() {
         return 'Hello' + b + self.e
     }
 }

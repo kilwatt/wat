@@ -1,7 +1,7 @@
 a := 'Hello, '
-unit TestUnit -> {
+unit TestUnit {
     e := ' world!'
-    fun a(b) -> {
+    fun a(b) {
         return 'Hello' + b + self.e
     }
 }

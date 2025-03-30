@@ -1,6 +1,6 @@
 import 'std.io'
 
-fun example(call) -> {
+fun example(call) {
     if call == false {
         return null
     }

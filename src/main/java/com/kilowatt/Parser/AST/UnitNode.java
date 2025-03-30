@@ -15,12 +15,13 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class UnitNode implements Node {
     private final Token name;
+    private final Token fullName;
     private final ArrayList<Node> body;
 
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineUnit(name.asAddress(), name.value, compileBody())
+                new VmInstructionDefineUnit(name.asAddress(), name.value, fullName.value, compileUnit())
         );
     }
 
@@ -33,7 +34,7 @@ public class UnitNode implements Node {
         analyzer.pop();
     }
 
-    private VmBaseInstructionsBox compileBody() {
+    private VmBaseInstructionsBox compileUnit() {
         VmBaseInstructionsBox box = new VmBaseInstructionsBox();
         WattCompiler.code.writeTo(box);
         for (Node node : body) {
