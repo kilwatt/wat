@@ -22,7 +22,7 @@ public class VmFunction implements VmInstructionsBox {
     // имя функции
     private final String name;
     // инструкции
-    private List<VmInstruction> instructions = new ArrayList<>();
+    private final List<VmInstruction> instructions = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
     // владелец функций
@@ -85,16 +85,6 @@ public class VmFunction implements VmInstructionsBox {
             Object arg = vm.pop();
             scope.define(addr, arguments.get(i), arg);
         }
-    }
-
-    /**
-     Копия функции
-     @return возвращает копию
-     */
-    public VmFunction copy() {
-        VmFunction fn = new VmFunction(name, arguments, addr);
-        fn.instructions = instructions;
-        return fn;
     }
 
     /**
