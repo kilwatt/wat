@@ -37,7 +37,7 @@ public class VmInstructionMakeClosure implements VmInstruction {
         else {
             fn = (VmFunction) scope.lookup(addr, name);
         }
-        fn.setClosure(scope.copy());
+        fn.setClosure(scope);
     }
 
     @Override
