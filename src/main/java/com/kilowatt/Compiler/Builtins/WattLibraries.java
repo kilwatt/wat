@@ -19,5 +19,6 @@ public class WattLibraries {
         put("std.refl", "std/std-reflection.w");
         put("ext.wfiglet", "ext/ext-wfiglet.w");
         put("std.time", "std/std-time.w");
+        put("net.mail", "net/net-mail.w");
     }};
 }

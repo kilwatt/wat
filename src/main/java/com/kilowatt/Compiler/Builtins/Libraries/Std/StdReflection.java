@@ -12,7 +12,7 @@ import com.kilowatt.WattVM.Instructions.VmInstructionPush;
 import com.kilowatt.WattVM.VmAddress;
 
 /*
-reflection
+Стд -> Рефлексия
  */
 public class StdReflection {
     public VmInstance instance(VmType type, WattList args) {

@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /*
-Библиотека времени
+Стд -> Время
  */
 public class StdTime {
     // форматирование времени
