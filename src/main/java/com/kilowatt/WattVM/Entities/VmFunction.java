@@ -50,6 +50,9 @@ public class VmFunction implements VmInstructionsBox {
         if (getClosure() != null) {
             scope.setRoot(closure);
         }
+        // ставим рут на переменные типа/юнита/глобал скоупа
+        // если closure == этому скоупу, то рут не устанавливается благодаря
+        // проверке внутри setRoot на цикличный рут.
         if (definedFor != null) {
             scope.setRoot(definedFor.getLocalScope());
             scope.define(addr, "self", definedFor);
@@ -103,7 +106,7 @@ public class VmFunction implements VmInstructionsBox {
             return "null";
         }
         else{
-            return String.valueOf(closure);
+            return closure.getValues().keySet().toString();
         }
     }
 

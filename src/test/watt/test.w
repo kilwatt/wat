@@ -55,6 +55,7 @@ fun fib(n) {
 }
 fib(35)
 */
+/*
 type A {
     fun example() {
         io.println('Hello, world!')
@@ -64,3 +65,23 @@ object := new test:A()
 object2 := new A()
 object.example()
 object2.example()
+*/
+/*
+fun a() {
+    e := 3
+    fun b() {
+        e = 4
+    }
+    b()
+    io.println(e)
+}
+a()
+*/
+
+e := 3
+fun a() {
+    io.println('e: ' + e)
+    e = 4
+}
+a()
+io.println(e)
