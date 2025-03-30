@@ -67,7 +67,7 @@ public class VmFrame<K, V> {
         }
         // замыкание
         if (closure != null && closure.has(name)) {
-            closure.getValues().put(name, val);
+            closure.set(addr, name, val);
             return;
         }
         // остальные фрэймы
