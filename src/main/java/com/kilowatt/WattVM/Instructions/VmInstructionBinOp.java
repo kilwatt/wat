@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.VmNull;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -26,8 +27,8 @@ public class VmInstructionBinOp implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         Object r = vm.pop();
         Object l = vm.pop();
-        if (r == null || l == null) {
-            String nullSide = r == null ? "right" : "left";
+        if (r.getClass() == VmNull.class || l.getClass() == VmNull.class) {
+            String nullSide = r.getClass() == VmNull.class ? "right" : "left";
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                     "couldn't use " + operator + " operator with null from " + nullSide + " side.",
                     "check types.");

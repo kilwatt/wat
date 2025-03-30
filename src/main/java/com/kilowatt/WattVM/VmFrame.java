@@ -2,6 +2,7 @@ package com.kilowatt.WattVM;
 
 import com.kilowatt.Errors.WattRuntimeError;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 
@@ -20,6 +21,9 @@ public class VmFrame<K, V> {
        функци -> класс -> глобал
      */
     private VmFrame<K, V> root;
+    // замыкание
+    @Setter
+    private VmFrame<K, V> closure;
 
     /**
      * Ищет значение в фрейме
@@ -29,6 +33,11 @@ public class VmFrame<K, V> {
      */
     public V lookup(VmAddress addr, K name) {
         VmFrame<K, V> current = this;
+        // текущий фрэйм
+        if (current.getValues().containsKey(name)) return getValues().get(name);
+        // замыкание
+        if (closure != null && closure.has(name)) return closure.lookup(addr, name);
+        // остальные фрэймы
         while (!current.getValues().containsKey(name)) {
             if (current.root == null) {
                 throw new WattRuntimeError(
@@ -51,7 +60,17 @@ public class VmFrame<K, V> {
      */
     public void set(VmAddress addr, K name, V val) {
         VmFrame<K, V> current = this;
-
+        // текущий фрэйм
+        if (current.getValues().containsKey(name)) {
+            getValues().put(name, val);
+            return;
+        }
+        // замыкание
+        if (closure != null && closure.has(name)) {
+            closure.getValues().put(name, val);
+            return;
+        }
+        // остальные фрэймы
         while (current != null) {
             if (current.getValues().containsKey(name)) {
                 current.getValues().put(name, val);
@@ -59,7 +78,6 @@ public class VmFrame<K, V> {
             }
             current = current.root;
         }
-
         throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                 "variable is not defined: " + name, "verify you already defined it with := op.");
     }
@@ -97,7 +115,15 @@ public class VmFrame<K, V> {
      */
     public boolean has(K name) {
         VmFrame<K, V> current = this;
-
+        // текущий фрэйм
+        if (current.getValues().containsKey(name)) {
+            return true;
+        }
+        // замыкание
+        if (closure != null && closure.has(name)) {
+            return true;
+        }
+        // остальные фрэймы
         while (current != null) {
             if (current.getValues().containsKey(name)) {
                 return true;

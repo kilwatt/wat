@@ -9,6 +9,7 @@ import com.kilowatt.WattVM.Reflection.VmReflection;
 import lombok.Getter;
 
 import java.util.ArrayDeque;
+import java.util.Objects;
 
 /*
 ВМ языка Watt
@@ -46,7 +47,7 @@ public class WattVM {
 
     // помещение в стек
     public void push(Object value) {
-        getStack().push(value);
+        getStack().push(Objects.requireNonNullElseGet(value, VmNull::new));
     }
 
     // удаление из стека

@@ -48,7 +48,7 @@ public class VmFunction implements VmInstructionsBox {
     public void exec(WattVM vm, boolean shouldPushResult)  {
         VmFrame<String, Object> scope = new VmFrame<>();
         if (getClosure() != null) {
-            scope.setRoot(closure);
+            scope.setClosure(closure);
         }
         // ставим рут на переменные типа/юнита/глобал скоупа
         // если closure == этому скоупу, то рут не устанавливается благодаря
@@ -115,8 +115,6 @@ public class VmFunction implements VmInstructionsBox {
         // устанавливаем замыкание функции
         if (this.getClosure() == null) {
             this.closure = closure;
-        } else {
-            this.closure.setRoot(closure);
         }
     }
 

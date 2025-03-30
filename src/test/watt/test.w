@@ -77,7 +77,7 @@ fun a() {
 }
 a()
 */
-
+/*
 e := 3
 fun a() {
     io.println('e: ' + e)
@@ -85,3 +85,21 @@ fun a() {
 }
 a()
 io.println(e)
+*/
+
+fun a() {
+    _a := 1
+    fun b() {
+        _b := 2
+        fun c() {
+            _c := 3
+            fun d() {
+                io.println(_a+_b+_c)
+            }
+            d()
+        }
+        c()
+    }
+    b()
+}
+a()

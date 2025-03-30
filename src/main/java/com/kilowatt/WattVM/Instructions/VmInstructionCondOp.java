@@ -4,6 +4,7 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.VmNull;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -79,13 +80,13 @@ public class VmInstructionCondOp implements VmInstruction {
         if (l instanceof String left && r instanceof String right) {
             return left.equals(right);
         }
-        else if (l == null && r != null) {
+        else if (l.getClass() == VmNull.class && r.getClass() != VmNull.class) {
             return false;
         }
-        else if (l != null && r == null) {
+        else if (l.getClass() != VmNull.class && r.getClass() == VmNull.class) {
             return false;
         }
-        else if (l == null && r == null) {
+        else if (l.getClass() == VmNull.class && r.getClass() == VmNull.class) {
             return true;
         }
         else if (l instanceof VmType left && r instanceof VmType right) {

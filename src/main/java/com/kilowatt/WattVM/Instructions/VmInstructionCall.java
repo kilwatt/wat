@@ -16,6 +16,7 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /*
 Вызов функции в VM
@@ -132,11 +133,7 @@ public class VmInstructionCall implements VmInstruction {
                 // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
                 Object returned = fun.invoke(last, callArgs);
                 if (shouldPushResult) {
-                    if (returned == null) {
-                        vm.push(new VmNull());
-                    } else {
-                        vm.push(returned);
-                    }
+                    vm.push(Objects.requireNonNullElseGet(returned, VmNull::new));
                 }
             } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new WattRuntimeError(
