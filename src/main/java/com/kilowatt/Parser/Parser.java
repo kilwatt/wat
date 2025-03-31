@@ -366,7 +366,8 @@ public class Parser {
     private Node multiplicative() {
         Node left = primary();
 
-        while(check(TokenType.OPERATOR) && (match("*") || match("/"))) {
+        while(check(TokenType.OPERATOR) && (match("*")
+                || match("/") || match("%"))) {
             Token operator = consume(TokenType.OPERATOR);
             Node right = primary();
             left = new BinNode(left, right, operator);

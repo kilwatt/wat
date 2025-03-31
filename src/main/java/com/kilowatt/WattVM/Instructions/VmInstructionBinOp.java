@@ -60,8 +60,17 @@ public class VmInstructionBinOp implements VmInstruction {
                                         "check your code.");
                             }
                             vm.push(div(lNumber, rNumber));
+                        } case "%" -> {
+                            if (rNumber.floatValue() == 0) {
+                                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                                        "can't divide by zero.",
+                                        "check your code.");
+                            }
+                            vm.push(rem(lNumber, rNumber));
                         } default -> {
-
+                            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                                    "invalid binary op: " + operator,
+                                    "available binary operators: +, -, *, /, %");
                         }
                     }
                 } else {
@@ -123,6 +132,18 @@ public class VmInstructionBinOp implements VmInstruction {
             return a.longValue() / b.longValue();
         } else {
             return a.intValue() / b.intValue();
+        }
+    }
+
+    private Number rem(Number a, Number b) {
+        if (a instanceof Double || b instanceof Double) {
+            return a.doubleValue() % b.doubleValue();
+        } else if (a instanceof Float || b instanceof Float) {
+            return a.floatValue() % b.floatValue();
+        } else if (a instanceof Long || b instanceof Long) {
+            return a.longValue() % b.longValue();
+        } else {
+            return a.intValue() % b.intValue();
         }
     }
 
