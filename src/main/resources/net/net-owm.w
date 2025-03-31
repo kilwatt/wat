@@ -1,0 +1,75 @@
+import 'std.io'
+
+unit WeatherType {
+    JSON := 'json'
+    JAVA := 'java'
+    HTML := 'html'
+    XML := 'xml'
+}
+
+type OwmClient(api_key) {
+    // рефлексия
+    owm_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Net.NetOwm',
+        []
+    )
+    // соеденение
+    connection := owm_reflection.connect(api_key)
+    // реквестер
+    single_requester := connection.currentWeather().single()
+
+    // получение погоды по кастамайзеру и типу
+    fun get_weather(customizer, ret_type) {
+        match (ret_type) {
+            case 'html' {
+                io.println('html')
+                return customizer.retrieve().asHTML()
+            }
+            case 'java' {
+                io.println('java')
+                return customizer.retrieve().asJava()
+            }
+            case 'json' {
+                io.println('json')
+                return customizer.retrieve().asJSON()
+            }
+            case 'xml' {
+                io.println('xml')
+                return customizer.retrieve().asXML()
+            }
+            _ {
+                error('undefined type of weather retrieve: ' + ret_type, 'available: html, java, json, xml')
+            }
+        }
+    }
+
+    // получение погоды в городе по имени
+    fun city(name, language, ret_type) {
+        io.println(language == 'ru')
+        match (language) {
+            case 'ru' {
+                io.println('ru')
+                return self.get_weather(
+                    single_requester.byCityName(name).language(owm_reflection.RU),
+                    ret_type
+                )
+            }
+            case 'en' {
+                io.println('en')
+                return self.get_weather(
+                    single_requester.byCityName(name).language(owm_reflection.EN),
+                    ret_type
+                )
+            }
+            _ {
+                io.println('other')
+                error('lang: ' + language + ' is not available.', 'available: ru, en')
+            }
+        }
+    }
+
+    // получение погоды в городе по ID
+    fun city_id() {
+        return owm_reflection.city_id(single_requester)
+    }
+}
