@@ -40,6 +40,6 @@ public class VmInstructionIf implements VmInstruction {
 
     @Override
     public String toString() {
-        return "IF_VALUE(conditions: " + conditions + ", body: " + instructions + ")";
+        return "IF_VALUE(conditions: " + conditions + ", body: " + instructions + ", else: " + elseInstruction + ")";
     }
 }

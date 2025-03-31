@@ -20,5 +20,6 @@ public class WattLibraries {
         put("ext.wfiglet", "ext/ext-wfiglet.w");
         put("std.time", "std/std-time.w");
         put("net.mail", "net/net-mail.w");
+        put("net.owm", "net/net-owm.w");
     }};
 }

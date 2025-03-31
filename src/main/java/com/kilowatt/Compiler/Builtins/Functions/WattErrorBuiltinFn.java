@@ -11,13 +11,14 @@ import com.kilowatt.WattVM.VmAddress;
 public class WattErrorBuiltinFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address) {
-        Object o = vm.pop();
-        throw new WattRuntimeError(address.getLine(), address.getFileName(), o.toString(), "check your code.");
+        Object hint = vm.pop();
+        Object text = vm.pop();
+        throw new WattRuntimeError(address.getLine(), address.getFileName(), text.toString(), hint.toString());
     }
 
     @Override
     public int args() {
-        return 1;
+        return 2;
     }
 
     @Override

@@ -15,9 +15,13 @@ Pattern Matching Node
 @Getter
 @AllArgsConstructor
 public class MatchNode implements Node {
+    // локация
     private final Token location;
+    // нода для матчинга
     private final Node matchableValue;
+    // кейсы
     private final List<Case> cases;
+    // дефолтный кейс
     private final Case defaultCase;
 
     /*
@@ -26,7 +30,9 @@ public class MatchNode implements Node {
     @AllArgsConstructor
     @Getter
     public static class Case {
+        // сравниваемое значение
         private final Node equality;
+        // тело кейса
         private final Node body;
     }
 
@@ -35,8 +41,10 @@ public class MatchNode implements Node {
      */
     @Override
     public void compile() {
-        // последнее условие
-        IfNode last = null;
+        // последний кейс
+        IfNode lastCase = null;
+        // рутовый кейс (первая)
+        IfNode rootCase = null;
         // собираем кейсы и превращаем в IF
         for (Case _case : cases) {
             IfNode newIfNode = new IfNode(
@@ -56,16 +64,22 @@ public class MatchNode implements Node {
                 ),
                 null
             );
-            if (last != null) {
-                last.setElseNode(newIfNode);
+            // если первая нода - значит рутовый кейс
+            if (rootCase == null) {
+                rootCase = newIfNode;
             }
-            last = newIfNode;
+            // если есть предыдущий кейс - устанавливаем ему else на текущий
+            if (lastCase != null) {
+                lastCase.setElseNode(newIfNode);
+            }
+            // обновляем предыдущий кейс на текущий
+            lastCase = newIfNode;
         }
-        // компилируем
-        if (last != null) {
+        // компилируем ноду
+        if (rootCase != null) {
             // создаём default
             if (defaultCase != null) {
-                last.setElseNode(new IfNode(
+                lastCase.setElseNode(new IfNode(
                     location,
                     defaultCase.getBody(),
                     new BoolNode(
@@ -78,22 +92,28 @@ public class MatchNode implements Node {
                     ),
                     null
                 ));
-            }
-            // компилируем if
-            last.compile();
-        } else {
-            throw new WattParsingError(
+            } else {
+                throw new WattParsingError(
                     location.getLine(),
                     location.getFileName(),
-                    "couldn't compile match with no cases.",
-                    "add some cases for match."
+                    "couldn't compile match with no default case.",
+                    "add default case for match."
+                );
+            }
+            // компилируем if
+            rootCase.compile();
+        } else {
+            throw new WattParsingError(
+                location.getLine(),
+                location.getFileName(),
+                "couldn't compile match with no cases.",
+                "add some cases for match."
             );
         }
     }
 
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
-        analyzer.push(this);
         // анализируем значение для матча
         matchableValue.analyze(analyzer);
         // анализируем кейсы
@@ -105,6 +125,5 @@ public class MatchNode implements Node {
         if (defaultCase != null) {
             defaultCase.getBody().analyze(analyzer);
         }
-        analyzer.pop();
     }
 }

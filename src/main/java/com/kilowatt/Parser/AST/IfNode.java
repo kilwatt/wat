@@ -24,20 +24,8 @@ public class IfNode implements Node {
 
     @Override
     public void compile() {
-        VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(conditions);
-        logical.compile();
-        WattCompiler.code.endWrite();
-        VmInstructionIf vmInstructionIf
-                = new VmInstructionIf(location.asAddress());
-        vmInstructionIf.setConditions(conditions);
-        WattCompiler.code.writeTo(vmInstructionIf.getInstructions());
-        node.compile();
-        WattCompiler.code.endWrite();
-        WattCompiler.code.visitInstruction(vmInstructionIf);
-        if (elseNode != null) {
-            vmInstructionIf.setElseInstruction(elseNode.getCompiled());
-        }
+        // финальная компиляция
+        WattCompiler.code.visitInstruction(getCompiled());
     }
 
     @Override
@@ -47,16 +35,23 @@ public class IfNode implements Node {
     }
 
     public VmInstructionIf getCompiled() {
+        // условия
         VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
         WattCompiler.code.writeTo(conditions);
         logical.compile();
         WattCompiler.code.endWrite();
+        // тело
         VmInstructionIf vmInstructionIf
                 = new VmInstructionIf(new VmAddress(location.getFileName(), location.getLine()));
         vmInstructionIf.setConditions(conditions);
         WattCompiler.code.writeTo(vmInstructionIf.getInstructions());
         node.compile();
         WattCompiler.code.endWrite();
+        // else
+        if (elseNode != null) {
+            vmInstructionIf.setElseInstruction(elseNode.getCompiled());
+        }
+        // возвращаем
         return vmInstructionIf;
     }
 }
