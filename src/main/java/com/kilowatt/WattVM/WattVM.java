@@ -57,7 +57,7 @@ public class WattVM {
 
     // запуск
     public void run(WattVmCode code, boolean needBenchmarkInfo) {
-        // code.print();
+        code.print();
         // переменная для рефлексии
         globals.define(
             WattBuiltinProvider.builtinAddress,

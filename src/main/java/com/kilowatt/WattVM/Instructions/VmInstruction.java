@@ -8,4 +8,5 @@ import com.kilowatt.WattVM.VmFrame;
  */
 public interface VmInstruction {
     void run(WattVM vm, VmFrame<String, Object> scope);
+    void print(int indent);
 }

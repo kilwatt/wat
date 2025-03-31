@@ -3,6 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -48,6 +49,15 @@ public class VmInstructionDefine implements VmInstruction {
                 default -> throw new IllegalStateException("Unexpected value: " + last +
                         " send this error with your code to the developer!");
             }
+        }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "DEFINE("+name+")");
+        VmCodeDumper.dumpLine(indent + 1, "VALUE:");
+        for (VmInstruction instruction : value.getInstructionContainer()) {
+            instruction.print(indent + 2);
         }
     }
 

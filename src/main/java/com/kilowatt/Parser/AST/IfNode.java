@@ -44,7 +44,7 @@ public class IfNode implements Node {
         VmInstructionIf vmInstructionIf
                 = new VmInstructionIf(new VmAddress(location.getFileName(), location.getLine()));
         vmInstructionIf.setConditions(conditions);
-        WattCompiler.code.writeTo(vmInstructionIf.getInstructions());
+        WattCompiler.code.writeTo(vmInstructionIf.getBody());
         node.compile();
         WattCompiler.code.endWrite();
         // else

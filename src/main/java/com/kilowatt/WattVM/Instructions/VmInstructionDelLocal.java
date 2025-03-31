@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -23,6 +24,11 @@ public class VmInstructionDelLocal implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         frame.getValues().remove(name);
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "DEL_LOCAL(" + name + ")");
     }
 
     @Override

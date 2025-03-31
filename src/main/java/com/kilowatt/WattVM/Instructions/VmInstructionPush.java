@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -24,6 +25,11 @@ public class VmInstructionPush implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         vm.push(data);
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "PUSH(" + data + ")");
     }
 
     @Override

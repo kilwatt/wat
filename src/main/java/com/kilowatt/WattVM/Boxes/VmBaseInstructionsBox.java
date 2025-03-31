@@ -9,13 +9,13 @@ import lombok.Getter;
 import java.util.ArrayList;
 
 /*
-Временный контейнер переменных для вызова функции
+Контейнер инструкций
  */
 @Getter
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class VmBaseInstructionsBox implements VmInstructionsBox {
     // контейнер
-    private final ArrayList<VmInstruction> varContainer = new ArrayList<>();
+    private final ArrayList<VmInstruction> instructionContainer = new ArrayList<>();
 
     /**
      * Выполняет инструкцию
@@ -23,12 +23,12 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
      */
     @Override
     public void visitInstr(VmInstruction instr) {
-        this.varContainer.add(instr);
+        this.instructionContainer.add(instr);
     }
 
     // выполнение и получение результата
     public Object runAndGet(WattVM vm, VmFrame<String, Object> frame)  {
-        for (VmInstruction instr : varContainer) {
+        for (VmInstruction instr : instructionContainer) {
             instr.run(vm, frame);
         }
         return vm.pop();
@@ -36,7 +36,7 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
 
     // запуск простой
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        for (VmInstruction instr : varContainer) {
+        for (VmInstruction instr : instructionContainer) {
             instr.run(vm, frame);
         }
     }
@@ -54,6 +54,6 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
 
     @Override
     public String toString() {
-        return getVarContainer().toString();
+        return getInstructionContainer().toString();
     }
 }

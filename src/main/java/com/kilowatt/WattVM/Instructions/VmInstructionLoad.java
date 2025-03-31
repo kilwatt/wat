@@ -3,6 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -13,6 +14,7 @@ import java.lang.reflect.Field;
 /*
 Загрузка переменной по имени в стек
  */
+@SuppressWarnings("UnnecessaryBreak")
 @Getter
 public class VmInstructionLoad implements VmInstruction {
     // адрес
@@ -60,8 +62,9 @@ public class VmInstructionLoad implements VmInstruction {
                     vm.push(unit.getFields().lookup(addr, name));
                     break;
                 }
-                case null -> throw new IllegalStateException("unexpected value: " + last +
-                        " send this error with your code to the developer!");
+                case null -> throw new IllegalStateException(
+                        "unexpected value: null. send this error with your code to the developer!"
+                );
                 default -> {
                     Class<?> clazz = last.getClass();
                     try {
@@ -86,6 +89,11 @@ public class VmInstructionLoad implements VmInstruction {
                 }
             }
         }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "LOAD("+name+")");
     }
 
     @Override

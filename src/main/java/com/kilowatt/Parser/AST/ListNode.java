@@ -9,6 +9,7 @@ import com.kilowatt.WattVM.Instructions.VmInstructionCall;
 import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.VmFrame;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,11 @@ public class ListNode implements Node {
             @Override
             public void run(WattVM vm, VmFrame<String, Object> scope) {
                 vm.push(new WattList());
+            }
+
+            @Override
+            public void print(int indent) {
+                VmCodeDumper.dumpLine(indent, "LIST()");
             }
 
             @Override

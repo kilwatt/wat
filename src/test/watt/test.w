@@ -1,5 +1,3 @@
-import 'std.io'
-
 /* math test:
 unit MathExample {
     fun square(x) {
@@ -47,15 +45,6 @@ try {
 }
 */
 /*
-fun fib(n) {
-    if n <= 1 {
-        return n
-    }
-    return fib(n - 1) + fib(n - 2)
-}
-fib(35)
-*/
-/*
 type A {
     fun example() {
         io.println('Hello, world!')
@@ -86,7 +75,7 @@ fun a() {
 a()
 io.println(e)
 */
-
+/*
 fun a() {
     _a := 1
     fun b() {
@@ -103,3 +92,13 @@ fun a() {
     b()
 }
 a()
+*/
+// import 'std.io'
+
+fun fib(n) {
+    if n <= 1 {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+fib(35)

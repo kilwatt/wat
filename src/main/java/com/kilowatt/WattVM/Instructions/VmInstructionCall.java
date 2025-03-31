@@ -2,15 +2,12 @@ package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
-import com.kilowatt.WattVM.VmNull;
-import com.kilowatt.WattVM.WattVM;
-import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -59,6 +56,15 @@ public class VmInstructionCall implements VmInstruction {
             } else {
                 callReflectionFunc(vm, frame, last);
             }
+        }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "CALL("+name+")");
+        VmCodeDumper.dumpLine(indent + 1, "ARGS:");
+        for (VmInstruction instruction : args.getInstructionContainer()) {
+            instruction.print(indent + 2);
         }
     }
 
@@ -217,7 +223,7 @@ public class VmInstructionCall implements VmInstruction {
     // помещает аргументы в стек
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getVarContainer()) {
+        for (VmInstruction instr : args.getInstructionContainer()) {
             instr.run(vm, frame);
         }
         return vm.getStack().size()-size;
@@ -225,6 +231,6 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public String toString() {
-        return "CALL_FUNCTION(" + name + ",instrs:" + args.getVarContainer().size() + ")";
+        return "CALL_FUNCTION(" + name + ",instrs:" + args.getInstructionContainer().size() + ")";
     }
 }

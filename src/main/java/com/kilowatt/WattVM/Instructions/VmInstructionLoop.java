@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -36,6 +37,15 @@ public class VmInstructionLoop implements VmInstruction {
                     continue;
                 }
             }
+        }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "LOOP()");
+        VmCodeDumper.dumpLine(indent + 1, "BODY:");
+        for (VmInstruction instruction : instructions.getInstructionContainer()) {
+            instruction.print(indent + 2);
         }
     }
 

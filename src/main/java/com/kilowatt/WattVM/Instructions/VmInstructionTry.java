@@ -5,6 +5,7 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.VmAddress;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.VmFrame;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,20 @@ public class VmInstructionTry implements VmInstruction {
             catchBody.run(vm, frame);
             // удаляем переменную
             frame.getValues().remove(catchVariableName);
+        }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "TRY()");
+        VmCodeDumper.dumpLine(indent + 1, "- BODY:");
+        for (VmInstruction instruction : tryBody.getInstructionContainer()) {
+            instruction.print(indent + 2);
+        }
+        VmCodeDumper.dumpLine(indent, "ON_CATCH()");
+        VmCodeDumper.dumpLine(indent + 1, "- BODY:");
+        for (VmInstruction instruction : catchBody.getInstructionContainer()) {
+            instruction.print(indent + 2);
         }
     }
 

@@ -4,6 +4,7 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmType;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -39,14 +40,23 @@ public class VmInstructionInstance implements VmInstruction {
     }
 
     @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "INSTANCE("+className+")");
+        VmCodeDumper.dumpLine(indent + 1, "CONSTRUCTOR:");
+        for (VmInstruction instruction : args.getInstructionContainer()) {
+            instruction.print(indent + 2);
+        }
+    }
+
+    @Override
     public String toString() {
-        return "NEW_INSTANCE(" + className + "," + args.getVarContainer().size() + ")";
+        return "NEW_INSTANCE(" + className + "," + args.getInstructionContainer().size() + ")";
     }
 
     // передача аргументов
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getVarContainer()) {
+        for (VmInstruction instr : args.getInstructionContainer()) {
             instr.run(vm, frame);
         }
         return vm.getStack().size()-size;

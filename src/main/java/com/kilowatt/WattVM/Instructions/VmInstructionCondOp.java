@@ -1,13 +1,10 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
-import com.kilowatt.WattVM.VmNull;
-import com.kilowatt.WattVM.WattVM;
-import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
 
 /*
@@ -73,6 +70,11 @@ public class VmInstructionCondOp implements VmInstruction {
                     "invalid cond. op: " + operator,
                     "available op-s: ==,!=,>,>=,<=,<");
         }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "COND_OP("+operator+")");
     }
 
     // равны ли два объекта

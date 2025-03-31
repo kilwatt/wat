@@ -3,6 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -41,6 +42,15 @@ public class VmInstructionDefineUnit implements VmInstruction {
         // дефайн по полному имени
         if (fullName != null) {
             vm.getUnitDefinitions().forceSet(addr, fullName, unit);
+        }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + name + ")");
+        VmCodeDumper.dumpLine(indent + 1, "BODY:");
+        for (VmInstruction instruction : getBody().getInstructionContainer()) {
+            instruction.print(indent + 2);
         }
     }
 

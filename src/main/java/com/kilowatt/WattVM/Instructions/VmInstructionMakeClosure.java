@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Entities.VmFunction;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -38,6 +39,11 @@ public class VmInstructionMakeClosure implements VmInstruction {
             fn = (VmFunction) scope.lookup(addr, name);
         }
         fn.setClosure(scope);
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "MAKE_CLOSURE(FN:" + name + ")");
     }
 
     @Override

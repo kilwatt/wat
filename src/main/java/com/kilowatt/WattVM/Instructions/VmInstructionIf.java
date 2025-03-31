@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -17,7 +18,7 @@ public class VmInstructionIf implements VmInstruction {
     // инструкции
     @Setter
     private VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
-    private final VmBaseInstructionsBox instructions = new VmBaseInstructionsBox();
+    private final VmBaseInstructionsBox body = new VmBaseInstructionsBox();
     // else
     @Setter
     private VmInstructionIf elseInstruction;
@@ -30,7 +31,7 @@ public class VmInstructionIf implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         Object val = conditions.runAndGet(vm, frame);
         if (((Boolean) val)) {
-            instructions.run(vm, frame);
+            body.run(vm, frame);
         } else {
             if (elseInstruction != null) {
                 elseInstruction.run(vm, frame);
@@ -39,7 +40,24 @@ public class VmInstructionIf implements VmInstruction {
     }
 
     @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "IF():");
+        VmCodeDumper.dumpLine(indent + 1, "CONDITIONS:");
+        for (VmInstruction instruction : conditions.getInstructionContainer()) {
+            instruction.print(indent + 2);
+        }
+        VmCodeDumper.dumpLine(indent + 1, "BODY:");
+        for (VmInstruction instruction : body.getInstructionContainer()) {
+            instruction.print(indent + 2);
+        }
+        if (elseInstruction != null) {
+            VmCodeDumper.dumpLine(indent, "ELSE():");
+            elseInstruction.print(indent);
+        }
+    }
+
+    @Override
     public String toString() {
-        return "IF_VALUE(conditions: " + conditions + ", body: " + instructions + ", else: " + elseInstruction + ")";
+        return "IF_VALUE(conditions: " + conditions + ", body: " + body + ", else: " + elseInstruction + ")";
     }
 }

@@ -1,10 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.WattVM.VmNull;
-import com.kilowatt.WattVM.WattVM;
-import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.*;
 import lombok.Getter;
 
 /*
@@ -132,5 +129,10 @@ public class VmInstructionBinOp implements VmInstruction {
     @Override
     public String toString() {
         return "DO_BINARY_OP(" + operator + ")";
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "BIN_OP("+operator+")");
     }
 }

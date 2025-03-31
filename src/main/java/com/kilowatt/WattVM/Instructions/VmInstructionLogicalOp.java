@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -31,6 +32,11 @@ public class VmInstructionLogicalOp implements VmInstruction {
                     "Invalid operator: " + operator,
                     "Available conditional operators: and, or");
         }
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "LOGICAL_OP("+operator+")");
     }
 
     @Override

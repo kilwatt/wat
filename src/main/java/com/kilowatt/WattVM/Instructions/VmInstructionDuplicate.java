@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -23,6 +24,11 @@ public class VmInstructionDuplicate implements VmInstruction {
         Object o = vm.pop();
         vm.push(o);
         vm.push(o);
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "DUPLICATE()");
     }
 
     @Override

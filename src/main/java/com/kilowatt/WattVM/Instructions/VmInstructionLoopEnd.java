@@ -1,4 +1,5 @@
 package com.kilowatt.WattVM.Instructions;
+import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
@@ -23,6 +24,11 @@ public class VmInstructionLoopEnd extends RuntimeException implements VmInstruct
     @Override
     public void run(WattVM vm, VmFrame<String, Object> scope) {
         throw this;
+    }
+
+    @Override
+    public void print(int indent) {
+        VmCodeDumper.dumpLine(indent, "LOOP_END(CURRENT_ITERATION:" + currentIteration + ")");
     }
 
     @Override
