@@ -34,8 +34,6 @@ public class WattCompiler {
 
     // импорт дефайнов
     public static void importDefinitions(VmAddress address, BlockNode block) {
-        // пишем в начало файла
-        WattCompiler.code.writeTo(WattCompiler.code.getWriting().firstElement());
         // компилируем
         for (Node node : block.getNodes()) {
             if (node instanceof UnitNode ||
@@ -45,7 +43,5 @@ public class WattCompiler {
                 node.compile();
             }
         }
-        // выходим
-        WattCompiler.code.endWrite();
     }
 }

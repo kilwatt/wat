@@ -33,7 +33,7 @@ public class VmInstructionDefineType implements VmInstruction {
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + name + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + name + ", " + fullName + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : type.getBody().getInstructionContainer()) {
             instruction.print(indent + 2);
@@ -46,6 +46,6 @@ public class VmInstructionDefineType implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_TYPE(" + name + "," + type + ")";
+        return "DEFINE_TYPE(" + name + ", " + fullName + ", " + type + ")";
     }
 }

@@ -31,7 +31,7 @@ public class FnNode implements Node {
                 new VmInstructionDefineFn(
                         name.asAddress(),
                         name.getValue(),
-                        fullName.getValue(),
+                        fullName != null ? fullName.getValue() : null,
                         compileFn()
                 )
         );

@@ -35,7 +35,7 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_FN(" + fn.getName() + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_FN(" + fn.getName() + ", " + fullName + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : fn.getInstructions()) {
             instruction.print(indent + 2);
@@ -48,6 +48,6 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_FUNC(" + fn.getName() + "," + fn.getInstructions() + ")";
+        return "DEFINE_FUNC(" + fn.getName() + ", " + fullName + ", " + fn.getInstructions() + ")";
     }
 }

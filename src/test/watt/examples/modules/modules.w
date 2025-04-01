@@ -1,3 +1,4 @@
 import 'example.w'
 
-example:a()
+a := new example:B()
+a.a()

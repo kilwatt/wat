@@ -39,7 +39,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + name + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + name + ", " + fullName + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : getBody().getInstructionContainer()) {
             instruction.print(indent + 2);
@@ -48,6 +48,6 @@ public class VmInstructionDefineUnit implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_UNIT(" + name + ", body: " + body + ")";
+        return "DEFINE_UNIT(" + name + ", " + fullName + ", body: " + body + ")";
     }
 }
