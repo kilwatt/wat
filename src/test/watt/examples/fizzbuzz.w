@@ -20,4 +20,4 @@ fun fizz_buzz(n) {
 }
 
 result := fizz_buzz(10)
-module.io.println(result.stringify())
+io.println(result.stringify())

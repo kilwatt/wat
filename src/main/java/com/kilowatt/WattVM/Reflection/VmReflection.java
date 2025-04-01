@@ -19,7 +19,19 @@ import java.lang.reflect.InvocationTargetException;
 @Getter
 @AllArgsConstructor
 public class VmReflection {
+    // вм
     private final WattVM vm;
+    // инфа о последнем вызове
+    private final ThreadLocal<VmCallInfo> lastCallInfo = new ThreadLocal<>();
+
+    // работа с адрессом последнего вызова
+    public VmCallInfo getLastCallInfo() {
+        return lastCallInfo.get();
+    }
+
+    public void setLastCallInfo(VmCallInfo address) {
+        lastCallInfo.set(address);
+    }
 
     // рефлексия
     @SneakyThrows
@@ -27,11 +39,11 @@ public class VmReflection {
         // ищем класс
         try {
             // класс
-            Class<?> clazz = VmJvmClasses.lookup(vm.getLastCallAddress(), name);
+            Class<?> clazz = VmJvmClasses.lookup(getLastCallInfo().getAddress(), name);
             // колличество аргументов
             int argsAmount = args.size();
             // ищем конструктор
-            Constructor constructor = findConstructor(vm.getLastCallAddress(), clazz, argsAmount);
+            Constructor constructor = findConstructor(getLastCallInfo().getAddress(), clazz, argsAmount);
             return constructor.newInstance(args.getArray().toArray());
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
@@ -39,7 +51,7 @@ public class VmReflection {
                     || cause instanceof WattParsingError) {
                 throw cause;
             } else {
-                throw new WattRuntimeError(vm.getLastCallAddress().getLine(), vm.getLastCallAddress().getFileName(),
+                throw new WattRuntimeError(getLastCallInfo().getAddress().getLine(), getLastCallInfo().getAddress().getFileName(),
                         "error in jvm constructor: " + e.getMessage(), "check your code.");
             }
         }

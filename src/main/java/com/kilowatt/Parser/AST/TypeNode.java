@@ -7,6 +7,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineType;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
@@ -14,16 +15,26 @@ import java.util.ArrayList;
 Опредление типа
  */
 @AllArgsConstructor
+@Getter
 public class TypeNode implements Node {
+    // имя
     private final Token name;
+    // полное имя
     private final Token fullName;
+    // тело
     private final ArrayList<Node> body;
+    // конструктор
     private final ArrayList<Token> constructor;
 
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineType(name.asAddress(), name.value, compileType())
+            new VmInstructionDefineType(
+                name.asAddress(),
+                name.value,
+                fullName.value,
+                compileType()
+            )
         );
     }
 

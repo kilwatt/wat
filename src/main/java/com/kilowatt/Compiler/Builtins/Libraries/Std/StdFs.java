@@ -19,7 +19,7 @@ public class StdFs {
         try {
             return new FileReader(path);
         } catch (FileNotFoundException e) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),
@@ -33,7 +33,7 @@ public class StdFs {
         try {
             return new FileWriter(path, false);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -51,7 +51,7 @@ public class StdFs {
         try {
             Files.createFile(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -65,7 +65,7 @@ public class StdFs {
         try {
             Files.createDirectory(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -79,7 +79,7 @@ public class StdFs {
         try {
             Files.delete(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

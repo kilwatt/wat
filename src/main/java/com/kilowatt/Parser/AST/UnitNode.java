@@ -6,6 +6,7 @@ import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
@@ -13,15 +14,24 @@ import java.util.ArrayList;
 Опредление юнит
  */
 @AllArgsConstructor
+@Getter
 public class UnitNode implements Node {
-    private final Token name;
-    private final Token fullName;
+    // имя
+    private Token name;
+    // полное имя
+    private Token fullName;
+    // тело
     private final ArrayList<Node> body;
 
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineUnit(name.asAddress(), name.value, compileUnit())
+            new VmInstructionDefineUnit(
+                name.asAddress(),
+                name.value,
+                fullName.value,
+                compileUnit()
+            )
         );
     }
 

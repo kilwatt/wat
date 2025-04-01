@@ -1,6 +1,5 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
@@ -27,11 +26,6 @@ public class VmInstructionDefineUnit implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        if (vm.getUnitDefinitions().has(name)) {
-            throw new WattRuntimeError(
-                    addr.getLine(), addr.getFileName(),
-                    "unit already defined: " + name, "did you forget to change name?");
-        }
         // генерация юнита
         VmUnit unit = new VmUnit(name, new VmFrame<>());
         unit.getFields().setRoot(frame);
@@ -40,9 +34,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
         // дефайн по имени
         vm.getUnitDefinitions().forceSet(addr, name, unit);
         // дефайн по полному имени
-        if (fullName != null) {
-            vm.getUnitDefinitions().forceSet(addr, fullName, unit);
-        }
+        if (fullName != null) vm.getUnitDefinitions().forceSet(addr, fullName, unit);
     }
 
     @Override

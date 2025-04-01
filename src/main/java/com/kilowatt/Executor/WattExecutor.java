@@ -56,7 +56,7 @@ public class WattExecutor {
             error.print();
             // error.printStackTrace();
         } catch (RuntimeException error) {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

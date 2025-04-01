@@ -2,6 +2,7 @@ package com.kilowatt.Lexer;
 
 import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Токены - на них делится текст.
@@ -11,7 +12,8 @@ public class Token {
     // тип токена
     public final TokenType type;
     // значение токена
-    public final String value;
+    @Setter
+    public String value;
     // файл адреса токена
     public final String fileName;
     // линия адреса токена

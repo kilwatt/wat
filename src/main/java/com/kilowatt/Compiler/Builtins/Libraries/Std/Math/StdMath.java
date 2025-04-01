@@ -19,7 +19,7 @@ public class StdMath {
         } else if (value instanceof Double) {
             return Math.ceil(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -39,7 +39,7 @@ public class StdMath {
         } else if (value instanceof Double) {
             return Math.abs(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -59,7 +59,7 @@ public class StdMath {
         } else if (value instanceof Double) {
             return Math.floor(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -77,7 +77,7 @@ public class StdMath {
         } else if (value instanceof Float) {
             return Math.sqrt(value.floatValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -95,7 +95,7 @@ public class StdMath {
         } else if (value instanceof Float) {
             return Math.cbrt(value.floatValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -114,7 +114,7 @@ public class StdMath {
             } else if (power instanceof Float) {
                 return Math.pow(value.intValue(), power.floatValue());
             } else {
-                VmAddress address = WattCompiler.vm.getLastCallAddress();
+                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
                 throw new WattRuntimeError(
                         address.getLine(),
                         address.getFileName(),
@@ -130,7 +130,7 @@ public class StdMath {
             } else if (power instanceof Float) {
                 return Math.pow(value.longValue(), power.floatValue());
             } else {
-                VmAddress address = WattCompiler.vm.getLastCallAddress();
+                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
                 throw new WattRuntimeError(
                         address.getLine(),
                         address.getFileName(),
@@ -146,7 +146,7 @@ public class StdMath {
             } else if (power instanceof Float) {
                 return Math.pow(value.floatValue(), power.floatValue());
             } else {
-                VmAddress address = WattCompiler.vm.getLastCallAddress();
+                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
                 throw new WattRuntimeError(
                         address.getLine(),
                         address.getFileName(),
@@ -155,7 +155,7 @@ public class StdMath {
                 );
             }
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -173,7 +173,7 @@ public class StdMath {
         } else if (value instanceof Float) {
             return Math.log(value.floatValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -191,7 +191,7 @@ public class StdMath {
         } else if (value instanceof Float) {
             return Math.log10(value.floatValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

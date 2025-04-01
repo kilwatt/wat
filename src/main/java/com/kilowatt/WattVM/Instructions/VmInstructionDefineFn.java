@@ -5,27 +5,32 @@ import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /*
 Определение функции
  */
 @Getter
+@AllArgsConstructor
 public class VmInstructionDefineFn implements VmInstruction {
     // адрес
     private final VmAddress addr;
+    // имя юнита
+    private final String name;
+    // полное имя
+    private final String fullName;
     // юнит
     private final VmFunction fn;
 
-    // конструктор
-    public VmInstructionDefineFn(VmAddress addr, VmFunction fn) {
-        this.addr = addr;
-        this.fn = fn;
-    }
-
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        frame.define(addr, fn.getName(), fn.copy());
+        // по краткому имени
+        frame.define(addr, name, fn.copy());
+        // по полному имени
+        if (fullName != null) {
+            frame.define(addr, fullName, fn.copy());
+        }
     }
 
     @Override

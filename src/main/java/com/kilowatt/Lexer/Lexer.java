@@ -54,7 +54,6 @@ public class Lexer {
         put("from", TokenType.FROM);
         put("native", TokenType.NATIVE);
         put("lambda", TokenType.LAMBDA);
-        put("as", TokenType.AS);
     }};
 
     // сканнер
@@ -298,7 +297,7 @@ public class Lexer {
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
         while (Character.isLetter(peek()) || Character.isDigit(peek()) ||
-                peek() == '_' || peek() == '@') {
+                peek() == '_' || peek() == ':') {
             if (match('\n')) {
                 line += 1;
                 continue;

@@ -65,6 +65,16 @@ public class Parser {
         return params;
     }
 
+    // в полное имя
+    private Token toFullName(Token name) {
+        return new Token(
+            TokenType.TEXT,
+            filename.replace(".w", "") + ":" + name.getValue(),
+            name.getLine(),
+            name.getFileName()
+        );
+    }
+
     // часть цепочки доступа
     private AccessNode accessPart(AccessNode prev) {
         // выражение с идентификатором
@@ -484,7 +494,7 @@ public class Parser {
         );
         consume(TokenType.RIGHT_BRACE);
         // возвращаем функцию
-        return new FnNode(node,name,parameters);
+        return new FnNode(node,name,toFullName(name),parameters);
     }
 
     // объявление типа
@@ -493,14 +503,6 @@ public class Parser {
         consume(TokenType.TYPE);
         // имя
         Token name = consume(TokenType.ID);
-        // полное имя
-        String filenameWithoutExtension = filename.replace(".w", "");
-        Token fullName = new Token(
-            TokenType.ID,
-            filenameWithoutExtension + ":" + name.value,
-            name.getLine(),
-            name.getFileName()
-        );
         // аргументы конструктора если есть
         ArrayList<Token> constructor = new ArrayList<>();
         if (check(TokenType.LEFT_PAREN)) {
@@ -511,10 +513,17 @@ public class Parser {
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
-            if (node instanceof FnNode || node instanceof NativeNode || node instanceof VarDefineNode ||
-                node instanceof VarSetNode) {
+            if (node instanceof FnNode fn) {
+                // убираем полное имя, так как это метод
+                fn.setFullName(null);
+                // добавляем ноду
+                nodes.add(fn);
+            } else if (node instanceof NativeNode || node instanceof VarDefineNode ||
+                    node instanceof VarSetNode) {
+                // добавляем ноду
                 nodes.add(node);
-            } else {
+            }
+            else {
                 throw new WattParsingError(
                         peek().line,
                         filename,
@@ -524,7 +533,7 @@ public class Parser {
         }
         consume(TokenType.RIGHT_BRACE);
         // возвращаем
-        return new TypeNode(name, fullName, nodes, constructor);
+        return new TypeNode(name, toFullName(name), nodes, constructor);
     }
 
     // объявление юнита
@@ -533,21 +542,19 @@ public class Parser {
         consume(TokenType.UNIT);
         // имя
         Token name = consume(TokenType.ID);
-        // полное имя
-        String filenameWithoutExtension = filename.replace(".w", "");
-        Token fullName = new Token(
-                TokenType.ID,
-                filenameWithoutExtension + ":" + name.value,
-                name.getLine(),
-                name.getFileName()
-        );
         // тело
         consume(TokenType.LEFT_BRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
-            if (node instanceof FnNode || node instanceof NativeNode || node instanceof VarDefineNode ||
+            if (node instanceof FnNode fn) {
+                // убираем полное имя, так как это метод
+                fn.setFullName(null);
+                // добавляем ноду
+                nodes.add(fn);
+            } else if (node instanceof NativeNode || node instanceof VarDefineNode ||
                     node instanceof VarSetNode) {
+                // добавляем ноду
                 nodes.add(node);
             } else {
                 throw new WattParsingError(
@@ -559,7 +566,7 @@ public class Parser {
         }
         consume(TokenType.RIGHT_BRACE);
         // возвращаем
-        return new UnitNode(name, fullName, nodes);
+        return new UnitNode(name, toFullName(name), nodes);
     }
 
     // выражение (рекурсивный парсинг)
@@ -573,18 +580,7 @@ public class Parser {
         consume(TokenType.NEW);
         // имя типа
         Token name = consume(TokenType.ID);
-        // если полное имя типа, например testfile:A
-        if (check(TokenType.COLON)) {
-            // :
-            consume(TokenType.COLON);
-            // парсим часть после двоеточия
-            String part = consume(TokenType.ID).value;
-            // полное имя
-            name = new Token(
-                TokenType.ID, name.value + ":" + part,
-                name.getLine(), name.getFileName()
-            );
-        }
+        // возвращаем ноду
         return new NewInstanceNode(name, args());
     }
 
@@ -681,27 +677,20 @@ public class Parser {
     // стэйтмент import
     private Node importNode() {
         consume(TokenType.IMPORT);
-        ArrayList<ImportNode.WattImport> imports = new ArrayList<>();
+        ArrayList<Token> imports = new ArrayList<>();
         if (check(TokenType.LEFT_PAREN)) {
             consume(TokenType.LEFT_PAREN);
             do {
                 if (check(TokenType.COMMA)) {
                     consume(TokenType.COMMA);
                 }
-                imports.add(new ImportNode.WattImport(consume(TokenType.TEXT)));
+                imports.add(consume(TokenType.TEXT));
             }
             while (check(TokenType.COMMA));
 
             consume(TokenType.RIGHT_PAREN);
         } else {
-            Token name = consume(TokenType.TEXT);
-            if (check(TokenType.AS)) {
-                consume(TokenType.AS);
-                Token module = consume(TokenType.ID);
-                imports.add(new ImportNode.WattImport(name, module));
-            } else {
-                imports.add(new ImportNode.WattImport(name));
-            }
+            imports.add(consume(TokenType.TEXT));
         }
         return new ImportNode(imports);
     }

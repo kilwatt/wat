@@ -2,7 +2,8 @@ package com.kilowatt.Compiler;
 
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
-import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
+import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.Parser.AST.*;
 import lombok.Getter;
@@ -32,9 +33,11 @@ public class WattCompiler {
     }
 
     // импорт дефайнов
-    public static void importDefinitions(BlockNode parse, boolean shouldImportAsModule) {
+    public static void importDefinitions(VmAddress address, BlockNode block) {
+        // пишем в начало файла
+        WattCompiler.code.writeTo(WattCompiler.code.getWriting().firstElement());
         // компилируем
-        for (Node node : parse.getNodes()) {
+        for (Node node : block.getNodes()) {
             if (node instanceof UnitNode ||
                 node instanceof TypeNode ||
                 node instanceof FnNode ||
@@ -42,5 +45,7 @@ public class WattCompiler {
                 node.compile();
             }
         }
+        // выходим
+        WattCompiler.code.endWrite();
     }
 }

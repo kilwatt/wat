@@ -19,7 +19,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.cos(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -39,7 +39,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.abs(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -59,7 +59,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.floor(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -77,7 +77,7 @@ public class StdMathExt {
         } else if (value instanceof Float) {
             return (float) Math.sqrt(value.floatValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -97,7 +97,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.sin(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -117,7 +117,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.tan(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -137,7 +137,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.asin(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -157,7 +157,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.acos(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -177,7 +177,7 @@ public class StdMathExt {
         } else if (value instanceof Double) {
             return (float) Math.atan(value.doubleValue());
         } else {
-            VmAddress address = WattCompiler.vm.getLastCallAddress();
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

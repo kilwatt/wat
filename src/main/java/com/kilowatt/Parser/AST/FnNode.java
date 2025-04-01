@@ -8,6 +8,8 @@ import com.kilowatt.WattVM.Instructions.VmInstructionDefineFn;
 import com.kilowatt.WattVM.Instructions.VmInstructionMakeClosure;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -15,9 +17,12 @@ import java.util.ArrayList;
 Функция
  */
 @AllArgsConstructor
+@Getter
 public class FnNode implements Node {
     private final BlockNode node;
     private final Token name;
+    @Setter
+    private Token fullName;
     private final ArrayList<Token> parameters;
 
     @Override
@@ -25,6 +30,8 @@ public class FnNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefineFn(
                         name.asAddress(),
+                        name.getValue(),
+                        fullName.getValue(),
                         compileFn()
                 )
         );

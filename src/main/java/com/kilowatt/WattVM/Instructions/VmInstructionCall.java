@@ -10,6 +10,7 @@ import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -45,7 +46,7 @@ public class VmInstructionCall implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // устанавливаем адресс последнего вызова
-        vm.setLastCallAddress(addr);
+        vm.getReflection().setLastCallInfo(new VmCallInfo(addr, frame));
         // вызов
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
