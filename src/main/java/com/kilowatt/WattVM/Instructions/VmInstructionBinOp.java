@@ -2,6 +2,8 @@ package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
+import com.kilowatt.WattVM.Codegen.VmCodeDumper;
+import com.kilowatt.WattVM.Entities.VmNull;
 import lombok.Getter;
 
 /*

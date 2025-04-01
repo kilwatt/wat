@@ -1,4 +1,4 @@
-package com.kilowatt.WattVM;
+package com.kilowatt.WattVM.Entities;
 
 /*
 Пустое значение

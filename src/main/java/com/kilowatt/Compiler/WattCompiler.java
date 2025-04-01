@@ -1,6 +1,8 @@
 package com.kilowatt.Compiler;
 
+import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
+import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.Parser.AST.*;
 import lombok.Getter;
@@ -30,7 +32,8 @@ public class WattCompiler {
     }
 
     // импорт дефайнов
-    public static void importDefinitions(BlockNode parse) {
+    public static void importDefinitions(BlockNode parse, boolean shouldImportAsModule) {
+        // компилируем
         for (Node node : parse.getNodes()) {
             if (node instanceof UnitNode ||
                 node instanceof TypeNode ||

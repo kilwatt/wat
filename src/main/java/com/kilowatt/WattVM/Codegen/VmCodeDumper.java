@@ -1,4 +1,4 @@
-package com.kilowatt.WattVM;
+package com.kilowatt.WattVM.Codegen;
 
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 

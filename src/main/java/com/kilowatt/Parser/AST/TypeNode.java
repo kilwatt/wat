@@ -23,7 +23,7 @@ public class TypeNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineType(name.asAddress(), name.value, fullName.value, compileType())
+                new VmInstructionDefineType(name.asAddress(), name.value, compileType())
         );
     }
 

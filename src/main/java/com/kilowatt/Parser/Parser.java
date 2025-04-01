@@ -681,20 +681,27 @@ public class Parser {
     // стэйтмент import
     private Node importNode() {
         consume(TokenType.IMPORT);
-        ArrayList<Token> imports = new ArrayList<>();
+        ArrayList<ImportNode.WattImport> imports = new ArrayList<>();
         if (check(TokenType.LEFT_PAREN)) {
             consume(TokenType.LEFT_PAREN);
             do {
                 if (check(TokenType.COMMA)) {
                     consume(TokenType.COMMA);
                 }
-                imports.add(consume(TokenType.TEXT));
+                imports.add(new ImportNode.WattImport(consume(TokenType.TEXT)));
             }
             while (check(TokenType.COMMA));
 
             consume(TokenType.RIGHT_PAREN);
         } else {
-            imports.add(consume(TokenType.TEXT));
+            Token name = consume(TokenType.TEXT);
+            if (check(TokenType.AS)) {
+                consume(TokenType.AS);
+                Token module = consume(TokenType.ID);
+                imports.add(new ImportNode.WattImport(name, module));
+            } else {
+                imports.add(new ImportNode.WattImport(name));
+            }
         }
         return new ImportNode(imports);
     }

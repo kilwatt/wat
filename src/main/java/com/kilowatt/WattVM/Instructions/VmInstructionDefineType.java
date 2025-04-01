@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Entities.VmType;
-import com.kilowatt.WattVM.VmCodeDumper;
+import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;

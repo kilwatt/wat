@@ -13,12 +13,39 @@ import java.util.ArrayList;
 @Getter
 @AllArgsConstructor
 public class ImportNode implements Node {
-    private final ArrayList<Token> names;
+    /*
+    Сущеость импорта
+     */
+    @Getter
+    public static class WattImport {
+        // как модуль?
+        private final boolean shouldImportAsModule;
+        // имя файла?
+        private final Token name;
+        // имя модуля?
+        private final Token module;
 
+        public WattImport(Token name, Token module) {
+            this.name = name;
+            this.module = module;
+            this.shouldImportAsModule = true;
+        }
+
+        public WattImport(Token name) {
+            this.name = name;
+            this.module = null;
+            this.shouldImportAsModule = false;
+        }
+    }
+
+    // импорты
+    private final ArrayList<WattImport> imports;
+
+    // компиляция
     @Override
     public void compile() {
-        for (Token name : names) {
-            WattExecutor.getImportsResolver().resolve(name.asAddress(), name.value);
+        for (WattImport singleImport : imports) {
+            WattExecutor.getImportsResolver().resolve(singleImport);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.kilowatt.WattVM.Codegen;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Boxes.VmInstructionsBox;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
-import com.kilowatt.WattVM.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import lombok.Getter;
 import lombok.Setter;

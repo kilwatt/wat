@@ -5,9 +5,9 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Lexer.Lexer;
 import com.kilowatt.Parser.AST.BlockNode;
+import com.kilowatt.Parser.AST.ImportNode;
 import com.kilowatt.Parser.Parser;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.VmAddress;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -30,7 +30,9 @@ public class WattImportResolver {
     private final Path localPath;
 
     // импорт файла
-    public void resolve(VmAddress address, String name) {
+    public void resolve(ImportNode.WattImport wattImport) {
+        // имя файла
+        String name = wattImport.getName().value;
         // парсим
         Lexer lexer;
         String fileName;
@@ -49,25 +51,25 @@ public class WattImportResolver {
                         lexer = new Lexer(fileName, new String(stream.readAllBytes()));
                     } else {
                         throw new WattResolveError(
-                            address.getLine(),
-                            address.getFileName(),
+                            wattImport.getName().getLine(),
+                            wattImport.getName().getFileName(),
                             "couldn't resolve name: " + name,
                             "check file exists!");
                     }
                 } catch (NullPointerException e) {
                     throw new WattResolveError(
-                            address.getLine(),
-                            address.getFileName(),
-                            "couldn't resolve name: " + name,
-                            "check file exists!");
+                        wattImport.getName().getLine(),
+                        wattImport.getName().getFileName(),
+                        "couldn't resolve name: " + name,
+                        "check file exists!");
                 }
             }
         } catch (IOException e) {
             throw new WattResolveError(
-                    address.getLine(),
-                    address.getFileName(),
-                    "couldn't resolve name: " + localPath.resolve(name),
-                    "check file exists!");
+                wattImport.getName().getLine(),
+                wattImport.getName().getFileName(),
+                "couldn't resolve name: " + localPath.resolve(name),
+                "check file exists!");
         }
         // парсинг
         Parser parser = new Parser(fileName, lexer.scan());
@@ -77,7 +79,7 @@ public class WattImportResolver {
         analyzer.analyze(result);
         // компилируем
         if (!imported.contains(pathString)) {
-            WattCompiler.importDefinitions(result);
+            WattCompiler.importDefinitions(result, wattImport.isShouldImportAsModule());
             imported.add(pathString);
         }
     }

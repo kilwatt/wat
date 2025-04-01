@@ -3,6 +3,7 @@ package com.kilowatt.WattVM;
 import com.kilowatt.Compiler.WattBuiltinProvider;
 import com.kilowatt.WattVM.Benchmark.VmBenchmark;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
+import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmReflection;

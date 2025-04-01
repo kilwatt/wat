@@ -21,7 +21,7 @@ public class UnitNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineUnit(name.asAddress(), name.value, fullName.value, compileUnit())
+                new VmInstructionDefineUnit(name.asAddress(), name.value, compileUnit())
         );
     }
 
