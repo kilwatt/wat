@@ -56,13 +56,24 @@ public class WattExecutor {
             error.print();
             // error.printStackTrace();
         } catch (RuntimeException error) {
-            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
-            new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
-                    "jvm runtime exception: " + error.getMessage(),
-                    "check your code."
-            ).print();
+            try {
+                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+                new WattRuntimeError(
+                        address.getLine(),
+                        address.getFileName(),
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code."
+                ).print();
+            } catch (NullPointerException exception) {
+                // TODO! add WATTINTERNALERROR with stack trace,
+                //  instead of using parsing error
+                new WattParsingError(
+                        -1,
+                        "null",
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code."
+                ).print();
+            }
         }
     }
 

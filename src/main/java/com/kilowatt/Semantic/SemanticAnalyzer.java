@@ -23,6 +23,7 @@ public class SemanticAnalyzer {
 
     // верхний элемент
     public Node top() {
+        if (context.isEmpty()) return null;
         return context.peek();
     }
 
