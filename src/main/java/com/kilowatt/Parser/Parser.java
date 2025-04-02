@@ -682,7 +682,7 @@ public class Parser {
     private ImportNode.WattImport singleImport() {
         // имя импорта
         Token name = consume(TokenType.TEXT);
-        // with
+        // если есть оверрайд полного имени
         if (check(TokenType.WITH)) {
             consume(TokenType.WITH);
             // переписываем полное имя

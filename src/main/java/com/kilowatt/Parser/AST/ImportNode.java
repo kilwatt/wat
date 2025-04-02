@@ -31,11 +31,14 @@ public class ImportNode implements Node {
     @Override
     public void compile() {
         for (WattImport wattImport : imports) {
+            // получаем оверрайд полного имени
+            String fullNameOverride = wattImport.fullNameOverride != null ?
+                    wattImport.fullNameOverride.getValue() : null;
+            // ресолв
             WattExecutor.getImportsResolver().resolve(
                 wattImport.name.asAddress(),
                 wattImport.name.getValue(),
-                wattImport.fullNameOverride != null ?
-                        wattImport.fullNameOverride.getValue() : null
+                fullNameOverride
             );
         }
     }
