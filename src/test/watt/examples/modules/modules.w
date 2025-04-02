@@ -1,4 +1,4 @@
-import 'example.w'
+import 'example.w' with 'module'
 
-a := new example:B()
+a := new module:B()
 a.a()

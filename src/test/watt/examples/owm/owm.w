@@ -1,5 +1,5 @@
 import 'net.owm'
 
 owm := new OwmClient('someowmapikey')
-weather := owm.city('Tashkent', 'ru', 'xml')
+weather := owm.city('Moscow', 'ru', 'json')
 io.println(weather)

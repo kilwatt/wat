@@ -5,6 +5,7 @@ import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
 import com.kilowatt.Parser.AST.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +19,13 @@ import java.util.List;
 public class Parser {
     private final String filename;
     private final ArrayList<Token> tokenList;
+    @Setter
+    private String fullNamePrefix;
     private int current = 0;
 
     public Parser(String filename, ArrayList<Token> tokenList) {
         this.filename = filename;
+        this.fullNamePrefix = filename.replace(".w", "");
         this.tokenList = tokenList;
     }
 
@@ -69,7 +73,7 @@ public class Parser {
     private Token toFullName(Token name) {
         return new Token(
             TokenType.TEXT,
-            filename.replace(".w", "") + ":" + name.getValue(),
+            fullNamePrefix + ":" + name.getValue(),
             name.getLine(),
             name.getFileName()
         );
@@ -674,23 +678,44 @@ public class Parser {
         return new AssertNode(loc, expression());
     }
 
+    // один import
+    private ImportNode.WattImport singleImport() {
+        // имя импорта
+        Token name = consume(TokenType.TEXT);
+        // with
+        if (check(TokenType.WITH)) {
+            consume(TokenType.WITH);
+            // переписываем полное имя
+            return new ImportNode.WattImport(
+                name,
+                consume(TokenType.TEXT)
+            );
+        } else {
+            // перепись полного имени = null
+            return new ImportNode.WattImport(
+                name,
+                null
+            );
+        }
+    }
+
     // стэйтмент import
     private Node importNode() {
         consume(TokenType.IMPORT);
-        ArrayList<Token> imports = new ArrayList<>();
+        ArrayList<ImportNode.WattImport> imports = new ArrayList<>();
         if (check(TokenType.LEFT_PAREN)) {
             consume(TokenType.LEFT_PAREN);
             do {
                 if (check(TokenType.COMMA)) {
                     consume(TokenType.COMMA);
                 }
-                imports.add(consume(TokenType.TEXT));
+                imports.add(singleImport());
             }
             while (check(TokenType.COMMA));
 
             consume(TokenType.RIGHT_PAREN);
         } else {
-            imports.add(consume(TokenType.TEXT));
+            imports.add(singleImport());
         }
         return new ImportNode(imports);
     }

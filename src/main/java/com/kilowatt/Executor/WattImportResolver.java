@@ -30,7 +30,7 @@ public class WattImportResolver {
     private final Path localPath;
 
     // импорт файла
-    public void resolve(VmAddress addr, String name) {
+    public void resolve(VmAddress addr, String name, String fullNameOverride) {
         // парсим
         Lexer lexer;
         String fileName;
@@ -69,8 +69,11 @@ public class WattImportResolver {
                 "couldn't resolve name: " + localPath.resolve(name),
                 "check file exists!");
         }
-        // парсинг
+        // парсер
         Parser parser = new Parser(fileName, lexer.scan());
+        // оверрайд полного имени
+        if (fullNameOverride != null) parser.setFullNamePrefix(fullNameOverride);
+        // парсинг
         BlockNode result = parser.parse();
         // семантический анализ
         SemanticAnalyzer analyzer = new SemanticAnalyzer();

@@ -4,6 +4,7 @@ import com.kilowatt.Executor.WattExecutor;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -13,16 +14,28 @@ import java.util.ArrayList;
 @Getter
 @AllArgsConstructor
 public class ImportNode implements Node {
+    /*
+    Класс импорта
+     */
+    @AllArgsConstructor
+    @Setter
+    public static class WattImport {
+        private Token name;
+        private Token fullNameOverride;
+    }
+
     // импорты
-    private final ArrayList<Token> imports;
+    private final ArrayList<WattImport> imports;
 
     // компиляция
     @Override
     public void compile() {
-        for (Token name : imports) {
+        for (WattImport wattImport : imports) {
             WattExecutor.getImportsResolver().resolve(
-                name.asAddress(),
-                name.getValue()
+                wattImport.name.asAddress(),
+                wattImport.name.getValue(),
+                wattImport.fullNameOverride != null ?
+                        wattImport.fullNameOverride.getValue() : null
             );
         }
     }

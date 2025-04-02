@@ -60,5 +60,6 @@ public enum TokenType {
     TO, // to
     FROM, // from
     NATIVE, // native
-    PIPE // pipe
+    PIPE, // pipe
+    WITH // with
 }
