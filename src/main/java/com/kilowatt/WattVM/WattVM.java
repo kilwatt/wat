@@ -27,6 +27,7 @@ public class WattVM {
 
     // инициализация стека под поток
     public void initForThread() {
+        // устанавливаем стэк
         stack.set(new ArrayDeque<>());
     }
 
