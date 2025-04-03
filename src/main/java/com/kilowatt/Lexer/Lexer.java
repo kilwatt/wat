@@ -85,7 +85,7 @@ public class Lexer {
                     } else if (match('>')) {
                         addToken(TokenType.GO, "->");
                         break;
-                    } else if (Character.isDigit(peek())) {
+                    } else if (isDigit(peek())) {
                         tokens.add(scanNumber('-'));
                         break;
                     } else {
@@ -215,9 +215,9 @@ public class Lexer {
                     break;
                 }
                 default: {
-                    if (Character.isDigit(current)) {
+                    if (isDigit(current)) {
                         tokens.add(scanNumber(current));
-                    } else if (Character.isLetter(current) || current == '_') {
+                    } else if (canBeUsedForId(current)) {
                         tokens.add(scanIdentifierOrKeyword(current));
                     } else {
                         throw new WattParsingError(
@@ -270,7 +270,7 @@ public class Lexer {
     private Token scanNumber(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
         boolean isFloat = false;
-        while (Character.isDigit(peek()) || peek() == '.') {
+        while (isDigit(peek()) || peek() == '.') {
             if (peek() == '.') {
                 if (isFloat) {
                     throw new WattParsingError(
@@ -297,8 +297,7 @@ public class Lexer {
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
-        while (Character.isLetter(peek()) || Character.isDigit(peek()) ||
-                peek() == '_' || peek() == ':') {
+        while (canBeUsedForId(peek())) {
             if (match('\n')) {
                 line += 1;
                 continue;
@@ -350,5 +349,24 @@ public class Lexer {
         } else {
             return false;
         }
+    }
+
+    // цифра ли
+    private boolean isDigit(char character) {
+        return character >= '0' && character <= '9';
+    }
+
+    // буква ли
+    private boolean isAlpha(char character) {
+        return (character >= 'a' && character <= 'z') ||
+            (character >= 'A' && character <= 'Z') ||
+            (character == '_');
+    }
+
+    // подходит ли для ID
+    private boolean canBeUsedForId(char character) {
+        return isAlpha(character) ||
+            isDigit(character) ||
+            (character == ':' && canBeUsedForId(next()));
     }
 }

@@ -31,10 +31,11 @@ public class WattImportResolver {
 
     // импорт файла
     public void resolve(VmAddress addr, String name, String fullNameOverride) {
-        // парсим
+        // данные
         Lexer lexer;
         String fileName;
         String pathString;
+        // загружаем файл
         try {
             if (!WattLibraries.libraries.containsKey(name)) {
                 fileName = name;
