@@ -8,7 +8,6 @@ import lombok.Getter;
 /*
 Ломает текущее исполнение цикла или переходит на следующую итерацию
  */
-@SuppressWarnings("UnnecessaryToStringCall")
 @Getter
 public class VmInstructionLoopEnd extends RuntimeException implements VmInstruction {
     // адресс

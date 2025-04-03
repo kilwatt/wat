@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Codegen;
 
+import com.kilowatt.Errors.WattColors;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 
 import java.io.*;
@@ -11,6 +12,9 @@ import java.util.List;
 public class VmCodeDumper {
     // дамп
     public static void dump(List<VmInstruction> code, boolean toFile) {
+        // выводим успешное сообщение о дампе
+        System.out.println(WattColors.ANSI_YELLOW + "Dumping volt vm code...");
+        // дамп
         // если в файл
         if (toFile) {
             // сохраняем стандартный вывод в консоль
@@ -31,6 +35,8 @@ public class VmCodeDumper {
             // пишем код в консоль
             dumpCode(code);
         }
+        // выводим успешное сообщение о дампе
+        System.out.println(WattColors.ANSI_YELLOW + "Dumped to out.vt");
     }
 
     // дамп кода
