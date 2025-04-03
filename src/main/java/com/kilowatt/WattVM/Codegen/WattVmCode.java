@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.WattVM;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
 
 /*
 Код для ВМ
@@ -16,7 +16,7 @@ import java.util.Stack;
 @Setter
 public class WattVmCode {
     // стэк боксов для написания
-    private final Stack<VmInstructionsBox> writing = new Stack<>();
+    private final ArrayDeque<VmInstructionsBox> writing = new ArrayDeque<>();
 
     // конструктор
     public WattVmCode() {
@@ -35,7 +35,7 @@ public class WattVmCode {
 
     // добавление инструкции
     public void visitInstruction(VmInstruction instruction) {
-        this.writing.lastElement().visitInstr(instruction);
+        this.writing.getFirst().visitInstr(instruction);
     }
 
     // запуск кода
@@ -45,7 +45,7 @@ public class WattVmCode {
             System.out.println("Send your code with this message to developers. #003::CompilationPhase");
         }
         // получаем код
-        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.lastElement());
+        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.getFirst());
         // запускаем
         box.run(vm, vm.getGlobals());
     }
@@ -53,7 +53,7 @@ public class WattVmCode {
     // вывод кода
     public void print(boolean asFile) {
         // получаем код
-        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.lastElement());
+        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.getFirst());
         // дампим
         VmCodeDumper.dump(box.getInstructionContainer(), asFile);
     }
