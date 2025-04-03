@@ -16,7 +16,8 @@ public class WattCommandsExecutor {
     private final HashMap<String, WattCommand> commands = new HashMap<>(){{
         put("-v", new WattVersionCommand());
         put("-tests", new WattTestsCommand());
-        put("-o", new WattDumpBytecodeCommand());
+        put("-d", new WattDumpCommand());
+        put("-df", new WattDumpFileCommand());
     }};
 
     // вывод информацию об использовании
@@ -27,7 +28,8 @@ public class WattCommandsExecutor {
             "\nwatt <script> :: runs script" +
             "\nwatt -v :: info about watt version" +
             "\nwatt -tests :: run internal watt tests" +
-            "\nwatt -o <script> :: dumps bytecode" +
+            "\nwatt -d <script> :: dumps bytecode" +
+            "\nwatt -df <script> :: dumps bytecode to file" +
             "\n........" +
             WattColors.ANSI_RESET
         );

@@ -43,8 +43,10 @@ public class WattImportResolver {
                 pathString = path.toString();
                 lexer = new Lexer(name, new String(Files.readAllBytes(path)));
             } else {
-                fileName = WattLibraries.libraries.get(name);
-                pathString = "/" + fileName;
+                pathString = "/" + WattLibraries.libraries.get(name);
+                fileName = pathString.substring(
+            pathString.lastIndexOf("/")+1
+                );
                 try (InputStream stream = WattExecutor.class.getResourceAsStream(pathString)) {
                     if (stream != null) {
                         lexer = new Lexer(fileName, new String(stream.readAllBytes()));

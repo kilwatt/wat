@@ -5,12 +5,12 @@ import com.kilowatt.Executor.WattExecutor;
 import java.io.IOException;
 
 /*
-Дамп байткода
+Дамп байткода в файл
  */
-public class WattDumpBytecodeCommand implements WattCommand {
+public class WattDumpFileCommand implements WattCommand {
     @Override
     public void execute(String... args) throws IOException {
-        WattExecutor.dump(args[0]);
+        WattExecutor.dump(args[0], true);
     }
 
     @Override

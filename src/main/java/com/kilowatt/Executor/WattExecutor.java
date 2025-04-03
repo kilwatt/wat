@@ -77,7 +77,7 @@ public class WattExecutor {
     }
 
     // дамп байткода
-    public static void dump(String path) throws IOException {
+    public static void dump(String path, boolean asFile) throws IOException {
         // пробуем
         try {
             // путь
@@ -97,7 +97,7 @@ public class WattExecutor {
             // объявляем функции
             WattBuiltinProvider.provide();
             // дампим код
-            WattCompiler.vm.dump(WattCompiler.code);
+            WattCompiler.vm.dump(WattCompiler.code, asFile);
         } catch (RuntimeException error) {
             try {
                 VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();

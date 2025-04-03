@@ -41,8 +41,8 @@ public class WattVmCode {
         ((VmBaseInstructionsBox)this.writing.lastElement()).run(vm, vm.getGlobals());
     }
 
-    public void print() {
+    public void print(boolean toFile) {
         VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.lastElement());
-        VmCodeDumper.dump(box.getInstructionContainer());
+        VmCodeDumper.dump(box.getInstructionContainer(), toFile);
     }
 }

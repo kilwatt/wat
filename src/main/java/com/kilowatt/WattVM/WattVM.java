@@ -67,8 +67,8 @@ public class WattVM {
         }
     }
 
-    public void dump(WattVmCode code) {
+    public void dump(WattVmCode code, boolean toFile) {
         // дамп кода
-        code.print();
+        code.print(toFile);
     }
 }
