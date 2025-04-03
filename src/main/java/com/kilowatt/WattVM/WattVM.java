@@ -48,7 +48,6 @@ public class WattVM {
 
     // запуск
     public void run(WattVmCode code, boolean needBenchmarkInfo) {
-        code.print();
         // переменная для рефлексии
         globals.define(
             WattBuiltinProvider.builtinAddress,
@@ -66,5 +65,10 @@ public class WattVM {
         if (needBenchmarkInfo) {
             System.out.println("exec time: " + mark.end() + " ms. stack: " + stack.get());
         }
+    }
+
+    public void dump(WattVmCode code) {
+        // дамп кода
+        code.print();
     }
 }

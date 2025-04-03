@@ -54,7 +54,50 @@ public class WattExecutor {
                  WattResolveError | WattSemanticError error) {
             // если есть ошибка - выводим
             error.print();
-            // error.printStackTrace();
+        } catch (RuntimeException error) {
+            try {
+                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+                new WattRuntimeError(
+                        address.getLine(),
+                        address.getFileName(),
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code."
+                ).print();
+            } catch (NullPointerException exception) {
+                // TODO! add WATTINTERNALERROR with stack trace,
+                //  instead of using parsing error
+                new WattParsingError(
+                        -1,
+                        "null",
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code."
+                ).print();
+            }
+        }
+    }
+
+    // дамп байткода
+    public static void dump(String path) throws IOException {
+        // пробуем
+        try {
+            // путь
+            Path filePath = Path.of(path);
+            localPath = filePath.getParent();
+            // ресолвер импортов
+            importsResolver = new WattImportResolver(localPath);
+            // парсим
+            Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
+            Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
+            Node result = parser.parse();
+            // семантический анализ
+            SemanticAnalyzer analyzer = new SemanticAnalyzer();
+            analyzer.analyze(result);
+            // компилируем
+            WattCompiler.compile(result);
+            // объявляем функции
+            WattBuiltinProvider.provide();
+            // дампим код
+            WattCompiler.vm.dump(WattCompiler.code);
         } catch (RuntimeException error) {
             try {
                 VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();

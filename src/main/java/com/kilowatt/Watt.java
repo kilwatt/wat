@@ -1,8 +1,5 @@
 package com.kilowatt;
-
-import com.kilowatt.Errors.WattColors;
-import com.kilowatt.Executor.WattExecutor;
-import com.kilowatt.Testrunner.WattTests;
+import com.kilowatt.Commands.WattCommandsHandler;
 
 import java.io.IOException;
 
@@ -10,20 +7,14 @@ import java.io.IOException;
 Язык программирования WATT
  */
 public class Watt {
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            warning(WattColors.ANSI_YELLOW + "Invalid usage. Example: watt <script>" + WattColors.ANSI_RESET);
-        }
-        if (args[0].equals("--tests")) {
-            WattTests.run();
-        } else {
-            System.out.println(WattColors.ANSI_YELLOW + "Running: " + args[0] + WattColors.ANSI_RESET);
-            WattExecutor.run(args[0]);
-        }
-    }
+    // версия
+    public static final String version = "0.0.1";
 
-    public static void warning(String warning) {
-        System.out.println(warning);
-        System.exit(-1);
+    // хэндлер команд
+    public static final WattCommandsHandler commandHandler = new WattCommandsHandler();
+
+    // мэйн функция
+    public static void main(String[] args) throws IOException {
+        commandHandler.handle(args);
     }
 }

@@ -8,8 +8,9 @@ import java.util.List;
 Дампер кода вм
  */
 public class VmCodeDumper {
+    // дамп кода
     public static void dump(List<VmInstruction> code) {
-        System.out.println("*********** VmCode Dump ***********");
+        System.out.println("******** Volt Vm Code Dump ********");
         for (VmInstruction instruction : code) {
             instruction.print(0);
         }
