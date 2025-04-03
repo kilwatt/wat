@@ -217,7 +217,7 @@ public class Lexer {
                 default: {
                     if (isDigit(current)) {
                         tokens.add(scanNumber(current));
-                    } else if (canBeUsedForId(current)) {
+                    } else if (isId(current)) {
                         tokens.add(scanIdentifierOrKeyword(current));
                     } else {
                         throw new WattParsingError(
@@ -297,7 +297,7 @@ public class Lexer {
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
-        while (canBeUsedForId(peek())) {
+        while (isId(peek())) {
             if (match('\n')) {
                 line += 1;
                 continue;
@@ -364,9 +364,9 @@ public class Lexer {
     }
 
     // подходит ли для ID
-    private boolean canBeUsedForId(char character) {
+    private boolean isId(char character) {
         return isAlpha(character) ||
             isDigit(character) ||
-            (character == ':' && canBeUsedForId(next()));
+            (character == ':' && isId(next()));
     }
 }
