@@ -11,7 +11,7 @@ import java.util.HashMap;
 Хэндлер команд
  */
 @SuppressWarnings("ConstantValue")
-public class WattCommandsHandler {
+public class WattCommandsExecutor {
     // комманды
     private final HashMap<String, WattCommand> commands = new HashMap<>(){{
         put("-v", new WattVersionCommand());
@@ -37,7 +37,7 @@ public class WattCommandsHandler {
         return Arrays.copyOfRange(args, 1, args.length);
     }
 
-    public void handle(String[] args) throws IOException {
+    public void exec(String[] args) throws IOException {
         // команда
         String command = args[0];
         // аргументы команды
