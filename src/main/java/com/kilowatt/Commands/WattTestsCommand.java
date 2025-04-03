@@ -10,9 +10,4 @@ public class WattTestsCommand implements WattCommand {
     public void execute(String... args) {
         WattTests.run();
     }
-
-    @Override
-    public int argsAmount() {
-        return 0;
-    }
 }

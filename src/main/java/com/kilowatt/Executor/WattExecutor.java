@@ -2,10 +2,7 @@ package com.kilowatt.Executor;
 
 import com.kilowatt.Compiler.WattBuiltinProvider;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattParsingError;
-import com.kilowatt.Errors.WattResolveError;
-import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Errors.*;
 import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Lexer;
@@ -28,7 +25,7 @@ public class WattExecutor {
     @Getter
     private static WattImportResolver importsResolver;
 
-    // запуск
+    // запуск скрипта
     public static void run(String path) throws IOException {
         // пробуем
         try {
@@ -56,27 +53,28 @@ public class WattExecutor {
             error.print();
         } catch (RuntimeException error) {
             try {
+                // адрес
                 VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
-                new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
+                // ошибка
+                new WattInternalError(
+                    address.getLine(),
+                    address.getFileName(),
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code."
                 ).print();
             } catch (NullPointerException exception) {
-                // TODO! add WATTINTERNALERROR with stack trace,
-                //  instead of using parsing error
-                new WattParsingError(
-                        -1,
-                        "null",
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
+                // ошибка
+                new WattInternalError(
+                    -1,
+                    "null",
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code."
                 ).print();
             }
         }
     }
 
-    // дамп байткода
+    // дамп байткода скрипта
     public static void dump(String path, boolean asFile) throws IOException {
         // пробуем
         try {
@@ -100,17 +98,18 @@ public class WattExecutor {
             WattCompiler.vm.dump(WattCompiler.code, asFile);
         } catch (RuntimeException error) {
             try {
+                // адрес
                 VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
-                new WattRuntimeError(
+                // ошибка
+                new WattInternalError(
                         address.getLine(),
                         address.getFileName(),
                         "jvm runtime exception: " + error.getMessage(),
                         "check your code."
                 ).print();
             } catch (NullPointerException exception) {
-                // TODO! add WATTINTERNALERROR with stack trace,
-                //  instead of using parsing error
-                new WattParsingError(
+                // ошибка
+                new WattInternalError(
                         -1,
                         "null",
                         "jvm runtime exception: " + error.getMessage(),

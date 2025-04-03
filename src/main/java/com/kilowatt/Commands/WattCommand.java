@@ -7,5 +7,4 @@ import java.io.IOException;
  */
 public interface WattCommand {
     void execute(String... args) throws IOException;
-    int argsAmount();
 }

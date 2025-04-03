@@ -12,9 +12,4 @@ public class WattDumpFileCommand implements WattCommand {
     public void execute(String... args) throws IOException {
         WattExecutor.dump(args[0], true);
     }
-
-    @Override
-    public int argsAmount() {
-        return 1;
-    }
 }
