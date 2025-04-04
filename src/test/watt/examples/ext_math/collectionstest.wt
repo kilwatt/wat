@@ -1,0 +1,8 @@
+import 'std.collections'
+import 'std.io'
+
+stack := new Stack()
+stack.push(10)
+stack.push(12)
+
+io.println(stack.pop())

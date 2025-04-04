@@ -22,5 +22,6 @@ public class WattLibraries {
         put("std.time", "std/std-time.wt");
         put("net.mail", "net/net-mail.wt");
         put("net.owm", "net/net-owm.wt");
+        put("std.collections", "std/std-collections.wt");
     }};
 }

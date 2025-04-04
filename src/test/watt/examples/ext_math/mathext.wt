@@ -1,0 +1,21 @@
+import 'std.math.ext'
+import 'std.io'
+
+// vectors
+vec := new Vec3(10, 10, 10)
+vec2 := new Vec3(3, 3, 3)
+vec.sub(vec2)
+io.println(vec2.to_string())
+
+// matrix's
+matrix := new Matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+])
+matrix2 := new Matrix([
+    [8,8,6],
+    [6,5,4],
+    [2,2,0]
+])
+io.println(matrix.add(matrix2).to_string())

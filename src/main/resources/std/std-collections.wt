@@ -1,0 +1,24 @@
+type Stack {
+    stack := []
+
+    fun push(val) {
+        stack.add(val)
+    }
+
+    fun pop() {
+        index := stack.size() - 1
+        val := stack.get(index)
+        stack.del(index)
+        return val
+    }
+
+    fun size() {
+        return stack.size()
+    }
+
+    fun top() {
+        index := stack.size() - 1
+        val := stack.get(index)
+        return val
+    }
+}
