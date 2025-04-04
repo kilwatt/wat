@@ -7,6 +7,8 @@ import com.kilowatt.WattVM.Instructions.*;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+
 /*
 Нативная функция
  */
@@ -18,41 +20,8 @@ public class NativeNode implements Node {
 
     @Override
     public void compile() {
-        VmBaseInstructionsBox value = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(value);
-        WattCompiler.code.visitInstruction(
-                new VmInstructionLoad(
-                        name.asAddress(),
-                        "__refl__",
-                        false,
-                        true
-                )
-        );
-        VmBaseInstructionsBox args = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(args);
-        WattCompiler.code.visitInstruction(
-                new VmInstructionPush(
-                        javaName.asAddress(),
-                        javaName.value
-                )
-        );
-        WattCompiler.code.visitInstruction(
-                new VmInstructionPush(
-                        javaName.asAddress(),
-                        new WattList()
-                )
-        );
-        WattCompiler.code.endWrite();
-        WattCompiler.code.visitInstruction(
-                new VmInstructionCall(
-                        name.asAddress(),
-                        "reflect",
-                        args,
-                        true,
-                        true
-                )
-        );
-        WattCompiler.code.endWrite();
+        // компилируем функцию
+        VmBaseInstructionsBox value = compileFn();
         // дефайн по имени
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefine(
@@ -71,5 +40,41 @@ public class NativeNode implements Node {
                         value
                 )
         );
+    }
+
+    private VmBaseInstructionsBox compileFn() {
+        // компиляция
+        VmBaseInstructionsBox value = new VmBaseInstructionsBox();
+        WattCompiler.code.writeTo(value);
+        WattCompiler.code.visitInstruction(
+                new VmInstructionLoad(
+                        name.asAddress(),
+                        "__refl__",
+                        false,
+                        true
+                )
+        );
+        VmBaseInstructionsBox args = new VmBaseInstructionsBox();
+        WattCompiler.code.writeTo(args);
+        WattCompiler.code.visitInstruction(
+                new VmInstructionPush(
+                        javaName.asAddress(),
+                        javaName.value
+                )
+        );
+        new ListNode(name, new ArrayList<>()).compile();
+        WattCompiler.code.endWrite();
+        WattCompiler.code.visitInstruction(
+                new VmInstructionCall(
+                        name.asAddress(),
+                        "reflect",
+                        args,
+                        true,
+                        true
+                )
+        );
+        WattCompiler.code.endWrite();
+        // возвращаем
+        return value;
     }
 }
