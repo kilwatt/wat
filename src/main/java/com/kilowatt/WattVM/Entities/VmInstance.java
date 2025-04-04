@@ -40,8 +40,7 @@ public class VmInstance implements VmFunctionOwner {
     public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
         VmFunction fun = (VmFunction) getFields().lookup(inAddr, name);
-        fun.setDefinedFor(this);
-        fun.exec(vm, shouldPushResult);
+        fun.exec(vm, shouldPushResult, this);
     }
 
     // в строку
@@ -49,8 +48,8 @@ public class VmInstance implements VmFunctionOwner {
     @Override
     public String toString() {
         return "VmInstance(" +
-                "scope=" + fields +
-                ", clazz=" + type +
+                "fields=" + fields.getValues().keySet() +
+                ", type=" + type.getName() +
                 ", addr=" + addr +
                 ')';
     }

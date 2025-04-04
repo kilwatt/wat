@@ -33,7 +33,7 @@ public class StdThreading {
             for (Object o : list.getArray()) {
                 WattCompiler.vm.push(o);
             }
-            fn.exec(WattCompiler.vm, false);
+            fn.exec(WattCompiler.vm, false, null);
         });
         try {
             thread.start();

@@ -113,6 +113,7 @@ for i in 0 to 1 {
 }
 io.println(a)
 */
+/*
 import 'std.math.ext'
 import 'std.io'
 
@@ -129,3 +130,11 @@ matrix2 := new Matrix([
 ])
 
 io.println(matrix.add(matrix2).to_string())
+*/
+
+import 'std.math.ext'
+import 'std.io'
+
+vec := new Vec3(3,2,1)
+vec.add(new Vec3(1,2,3))
+io.println(vec)

@@ -52,7 +52,7 @@ type Matrix(fill) {
         if (typeof(fill) != 'WattList') {
             error(
                 'matrix fill must be a list, not ' + typeof(fill),
-                'check for types'
+                'check for types.'
             )
         }
 
@@ -72,13 +72,13 @@ type Matrix(fill) {
         if (typeof(x) != 'int') {
             error(
                 'matrix x amount must be an int, not ' + typeof(x),
-                'check for types'
+                'check for types.'
             )
         }
         if (typeof(y) != 'int') {
             error(
                 'matrix y amount must be an int, not ' + typeof(y),
-                'check for types'
+                'check for types.'
             )
         }
         // изменение
@@ -91,26 +91,24 @@ type Matrix(fill) {
         if (typeof(matrix) != 'Matrix') {
             error(
                 'to add matrix, value must be an Matrix, not ' + typeof(matrix),
-                'check for types'
+                'check for types.'
             )
         }
         // проверка размеров
         if (matrix.arr.size() != arr.size()) {
             error(
                 'could not add matrix with different size',
-                'check for sizes'
+                'check for sizes.'
             )
         }
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
         for y in 0 to arr.size() {
-            row := []
             for x in 0 to arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value+matrix.arr.get(y).get(x))
             }
-            new_matrix.arr.add(row)
         }
         // возвращаем
         return new_matrix
@@ -122,26 +120,24 @@ type Matrix(fill) {
         if (typeof(matrix) != 'Matrix') {
             error(
                 'to sub matrix, value must be an Matrix, not ' + typeof(matrix),
-                'check for types'
+                'check for types.'
             )
         }
         // проверка размеров
         if (matrix.arr.size() != arr.size()) {
             error(
                 'could not sub matrix with different size',
-                'check for sizes'
+                'check for sizes.'
             )
         }
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
         for y in 0 to arr.size() {
-            row := []
             for x in 0 to arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value-matrix.arr.get(y).get(x))
             }
-            new_matrix.arr.add(row)
         }
         // возвращаем
         return new_matrix
@@ -153,26 +149,24 @@ type Matrix(fill) {
         if (typeof(matrix) != 'Matrix') {
             error(
                 'to mul matrix, value must be an Matrix, not ' + typeof(matrix),
-                'check for types'
+                'check for types.'
             )
         }
         // проверка размеров
         if (matrix.arr.size() != arr.size()) {
             error(
                 'could not mul matrix with different size',
-                'check for sizes'
+                'check for sizes.'
             )
         }
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
         for y in 0 to arr.size() {
-            row := []
             for x in 0 to arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value*matrix.arr.get(y).get(x))
             }
-            new_matrix.arr.add(row)
         }
         // возвращаем
         return new_matrix
@@ -184,26 +178,24 @@ type Matrix(fill) {
         if (typeof(matrix) != 'Matrix') {
             error(
                 'to div matrix, value must be an Matrix, not ' + typeof(matrix),
-                'check for types'
+                'check for types.'
             )
         }
         // проверка размеров
         if (matrix.arr.size() != arr.size()) {
             error(
                 'could not div matrix with different size',
-                'check for sizes'
+                'check for sizes.'
             )
         }
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
         for y in 0 to arr.size() {
-            row := []
             for x in 0 to arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value/matrix.arr.get(y).get(x))
             }
-            new_matrix.arr.add(row)
         }
         // возвращаем
         return new_matrix
@@ -220,5 +212,130 @@ type Matrix(fill) {
         str += ']'
 
         return str
+    }
+}
+
+type Vec3(x,y,z) {
+    fun init() {
+        // функция проверки типа
+        fun check_type(name, val) {
+            if (val != 'int' and val != 'float' and val != 'y_type') {
+                error(
+                    'to create vector, value: ' + name + ' must be a number, not ' + typeof(matrix),
+                    'check for types.'
+                )
+            }
+        }
+        // проверка типов
+        check_type('x', typeof(x))
+        check_type('y', typeof(y))
+        check_type('z', typeof(z))
+    }
+    fun add(vec) {
+        if (typeof(vec) != 'Vec3') {
+            error (
+                'could not add ' + vec_type + ' to Vec3',
+                'check for types.'
+            )
+        }
+        x += vec.x
+        y += vec.y
+        z += vec.z
+    }
+    fun sub(vec) {
+        if (typeof(vec) != 'Vec3') {
+            error (
+                'could not sub ' + vec_type + ' to Vec3',
+                'check for types.'
+            )
+        }
+        x -= vec.x
+        y -= vec.y
+        z -= vec.z
+    }
+    fun mul(vec) {
+        if (typeof(vec) != 'Vec3') {
+            error (
+                'could not mul ' + vec_type + ' to Vec3',
+                'check for types.'
+            )
+        }
+        x *= vec.x
+        y *= vec.y
+        z *= vec.z
+    }
+    fun div(vec) {
+        if (typeof(vec) != 'Vec3') {
+            error (
+                'could not div( ' + vec_type + ' to Vec3',
+                'check for types.'
+            )
+        }
+        x /= vec.x
+        y /= vec.y
+        z /= vec.z
+    }
+    fun to_string() {
+        return '(' + 'x: ' + x + ', y: ' + y + ', z: ' + z + ')'
+    }
+}
+
+type Vec2(x,y) {
+    fun init() {
+        // функция проверки типа
+        fun check_type(name, val) {
+            if (val != 'int' and val != 'float' and val != 'y_type') {
+                error(
+                    'to create vector, value: ' + name + ' must be a number, not ' + typeof(matrix),
+                    'check for types.'
+                )
+            }
+        }
+        // проверка типов
+        check_type('x', typeof(x))
+        check_type('y', typeof(y))
+    }
+    fun add(vec) {
+        if (typeof(vec) != 'Vec2') {
+            error (
+                'could not add ' + vec_type + ' to Vec2',
+                'check for types.'
+            )
+        }
+        x += vec.x
+        y += vec.y
+    }
+    fun sub(vec) {
+        if (typeof(vec) != 'Vec2') {
+            error (
+                'could not sub ' + vec_type + ' to Vec2',
+                'check for types.'
+            )
+        }
+        x -= vec.x
+        y -= vec.y
+    }
+    fun mul(vec) {
+        if (typeof(vec) != 'Vec2') {
+            error (
+                'could not mul ' + vec_type + ' to Vec2',
+                'check for types.'
+            )
+        }
+        x *= vec.x
+        y *= vec.y
+    }
+    fun div(vec) {
+        if (typeof(vec) != 'Vec2') {
+            error (
+                'could not div( ' + vec_type + ' to Vec2',
+                'check for types.'
+            )
+        }
+        x /= vec.x
+        y /= vec.y
+    }
+    fun to_string() {
+        return '(' + 'x: ' + x + ', y: ' + y + ')'
     }
 }

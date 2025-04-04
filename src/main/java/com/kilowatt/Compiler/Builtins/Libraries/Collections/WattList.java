@@ -50,8 +50,15 @@ public class WattList {
 
     public Object stringify() {
         StringBuilder s = new StringBuilder();
-        for (Object o : array) {
-            s.append(o).append(", ");
+        for (int i = 0; i < array.size(); i++) {
+            // получаем по индексу
+            Object o = array.get(i);
+            // форматирум
+            if (i + 1 == array.size()) {
+                s.append(o);
+            } else {
+                s.append(o).append(",");
+            }
         }
         return s.toString();
     }

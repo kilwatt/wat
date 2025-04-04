@@ -8,7 +8,6 @@ import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,6 @@ public class VmFunction implements VmInstructionsBox {
     private List<VmInstruction> instructions = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
-    // владелец функций
-    @Setter
-    private VmFunctionOwner definedFor;
     // адрес
     private final VmAddress addr;
     // замыкание
@@ -45,7 +41,7 @@ public class VmFunction implements VmInstructionsBox {
      * @param vm - ВМ
      * @param shouldPushResult - положить ли результат в стек
      */
-    public void exec(WattVM vm, boolean shouldPushResult)  {
+    public void exec(WattVM vm, boolean shouldPushResult, VmFunctionOwner self)  {
         VmFrame<String, Object> scope = new VmFrame<>();
         if (getClosure() != null) {
             scope.setClosure(closure);
@@ -53,9 +49,9 @@ public class VmFunction implements VmInstructionsBox {
         // ставим рут на переменные типа/юнита/глобал скоупа
         // если closure == этому скоупу, то рут не устанавливается благодаря
         // проверке внутри setRoot на цикличный рут.
-        if (definedFor != null) {
-            scope.setRoot(definedFor.getLocalScope());
-            scope.define(addr, "self", definedFor);
+        if (self != null) {
+            scope.setRoot(self.getLocalScope());
+            scope.define(addr, "self", self);
         } else {
             scope.setRoot(vm.getGlobals());
         }
@@ -99,17 +95,6 @@ public class VmFunction implements VmInstructionsBox {
         this.instructions.add(instr);
     }
 
-    // замыкание в строку
-    private String closureString() {
-        if (getClosure() == null)
-        {
-            return "null";
-        }
-        else{
-            return closure.getValues().keySet().toString();
-        }
-    }
-
     // установка замыкания
     public void setClosure(VmFrame<String, Object> closure) {
         // устанавливаем замыкание функции
@@ -129,11 +114,10 @@ public class VmFunction implements VmInstructionsBox {
     // в строку
     @Override
     public String toString() {
-        return "VmFunction{" +
+        return "VmFunction(" +
                 "name='" + name + '\'' +
                 ", addr=" + addr +
-                ", closure=" + closureString() +
-                ", definedFor=" + definedFor +
-                '}';
+                ", closure=" + closure.getValues().keySet() +
+                ')';
     }
 }

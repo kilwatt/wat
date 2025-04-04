@@ -9,6 +9,18 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class VmAddress {
+    // файл
     private final String fileName;
+
+    // строка
     private final int line;
+
+    // в строку
+    @Override
+    public String toString() {
+        return "VmAddress(" +
+                "fileName='" + fileName + '\'' +
+                ", line=" + line +
+                ')';
+    }
 }
