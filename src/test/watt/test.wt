@@ -146,9 +146,17 @@ import 'std.io'
 vec := new Vec4(3,4,-5,6)
 io.println(vec.normalize().to_string())
 */
+/*
 import 'std.math.ext'
 import 'std.io'
 
 complex := new Complex(3, 4)
 complex2 := new Complex(4, 3.3)
 io.println(complex.add(complex2).to_string())
+*/
+
+import 'std.typeof'
+import 'std.io'
+
+io.println(typeof(io))
+io.println(full_typeof(io))

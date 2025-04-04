@@ -25,7 +25,7 @@ public class Parser {
 
     public Parser(String filename, ArrayList<Token> tokenList) {
         this.filename = filename;
-        this.fullNamePrefix = filename.replace(".w", "");
+        this.fullNamePrefix = filename.replace(".wt", "");
         this.tokenList = tokenList;
     }
 

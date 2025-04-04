@@ -1,1 +1,2 @@
 native typeof -> 'com.kilowatt.Compiler.Builtins.Libraries.Std.TypeOf.TypeOf'
+native full_typeof -> 'com.kilowatt.Compiler.Builtins.Libraries.Std.TypeOf.FTypeOf'
