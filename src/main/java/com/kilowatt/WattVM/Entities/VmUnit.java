@@ -3,20 +3,18 @@ package com.kilowatt.WattVM.Entities;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /*
 Кастомный тип VM
  */
 @Getter
+@AllArgsConstructor
 public class VmUnit implements VmFunctionOwner {
     private final String name;
-    private final VmFrame<String, Object> fields;
-
-    public VmUnit(String name, VmFrame<String, Object> fields) {
-        this.name = name;
-        this.fields = fields;
-    }
+    private final String fullName;
+    private final VmFrame<String, Object> fields = new VmFrame<>();
 
     @Override
     public VmFrame<String, Object> getLocalScope() {
@@ -27,6 +25,7 @@ public class VmUnit implements VmFunctionOwner {
     public String toString() {
         return "VmUnit(" +
                 "name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", fields=" + fields.getValues().keySet() +
                 ')';
     }

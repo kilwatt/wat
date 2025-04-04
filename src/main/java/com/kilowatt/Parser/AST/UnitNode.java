@@ -4,6 +4,7 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -29,9 +30,8 @@ public class UnitNode implements Node {
         WattCompiler.code.visitInstruction(
             new VmInstructionDefineUnit(
                 name.asAddress(),
-                name.value,
-                fullName.value,
-                compileUnit()
+                new VmUnit(name.value, fullName.value),
+                compileBody()
             )
         );
     }
@@ -55,7 +55,7 @@ public class UnitNode implements Node {
         analyzer.pop();
     }
 
-    private VmBaseInstructionsBox compileUnit() {
+    private VmBaseInstructionsBox compileBody() {
         VmBaseInstructionsBox box = new VmBaseInstructionsBox();
         WattCompiler.code.writeTo(box);
         for (Node node : body) {

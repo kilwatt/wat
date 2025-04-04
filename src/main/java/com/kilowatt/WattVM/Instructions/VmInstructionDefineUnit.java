@@ -17,29 +17,26 @@ import lombok.Getter;
 public class VmInstructionDefineUnit implements VmInstruction {
     // адрес
     private final VmAddress addr;
-    // имя юнита
-    private final String name;
-    // полное имя юнита
-    private final String fullName;
+    // юнит
+    private final VmUnit unit;
     // тело юнита
     private final VmBaseInstructionsBox body;
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // генерация юнита
-        VmUnit unit = new VmUnit(name, new VmFrame<>());
         unit.getFields().setRoot(frame);
         body.run(vm, unit.getFields());
         unit.getFields().delRoot();
         // дефайн по имени
-        vm.getUnitDefinitions().forceSet(addr, name, unit);
+        vm.getUnitDefinitions().forceSet(addr, unit.getName(), unit);
         // дефайн по полному имени
-        if (fullName != null) vm.getUnitDefinitions().forceSet(addr, fullName, unit);
+        vm.getUnitDefinitions().forceSet(addr, unit.getFullName(), unit);
     }
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + name + ", " + fullName + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + unit.getName() + ", " + unit.getFullName() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : getBody().getInstructionContainer()) {
             instruction.print(indent + 2);
@@ -48,6 +45,6 @@ public class VmInstructionDefineUnit implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_UNIT(" + name + ", " + fullName + ", body: " + body + ")";
+        return "DEFINE_UNIT(" + unit.getName() + ", " + unit.getFullName() + ", body: " + body + ")";
     }
 }

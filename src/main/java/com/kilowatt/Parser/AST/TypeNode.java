@@ -32,8 +32,6 @@ public class TypeNode implements Node {
         WattCompiler.code.visitInstruction(
             new VmInstructionDefineType(
                 name.asAddress(),
-                name.value,
-                fullName.value,
                 compileType()
             )
         );
@@ -64,7 +62,7 @@ public class TypeNode implements Node {
         for (Token token : constructor) {
             newConstructor.add(token.getValue());
         }
-        return new VmType(name.value, newConstructor, compileFields());
+        return new VmType(name.value, fullName.value, newConstructor, compileFields());
     }
 
     // компиляция полей

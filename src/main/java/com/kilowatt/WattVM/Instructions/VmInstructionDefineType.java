@@ -16,24 +16,20 @@ import lombok.RequiredArgsConstructor;
 public class VmInstructionDefineType implements VmInstruction {
     // адрес
     private final VmAddress addr;
-    // имя типа
-    private final String name;
-    // полное имя типа
-    private final String fullName;
     // тип
     private final VmType type;
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // дефайн по имени
-        vm.getTypeDefinitions().forceSet(addr, name, type);
+        vm.getTypeDefinitions().forceSet(addr, type.getName(), type);
         // дефайн по полному имени
-        if (fullName != null) vm.getTypeDefinitions().forceSet(addr, fullName, type);
+        if (type.getName() != null) vm.getTypeDefinitions().forceSet(addr, type.getFullName(), type);
     }
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + name + ", " + fullName + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + type.getName() + ", " + type.getFullName() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : type.getBody().getInstructionContainer()) {
             instruction.print(indent + 2);
@@ -46,6 +42,6 @@ public class VmInstructionDefineType implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_TYPE(" + name + ", " + fullName + ", " + type + ")";
+        return "DEFINE_TYPE(" + type.getName() + ", " + type.getFullName() + ", " + type + ")";
     }
 }
