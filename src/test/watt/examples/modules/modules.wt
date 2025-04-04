@@ -1,4 +1,4 @@
-import 'example.w' with 'module'
+import 'example.wt' with 'module'
 
 a := new module:B()
 a.a()

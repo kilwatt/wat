@@ -1,4 +1,4 @@
-import 'syscolors.w'
+import 'syscolors.wt'
 import 'ext.tui'
 import 'std.io'
 

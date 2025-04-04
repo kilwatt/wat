@@ -150,5 +150,5 @@ import 'std.math.ext'
 import 'std.io'
 
 complex := new Complex(3, 4)
-complex2 := new Complex(4, 'e')
+complex2 := new Complex(4, 3.3)
 io.println(complex.add(complex2).to_string())

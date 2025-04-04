@@ -35,6 +35,7 @@ public class WattExecutor {
             // ресолвер импортов
             importsResolver = new WattImportResolver(localPath);
             // парсим
+            // !TODO add check for files existence
             Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
             Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
             Node result = parser.parse();

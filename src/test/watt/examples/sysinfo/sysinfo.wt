@@ -2,7 +2,7 @@ import 'std.sys'
 import 'std.convert'
 import 'std.jvm'
 import 'std.threads'
-import 'sysprint.w'
+import 'sysprint.wt'
 
 // вывод
 window := new Printer()
