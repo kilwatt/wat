@@ -131,10 +131,16 @@ matrix2 := new Matrix([
 
 io.println(matrix.add(matrix2).to_string())
 */
-
+/*
 import 'std.math.ext'
 import 'std.io'
 
 vec := new Vec3(3,2,1)
 vec.add(new Vec3(1,2,3))
 io.println(vec)
+*/
+import 'std.math.ext'
+import 'std.io'
+
+vec := new Vec4(3,4,-5,6)
+io.println(vec.normalize().to_string())

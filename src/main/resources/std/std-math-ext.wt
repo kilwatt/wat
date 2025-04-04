@@ -219,7 +219,7 @@ type Vec3(x,y,z) {
     fun init() {
         // функция проверки типа
         fun check_type(name, val) {
-            if (val != 'int' and val != 'float' and val != 'y_type') {
+            if (val != 'int' and val != 'float' and val != 'long') {
                 error(
                     'to create vector, value: ' + name + ' must be a number, not ' + typeof(matrix),
                     'check for types.'
@@ -275,6 +275,25 @@ type Vec3(x,y,z) {
         y /= vec.y
         z /= vec.z
     }
+    fun normalize() {
+        vec = new Vec3(0,0,0)
+
+        fun normalize_value(val) {
+            if val < 0 {
+                return -1
+            } elif val > 0 {
+                return 1
+            } else {
+                return 0
+            }
+        }
+
+        vec.x = normalize_value(x)
+        vec.y = normalize_value(y)
+        vec.z = normalize_value(z)
+
+        return vec
+    }
     fun to_string() {
         return '(' + 'x: ' + x + ', y: ' + y + ', z: ' + z + ')'
     }
@@ -284,7 +303,7 @@ type Vec2(x,y) {
     fun init() {
         // функция проверки типа
         fun check_type(name, val) {
-            if (val != 'int' and val != 'float' and val != 'y_type') {
+            if (val != 'int' and val != 'float' and val != 'long') {
                 error(
                     'to create vector, value: ' + name + ' must be a number, not ' + typeof(matrix),
                     'check for types.'
@@ -335,7 +354,116 @@ type Vec2(x,y) {
         x /= vec.x
         y /= vec.y
     }
+    fun normalize() {
+        vec = new Vec2(0,0)
+
+        fun normalize_value(val) {
+            if val < 0 {
+                return -1
+            } elif val > 0 {
+                return 1
+            } else {
+                return 0
+            }
+        }
+
+        vec.x = normalize_value(x)
+        vec.y = normalize_value(y)
+
+        return vec
+    }
     fun to_string() {
         return '(' + 'x: ' + x + ', y: ' + y + ')'
+    }
+}
+
+
+type Vec4(x,y,z,w) {
+    fun init() {
+        // функция проверки типа
+        fun check_type(name, val) {
+            if (val != 'int' and val != 'float' and val != 'long') {
+                error(
+                    'to create vector, value: ' + name + ' must be a number, not ' + typeof(matrix),
+                    'check for types.'
+                )
+            }
+        }
+        // проверка типов
+        check_type('x', typeof(x))
+        check_type('y', typeof(y))
+        check_type('z', typeof(z))
+        check_type('w', typeof(w))
+    }
+    fun add(vec) {
+        if (typeof(vec) != 'Vec4') {
+            error (
+                'could not add ' + vec_type + ' to Vec4',
+                'check for types.'
+            )
+        }
+        x += vec.x
+        y += vec.y
+        z += vec.z
+        w += vec.w
+    }
+    fun sub(vec) {
+        if (typeof(vec) != 'Vec4') {
+            error (
+                'could not sub ' + vec_type + ' to Vec4',
+                'check for types.'
+            )
+        }
+        x -= vec.x
+        y -= vec.y
+        z += vec.z
+        w += vec.w
+    }
+    fun mul(vec) {
+        if (typeof(vec) != 'Vec4') {
+            error (
+                'could not mul ' + vec_type + ' to Vec4',
+                'check for types.'
+            )
+        }
+        x *= vec.x
+        y *= vec.y
+        z *= vec.z
+        w *= vec.w
+    }
+    fun div(vec) {
+        if (typeof(vec) != 'Vec4') {
+            error (
+                'could not div( ' + vec_type + ' to Vec4',
+                'check for types.'
+            )
+        }
+        x /= vec.x
+        y /= vec.y
+        z /= vec.z
+        w /= vec.w
+    }
+    fun normalize() {
+        vec = new Vec4(0,0,0,0)
+
+        fun normalize_value(val) {
+            if val < 0 {
+                return -1
+            } elif val > 0 {
+                return 1
+            } else {
+                return 0
+            }
+        }
+
+        vec.x = normalize_value(x)
+        vec.y = normalize_value(y)
+        vec.z = normalize_value(z)
+        vec.w = normalize_value(w)
+
+        return vec
+    }
+    fun to_string() {
+        return '(' + 'x: ' + x + ', y: ' + y + ', z: ' + z + ', w: ' + w + ')'
     }
 }
