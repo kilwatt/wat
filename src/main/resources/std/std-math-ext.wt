@@ -1,4 +1,5 @@
 import 'std.typeof'
+import 'std.math'
 
 unit math_ext {
     // константы
@@ -47,7 +48,7 @@ type Matrix(fill) {
     arr := []
 
     // инициализация
-    fun init() {
+    fun init {
         // проверка типов
         if (typeof(fill) != 'WattList') {
             error(
@@ -202,7 +203,7 @@ type Matrix(fill) {
     }
 
     // в строку
-    fun to_string() {
+    fun to_string {
         str := '['
 
         for elem in 0 to arr.size() {
@@ -216,7 +217,7 @@ type Matrix(fill) {
 }
 
 type Vec3(x,y,z) {
-    fun init() {
+    fun init {
         // функция проверки типа
         fun check_type(name, val) {
             if (val != 'int' and val != 'float' and val != 'long') {
@@ -275,7 +276,7 @@ type Vec3(x,y,z) {
         y /= vec.y
         z /= vec.z
     }
-    fun normalize() {
+    fun normalize {
         vec = new Vec3(0,0,0)
 
         fun normalize_value(val) {
@@ -294,13 +295,13 @@ type Vec3(x,y,z) {
 
         return vec
     }
-    fun to_string() {
+    fun to_string {
         return '(' + 'x: ' + x + ', y: ' + y + ', z: ' + z + ')'
     }
 }
 
 type Vec2(x,y) {
-    fun init() {
+    fun init {
         // функция проверки типа
         fun check_type(name, val) {
             if (val != 'int' and val != 'float' and val != 'long') {
@@ -354,7 +355,7 @@ type Vec2(x,y) {
         x /= vec.x
         y /= vec.y
     }
-    fun normalize() {
+    fun normalize {
         vec = new Vec2(0,0)
 
         fun normalize_value(val) {
@@ -372,14 +373,14 @@ type Vec2(x,y) {
 
         return vec
     }
-    fun to_string() {
+    fun to_string {
         return '(' + 'x: ' + x + ', y: ' + y + ')'
     }
 }
 
 
 type Vec4(x,y,z,w) {
-    fun init() {
+    fun init {
         // функция проверки типа
         fun check_type(name, val) {
             if (val != 'int' and val != 'float' and val != 'long') {
@@ -443,7 +444,7 @@ type Vec4(x,y,z,w) {
         z /= vec.z
         w /= vec.w
     }
-    fun normalize() {
+    fun normalize {
         vec = new Vec4(0,0,0,0)
 
         fun normalize_value(val) {
@@ -463,7 +464,84 @@ type Vec4(x,y,z,w) {
 
         return vec
     }
-    fun to_string() {
+    fun to_string {
         return '(' + 'x: ' + x + ', y: ' + y + ', z: ' + z + ', w: ' + w + ')'
+    }
+}
+
+type Complex(real, imag) {
+    fun init {
+        // функция проверки типа
+        fun check_type(name, val) {
+            if (val != 'int' and val != 'float' and val != 'long') {
+                error(
+                    'to create complex number, value: ' + name + ' must be a number, not ' + typeof(val),
+                    'check for types.'
+                )
+            }
+        }
+        // проверяем
+        check_type('real', typeof(real))
+        check_type('imag',  typeof(imag))
+    }
+
+    fun add(other) {
+        if (typeof(other) != 'Complex') {
+            error('could not add ' + other + ' and complex number', 'check for types.')
+        }
+        return new Complex(real + other.real, imag + other.imag)
+    }
+
+    fun sub(other) {
+        if (typeof(other) != 'Complex') {
+            error('could not sub ' + other + ' and complex number', 'check for types.')
+        }
+        return new Complex(real - other.real, imag - other.imag)
+    }
+
+    fun mul(other) {
+        if (typeof(other) != 'Complex') {
+            error('could not mul ' + other + ' and complex number', 'check for types.')
+        }
+        r = real * other.real - imag * other.imag
+        i = real * other.imag + imag * other.real
+        return new Complex(r, i)
+    }
+
+    fun div(other) {
+        if (typeof(other) != 'Complex') {
+            error('could not div ' + other + ' and complex number', 'check for types.')
+        }
+        denom = other.real * other.real + other.imag * other.imag
+        if (denom == 0) {
+            error('division by zero.', 'check your code.')
+        }
+        r = (real * other.real + imag * other.imag) / denom
+        i = (imag * other.real - real * other.imag) / denom
+        return new Complex(r, i)
+    }
+
+    fun conjugate {
+        return new Complex(real, 0 - imag)
+    }
+
+    fun to_string {
+        if real == 0 {
+            return imag + 'i'
+        }
+        if imag == 0 {
+            return real + ''
+        }
+        imag_string := ''
+        if (imag > 0) {
+            imag_string += '+' + imag + 'i'
+        } else {
+            imag_string += '-' + imag + 'i'
+        }
+        return real + imag_string
+    }
+
+    fun abs {
+
     }
 }

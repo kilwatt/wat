@@ -12,11 +12,11 @@ unit tui {
         std_reflection_tui.render(text)
     }
 
-    fun clear() {
+    fun clear {
         std_reflection_tui.clear()
     }
 
-    fun read_key() {
+    fun read_key {
         return std_reflection_tui.read_key()
     }
 }

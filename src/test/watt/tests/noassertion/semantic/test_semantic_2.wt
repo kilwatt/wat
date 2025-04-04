@@ -1,4 +1,4 @@
-fun e() {
+fun e {
     type C {
     }
 }

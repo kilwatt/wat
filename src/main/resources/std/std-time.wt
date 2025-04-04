@@ -8,11 +8,11 @@ unit time {
     /*
     функции
     */
-    fun now() {
+    fun now {
         return time_reflection.now()
     }
 
-    fun date() {
+    fun date {
         return time_reflection.date()
     }
 

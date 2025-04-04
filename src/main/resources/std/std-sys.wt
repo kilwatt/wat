@@ -12,15 +12,15 @@ unit system {
         return system_reflection.get_property(property)
     }
 
-    fun get_runtime() {
+    fun get_runtime {
         return system_reflection.get_runtime()
     }
 
-    fun get_info() {
+    fun get_info {
         return system_reflection.get_info()
     }
 
-    fun get_hal() {
+    fun get_hal {
         return system_reflection.get_hal()
     }
 }

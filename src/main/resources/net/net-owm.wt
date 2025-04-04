@@ -69,7 +69,7 @@ type OwmClient(api_key) {
     }
 
     // получение погоды в городе по ID
-    fun city_id() {
+    fun city_id {
         return owm_reflection.city_id(single_requester)
     }
 }

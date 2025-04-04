@@ -2,7 +2,7 @@ import 'std.io'
 import 'std.math'
 
 /* basic physics tests */
-fun _demo() {
+fun _demo {
     e := 1.6 * math.pow(10, -19)
 
     io.println('#1: не изменяется')
@@ -10,7 +10,7 @@ fun _demo() {
     io.println('#3: электроскоп')
     io.println('#4: воздух')
 
-    fun answer_5() {
+    fun answer_5 {
         t2 := 32
         t1 := 7
         t := t2-t1
@@ -20,14 +20,14 @@ fun _demo() {
         return Q/1000
     }
 
-    fun answer_6() {
+    fun answer_6 {
         q := 44*math.pow(10, 6)
         Q := 123.2
         m := Q/q
         return m
     }
 
-    fun answer_7() {
+    fun answer_7 {
         t := 76
         m := 3
         c := 4200
@@ -38,7 +38,7 @@ fun _demo() {
         return Q/1000000
     }
 
-    fun answer_8() {
+    fun answer_8 {
         m := 0.3
         t := 0
         q := 330
@@ -46,21 +46,21 @@ fun _demo() {
         return Q
     }
 
-    fun answer_9() {
+    fun answer_9 {
         N := 2.25 * math.pow(10, 10)
         e := 1.5 * math.pow(10, -19)
         q := N * e
         return q/1000000000
     }
 
-    fun answer_13() {
+    fun answer_13 {
         q := -8 * math.pow(10, -15)
         e := 1.6 * math.pow(10, -19)
         N := q/e
         return N
     }
 
-    fun answer_15() {
+    fun answer_15 {
         v := 330 // скорость
         l := 3000 // 3к метров
         return l/v

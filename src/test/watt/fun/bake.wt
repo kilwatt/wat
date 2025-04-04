@@ -2,7 +2,7 @@ import 'std.io'
 import 'std.convert'
 
 type Pie(weight) {
-    fun cook() {
+    fun cook {
         io.println('🥧 Cooking pie...')
         io.println('⚡ Pie cooked! Weight: '
                     + convert.to_string(weight)

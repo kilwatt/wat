@@ -3,13 +3,13 @@ import 'ext.tui'
 import 'std.io'
 
 type Label(key, value) {
-    fun print() {
+    fun print {
         tui.render_line('· ' + key + ': ' + value)
     }
 }
 
 type Title(title, labels) {
-    fun print() {
+    fun print {
         tui.render_line(colors.green + title + colors.reset)
         for i in 0 to labels.size() {
             labels.get(i).print()
@@ -17,7 +17,7 @@ type Title(title, labels) {
     }
 }
 
-type Printer() {
+type Printer {
     last_title := null
 
     fun refresh(titles) {
