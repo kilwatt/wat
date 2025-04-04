@@ -38,7 +38,7 @@ type OwmClient(api_key) {
                 return customizer.retrieve().asXML()
             }
             _ {
-                error('undefined type of weather retrieve: ' + ret_type, 'available: html, java, json, xml')
+                throw error('undefined type of weather retrieve: ' + ret_type, 'available: html, java, json, xml')
             }
         }
     }
@@ -63,7 +63,7 @@ type OwmClient(api_key) {
             }
             _ {
                 io.println('other')
-                error('lang: ' + language + ' is not available.', 'available: ru, en')
+                throw error('lang: ' + language + ' is not available.', 'available: ru, en')
             }
         }
     }

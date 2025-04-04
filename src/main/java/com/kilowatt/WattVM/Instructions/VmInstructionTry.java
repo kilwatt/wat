@@ -30,7 +30,7 @@ public class VmInstructionTry implements VmInstruction {
             tryBody.run(vm, frame);
         } catch (RuntimeException e) {
             // устанавливаем переменную
-            frame.define(addr, catchVariableName, new VmThrowable(e));
+            frame.define(addr, catchVariableName, e);
             // выполняем тело исключения
             catchBody.run(vm, frame);
             // удаляем переменную

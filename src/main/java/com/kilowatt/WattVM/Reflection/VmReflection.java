@@ -24,13 +24,13 @@ public class VmReflection {
     // инфа о последнем вызове
     private final ThreadLocal<VmCallInfo> lastCallInfo = new ThreadLocal<>();
 
-    // работа с адрессом последнего вызова
+    // работа с инфой о последнем вызове
     public VmCallInfo getLastCallInfo() {
         return lastCallInfo.get();
     }
 
-    public void setLastCallInfo(VmCallInfo address) {
-        lastCallInfo.set(address);
+    public void setLastCallInfo(VmCallInfo callInfo) {
+        lastCallInfo.set(callInfo);
     }
 
     // рефлексия

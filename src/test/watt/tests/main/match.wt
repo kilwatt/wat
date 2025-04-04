@@ -14,8 +14,8 @@ assert(a == 'from')
 match stmt test
 */
 match b {
-    case 0 { error('match test error.') }
-    case 10 -> error('match test error.')
+    case 0 { throw error('match test error.') }
+    case 10 -> throw error('match test error.')
     case 300 { }
-    _ { error('match test error.') }
+    _ { throw error('match test error.') }
 }

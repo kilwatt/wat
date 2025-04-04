@@ -1,6 +1,7 @@
 package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattError;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
@@ -31,7 +32,18 @@ public class ThrowNode implements Node {
             new VmInstruction() {
                 @Override
                 public void run(WattVM vm, VmFrame<String, Object> scope) {
-                    throw new VmThrowable(valueBox.runAndGet(vm, scope));
+                    // объект
+                    Object o = valueBox.runAndGet(vm, scope);
+                    // если это ошибка - сразу выкидываем
+                    if (o instanceof WattError e) {
+                        // выкидываем
+                        throw (RuntimeException) e;
+                    }
+                    // иначе заворачиваем, а потом выкидываем
+                    else {
+                        // выкидываем
+                        throw new VmThrowable(o);
+                    }
                 }
 
                 @Override

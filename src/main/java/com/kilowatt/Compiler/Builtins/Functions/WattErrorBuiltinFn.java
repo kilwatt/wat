@@ -13,7 +13,7 @@ public class WattErrorBuiltinFn implements VmBuiltinFunction {
     public void exec(WattVM vm, VmAddress address) {
         Object hint = vm.pop();
         Object text = vm.pop();
-        throw new WattRuntimeError(address.getLine(), address.getFileName(), text.toString(), hint.toString());
+        vm.push(new WattRuntimeError(address.getLine(), address.getFileName(), text.toString(), hint.toString()));
     }
 
     @Override
