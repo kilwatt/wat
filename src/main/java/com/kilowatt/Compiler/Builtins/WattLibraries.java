@@ -7,20 +7,20 @@ import java.util.HashMap;
  */
 public class WattLibraries {
     public static HashMap<String, String> libraries = new HashMap<>() {{
-        put("std.io", "std/std-io.w");
-        put("std.convert", "std/std-convert.w");
-        put("std.math", "std/std-math.w");
-        put("std.math.ext", "std/std-math-ext.w");
-        put("std.random", "std/std-random.w");
-        put("std.sys", "std/std-sys.w");
-        put("std.jvm", "std/std-jvm.w");
-        put("std.threads", "std/std-threads.w");
-        put("ext.tui", "ext/ext-tui.w");
-        put("std.refl", "std/std-reflection.w");
-        put("std.typeof", "std/std-typeof.w");
-        put("ext.wfiglet", "ext/ext-wfiglet.w");
-        put("std.time", "std/std-time.w");
-        put("net.mail", "net/net-mail.w");
-        put("net.owm", "net/net-owm.w");
+        put("std.io", "std/std-io.wt");
+        put("std.convert", "std/std-convert.wt");
+        put("std.math", "std/std-math.wt");
+        put("std.math.ext", "std/std-math-ext.wt");
+        put("std.random", "std/std-random.wt");
+        put("std.sys", "std/std-sys.wt");
+        put("std.jvm", "std/std-jvm.wt");
+        put("std.threads", "std/std-threads.wt");
+        put("ext.tui", "ext/ext-tui.wt");
+        put("std.refl", "std/std-reflection.wt");
+        put("std.typeof", "std/std-typeof.wt");
+        put("ext.wfiglet", "ext/ext-wfiglet.wt");
+        put("std.time", "std/std-time.wt");
+        put("net.mail", "net/net-mail.wt");
+        put("net.owm", "net/net-owm.wt");
     }};
 }
