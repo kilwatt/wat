@@ -1,8 +1,6 @@
 package com.kilowatt.Compiler;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
-import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.Parser.AST.*;
@@ -39,6 +37,7 @@ public class WattCompiler {
             if (node instanceof UnitNode ||
                 node instanceof TypeNode ||
                 node instanceof FnNode ||
+                node instanceof NativeNode ||
                 node instanceof ImportNode) {
                 node.compile();
             }

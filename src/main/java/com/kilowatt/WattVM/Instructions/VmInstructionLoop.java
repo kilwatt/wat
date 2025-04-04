@@ -10,6 +10,7 @@ import lombok.Getter;
 /*
 LOOP для VM
  */
+@SuppressWarnings("UnnecessaryContinue")
 @Getter
 public class VmInstructionLoop implements VmInstruction {
     // адресс
@@ -27,9 +28,13 @@ public class VmInstructionLoop implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
+        // создаём новый фрэйм для цикла
+        VmFrame<String, Object> loopFrame = new VmFrame<>();
+        loopFrame.setRoot(frame);
+        // цикл
         while (true) {
             try {
-                instructions.run(vm, frame);
+                instructions.run(vm, loopFrame);
             } catch (VmInstructionLoopEnd loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;

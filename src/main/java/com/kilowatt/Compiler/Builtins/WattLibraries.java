@@ -17,6 +17,7 @@ public class WattLibraries {
         put("std.threads", "std/std-threads.w");
         put("ext.tui", "ext/ext-tui.w");
         put("std.refl", "std/std-reflection.w");
+        put("std.typeof", "std/std-typeof.w");
         put("ext.wfiglet", "ext/ext-wfiglet.w");
         put("std.time", "std/std-time.w");
         put("net.mail", "net/net-mail.w");

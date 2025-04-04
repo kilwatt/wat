@@ -94,7 +94,7 @@ fun a() {
 a()
 */
 // import 'std.io'
-
+/*
 fun fib(n) {
     if n <= 1 {
         return n
@@ -102,3 +102,30 @@ fun fib(n) {
     return fib(n - 1) + fib(n - 2)
 }
 fib(35)
+*/
+/*
+import 'std.io'
+
+a := 5
+for i in 0 to 1 {
+    a := 1
+    io.println(a)
+}
+io.println(a)
+*/
+import 'std.math.ext'
+import 'std.io'
+
+matrix := new Matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+])
+
+matrix2 := new Matrix([
+    [9,8,7],
+    [6,5,4],
+    [3,2,1]
+])
+
+io.println(matrix.add(matrix2).to_string())

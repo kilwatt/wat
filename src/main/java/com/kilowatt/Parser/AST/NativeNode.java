@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class NativeNode implements Node {
     private final Token name;
+    private final Token fullName;
     private final Token javaName;
 
     @Override
@@ -52,10 +53,20 @@ public class NativeNode implements Node {
                 )
         );
         WattCompiler.code.endWrite();
+        // дефайн по имени
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefine(
                         name.asAddress(),
                         name.value,
+                        false,
+                        value
+                )
+        );
+        // дефайн по полному имени
+        WattCompiler.code.visitInstruction(
+                new VmInstructionDefine(
+                        fullName.asAddress(),
+                        fullName.value,
                         false,
                         value
                 )

@@ -474,7 +474,7 @@ public class Parser {
         Token name = consume(TokenType.ID);
         consume(TokenType.GO);
         Token javaName = consume(TokenType.TEXT);
-        return new NativeNode(name,javaName);
+        return new NativeNode(name,toFullName(name),javaName);
     }
 
     // функция

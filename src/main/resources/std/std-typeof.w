@@ -1,0 +1,1 @@
+native typeof -> 'com.kilowatt.Compiler.Builtins.Libraries.Std.TypeOf.TypeOf'
