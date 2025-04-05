@@ -154,9 +154,15 @@ complex := new Complex(3, 4)
 complex2 := new Complex(4, 3.3)
 io.println(complex.add(complex2).to_string())
 */
-
+/*
 import 'std.typeof'
 import 'std.io'
 
 io.println(typeof(io))
 io.println(full_typeof(io))
+*/
+import 'std.math.ext'
+import 'std.io'
+
+complex := new Complex(2, 7)
+io.println(complex.conjugate().to_string())

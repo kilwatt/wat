@@ -85,9 +85,6 @@ public class Lexer {
                     } else if (match('>')) {
                         addToken(TokenType.GO, "->");
                         break;
-                    } else if (isDigit(peek())) {
-                        tokens.add(scanNumber('-'));
-                        break;
                     } else {
                         addToken(TokenType.OPERATOR, "-");
                         break;

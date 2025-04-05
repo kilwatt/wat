@@ -376,14 +376,25 @@ public class Parser {
         return new MapNode(location, nodes);
     }
 
+    // унарное выражение
+    private Node unary() {
+        if (check(TokenType.OPERATOR) && match("-")) {
+            Token op = consume(TokenType.OPERATOR);
+            Node left = primary();
+            return new UnaryNode(op, left);
+        }
+
+        return primary();
+    }
+
     // умножение, деление
     private Node multiplicative() {
-        Node left = primary();
+        Node left = unary();
 
         while(check(TokenType.OPERATOR) && (match("*")
                 || match("/") || match("%"))) {
             Token operator = consume(TokenType.OPERATOR);
-            Node right = primary();
+            Node right = unary();
             left = new BinNode(left, right, operator);
         }
 
