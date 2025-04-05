@@ -21,17 +21,22 @@ public class WattExecutor {
     // локальный путь
     @Getter
     private static Path localPath;
+    // переданные аргументы
+    @Getter
+    private static String[] passedArgs;
     // ресолвер импортов
     @Getter
     private static WattImportResolver importsResolver;
 
     // запуск скрипта
-    public static void run(String path) throws IOException {
+    public static void run(String path, String[] args) throws IOException {
         // пробуем
         try {
             // путь
             Path filePath = Path.of(path);
             localPath = filePath.getParent();
+            // аргументы
+            passedArgs = args;
             // ресолвер импортов
             importsResolver = new WattImportResolver(localPath);
             // парсим

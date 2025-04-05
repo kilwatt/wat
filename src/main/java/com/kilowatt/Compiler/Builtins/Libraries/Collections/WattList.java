@@ -84,6 +84,11 @@ public class WattList {
         arr.array = values;
         return arr;
     }
+    public static WattList of(Object[] values) {
+        WattList arr = new WattList();
+        arr.array = List.of(values);
+        return arr;
+    }
     public void del_all(WattList arr) {
         this.array.removeAll(arr.array);
     }

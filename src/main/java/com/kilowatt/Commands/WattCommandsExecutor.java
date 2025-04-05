@@ -52,7 +52,8 @@ public class WattCommandsExecutor {
             }
             // если нет - то воспринимаем как запуск скрипта
             else {
-                WattExecutor.run(args[0]);
+                // запуск
+                WattExecutor.run(args[0], commandArgs);
             }
         } else {
             // информация об использовании

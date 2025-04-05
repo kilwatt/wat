@@ -1,3 +1,5 @@
+import 'std.typeof'
+
 unit system {
     // рефлекися
     system_reflection := __refl__.reflect(
@@ -22,5 +24,24 @@ unit system {
 
     fun get_hal {
         return system_reflection.get_hal()
+    }
+
+    fun exit(code) {
+        code_t = typeof(code)
+        if code_t != 'int' {
+            throw error(
+                'exit code must be an int, not ' + code_t,
+                'check for types.'
+            )
+        }
+        system_reflection.exit(code)
+    }
+
+    fun cwd {
+        return system_reflection.cwd()
+    }
+
+    fun args {
+        return system_reflection.args()
     }
 }

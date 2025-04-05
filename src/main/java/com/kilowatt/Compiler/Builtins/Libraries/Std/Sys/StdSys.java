@@ -1,7 +1,11 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std.Sys;
 
+import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
+import com.kilowatt.Executor.WattExecutor;
 import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
+
+import java.nio.file.Path;
 
 /*
 Стд -> Система
@@ -28,5 +32,20 @@ public class StdSys {
     // получение hal
     public HardwareAbstractionLayer get_hal() {
         return info.getHardware();
+    }
+
+    // получение cwd
+    public String cwd() {
+        return Path.of("").toAbsolutePath().toString();
+    }
+
+    // выход из выполнения
+    public void exit(int code) {
+        System.exit(code);
+    }
+
+    // получение аргументов
+    public WattList args() {
+        return WattList.of(WattExecutor.getPassedArgs());
     }
 }
