@@ -11,7 +11,7 @@ import java.util.HashMap;
 Словари
  */
 public class WattMap {
-    private final HashMap<Object, Object> map = new HashMap<Object, Object>();
+    private final HashMap<Object, Object> map = new HashMap<>();
 
     public void set(Object k, Object v) {
         map.put(k,v);
@@ -29,7 +29,7 @@ public class WattMap {
         }
     }
 
-    public Object stringify() {
+    public Object to_string() {
         return map.toString();
     }
 

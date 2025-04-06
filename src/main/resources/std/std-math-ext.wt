@@ -207,7 +207,7 @@ type Matrix(fill) {
         str := '['
 
         for elem in 0 to arr.size() {
-            str += '[' + arr.get(elem).stringify() + ']'
+            str += arr.get(elem).to_string()
         }
 
         str += ']'

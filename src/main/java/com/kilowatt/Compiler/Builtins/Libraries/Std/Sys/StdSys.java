@@ -18,6 +18,11 @@ public class StdSys {
     public String get_property(String name) {
         return System.getProperty(name);
     }
+    
+    // установка значения для локальной переменной системы
+    public void set_property(String name, String value) {
+        System.setProperty(name, value);
+    }
 
     // получение рантайма
     public Runtime get_runtime() {
@@ -47,5 +52,10 @@ public class StdSys {
     // получение аргументов
     public WattList args() {
         return WattList.of(WattExecutor.getPassedArgs());
+    }
+
+    // получение значения переменной среды
+    public Object get_env(String name) {
+        return System.getenv(name);
     }
 }

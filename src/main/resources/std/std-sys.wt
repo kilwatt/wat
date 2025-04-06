@@ -14,6 +14,10 @@ unit system {
         return system_reflection.get_property(property)
     }
 
+    fun set_property(name, value) {
+        system_reflection.set_property(name, value)
+    }
+
     fun get_runtime {
         return system_reflection.get_runtime()
     }
@@ -43,5 +47,9 @@ unit system {
 
     fun args {
         return system_reflection.args()
+    }
+
+    fun get_env(name) {
+        return system_reflection.get_env(name)
     }
 }

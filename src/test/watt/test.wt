@@ -161,8 +161,35 @@ import 'std.io'
 io.println(typeof(io))
 io.println(full_typeof(io))
 */
+/*
 import 'std.math.ext'
 import 'std.io'
 
 complex := new Complex(2, 7)
 io.println(complex.conjugate().to_string())
+*/
+/*
+import 'std.sys'
+import 'std.io'
+
+io.println(system.args().to_string())
+system.set_property('banana', 'coco')
+io.println(system.get_property('banana'))
+io.println(system.get_env('JAVA_HOME'))
+*/
+import 'std.math.ext'
+import 'std.io'
+
+matrix := new Matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+])
+
+matrix2 := new Matrix([
+    [9,8,7],
+    [6,5,4],
+    [3,2,1]
+])
+
+io.println(matrix.add(matrix2).to_string())

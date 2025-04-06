@@ -48,8 +48,8 @@ public class WattList {
         return array.size();
     }
 
-    public Object stringify() {
-        StringBuilder s = new StringBuilder();
+    public Object to_string() {
+        StringBuilder s = new StringBuilder("[");
         for (int i = 0; i < array.size(); i++) {
             // получаем по индексу
             Object o = array.get(i);
@@ -60,6 +60,7 @@ public class WattList {
                 s.append(o).append(",");
             }
         }
+        s.append("]");
         return s.toString();
     }
     public void insert(int i, Object v) {
