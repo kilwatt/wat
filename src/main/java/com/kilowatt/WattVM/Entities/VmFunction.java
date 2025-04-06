@@ -8,6 +8,7 @@ import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.VmFrame;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,9 @@ public class VmFunction implements VmInstructionsBox {
     private final VmAddress addr;
     // замыкание
     private VmFrame<String, Object> closure = null;
+    // бинд к объекту
+    @Setter
+    private VmFunctionOwner bind;
 
     // конструкция
     public VmFunction(String name, ArrayList<String> arguments, VmAddress addr) {
@@ -41,21 +45,25 @@ public class VmFunction implements VmInstructionsBox {
      * @param vm - ВМ
      * @param shouldPushResult - положить ли результат в стек
      */
-    public void exec(WattVM vm, boolean shouldPushResult, VmFunctionOwner self)  {
+    public void exec(WattVM vm, boolean shouldPushResult)  {
+        // новый фрэйм
         VmFrame<String, Object> scope = new VmFrame<>();
+        // замыкание
         if (getClosure() != null) {
             scope.setClosure(closure);
         }
         // ставим рут на переменные типа/юнита/глобал скоупа
         // если closure == этому скоупу, то рут не устанавливается благодаря
         // проверке внутри setRoot на цикличный рут.
-        if (self != null) {
-            scope.setRoot(self.getLocalScope());
-            scope.define(addr, "self", self);
+        if (bind != null) {
+            scope.setRoot(bind.getLocalScope());
+            scope.define(addr, "self", bind);
         } else {
             scope.setRoot(vm.getGlobals());
         }
+        // аргументы
         loadArgs(vm, scope);
+        // инструкции
         try {
             // исполняем функцию
             for (VmInstruction instr : instructions) {

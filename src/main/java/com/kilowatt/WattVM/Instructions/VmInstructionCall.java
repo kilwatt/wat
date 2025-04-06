@@ -183,7 +183,7 @@ public class VmInstructionCall implements VmInstruction {
             Object o = frame.lookup(addr, name);
             if (o instanceof VmFunction fn) {
                 checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
-                fn.exec(vm, shouldPushResult, null);
+                fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
                 checkArgs(fn.getName(), fn.args(), argsAmount);
@@ -200,7 +200,7 @@ public class VmInstructionCall implements VmInstruction {
             Object o = vm.getGlobals().lookup(addr, name);
             if (o instanceof VmFunction fn) {
                 checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
-                fn.exec(vm, shouldPushResult, null);
+                fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
                 checkArgs(fn.getName(), fn.args(), argsAmount);

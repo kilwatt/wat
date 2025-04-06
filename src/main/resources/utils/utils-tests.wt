@@ -1,0 +1,12 @@
+import 'std.io'
+
+unit tests {
+    fun run(fn) {
+        try {
+            fn()
+            io.println('test passed.')
+        } catch e {
+            io.println('test failed. error: ' + e)
+        }
+    }
+}

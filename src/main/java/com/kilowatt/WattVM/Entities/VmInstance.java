@@ -19,16 +19,33 @@ public class VmInstance implements VmFunctionOwner {
 
     // конструктор
     public VmInstance(WattVM vm, VmType type, VmAddress addr)  {
+        // данные
         this.type = type;
         this.addr = addr;
+        // конструктор
         for (int i = type.getConstructor().size()-1; i >= 0; i--) {
             Object arg = vm.pop();
             fields.define(addr, type.getConstructor().get(i), arg);
         }
+        // установка филдов
         fields.setRoot(vm.getGlobals());
         type.getBody().run(vm, fields);
+        // бинды функций
+        bindFunctions();
+        // init функция
         if (fields.has("init")) {
             call(addr, "init", vm, false);
+        }
+    }
+
+    /**
+     Бинды функций
+     */
+    private void bindFunctions() {
+        for (Object field : fields.getValues().values()) {
+            if (field instanceof VmFunction fn && fn.getBind() == null) {
+                fn.setBind(this);
+            }
         }
     }
 
@@ -40,7 +57,7 @@ public class VmInstance implements VmFunctionOwner {
     public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
         VmFunction fun = (VmFunction) getFields().lookup(inAddr, name);
-        fun.exec(vm, shouldPushResult, this);
+        fun.exec(vm, shouldPushResult);
     }
 
     // в строку

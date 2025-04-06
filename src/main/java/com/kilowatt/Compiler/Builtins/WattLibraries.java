@@ -25,5 +25,6 @@ public class WattLibraries {
         put("std.fs", "std/std-fs.wt");
         put("std.collections", "std/std-collections.wt");
         put("utils.log", "utils/utils-log.wt");
+        put("utils.tests", "utils/utils-tests.wt");
     }};
 }
