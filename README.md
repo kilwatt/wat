@@ -40,3 +40,36 @@ unit Bakery {
 pies := [new Pie(3.6)]
 Bakery.bake(pies)
 ```
+
+🪶 fibonacci.wt
+```kotlin
+fun fib(n) {
+    cache := {}
+
+    fun fib_inner(n) {
+        if n <= 1 {
+            return n
+        }
+        if cache.has_key(n) {
+            return cache.get(n)
+        }
+        result := fib_inner(n - 1) + fib_inner(n - 2)
+        cache.set(n, result)
+        return result
+    }
+    return fib_inner(n)
+}
+
+io.println(fib(1000))
+```
+
+# Documentation 🌺
+Work in progress, stay soon!
+
+# Looking to the feature 🔭
+Our current tasks is:
+- finish std lib
+- create utils lib
+- start work on arc2d lib
+
+# Thanks you 🔥️
