@@ -10,13 +10,13 @@ great reflection.
 
 # Examples 🔋
 🪶 hello_world.wt
-```kotlin
+```typescript
 import 'std.io'
 io.println('Hello, world!')
 ```
 
 🪶 pie_recipe.wt
-```kotlin
+```typescript
 import 'std.io'
 import 'std.convert'
 
