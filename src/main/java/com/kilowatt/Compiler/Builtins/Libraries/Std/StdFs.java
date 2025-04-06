@@ -4,10 +4,7 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.VmAddress;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -15,23 +12,55 @@ import java.nio.file.Path;
 Стд -> FS (файловая система)
  */
 public class StdFs {
-    public FileReader open_reader(String path) {
+    public Path path_of(String path) {
+        return Path.of(path);
+    }
+
+    public String read_text(Path path) {
         try {
-            return new FileReader(path);
-        } catch (FileNotFoundException e) {
+            return Files.readString(path);
+        } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),
-                "file not found: " + path,
+                "io exception in fs: " + path,
                 "check file exists."
             );
         }
     }
 
-    public FileWriter open_writer(String path) {
+    public void write_text(Path path, String value) {
         try {
-            return new FileWriter(path, false);
+            Files.writeString(path, value);
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+            throw new WattRuntimeError(
+                    address.getLine(),
+                    address.getFileName(),
+                    "io exception in fs: " + e.getMessage(),
+                    "check file exists."
+            );
+        }
+    }
+
+    public byte[] read_bytes(Path path) {
+        try {
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+            throw new WattRuntimeError(
+                    address.getLine(),
+                    address.getFileName(),
+                    "io exception in fs: " + path,
+                    "check file exists."
+            );
+        }
+    }
+
+    public void write_bytes(Path path, byte[] bytes) {
+        try {
+            Files.write(path, bytes);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             throw new WattRuntimeError(

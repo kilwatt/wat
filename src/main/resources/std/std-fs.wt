@@ -4,8 +4,24 @@ unit fs {
         []
     )
 
-    fun open_reader(path) {
-        return std_reflection_fs.open_reader(path)
+    fun read_text(path) {
+        return std_reflection_fs.read_text(path)
+    }
+
+    fun read_byes(path) {
+        return std_reflection_fs.read_text(path)
+    }
+
+    fun write_text(path, text) {
+        return std_reflection_fs.write_text(path, text)
+    }
+
+    fun write_byes(path, bytes) {
+        return std_reflection_fs.write_bytes(path, bytes)
+    }
+
+    fun path_of(string) {
+        return std_reflection_fs.path_of(string)
     }
 
     fun open_writer(path) {
