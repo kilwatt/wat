@@ -41,7 +41,7 @@ public class Lexer {
         put("break", TokenType.BREAK);
         put("match", TokenType.MATCH);
         put("case", TokenType.CASE);
-        put("_", TokenType.DEFAULT);
+        put("default", TokenType.DEFAULT);
         put("for", TokenType.FOR);
         put("assert", TokenType.ASSERT);
         put("continue", TokenType.CONTINUE);
