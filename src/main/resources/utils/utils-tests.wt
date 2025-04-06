@@ -4,9 +4,9 @@ unit tests {
     fun run(fn) {
         try {
             fn()
-            io.println('test passed.')
+            io.println('[92mtest passed.[0m')
         } catch e {
-            io.println('test failed. error: ' + e)
+            io.println('[31mtest failed. error: ' + e + '[0m')
         }
     }
 }

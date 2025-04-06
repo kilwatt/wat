@@ -40,14 +40,17 @@ public class VmUnit implements VmFunctionOwner {
     }
 
     /**
-    Бинды функций к нашему юниту
+    Бинды функций к юниту
      */
     private void bindFunctionsToUnit() {
-        for (Object field : fields.getValues().values()) {
-            if (field instanceof VmFunction fn && fn.getSelfBind() == null) {
-                fn.setSelfBind(this);
-            }
-        }
+        // Фильтруются функции, которые не привязаны
+        // к конкретному юниту или экземпляру типа. В последствии
+        // они привязываются к этому юниту.
+        fields.getValues().values().stream()
+            .filter(field -> field instanceof VmFunction fn)
+            .map(field -> (VmFunction) field)
+            .filter(fn -> fn.getSelfBind() == null)
+            .forEach(fn -> fn.setSelfBind(this));
     }
 
     /**

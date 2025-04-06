@@ -39,14 +39,17 @@ public class VmInstance implements VmFunctionOwner {
     }
 
     /**
-     Бинды функций к нашему экземпляру типа
+     Бинды копий функций типа к экземпляру типа
      */
     private void bindFunctionsToInstance() {
-        for (Object field : fields.getValues().values()) {
-            if (field instanceof VmFunction fn && fn.getSelfBind() == null) {
-                fn.setSelfBind(this);
-            }
-        }
+        // Фильтруются функции, которые не привязаны
+        // к конкретному юниту или экземпляру типа. В последствии
+        // они привязываются к этому экземпляру типа.
+        fields.getValues().values().stream()
+            .filter(field -> field instanceof VmFunction fn)
+            .map(field -> (VmFunction) field)
+            .filter(fn -> fn.getSelfBind() == null)
+            .forEach(fn -> fn.setSelfBind(this));
     }
 
     /**
