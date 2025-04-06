@@ -25,11 +25,13 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
+        // новая копия функции
+        VmFunction newFnCopy = fn.copy();
         // по краткому имени
-        frame.define(addr, name, fn.copy());
+        frame.define(addr, name,newFnCopy);
         // по полному имени
         if (fullName != null) {
-            frame.define(addr, fullName, fn.copy());
+            frame.define(addr, fullName, newFnCopy);
         }
     }
 

@@ -22,7 +22,7 @@ public class VmUnit implements VmFunctionOwner {
         this.name = name;
         this.fullName = fullName;
         // бинды функций
-        bindFunctions();
+        bindFunctionsToUnit();
     }
 
     @Override
@@ -40,12 +40,12 @@ public class VmUnit implements VmFunctionOwner {
     }
 
     /**
-    Бинды функций
+    Бинды функций к нашему юниту
      */
-    private void bindFunctions() {
+    private void bindFunctionsToUnit() {
         for (Object field : fields.getValues().values()) {
-            if (field instanceof VmFunction fn && fn.getBind() == null) {
-                fn.setBind(this);
+            if (field instanceof VmFunction fn && fn.getSelfBind() == null) {
+                fn.setSelfBind(this);
             }
         }
     }

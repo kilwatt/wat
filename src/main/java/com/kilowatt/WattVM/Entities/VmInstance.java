@@ -31,7 +31,7 @@ public class VmInstance implements VmFunctionOwner {
         fields.setRoot(vm.getGlobals());
         type.getBody().run(vm, fields);
         // бинды функций
-        bindFunctions();
+        bindFunctionsToInstance();
         // init функция
         if (fields.has("init")) {
             call(addr, "init", vm, false);
@@ -39,12 +39,12 @@ public class VmInstance implements VmFunctionOwner {
     }
 
     /**
-     Бинды функций
+     Бинды функций к нашему экземпляру типа
      */
-    private void bindFunctions() {
+    private void bindFunctionsToInstance() {
         for (Object field : fields.getValues().values()) {
-            if (field instanceof VmFunction fn && fn.getBind() == null) {
-                fn.setBind(this);
+            if (field instanceof VmFunction fn && fn.getSelfBind() == null) {
+                fn.setSelfBind(this);
             }
         }
     }

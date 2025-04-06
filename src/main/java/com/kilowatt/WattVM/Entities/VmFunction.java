@@ -31,7 +31,7 @@ public class VmFunction implements VmInstructionsBox {
     private VmFrame<String, Object> closure = null;
     // бинд к объекту
     @Setter
-    private VmFunctionOwner bind;
+    private VmFunctionOwner selfBind;
 
     // конструкция
     public VmFunction(String name, ArrayList<String> arguments, VmAddress addr) {
@@ -55,9 +55,9 @@ public class VmFunction implements VmInstructionsBox {
         // ставим рут на переменные типа/юнита/глобал скоупа
         // если closure == этому скоупу, то рут не устанавливается благодаря
         // проверке внутри setRoot на цикличный рут.
-        if (bind != null) {
-            scope.setRoot(bind.getLocalScope());
-            scope.define(addr, "self", bind);
+        if (selfBind != null) {
+            scope.setRoot(selfBind.getLocalScope());
+            scope.define(addr, "self", selfBind);
         } else {
             scope.setRoot(vm.getGlobals());
         }
