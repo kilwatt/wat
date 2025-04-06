@@ -24,5 +24,6 @@ public class WattLibraries {
         put("net.owm", "net/net-owm.wt");
         put("std.fs", "std/std-fs.wt");
         put("std.collections", "std/std-collections.wt");
+        put("utils.log", "utils/utils-log.wt");
     }};
 }

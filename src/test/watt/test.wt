@@ -195,6 +195,7 @@ matrix2 := new Matrix([
 
 io.println(matrix.add(matrix2).to_string())
 */
+/*
 import 'std.fs'
 import 'std.io'
 
@@ -202,3 +203,11 @@ path := fs.path_of('C:\Users\MuraDana\Documents\example.txt')
 fs.write_text(path, 'beaver 🔥')
 text := fs.read_text(path)
 io.println(text)
+*/
+
+import 'utils.log'
+
+logger.log(LogType.ERROR, 'error')
+logger.log(LogType.NORMAL, 'debug')
+logger.log(LogType.WARNING, 'warn')
+logger.log(4, 'undefined')

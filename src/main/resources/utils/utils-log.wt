@@ -1,0 +1,35 @@
+import 'std.io'
+import 'std.typeof'
+
+unit LogType {
+    ERROR := 0
+    WARNING := 1
+    NORMAL := 2
+}
+
+unit LogColor {
+    RESET := '[0m'
+    RED := '[31m'
+    YELLOW := '[38;5;220m'
+    CYAN := '[36m'
+    GREEN := '[92m'
+}
+
+unit logger {
+    fun log(log_type, msg) {
+        typo := typeof(log_type)
+        if typo != 'int' {
+            throw error(
+                'could not log, invalid type: ' + typo,
+                'check for types.'
+            )
+        }
+        prefix := match log_type {
+            case 0 -> LogColor.RED + '[error]: ' + LogColor.RESET
+            case 1 -> LogColor.YELLOW + '[warning]: ' + LogColor.RESET
+            case 2 -> LogColor.GREEN + '[normal]: ' + LogColor.RESET
+            default -> LogColor.CYAN + '[undef]: ' + LogColor.RESET
+        }
+        io.println(prefix + msg)
+    }
+}
