@@ -6,7 +6,7 @@ a := match b {
     case 0 -> 'hello'
     case 10 -> 'world'
     case 300 -> 'from'
-    _ -> 'watt'
+    default -> 'watt'
 }
 assert(a == 'from')
 
@@ -17,5 +17,5 @@ match b {
     case 0 { throw error('match test error.') }
     case 10 -> throw error('match test error.')
     case 300 { }
-    _ { throw error('match test error.') }
+    default { throw error('match test error.') }
 }

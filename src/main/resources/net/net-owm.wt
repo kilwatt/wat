@@ -37,7 +37,7 @@ type OwmClient(api_key) {
                 io.println('xml')
                 return customizer.retrieve().asXML()
             }
-            _ {
+            default {
                 throw error('undefined type of weather retrieve: ' + ret_type, 'available: html, java, json, xml')
             }
         }
