@@ -2,7 +2,7 @@ package com.kilowatt.Errors;
 
 // интерфейс ошибки
 public interface WattError {
-    void print();
+    void panic();
     int errorCode();
     String message();
     int address();

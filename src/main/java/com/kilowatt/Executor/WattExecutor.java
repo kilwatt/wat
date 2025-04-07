@@ -56,7 +56,7 @@ public class WattExecutor {
         } catch (WattParsingError | WattRuntimeError |
                  WattResolveError | WattSemanticError error) {
             // если есть ошибка - выводим
-            error.print();
+            error.panic();
         } catch (RuntimeException error) {
             try {
                 // адрес
@@ -67,7 +67,7 @@ public class WattExecutor {
                     address.getFileName(),
                     "jvm runtime exception: " + error.getMessage(),
                     "check your code."
-                ).print();
+                ).panic();
             } catch (NullPointerException exception) {
                 // ошибка
                 new WattInternalError(
@@ -75,7 +75,7 @@ public class WattExecutor {
                     "null",
                     "jvm runtime exception: " + error.getMessage(),
                     "check your code."
-                ).print();
+                ).panic();
             }
         }
     }
@@ -112,7 +112,7 @@ public class WattExecutor {
                         address.getFileName(),
                         "jvm runtime exception: " + error.getMessage(),
                         "check your code."
-                ).print();
+                ).panic();
             } catch (NullPointerException exception) {
                 // ошибка
                 new WattInternalError(
@@ -120,7 +120,7 @@ public class WattExecutor {
                         "null",
                         "jvm runtime exception: " + error.getMessage(),
                         "check your code."
-                ).print();
+                ).panic();
             }
         }
     }

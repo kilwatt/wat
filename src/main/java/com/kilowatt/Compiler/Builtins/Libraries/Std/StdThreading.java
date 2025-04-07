@@ -39,7 +39,7 @@ public class StdThreading {
             thread.start();
         } catch (WattParsingError | WattRuntimeError |
                  WattResolveError | WattSemanticError error) {
-            error.print();
+            error.panic();
         } catch (RuntimeException error) {
             VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
             new WattRuntimeError(
@@ -47,7 +47,7 @@ public class StdThreading {
                 address.getFileName(),
                 "jvm runtime exception: " + error.getMessage(),
                 "check your code."
-            ).print();
+            ).panic();
         }
         return thread;
     }

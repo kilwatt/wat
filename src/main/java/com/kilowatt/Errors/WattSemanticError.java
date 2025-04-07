@@ -15,7 +15,7 @@ public class WattSemanticError extends RuntimeException implements WattError {
     private final String hint;
 
     @Override
-    public void print() {
+    public void panic() {
         System.out.print(WattColors.ANSI_RED);
         System.out.println("╭ ⚡ semantic error.");
         System.out.println("│ err: " + this.message);
@@ -23,11 +23,12 @@ public class WattSemanticError extends RuntimeException implements WattError {
         System.out.println("│ 💡 " + hint);
         System.out.println("╰");
         System.out.print(WattColors.ANSI_RESET);
+        System.exit(errorCode());
     }
 
     @Override
     public int errorCode() {
-        return 0;
+        return 5;
     }
 
     @Override
