@@ -13,7 +13,7 @@ import java.util.List;
 public class VmCallsTrace {
     // история
     private final List<VmCallInfo> callsHistory = new ArrayList<>();
-    // максимальный размер
+    // максимальный размер истории
     private final int maxSize = 8;
 
     // добавление элемента
