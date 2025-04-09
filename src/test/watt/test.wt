@@ -212,6 +212,7 @@ logger.log(LogType.NORMAL, 'debug')
 logger.log(LogType.WARNING, 'warn')
 logger.log(4, 'undefined')
 */
+/*
 import 'std.io'
 import 'utils.tests'
 
@@ -222,3 +223,19 @@ type A {
 }
 
 tests.run(new A().example)
+*/
+
+
+fun a() {
+    io.println(self)
+}
+
+fun b() {
+    a()
+}
+
+fun c() {
+    b()
+}
+
+c()

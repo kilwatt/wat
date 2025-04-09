@@ -1,5 +1,7 @@
 package com.kilowatt.Errors;
 
+import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +23,11 @@ public class WattRuntimeError extends RuntimeException implements WattError {
         System.out.println("│ err: " + this.message);
         System.out.println("│ at: " + filename + "::" + line);
         System.out.println("│ 💡 " + hint);
+        System.out.println("│———————————————");
+        System.out.println("│ calls trace: ");
+        for (VmCallInfo element : WattCompiler.vm.getCallsTrace().reversed()) {
+            System.out.println("│ " + element);
+        }
         System.out.println("╰");
         System.out.print(WattColors.ANSI_RESET);
         System.exit(errorCode());

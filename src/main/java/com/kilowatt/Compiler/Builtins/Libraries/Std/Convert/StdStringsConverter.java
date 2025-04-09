@@ -1,11 +1,10 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Std;
+package com.kilowatt.Compiler.Builtins.Libraries.Std.Convert;
 
-import com.kilowatt.WattVM.VmAddress;
 
 /*
-Стд -> Строки
+Стд -> Конвертация из строки
  */
-public class StdStrings {
+public class StdStringsConverter {
     public int parse_int(String value) {
         return Integer.parseInt(value);
     }
@@ -17,4 +16,6 @@ public class StdStrings {
     public long parse_long(String value) {
         return Long.parseLong(value);
     }
+
+    public boolean parse_bool(String value) { return Boolean.parseBoolean(value); }
 }

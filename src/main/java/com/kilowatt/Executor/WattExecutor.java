@@ -60,7 +60,7 @@ public class WattExecutor {
         } catch (RuntimeException error) {
             try {
                 // адрес
-                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+                VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
                     address.getLine(),
@@ -105,7 +105,7 @@ public class WattExecutor {
         } catch (RuntimeException error) {
             try {
                 // адрес
-                VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+                VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
                         address.getLine(),

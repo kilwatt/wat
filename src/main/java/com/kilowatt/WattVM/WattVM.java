@@ -6,10 +6,13 @@ import com.kilowatt.WattVM.Codegen.WattVmCode;
 import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import com.kilowatt.WattVM.Reflection.VmReflection;
+import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
 
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Objects;
 
 /*
@@ -24,11 +27,20 @@ public class WattVM {
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<>();
     // рефлексия
     private final VmReflection reflection = new VmReflection(this);
+    // трэйс(история) вызовов
+    private final ThreadLocal<VmCallsTrace> callsTrace = new ThreadLocal<>();
 
-    // инициализация стека под поток
+    // получение истории вызово
+    public List<VmCallInfo> getCallsTrace() {
+        return callsTrace.get().getCallsHistory();
+    }
+
+    // инициализация вм под поток
     public void initForThread() {
         // устанавливаем стэк
         stack.set(new ArrayDeque<>());
+        // устанавливаем историю вызовов
+        callsTrace.set(new VmCallsTrace());
     }
 
     // получение стека

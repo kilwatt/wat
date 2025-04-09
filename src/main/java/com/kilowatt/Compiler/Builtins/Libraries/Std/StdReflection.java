@@ -17,7 +17,7 @@ import com.kilowatt.WattVM.VmAddress;
 public class StdReflection {
     public VmInstance instance(VmType type, WattList args) {
         // адрес
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         // аргументы
         for (Object o : args.getArray()) {
             WattCompiler.vm.push(o);
@@ -28,21 +28,21 @@ public class StdReflection {
 
     public VmType lookup_type(String name) {
         // адрес
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         // возвращаем тип
         return WattCompiler.vm.getTypeDefinitions().lookup(address, name);
     }
 
     public VmUnit lookup_unit(String name) {
         // адрес
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         // возвращаем тип
         return WattCompiler.vm.getUnitDefinitions().lookup(address, name);
     }
 
     public Object call_function(Object object, String name, WattList args) {
         // адрес
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         // помещаем объект
         WattCompiler.vm.push(object);
         // аргументы
@@ -69,7 +69,7 @@ public class StdReflection {
 
     public Object get_field(Object object, String name) {
         // адрес
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         // помещаем объект
         WattCompiler.vm.push(object);
         // вызов

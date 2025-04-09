@@ -17,7 +17,7 @@ public class StdThreading {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
-            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -41,7 +41,7 @@ public class StdThreading {
                  WattResolveError | WattSemanticError error) {
             error.panic();
         } catch (RuntimeException error) {
-            VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
             new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),

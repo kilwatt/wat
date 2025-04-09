@@ -29,7 +29,7 @@ public class WattList {
     public Object contains(Object obj) {
         for (Object o : array) {
             if (VmInstructionCondOp.equal(
-                    WattCompiler.vm.getReflection().getLastCallInfo().getAddress(),
+                    WattCompiler.vm.getCallsTrace().getLast().getAddress(),
                     o,
                     obj
             )) {
@@ -70,7 +70,7 @@ public class WattList {
     public int index_of(Object obj) {
         for (Object o : array) {
             if (VmInstructionCondOp.equal(
-                    WattCompiler.vm.getReflection().getLastCallInfo().getAddress(),
+                    WattCompiler.vm.getCallsTrace().getLast().getAddress(),
                     o,
                     obj
             )) {

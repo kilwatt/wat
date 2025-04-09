@@ -20,7 +20,7 @@ public class WattMap {
     public void del(Object k) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
-                    WattCompiler.vm.getReflection().getLastCallInfo().getAddress(),
+                    WattCompiler.vm.getCallsTrace().getLast().getAddress(),
                     k,
                     o
             )) {
@@ -34,7 +34,7 @@ public class WattMap {
     }
 
     public Object get(Object k) {
-        VmAddress address = WattCompiler.vm.getReflection().getLastCallInfo().getAddress();
+        VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(address, k, o)) {
                 return map.get(o);
@@ -48,7 +48,7 @@ public class WattMap {
     public Object has_key(Object obj) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
-                    WattCompiler.vm.getReflection().getLastCallInfo().getAddress(),
+                    WattCompiler.vm.getCallsTrace().getLast().getAddress(),
                     o,
                     obj
             )) {
@@ -62,7 +62,7 @@ public class WattMap {
     public Object has_value(Object obj) {
         for (Object o : map.values()) {
             if (VmInstructionCondOp.equal(
-                    WattCompiler.vm.getReflection().getLastCallInfo().getAddress(),
+                    WattCompiler.vm.getCallsTrace().getLast().getAddress(),
                     o,
                     obj
             )) {

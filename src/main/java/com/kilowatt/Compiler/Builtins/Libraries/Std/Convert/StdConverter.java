@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Std;
+package com.kilowatt.Compiler.Builtins.Libraries.Std.Convert;
 
 /*
 Стд -> Конвертация типов

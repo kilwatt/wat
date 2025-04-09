@@ -1,0 +1,133 @@
+import 'std.strings'
+import 'std.convert'
+import 'std.typeof'
+
+// json
+unit json -> {
+    // пасирнг ключа
+    fun parse_key(val) {
+        key := ''
+        index := 0
+
+        // получение символа
+        fun get {
+            return strings.char_at(val, index)
+        }
+
+        // мэтч символа
+        fun is_match(char) {
+            if strings.char_at(code, index) == char {
+                index += 1
+                return true
+            } else {
+                return false
+            }
+        }
+
+        // съедание символа
+        fun eat {
+            char := strings.char_at(code, index)
+            index += 1
+            return char
+        }
+
+        // парсинг списка
+        arr_string = val.substring(1, val.length)
+        list := []
+
+        // пасринг
+        while is_match('"') == false {
+            value := ''
+            while is_match(',') == false {
+                value += eat()
+            }
+            list.add(parse_value())
+            eat()
+        }
+    }
+
+    // парсинг списка
+    fun parse_array(val) {
+        index := 0
+
+        // получение символа
+        fun get {
+            return strings.char_at(val, index)
+        }
+
+        // мэтч символа
+        fun is_match(char) {
+            if strings.char_at(code, index) == char {
+                index += 1
+                return true
+            } else {
+                return false
+            }
+        }
+
+        // съедание символа
+        fun eat {
+            char := strings.char_at(code, index)
+            index += 1
+            return char
+        }
+
+        // парсинг списка
+        arr_string = val.substring(1, val.length)
+        list := []
+
+        // пасринг
+        while is_match(']') == false {
+            value := ''
+            while is_match(',') == false {
+                value += eat()
+            }
+            list.add(parse_value())
+            eat()
+        }
+
+        // возвращаем список
+        return list
+    }
+
+    // парсинг значения
+    fun parse_value(val) {
+        // пасирнг
+        if val.startsWith('"') {
+            // возвращаем строку
+            return val
+        } elif strings.is_number(val) {
+            // возвращаем число
+            return convert.to_float(val)
+        } elif val == 'true' or
+                val == 'false' {
+            // возвращаем бул
+            return convert.to_bool(val)
+        } else if val.startsWith('[') {
+            // возвращаем список
+            return parse_array()
+        }
+    }
+
+    // парсинг json
+    fun parse_map(code) {
+        // индекс
+        index := 0
+        map := {}
+
+        // в конце ли
+        fun is_at_end {
+            if index <= code.length
+        }
+
+        // парсинг
+        while (is_at_end()) {
+            char := eat()
+            match char {
+                case '{' {
+                    parse_map()
+                }
+            }
+        }
+    }
+}

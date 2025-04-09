@@ -1,0 +1,5 @@
+unit strings {
+    fun char_at(string, index) {
+        return string.charAt(index).toString()
+    }
+}

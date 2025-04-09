@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
+import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
@@ -45,8 +46,8 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        // устанавливаем адресс последнего вызова
-        vm.getReflection().setLastCallInfo(new VmCallInfo(addr, frame));
+        // устанавливаем инфу о последнем вызове
+        WattCompiler.vm.getCallsTrace().add(new VmCallInfo(addr, name, frame));
         // вызов
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
