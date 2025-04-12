@@ -10,6 +10,9 @@ import java.io.IOException;
 public class WattDumpCommand implements WattCommand {
     @Override
     public void execute(String... args) throws IOException {
+        if (args.length != 1) {
+            throw new WattCommandError("Invalid usage.");
+        }
         WattExecutor.dump(args[0], false);
     }
 }

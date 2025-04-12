@@ -86,11 +86,15 @@ public class WattExecutor {
 
     // дамп байткода скрипта
     public static void dump(String path, boolean asFile) throws IOException {
+        // путь
+        Path filePath = Path.of(path);
+        localPath = filePath.getParent();
+        // проверяем файл на существование
+        if (!Files.exists(filePath)) {
+            throw new WattCommandError("File: " + path + " not found.");
+        }
         // пробуем
         try {
-            // путь
-            Path filePath = Path.of(path);
-            localPath = filePath.getParent();
             // ресолвер импортов
             importsResolver = new WattImportResolver(localPath);
             // парсим
@@ -133,6 +137,10 @@ public class WattExecutor {
         // путь
         Path filePath = Path.of(path);
         localPath = filePath.getParent();
+        // проверяем файл на существование
+        if (!Files.exists(filePath)) {
+            throw new WattCommandError("File: " + path + " not found.");
+        }
         // ресолвер импортов
         importsResolver = new WattImportResolver(localPath);
         // парсим

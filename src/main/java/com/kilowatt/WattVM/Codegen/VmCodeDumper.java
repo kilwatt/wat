@@ -13,7 +13,7 @@ public class VmCodeDumper {
     // дамп
     public static void dump(List<VmInstruction> code, boolean toFile) {
         // выводим успешное сообщение о дампе
-        System.out.println(WattColors.ANSI_YELLOW + "Dumping volt vm code...");
+        System.out.println(WattColors.ANSI_YELLOW + "Dumping volt vm code..." + WattColors.ANSI_RESET);
         // дамп
         // если в файл
         if (toFile) {
