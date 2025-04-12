@@ -1,0 +1,23 @@
+import 'ext.tui'
+import 'std.threads'
+import 'ext.wfiglet'
+import 'std.io'
+
+colors := ['[31m', '[32m', '[38;5;220m', '[34m', '[92m']
+color := 0
+
+while true {
+    io.println(colors.get(color) + wfiglet.art(
+        'G:\\Kilowatt\\Watt\\src\test\\watt\\examples\\spaceday\\moscow.flf',
+        'S DNEM KOSMONAVTIKI!'
+    ))
+
+    threads.sleep(1000)
+    tui.clear()
+
+    if color + 1 < 5 {
+        color += 1
+    } else {
+        color = 0
+    }
+}

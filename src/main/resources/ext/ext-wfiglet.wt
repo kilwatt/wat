@@ -8,7 +8,11 @@ unit wfiglet {
     /*
      Функции
     */
+    fun art(font_path, text) {
+        return figlet_reflection.art(font_path, text)
+    }
+
     fun println(font_path, text) {
-        return figlet_reflection.println(font_path, text)
+        figlet_reflection.println(font_path, text)
     }
 }

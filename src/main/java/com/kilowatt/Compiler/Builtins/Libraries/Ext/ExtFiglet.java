@@ -14,7 +14,7 @@ import java.nio.file.Path;
 Ext -> Figlet
  */
 public class ExtFiglet {
-    public void println(String fontName, String text) {
+    public String art(String fontName, String text) {
         // генерация арта
         String asciiArt;
         try {
@@ -29,7 +29,12 @@ public class ExtFiglet {
                 "check your code."
             );
         }
-        // вывод
-        System.out.println(asciiArt);
+        // возвращаем
+        return asciiArt;
+    }
+
+    public void println(String fontName, String text) {
+        // вывод арта
+        System.out.println(art(fontName, text));
     }
 }
