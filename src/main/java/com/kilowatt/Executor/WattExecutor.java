@@ -70,7 +70,8 @@ public class WattExecutor {
                     address.getLine(),
                     address.getFileName(),
                     "jvm runtime exception: " + error.getMessage(),
-                    "check your code."
+                    "check your code.",
+                    error.getStackTrace()
                 ).panic();
             } catch (RuntimeException exception) {
                 // ошибка
@@ -78,7 +79,8 @@ public class WattExecutor {
                     -1,
                     "null",
                     "jvm runtime exception: " + error.getMessage(),
-                    "check your code."
+                    "check your code.",
+                    exception.getStackTrace()
                 ).panic();
             }
         }
@@ -111,7 +113,7 @@ public class WattExecutor {
             // дампим код
             WattCompiler.vm.dump(WattCompiler.code, asFile);
         } catch (RuntimeException error) {
-            try {
+            if (WattCompiler.vm.getCallsTrace() != null && !WattCompiler.vm.getCallsHistory().isEmpty()) {
                 // адрес
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 // ошибка
@@ -119,15 +121,8 @@ public class WattExecutor {
                         address.getLine(),
                         address.getFileName(),
                         "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
-                ).panic();
-            } catch (NullPointerException exception) {
-                // ошибка
-                new WattInternalError(
-                        -1,
-                        "null",
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
+                        "check your code.",
+                        error.getStackTrace()
                 ).panic();
             }
         }
