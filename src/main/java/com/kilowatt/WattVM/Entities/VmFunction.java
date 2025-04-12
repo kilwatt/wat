@@ -125,7 +125,7 @@ public class VmFunction implements VmInstructionsBox {
         return "VmFunction(" +
                 "name='" + name + '\'' +
                 ", addr=" + addr +
-                ", closure=" + closure.getValues().keySet() +
+                ", closure=" + (closure == null ? "no" : closure.getValues().keySet()) +
                 ')';
     }
 }

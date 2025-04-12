@@ -62,25 +62,25 @@ public class WattExecutor {
             // если есть ошибка - выводим
             error.panic();
         } catch (RuntimeException error) {
-            try {
+            if (WattCompiler.vm.getCallsTrace() != null && !WattCompiler.vm.getCallsHistory().isEmpty()) {
                 // адрес
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
-                    address.getLine(),
-                    address.getFileName(),
-                    "jvm runtime exception: " + error.getMessage(),
-                    "check your code.",
-                    error.getStackTrace()
+                        address.getLine(),
+                        address.getFileName(),
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code.",
+                        error.getStackTrace()
                 ).panic();
-            } catch (RuntimeException exception) {
+            } else {
                 // ошибка
                 new WattInternalError(
-                    -1,
-                    "null",
-                    "jvm runtime exception: " + error.getMessage(),
-                    "check your code.",
-                    exception.getStackTrace()
+                        -1,
+                        "no-file",
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code.",
+                        error.getStackTrace()
                 ).panic();
             }
         }
@@ -120,6 +120,15 @@ public class WattExecutor {
                 new WattInternalError(
                         address.getLine(),
                         address.getFileName(),
+                        "jvm runtime exception: " + error.getMessage(),
+                        "check your code.",
+                        error.getStackTrace()
+                ).panic();
+            } else {
+                // ошибка
+                new WattInternalError(
+                        -1,
+                        "no-file",
                         "jvm runtime exception: " + error.getMessage(),
                         "check your code.",
                         error.getStackTrace()
