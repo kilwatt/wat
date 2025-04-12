@@ -4,17 +4,17 @@ import com.kilowatt.Errors.WattRuntimeError;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
 Фрейм стека - дженерик, являющийся
 хранилищем для ВМ
  */
-@SuppressWarnings({"StringTemplateMigration", "DataFlowIssue"})
+@SuppressWarnings({"StringTemplateMigration"})
 @Getter
 public class VmFrame<K, V> {
     // значения для хранения
-    private HashMap<K, V> values = new HashMap<>();
+    private final ConcurrentHashMap<K, V> values = new ConcurrentHashMap<>();
     /* рутовый фрейм, предназначен для поиска
        в случае отсутствия в текущем фрейме переменной.
        выглядит в виде иерархии:
@@ -31,7 +31,7 @@ public class VmFrame<K, V> {
      * @param name - имя значения
      * @return да или нет
      */
-    private boolean contains(K name) {
+    private boolean existsInFrameOrClosure(K name) {
         return (getValues().containsKey(name)) ||
                 (getClosure() != null && getClosure().has(name));
     }
@@ -45,7 +45,7 @@ public class VmFrame<K, V> {
     public V lookup(VmAddress addr, K name) {
         VmFrame<K, V> current = this;
         // фрэймы
-        while (!current.contains(name)) {
+        while (!current.existsInFrameOrClosure(name)) {
             if (current.root == null) {
                 throw new WattRuntimeError(
                     addr.getLine(),
@@ -57,8 +57,10 @@ public class VmFrame<K, V> {
             current = current.root;
         }
         // проверяем
-        if (current.getValues().containsKey(name)) return current.getValues().get(name);
-        else return current.getClosure().lookup(addr, name);
+        return current.getValues().getOrDefault(
+            name,
+            current.getClosure().lookup(addr, name)
+        );
     }
 
     /**
@@ -71,18 +73,20 @@ public class VmFrame<K, V> {
         VmFrame<K, V> current = this;
         // фрэймы
         while (current != null) {
+            // проверка фрэйма
             if (current.getValues().containsKey(name)) {
                 current.getValues().put(name, val);
                 return;
-            } else if (
-                current.getClosure() != null &&
-                current.getClosure().has(name)
-            ) {
+            }
+            // проверка замыкания фрэйма
+            else if (current.getClosure() != null && current.getClosure().has(name)) {
                 current.getClosure().set(addr, name, val);
                 return;
             }
+            // прыгаем в рут
             current = current.root;
         }
+        // ошибка
         throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                 "variable is not defined: " + name, "verify you already defined it with := op.");
     }
@@ -122,7 +126,7 @@ public class VmFrame<K, V> {
         VmFrame<K, V> current = this;
         // фрэймы
         while (current != null) {
-            if (current.contains(name)) {
+            if (current.existsInFrameOrClosure(name)) {
                 return true;
             }
             current = current.root;
@@ -165,14 +169,5 @@ public class VmFrame<K, V> {
                 "values=" + values +
                 ", root=" + root +
                 '}';
-    }
-
-    /*
-    Копирование
-     */
-    public VmFrame<K, V> copy() {
-        VmFrame<K, V> copied = new VmFrame<>();
-        copied.values = new HashMap<>(getValues());
-        return copied;
     }
 }
