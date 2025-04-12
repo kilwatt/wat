@@ -11,11 +11,9 @@ import com.kilowatt.Parser.AST.Node;
 import com.kilowatt.Parser.Parser;
 import lombok.Getter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
 
 /*
 Экзекьютер
@@ -33,19 +31,19 @@ public class WattExecutor {
 
     // запуск скрипта
     public static void run(String path, String[] args) throws IOException {
+        // путь
+        Path filePath = Path.of(path);
+        localPath = filePath.getParent();
+        // проверяем файл на существование
+        if (!Files.exists(filePath)) {
+            throw new WattCommandError("File: " + path + " not found.");
+        }
         // пробуем
         try {
-            // путь
-            Path filePath = Path.of(path);
-            localPath = filePath.getParent();
             // аргументы
             passedArgs = args;
             // ресолвер импортов
             importsResolver = new WattImportResolver(localPath);
-            // проверяем файл на существование
-            if (!Files.exists(filePath)) {
-                throw new WattCommandError("File: " + path + " not found.");
-            }
             // парсим
             Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
             Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
