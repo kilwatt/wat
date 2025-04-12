@@ -25,7 +25,7 @@ public class WattRuntimeError extends RuntimeException implements WattError {
         System.out.println("│ 💡 " + hint);
         System.out.println("│———————————————");
         System.out.println("│ calls trace: ");
-        for (VmCallInfo element : WattCompiler.vm.getCallsTrace().reversed()) {
+        for (VmCallInfo element : WattCompiler.vm.getCallsHistory().reversed()) {
             System.out.println("│ " + element);
         }
         System.out.println("╰");

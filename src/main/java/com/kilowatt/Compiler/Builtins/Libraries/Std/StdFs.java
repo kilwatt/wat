@@ -20,7 +20,7 @@ public class StdFs {
         try {
             return Files.readString(path);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),
@@ -34,7 +34,7 @@ public class StdFs {
         try {
             Files.writeString(path, value);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -48,7 +48,7 @@ public class StdFs {
         try {
             return Files.readAllBytes(path);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -62,7 +62,7 @@ public class StdFs {
         try {
             Files.write(path, bytes);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -80,7 +80,7 @@ public class StdFs {
         try {
             Files.createFile(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -94,7 +94,7 @@ public class StdFs {
         try {
             Files.createDirectory(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -108,7 +108,7 @@ public class StdFs {
         try {
             Files.delete(Path.of(path));
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

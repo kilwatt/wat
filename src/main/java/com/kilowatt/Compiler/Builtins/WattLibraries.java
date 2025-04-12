@@ -23,8 +23,10 @@ public class WattLibraries {
         put("net.mail", "net/net-mail.wt");
         put("net.owm", "net/net-owm.wt");
         put("std.fs", "std/std-fs.wt");
+        put("std.strings", "std/std-strings.wt");
         put("std.collections", "std/std-collections.wt");
         put("utils.log", "utils/utils-log.wt");
         put("utils.tests", "utils/utils-tests.wt");
+        put("utils.json", "utils/utils-json.wt");
     }};
 }

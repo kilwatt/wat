@@ -10,7 +10,7 @@ import java.util.HashMap;
 Фрейм стека - дженерик, являющийся
 хранилищем для ВМ
  */
-@SuppressWarnings("StringTemplateMigration")
+@SuppressWarnings({"StringTemplateMigration", "DataFlowIssue"})
 @Getter
 public class VmFrame<K, V> {
     // значения для хранения
@@ -26,6 +26,17 @@ public class VmFrame<K, V> {
     private VmFrame<K, V> closure;
 
     /**
+     * Содержится ли объект в этом фрэйме или
+     * в замыкании
+     * @param name - имя значения
+     * @return да или нет
+     */
+    private boolean contains(K name) {
+        return (getValues().containsKey(name)) ||
+                (getClosure() != null && getClosure().has(name));
+    }
+
+    /**
      * Ищет значение в фрейме
      * @param addr - адрес
      * @param name - имя значения
@@ -33,23 +44,21 @@ public class VmFrame<K, V> {
      */
     public V lookup(VmAddress addr, K name) {
         VmFrame<K, V> current = this;
-        // текущий фрэйм
-        if (current.getValues().containsKey(name)) return getValues().get(name);
-        // замыкание
-        if (closure != null && closure.has(name)) return closure.lookup(addr, name);
-        // остальные фрэймы
-        while (!current.getValues().containsKey(name)) {
+        // фрэймы
+        while (!current.contains(name)) {
             if (current.root == null) {
                 throw new WattRuntimeError(
-                        addr.getLine(),
-                        addr.getFileName(),
-                        "not found: " + name.toString(),
-                        "check variable existence!"
+                    addr.getLine(),
+                    addr.getFileName(),
+                    "not found: " + name.toString(),
+                    "check variable existence!"
                 );
             }
             current = current.root;
         }
-        return current.getValues().get(name);
+        // проверяем
+        if (current.getValues().containsKey(name)) return current.getValues().get(name);
+        else return current.getClosure().lookup(addr, name);
     }
 
     /**
@@ -60,20 +69,16 @@ public class VmFrame<K, V> {
      */
     public void set(VmAddress addr, K name, V val) {
         VmFrame<K, V> current = this;
-        // текущий фрэйм
-        if (current.getValues().containsKey(name)) {
-            getValues().put(name, val);
-            return;
-        }
-        // замыкание
-        if (closure != null && closure.has(name)) {
-            closure.set(addr, name, val);
-            return;
-        }
-        // остальные фрэймы
+        // фрэймы
         while (current != null) {
             if (current.getValues().containsKey(name)) {
                 current.getValues().put(name, val);
+                return;
+            } else if (
+                current.getClosure() != null &&
+                current.getClosure().has(name)
+            ) {
+                current.getClosure().set(addr, name, val);
                 return;
             }
             current = current.root;
@@ -115,17 +120,9 @@ public class VmFrame<K, V> {
      */
     public boolean has(K name) {
         VmFrame<K, V> current = this;
-        // текущий фрэйм
-        if (current.getValues().containsKey(name)) {
-            return true;
-        }
-        // замыкание
-        if (closure != null && closure.has(name)) {
-            return true;
-        }
-        // остальные фрэймы
+        // фрэймы
         while (current != null) {
-            if (current.getValues().containsKey(name)) {
+            if (current.contains(name)) {
                 return true;
             }
             current = current.root;

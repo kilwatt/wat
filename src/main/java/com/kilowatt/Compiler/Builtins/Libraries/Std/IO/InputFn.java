@@ -14,11 +14,15 @@ IO -> Функция Инпута
  */
 public class InputFn implements VmBuiltinFunction {
     @Override
-    public void exec(WattVM vm, VmAddress address) {
+    public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
+        // ридер
         BufferedReader r = new BufferedReader(
                 new InputStreamReader(System.in));
+        // читаем и пушим, если надо
         try {
-            vm.push(r.readLine());
+            Object value = r.readLine();
+            if (!shouldPushResult) return;
+            vm.push(value);
         } catch (IOException e) {
             throw new WattRuntimeError(
                     address.getLine(),

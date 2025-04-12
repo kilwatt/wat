@@ -30,8 +30,13 @@ public class WattVM {
     // трэйс(история) вызовов
     private final ThreadLocal<VmCallsTrace> callsTrace = new ThreadLocal<>();
 
-    // получение истории вызово
-    public List<VmCallInfo> getCallsTrace() {
+    // получение провайдера истории вызовов
+    public VmCallsTrace getCallsTrace() {
+        return callsTrace.get();
+    }
+
+    // получение истории вызовов
+    public List<VmCallInfo> getCallsHistory() {
         return callsTrace.get().getCallsHistory();
     }
 

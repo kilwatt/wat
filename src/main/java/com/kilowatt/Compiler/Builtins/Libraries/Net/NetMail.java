@@ -37,7 +37,7 @@ public class NetMail {
             transport.connect();
             return transport;
         } catch (MessagingException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -52,7 +52,7 @@ public class NetMail {
         try {
             transport.close();
         } catch (MessagingException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -74,7 +74,7 @@ public class NetMail {
             // отправка
             transport.sendMessage(message, InternetAddress.parse(to));
         } catch (MessagingException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),

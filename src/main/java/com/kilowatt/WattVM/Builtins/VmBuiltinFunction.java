@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.VmAddress;
 Билт ин функция
  */
 public interface VmBuiltinFunction {
-    void exec(WattVM vm, VmAddress address);
+    void exec(WattVM vm, VmAddress address, boolean shouldPushResult);
     int args();
     String getName();
 }

@@ -26,7 +26,7 @@ public class VmReflection {
     @SneakyThrows
     public Object reflect(String name, WattList args) {
         // адрес
-        VmAddress address = vm.getCallsTrace().getLast().getAddress();
+        VmAddress address = vm.getCallsHistory().getLast().getAddress();
         // ищем класс
         try {
             // класс

@@ -19,7 +19,7 @@ public class VmCallsTrace {
     // добавление элемента
     public void add(VmCallInfo info) {
         // если переполнение - удаляем первый элемент
-        if (callsHistory.size()+1 > maxSize) {
+        if (callsHistory.size() + 1 >= maxSize) {
             callsHistory.removeFirst();
         }
         // добавляем в стэк вызовов

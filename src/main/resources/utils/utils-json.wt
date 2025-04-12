@@ -2,21 +2,40 @@ import 'std.strings'
 import 'std.convert'
 import 'std.typeof'
 
+// json token type
+unit JsonTokenType {
+    STRING := 0
+    LBRACE := 1
+    RBRACE := 2
+    LBRACKET := 3
+    RBRACKET := 4
+    COMMA := 5
+    BOOL := 6
+    NUMBER := 7
+    COLON := 8
+}
+
+// json token
+type JsonToken(value_type, value) {
+
+}
+
 // json
-unit json -> {
+unit json {
     // пасирнг ключа
-    fun parse_key(val) {
-        key := ''
+    fun lex(code) {
+        tokens := []
+        line := 1
         index := 0
 
         // получение символа
         fun get {
-            return strings.char_at(val, index)
+            return str.char_at(code, index)
         }
 
         // мэтч символа
         fun is_match(char) {
-            if strings.char_at(code, index) == char {
+            if str.char_at(code, index) == char {
                 index += 1
                 return true
             } else {
@@ -25,109 +44,99 @@ unit json -> {
         }
 
         // съедание символа
-        fun eat {
-            char := strings.char_at(code, index)
+        fun advance {
+            char := str.char_at(code, index)
             index += 1
             return char
         }
-
-        // парсинг списка
-        arr_string = val.substring(1, val.length)
-        list := []
-
-        // пасринг
-        while is_match('"') == false {
-            value := ''
-            while is_match(',') == false {
-                value += eat()
-            }
-            list.add(parse_value())
-            eat()
-        }
-    }
-
-    // парсинг списка
-    fun parse_array(val) {
-        index := 0
-
-        // получение символа
-        fun get {
-            return strings.char_at(val, index)
-        }
-
-        // мэтч символа
-        fun is_match(char) {
-            if strings.char_at(code, index) == char {
-                index += 1
-                return true
-            } else {
-                return false
-            }
-        }
-
-        // съедание символа
-        fun eat {
-            char := strings.char_at(code, index)
-            index += 1
-            return char
-        }
-
-        // парсинг списка
-        arr_string = val.substring(1, val.length)
-        list := []
-
-        // пасринг
-        while is_match(']') == false {
-            value := ''
-            while is_match(',') == false {
-                value += eat()
-            }
-            list.add(parse_value())
-            eat()
-        }
-
-        // возвращаем список
-        return list
-    }
-
-    // парсинг значения
-    fun parse_value(val) {
-        // пасирнг
-        if val.startsWith('"') {
-            // возвращаем строку
-            return val
-        } elif strings.is_number(val) {
-            // возвращаем число
-            return convert.to_float(val)
-        } elif val == 'true' or
-                val == 'false' {
-            // возвращаем бул
-            return convert.to_bool(val)
-        } else if val.startsWith('[') {
-            // возвращаем список
-            return parse_array()
-        }
-    }
-
-    // парсинг json
-    fun parse_map(code) {
-        // индекс
-        index := 0
-        map := {}
 
         // в конце ли
         fun is_at_end {
-            if index <= code.length
+            return code.length() <= index
         }
 
-        // парсинг
-        while (is_at_end()) {
-            char := eat()
-            match char {
-                case '{' {
-                    parse_map()
+        // парсинг числа
+        fun lex_number(c) {
+            string := c.toString()
+            is_float := false
+
+            while char.is_digit(get()) or get() == '.' {
+                if get() == '.' {
+                    if is_float {
+                        throw error(
+                            'could not parse number with two dots in json',
+                            'check your json.'
+                        )
+                    } else {
+                        is_float = true
+                    }
+                }
+                string += advance()
+            }
+
+            return new JsonToken(
+                JsonTokenType.NUMBER,
+                string
+            )
+        }
+
+        // парсинг строки
+        fun lex_string() {
+            string := ''
+
+            while get() != '"' {
+                string += advance()
+            }
+
+            advance()
+
+            return new JsonToken(
+                JsonTokenType.NUMBER,
+                string
+            )
+        }
+
+        // парсинг списка
+        while is_at_end() == false {
+            current := advance()
+            match current {
+                case '{' -> tokens.add(new JsonToken(JsonTokenType.LBRACE, '{'))
+                case '}' -> tokens.add(new JsonToken(JsonTokenType.RBRACE, '}'))
+                case '[' -> tokens.add(new JsonToken(JsonTokenType.LBRACKET, '['))
+                case ']' -> tokens.add(new JsonToken(JsonTokenType.RBRACKET, ']'))
+                case ',' -> tokens.add(new JsonToken(JsonTokenType.COMMA, ','))
+                case '\n' -> line += 1
+                case '\t' {}
+                case ' ' {}
+                case ':' -> tokens.add(new JsonToken(JsonTokenType.COLON, ':'))
+                default {
+                    if char.is_digit(current) {
+                        tokens.add(lex_number(current))
+                    } elif current == '"' {
+                        tokens.add(lex_string())
+                    } elif current == 't' {
+                        for i in 0 to 3 {
+                            advance()
+                        }
+                        tokens.add(new JsonToken(
+                            JsonTokenType.BOOL,
+                            'true'
+                        ))
+                    } elif current == 'f' {
+                        for i in 0 to 4 {
+                            advance()
+                        }
+                        tokens.add(new JsonToken(
+                            JsonTokenType.BOOL,
+                            'false'
+                        ))
+                    } else {
+                        throw error('undefined json symbol: ' + current + ' at: ' + line, 'check your json.')
+                    }
                 }
             }
         }
+
+        return tokens
     }
 }

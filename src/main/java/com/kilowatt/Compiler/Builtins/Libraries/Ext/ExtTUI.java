@@ -20,7 +20,7 @@ public class ExtTUI {
         try {
             terminal = TerminalBuilder.terminal();
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
@@ -58,7 +58,7 @@ public class ExtTUI {
         try {
             return terminal.reader().read();
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),

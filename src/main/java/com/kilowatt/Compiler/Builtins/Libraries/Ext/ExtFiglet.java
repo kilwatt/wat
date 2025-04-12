@@ -21,7 +21,7 @@ public class ExtFiglet {
             Path path = Path.of(fontName);
             asciiArt = FigletFont.convertOneLine(new File(path.toUri()), text);
         } catch (IOException e) {
-            VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),

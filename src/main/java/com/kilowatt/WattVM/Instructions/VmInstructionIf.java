@@ -29,13 +29,13 @@ public class VmInstructionIf implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
+        // создаём новый фрэйм
+        VmFrame<String, Object> ifFrame = new VmFrame<>();
+        ifFrame.setRoot(frame);
         // выполняем инструкции условий
-        Object val = conditions.runAndGet(vm, frame);
+        Object val = conditions.runAndGet(vm, ifFrame);
         // проверяем условия
         if (((Boolean) val)) {
-            // создаём новый фрэйм
-            VmFrame<String, Object> ifFrame = new VmFrame<>();
-            ifFrame.setRoot(frame);
             // выполняем тело
             body.run(vm, ifFrame);
         }

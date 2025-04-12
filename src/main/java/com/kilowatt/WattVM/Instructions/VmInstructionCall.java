@@ -87,7 +87,7 @@ public class VmInstructionCall implements VmInstruction {
         else if (val instanceof VmBuiltinFunction fn) {
             checkArgs(vmObj.getType().getName() + ":" + name, fn.args(), argsAmount);
             // вызов
-            fn.exec(vm, addr);
+            fn.exec(vm, addr, shouldPushResult);
         }
     }
 
@@ -106,7 +106,7 @@ public class VmInstructionCall implements VmInstruction {
         else if (val instanceof VmBuiltinFunction fn) {
             checkArgs(vmUnit.getName() + ":" + name, fn.args(), argsAmount);
             // вызов
-            fn.exec(vm, addr);
+            fn.exec(vm, addr, shouldPushResult);
         }
     }
 
@@ -188,7 +188,7 @@ public class VmInstructionCall implements VmInstruction {
             }
             else if (o instanceof VmBuiltinFunction fn) {
                 checkArgs(fn.getName(), fn.args(), argsAmount);
-                fn.exec(vm, addr);
+                fn.exec(vm, addr, shouldPushResult);
             } else {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                         "couldn't call: " + o.getClass().getSimpleName(),
@@ -205,7 +205,7 @@ public class VmInstructionCall implements VmInstruction {
             }
             else if (o instanceof VmBuiltinFunction fn) {
                 checkArgs(fn.getName(), fn.args(), argsAmount);
-                fn.exec(vm, addr);
+                fn.exec(vm, addr, shouldPushResult);
             } else {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                         "couldn't call: " + o.getClass().getSimpleName(),

@@ -12,9 +12,11 @@ TypeOf -> Функция получения имени типа объекта
  */
 public class TypeOf implements VmBuiltinFunction {
     @Override
-    public void exec(WattVM vm, VmAddress address) {
+    public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект
         Object o = vm.pop();
+        // нужно ли пушить
+        if (!shouldPushResult) return;
         // если тип или юнит
         switch (o) {
             case VmType type -> vm.push(type.getName());

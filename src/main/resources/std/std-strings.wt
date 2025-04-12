@@ -1,5 +1,34 @@
-unit strings {
+import 'std.typeof'
+
+unit str {
+    /*
+     Функции
+    */
     fun char_at(string, index) {
         return string.charAt(index).toString()
+    }
+}
+
+unit char {
+    // рефлекися
+    chars_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Std.StdStrings',
+        []
+    )
+
+    /*
+     Функции
+    */
+    fun is_digit(string) {
+        if typeof(string) != 'string' {
+            return false
+        }
+        return chars_reflection.is_digit(string.charAt(0))
+    }
+    fun is_alpha(string) {
+        if typeof(string) != 'string' {
+            return false
+        }
+        return chars_reflection.is_alpha(string.charAt(0))
     }
 }

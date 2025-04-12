@@ -13,6 +13,7 @@ import lombok.Getter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.NoSuchElementException;
 
 /*
 Экзекьютер
@@ -60,7 +61,9 @@ public class WattExecutor {
         } catch (RuntimeException error) {
             try {
                 // адрес
-                VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+                VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+                // выводим трэйс
+                error.printStackTrace();
                 // ошибка
                 new WattInternalError(
                     address.getLine(),
@@ -68,7 +71,9 @@ public class WattExecutor {
                     "jvm runtime exception: " + error.getMessage(),
                     "check your code."
                 ).panic();
-            } catch (NullPointerException exception) {
+            } catch (NoSuchElementException exception) {
+                // выводим трэйс
+                error.printStackTrace();
                 // ошибка
                 new WattInternalError(
                     -1,
@@ -105,7 +110,7 @@ public class WattExecutor {
         } catch (RuntimeException error) {
             try {
                 // адрес
-                VmAddress address = WattCompiler.vm.getCallsTrace().getLast().getAddress();
+                VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
                         address.getLine(),

@@ -224,8 +224,7 @@ type A {
 
 tests.run(new A().example)
 */
-
-
+/*
 fun a() {
     io.println(self)
 }
@@ -239,3 +238,12 @@ fun c() {
 }
 
 c()
+*/
+import 'utils.json'
+import 'std.io'
+
+json_text := '{"a": 123, "b": true, "c": "string"}'
+tokens := json.lex(json_text)
+for i in 0 to tokens.size() {
+    io.println(tokens.get(i).value)
+}
