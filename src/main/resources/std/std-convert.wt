@@ -45,6 +45,6 @@ unit convert {
     }
 
     fun parse_bool(value) {
-        return std_reflection_converter.to_bool(value)
+        return std_reflection_strings.parse_bool(value)
     }
 }

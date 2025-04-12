@@ -12,8 +12,6 @@ public class PrintlnFn implements VmBuiltinFunction {
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект
         Object value = vm.pop();
-        // нужно ли пушить
-        if (!shouldPushResult) return;
         // выводим
         System.out.println(value);
     }

@@ -4,19 +4,19 @@ import 'std.typeof'
 
 // json token type
 unit JsonTokenType {
-    STRING := 0
-    LBRACE := 1
-    RBRACE := 2
-    LBRACKET := 3
-    RBRACKET := 4
-    COMMA := 5
-    BOOL := 6
-    NUMBER := 7
-    COLON := 8
+    STRING := 'string'
+    LBRACE := 'lbrace'
+    RBRACE := 'rbrace'
+    LBRACKET := 'lbracket'
+    RBRACKET := 'rbracket'
+    COMMA := 'comma'
+    BOOL := 'bool'
+    NUMBER := 'number'
+    COLON := 'colon'
 }
 
 // json token
-type JsonToken(value_type, value) {
+type JsonToken(value_type, value, line) {
 
 }
 
@@ -76,7 +76,8 @@ unit json {
 
             return new JsonToken(
                 JsonTokenType.NUMBER,
-                string
+                string,
+                line
             )
         }
 
@@ -91,8 +92,9 @@ unit json {
             advance()
 
             return new JsonToken(
-                JsonTokenType.NUMBER,
-                string
+                JsonTokenType.STRING,
+                string,
+                line
             )
         }
 
@@ -100,15 +102,15 @@ unit json {
         while is_at_end() == false {
             current := advance()
             match current {
-                case '{' -> tokens.add(new JsonToken(JsonTokenType.LBRACE, '{'))
-                case '}' -> tokens.add(new JsonToken(JsonTokenType.RBRACE, '}'))
-                case '[' -> tokens.add(new JsonToken(JsonTokenType.LBRACKET, '['))
-                case ']' -> tokens.add(new JsonToken(JsonTokenType.RBRACKET, ']'))
-                case ',' -> tokens.add(new JsonToken(JsonTokenType.COMMA, ','))
+                case '{' -> tokens.add(new JsonToken(JsonTokenType.LBRACE, '{', line))
+                case '}' -> tokens.add(new JsonToken(JsonTokenType.RBRACE, '}', line))
+                case '[' -> tokens.add(new JsonToken(JsonTokenType.LBRACKET, '[', line))
+                case ']' -> tokens.add(new JsonToken(JsonTokenType.RBRACKET, ']', line))
+                case ',' -> tokens.add(new JsonToken(JsonTokenType.COMMA, ',', line))
                 case '\n' -> line += 1
                 case '\t' {}
                 case ' ' {}
-                case ':' -> tokens.add(new JsonToken(JsonTokenType.COLON, ':'))
+                case ':' -> tokens.add(new JsonToken(JsonTokenType.COLON, ':', line))
                 default {
                     if char.is_digit(current) {
                         tokens.add(lex_number(current))
@@ -120,7 +122,7 @@ unit json {
                         }
                         tokens.add(new JsonToken(
                             JsonTokenType.BOOL,
-                            'true'
+                            'true', line
                         ))
                     } elif current == 'f' {
                         for i in 0 to 4 {
@@ -128,7 +130,7 @@ unit json {
                         }
                         tokens.add(new JsonToken(
                             JsonTokenType.BOOL,
-                            'false'
+                            'false', line
                         ))
                     } else {
                         throw error('undefined json symbol: ' + current + ' at: ' + line, 'check your json.')
@@ -138,5 +140,107 @@ unit json {
         }
 
         return tokens
+    }
+
+    // в мапу
+    fun to_map(tokens) {
+        // индекс
+        index := 0
+
+        // получение символа
+        fun get {
+            return tokens.get(index)
+        }
+
+        // мэтч символа
+        fun check(vt) {
+            return get().value_type == vt
+        }
+
+        // съедание символа
+        fun advance(value_type) {
+            tk := tokens.get(index)
+            if (tk.value_type != value_type) {
+                throw error(
+                    'json parsing error. expected: ' + value_type + ', got: ' + tk.value_type + ', at: ' + tk.line,
+                    'check your json.'
+                )
+            }
+            index += 1
+            return tk
+        }
+
+        // в конце ли
+        fun is_at_end {
+            return code.length() <= index
+        }
+
+        // ключ значение
+        fun value {
+            if (check(JsonTokenType.NUMBER)) {
+                return convert.parse_float(advance(JsonTokenType.NUMBER).value)
+            }
+            elif (check(JsonTokenType.STRING)) {
+                return advance(JsonTokenType.STRING).value
+            }
+            elif (check(JsonTokenType.BOOL)) {
+                return convert.parse_bool(advance(JsonTokenType.BOOL).value)
+            }
+            elif (check(JsonTokenType.LBRACE)) {
+                 return map()
+            }
+            elif (check(JsonTokenType.LBRACKET)) {
+                return list()
+            }
+            else {
+                throw error(
+                    'unexpected value: ' + get() + ', at: ' + tk.line
+                )
+            }
+        }
+
+        // список
+        fun list {
+            advance(JsonTokenType.LBRACKET)
+            list := [value()]
+            while (check(JsonTokenType.COMMA)) {
+                advance(JsonTokenType.COMMA)
+                list.add(value())
+            }
+            advance(JsonTokenType.RBRACKET)
+            return list
+        }
+
+
+        // ключ
+        fun key {
+            k := advance(JsonTokenType.STRING).value
+            advance(JsonTokenType.COLON)
+            return k
+        }
+
+        // мапа
+        fun map() {
+            advance(JsonTokenType.LBRACE)
+            map := {}
+            k := key()
+            v := value()
+            map.set(k, v)
+            while check(JsonTokenType.COMMA) {
+                advance(JsonTokenType.COMMA)
+                k := key()
+                v := value()
+                map.set(k, v)
+            }
+            advance(JsonTokenType.RBRACE)
+            return map
+        }
+
+        // парсинг
+        return map()
+    }
+
+    fun parse(string) {
+        return to_map(lex(string))
     }
 }
