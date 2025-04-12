@@ -40,12 +40,12 @@ public class WattCommandsExecutor {
     }
 
     public void exec(String[] args) throws IOException {
-        // команда
-        String command = args[0];
-        // аргументы команды
-        String[] commandArgs = sliceArgs(args);
         // перебор команд
         if (args.length >= 1) {
+            // команда
+            String command = args[0];
+            // аргументы команды
+            String[] commandArgs = sliceArgs(args);
             // если есть такая команда
             if (commands.containsKey(command)) {
                 commands.get(command).execute(commandArgs);
