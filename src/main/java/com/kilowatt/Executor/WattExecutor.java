@@ -1,5 +1,6 @@
 package com.kilowatt.Executor;
 
+import com.kilowatt.Commands.WattCommandError;
 import com.kilowatt.Compiler.WattBuiltinProvider;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.*;
@@ -10,6 +11,7 @@ import com.kilowatt.Parser.AST.Node;
 import com.kilowatt.Parser.Parser;
 import lombok.Getter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,8 +42,11 @@ public class WattExecutor {
             passedArgs = args;
             // ресолвер импортов
             importsResolver = new WattImportResolver(localPath);
+            // проверяем файл на существование
+            if (!Files.exists(filePath)) {
+                throw new WattCommandError("File: " + path + " not found.");
+            }
             // парсим
-            // !TODO add check for files existence
             Lexer lexer = new Lexer(filePath.getFileName().toString(), new String(Files.readAllBytes(filePath)));
             Parser parser = new Parser(filePath.getFileName().toString(), lexer.scan());
             Node result = parser.parse();

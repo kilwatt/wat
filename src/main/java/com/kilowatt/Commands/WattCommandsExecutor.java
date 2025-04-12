@@ -10,7 +10,6 @@ import java.util.HashMap;
 /*
 Хэндлер команд
  */
-@SuppressWarnings("ConstantValue")
 public class WattCommandsExecutor {
     // комманды
     private final HashMap<String, WattCommand> commands = new HashMap<>(){{
@@ -46,18 +45,30 @@ public class WattCommandsExecutor {
             String command = args[0];
             // аргументы команды
             String[] commandArgs = sliceArgs(args);
-            // если есть такая команда
-            if (commands.containsKey(command)) {
-                commands.get(command).execute(commandArgs);
+            // пробуем исполнить
+            try {
+                // если есть такая команда
+                if (commands.containsKey(command)) {
+                    commands.get(command).execute(commandArgs);
+                }
+                // если нет - то воспринимаем как запуск скрипта
+                else {
+                    // запуск
+                    WattExecutor.run(args[0], commandArgs);
+                }
             }
-            // если нет - то воспринимаем как запуск скрипта
-            else {
-                // запуск
-                WattExecutor.run(args[0], commandArgs);
+            // если возникает ошибка
+            catch (WattCommandError error) {
+                // информация об ошибке
+                System.out.println(error.getMessage());
+                // выходим
+                System.exit(-1);
             }
         } else {
             // информация об использовании
             usage();
+            // выходим
+            System.exit(-1);
         }
     }
 
