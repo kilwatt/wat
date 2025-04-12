@@ -57,10 +57,8 @@ public class VmFrame<K, V> {
             current = current.root;
         }
         // проверяем
-        return current.getValues().getOrDefault(
-            name,
-            current.getClosure().lookup(addr, name)
-        );
+        if (current.getValues().containsKey(name)) return current.getValues().get(name);
+        else return current.getClosure().lookup(addr, name);
     }
 
     /**
@@ -146,12 +144,15 @@ public class VmFrame<K, V> {
      * @param rootFrame - фрейм
      */
     public void setRoot(VmFrame<K, V> rootFrame) {
+        // проверка на цикличную зависимость
         if (this.root == rootFrame || this == rootFrame) { return; }
+        // ищем объект с пустым рутом
         VmFrame<K, V> current = this;
         while (current.getRoot() != null) {
             if (current.getRoot() == rootFrame || current == rootFrame) { return; }
             current = current.getRoot();
         }
+        // устанавливаем рут
         current.root = rootFrame;
     }
 
