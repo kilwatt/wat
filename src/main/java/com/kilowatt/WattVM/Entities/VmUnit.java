@@ -21,8 +21,6 @@ public class VmUnit implements VmFunctionOwner {
         // данные
         this.name = name;
         this.fullName = fullName;
-        // бинды функций
-        bindFunctionsToUnit();
     }
 
     @Override
@@ -42,7 +40,7 @@ public class VmUnit implements VmFunctionOwner {
     /**
     Бинды функций к юниту
      */
-    private void bindFunctionsToUnit() {
+    public void bindFunctionsToUnit() {
         // Фильтруются функции, которые не привязаны
         // к конкретному юниту или экземпляру типа. В последствии
         // они привязываются к этому юниту.
