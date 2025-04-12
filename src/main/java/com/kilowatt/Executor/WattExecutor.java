@@ -67,8 +67,6 @@ public class WattExecutor {
             try {
                 // адрес
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
-                // выводим трэйс
-                error.printStackTrace();
                 // ошибка
                 new WattInternalError(
                     address.getLine(),
@@ -76,9 +74,7 @@ public class WattExecutor {
                     "jvm runtime exception: " + error.getMessage(),
                     "check your code."
                 ).panic();
-            } catch (NoSuchElementException exception) {
-                // выводим трэйс
-                error.printStackTrace();
+            } catch (RuntimeException exception) {
                 // ошибка
                 new WattInternalError(
                     -1,
