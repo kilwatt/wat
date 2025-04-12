@@ -60,7 +60,7 @@ public class WattCommandsExecutor {
             // если возникает ошибка
             catch (WattCommandError error) {
                 // информация об ошибке
-                System.out.println(error.getMessage());
+                System.out.println(WattColors.ANSI_YELLOW + error.getMessage() + WattColors.ANSI_RESET);
                 // выходим
                 System.exit(-1);
             }
