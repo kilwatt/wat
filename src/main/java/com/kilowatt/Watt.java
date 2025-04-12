@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class Watt {
     // версия
-    public static final String version = "0.0.1";
+    public static final String version = "1.5.4";
 
     // экзекьютор команд
     public static final WattCommandsExecutor commandExecutor = new WattCommandsExecutor();
