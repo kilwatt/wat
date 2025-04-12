@@ -648,9 +648,6 @@ public class Parser {
             case TokenType.BREAK -> {
                 return breakNode();
             }
-            case TokenType.ASSERT -> {
-                return assertion();
-            }
             case TokenType.TRY -> {
                 return tryNode();
             }
@@ -681,12 +678,6 @@ public class Parser {
     private Node returnNode() {
         Token loc = consume(TokenType.RETURN);
         return new ReturnNode(loc, expression());
-    }
-
-    // стэйтмент assert
-    private Node assertion() {
-        Token loc = consume(TokenType.ASSERT);
-        return new AssertNode(loc, expression());
     }
 
     // один import

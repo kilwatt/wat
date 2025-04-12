@@ -50,7 +50,6 @@ public enum TokenType {
     FOR, // for
     TERNARY, // ternary
     IN, // in
-    ASSERT, // assert
     CONTINUE, // continue
     TRY, // try
     CATCH, // catch

@@ -43,7 +43,6 @@ public class Lexer {
         put("case", TokenType.CASE);
         put("default", TokenType.DEFAULT);
         put("for", TokenType.FOR);
-        put("assert", TokenType.ASSERT);
         put("continue", TokenType.CONTINUE);
         put("try", TokenType.TRY);
         put("catch", TokenType.CATCH);

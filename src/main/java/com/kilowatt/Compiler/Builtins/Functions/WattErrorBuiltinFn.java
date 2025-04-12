@@ -6,7 +6,7 @@ import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 
 /*
-Вывод ошибки
+Функция создание рантайм ошибки
  */
 public class WattErrorBuiltinFn implements VmBuiltinFunction {
     @Override

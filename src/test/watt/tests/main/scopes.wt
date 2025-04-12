@@ -1,0 +1,18 @@
+import 'std.io'
+unit C {
+    fun d(u) {
+        g := 3
+        fun h() {
+            assert(g + u == 7)
+            assert(self == C)
+        }
+        h()
+    }
+}
+y := C.d
+type A {
+    e := 3
+    b := y
+}
+f := new A()
+f.b(4)

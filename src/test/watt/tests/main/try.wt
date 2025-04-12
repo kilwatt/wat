@@ -1,0 +1,13 @@
+fun fn() {
+    fun e() {
+        import 'std.io'
+        throw 123
+    }
+    e()
+}
+
+try {
+    fn()
+} catch val {
+    assert(val.value() == 123)
+}

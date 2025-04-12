@@ -7,6 +7,14 @@ public class WattTests {
     public static void run() {
         WattTestRunner runner = new WattTestRunner(
                 WattTest.builder().path(
+                        "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\scopes.wt")
+                        .name("scopes")
+                        .build(),
+                WattTest.builder().path(
+                                "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\try.wt")
+                        .name("try")
+                        .build(),
+                WattTest.builder().path(
                                 "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\logical.wt")
                         .name("logical")
                         .build(),
