@@ -111,6 +111,7 @@ unit json {
                 case '\t' {}
                 case ' ' {}
                 case ':' -> tokens.add(new JsonToken(JsonTokenType.COLON, ':', line))
+                case '-' -> tokens.add(lex_number(current))
                 default {
                     if char.is_digit(current) {
                         tokens.add(lex_number(current))
