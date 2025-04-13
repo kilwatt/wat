@@ -30,6 +30,11 @@ public class WattMap {
     }
 
     public Object to_string() {
+        return this;
+    }
+
+    @Override
+    public String toString() {
         return map.toString();
     }
 
