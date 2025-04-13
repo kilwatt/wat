@@ -1,0 +1,7 @@
+type Arc2D(width,height,title) {
+    fun init() {
+        arc_reflection := __refl__.reflect(
+            'com.kilowatt.watt.Compiler'
+        )
+    }
+}
