@@ -1,0 +1,68 @@
+import 'net.owm'
+import 'std.io'
+import 'std.fs'
+import 'utils.json'
+import 'std.sys'
+
+path := fs.path_of('G:\Kilowatt\Watt\src\test\watt\examples\weather\weather.json')
+api_key := ''
+
+if system.args().size() > 0 {
+    if system.args().get(0) == 'reset' {
+        io.println('Введите owm апи-ключик ☔: ')
+        key := io.input()
+        fs.write_text(
+            path,
+            json.encode(
+                {
+                    'api_key': key
+                }
+            )
+        )
+        api_key = key
+        io.println('Успешно! 🌞')
+        system.exit(101)
+    }
+    else {
+        io.println('☔ Команда не распознана! Доступны: reset')
+    }
+}
+
+if fs.is_exists(path) {
+    io.println('Найден файл! ☂️')
+    api_key = json.parse(
+        fs.read_text(
+            path
+        )
+    ).get('api_key')
+} else {
+    io.println('Введите owm апи-ключик ☔: ')
+    key := io.input()
+    fs.write_text(
+        path,
+        json.encode(
+            {
+                'api_key': key
+            }
+        )
+    )
+    api_key = key
+}
+
+io.println('🌦️ Апи ключ: ' + api_key)
+io.println('🌡️ Введите город: ')
+city := io.input()
+io.println('🌞 Запрашиваю погоду с сервера...')
+
+client := new OwmClient(api_key)
+_weather := json.parse(client.city(city, 'ru', WeatherType.JSON))
+
+temperature := _weather.get('main').get('temp') - 273.15
+wind := _weather.get('wind').get('speed')
+weather := _weather.get('weather').get(0).get('description')
+
+io.println('╭ Погода в: ' + city)
+io.println('│ 🌡️ Температура: ' + temperature + '°️С')
+io.println('│ 🌦️ Погода: ' + weather)
+io.println('│ 🍃 Ветер: ' + wind + ' м/c')
+io.println('╰')

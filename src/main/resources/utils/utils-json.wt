@@ -244,7 +244,59 @@ unit json {
         return to_map(lex(string))
     }
 
+    fun encode_list(list) {
+        string := '['
+
+        for i in 0 to list.size() {
+            val := list.get(i)
+
+            if typeof(val) == 'string' {
+                string += '"' + val + '"'
+            } elif typeof(val) == 'WattList' {
+                string += encode_list(val)
+            } elif typeof(val) == 'WattMap' {
+                string += encode_map(val)
+            } else {
+                string += val
+            }
+
+            if i + 1 < list.size() {
+                string += ','
+            }
+        }
+
+        string += ']'
+        return string
+    }
+
+    fun encode_map(map) {
+        keys := map.keys()
+        string := '{'
+
+        for i in 0 to keys.size() {
+            key := keys.get(i)
+            val := map.get(key)
+
+            if typeof(val) == 'string' {
+                string += '"' + key +  '": "' + val + '"'
+            } elif typeof(val) == 'WattList' {
+                string += '"' + key +  '": ' + encode_list(val)
+            } elif typeof(val) == 'WattMap' {
+                string += '"' + key +  '": ' + encode_map(val)
+            } else {
+                string += '"' + key +  '": ' + val
+            }
+
+            if i + 1 < keys.size() {
+                string += ','
+            }
+        }
+
+        string += '}'
+        return string
+    }
+
     fun encode(map) {
-        return map.to_string()
+        return encode_map(map)
     }
 }

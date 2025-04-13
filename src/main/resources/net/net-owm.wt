@@ -22,19 +22,15 @@ type OwmClient(api_key) {
     fun get_weather(customizer, ret_type) {
         match (ret_type) {
             case 'html' {
-                io.println('html')
                 return customizer.retrieve().asHTML()
             }
             case 'java' {
-                io.println('java')
                 return customizer.retrieve().asJava()
             }
             case 'json' {
-                io.println('json')
                 return customizer.retrieve().asJSON()
             }
             case 'xml' {
-                io.println('xml')
                 return customizer.retrieve().asXML()
             }
             default {
@@ -45,24 +41,20 @@ type OwmClient(api_key) {
 
     // получение погоды в городе по имени
     fun city(name, language, ret_type) {
-        io.println(language == 'ru')
         match (language) {
             case 'ru' {
-                io.println('ru')
                 return self.get_weather(
                     single_requester.byCityName(name).language(owm_reflection.RU),
                     ret_type
                 )
             }
             case 'en' {
-                io.println('en')
                 return self.get_weather(
                     single_requester.byCityName(name).language(owm_reflection.EN),
                     ret_type
                 )
             }
-            _ {
-                io.println('other')
+            default {
                 throw error('lang: ' + language + ' is not available.', 'available: ru, en')
             }
         }

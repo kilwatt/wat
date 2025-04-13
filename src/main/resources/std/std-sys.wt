@@ -31,7 +31,7 @@ unit system {
     }
 
     fun exit(code) {
-        code_t = typeof(code)
+        code_t := typeof(code)
         if code_t != 'int' {
             throw error(
                 'exit code must be an int, not ' + code_t,

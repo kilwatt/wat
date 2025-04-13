@@ -72,8 +72,8 @@ public class StdFs {
         }
     }
 
-    public boolean is_exists(String path) {
-        return Files.exists(Path.of(path));
+    public boolean is_exists(Path path) {
+        return Files.exists(path);
     }
 
     public void create_file(String path) {
