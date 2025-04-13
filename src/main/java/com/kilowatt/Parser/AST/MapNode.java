@@ -10,7 +10,7 @@ import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

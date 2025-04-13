@@ -2,7 +2,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*

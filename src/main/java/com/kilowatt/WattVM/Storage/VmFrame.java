@@ -1,6 +1,7 @@
-package com.kilowatt.WattVM;
+package com.kilowatt.WattVM.Storage;
 
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 import lombok.Setter;
 

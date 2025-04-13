@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Entities;
 
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.Storage.VmFrame;
 
 /*
 Владелец функции

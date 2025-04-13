@@ -3,7 +3,7 @@ package com.kilowatt.WattVM.Boxes;
 
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.WattVM;
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 import java.util.ArrayList;

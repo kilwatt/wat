@@ -8,6 +8,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import com.kilowatt.WattVM.Reflection.VmReflection;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
 

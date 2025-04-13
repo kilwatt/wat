@@ -4,6 +4,7 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmNull;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*

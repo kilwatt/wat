@@ -7,6 +7,7 @@ import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*

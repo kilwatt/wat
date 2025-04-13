@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Reflection;
 
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.VmFrame;
+import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
