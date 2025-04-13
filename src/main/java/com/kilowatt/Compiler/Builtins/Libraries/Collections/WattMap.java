@@ -76,9 +76,11 @@ public class WattMap {
     public WattList keys() {
         return WattList.of(map.keySet().stream().toList());
     }
-
     public WattList values() {
         return WattList.of(map.values().stream().toList());
+    }
+    public WattList pairs() {
+        return WattList.of(map.entrySet().toArray());
     }
     public float size() {
         return map.size();

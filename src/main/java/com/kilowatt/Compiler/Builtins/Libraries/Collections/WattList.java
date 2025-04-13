@@ -49,6 +49,11 @@ public class WattList {
     }
 
     public Object to_string() {
+        return this;
+    }
+
+    @Override
+    public String toString() {
         StringBuilder s = new StringBuilder("[");
         for (int i = 0; i < array.size(); i++) {
             // получаем по индексу
@@ -63,6 +68,7 @@ public class WattList {
         s.append("]");
         return s.toString();
     }
+
     public void insert(int i, Object v) {
         array.add(i, v);
     }

@@ -243,4 +243,8 @@ unit json {
     fun parse(string) {
         return to_map(lex(string))
     }
+
+    fun encode(map) {
+        return map.to_string()
+    }
 }

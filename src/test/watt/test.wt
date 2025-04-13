@@ -244,4 +244,5 @@ import 'std.io'
 
 json_text := '{"a": 123, "b": true, "c": "string", "d": [134,457,683]}'
 json_dict := json.parse(json_text)
-io.println(json_dict.get('d').to_string())
+io.println(json_dict.to_string())
+io.println(json.encode(json_dict))
