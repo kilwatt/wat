@@ -13,6 +13,6 @@ unit threads {
     }
 
     fun run(fn, constructor) {
-        threads_reflection.run(fn, constructor)
+        return threads_reflection.run(fn, constructor)
     }
 }
