@@ -1,7 +1,44 @@
 type Arc2D(width,height,title) {
     fun init() {
-        arc_reflection := __refl__.reflect(
-            'com.kilowatt.watt.Compiler'
+        self.arc_reflection := __refl__.reflect(
+            'com.kilowatt.Compiler.Builtins.Libraries.Arc.Arc2D',
+            [width, height, title]
         )
+    }
+
+    fun run() {
+        self.arc_reflection.run()
+    }
+
+    fun on_update(fn) {
+        self.arc_reflection.on_update(fn)
+    }
+
+    fun on_start(fn) {
+        self.arc_reflection.on_start(fn)
+    }
+
+    fun on_pause(fn) {
+        self.arc_reflection.on_pause(fn)
+    }
+
+    fun on_resume(fn) {
+        self.arc_reflection.on_resume(fn)
+    }
+
+    fun on_resize(fn) {
+        self.arc_reflection.on_resize(fn)
+    }
+
+    fun on_dispose(fn) {
+        self.arc_reflection.on_dispose(fn)
+    }
+
+    fun sprite(path) {
+        return self.arc_reflection.sprite(path)
+    }
+
+    fun draw(sprite) {
+        return self.arc_reflection.draw(sprite)
     }
 }

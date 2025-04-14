@@ -28,5 +28,6 @@ public class WattLibraries {
         put("utils.log", "utils/utils-log.wt");
         put("utils.tests", "utils/utils-tests.wt");
         put("utils.json", "utils/utils-json.wt");
+        put("arc.2d", "arc/arc-2d.wt");
     }};
 }

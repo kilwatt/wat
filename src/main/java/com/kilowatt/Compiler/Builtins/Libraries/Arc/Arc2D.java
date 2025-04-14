@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Entities.VmFunction;
-import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
 /*
@@ -85,49 +84,40 @@ public class Arc2D implements ApplicationListener {
     }
 
     // запуск
-    public void run(VmFunction onStart,
-                    VmFunction onUpdate) {
-        // проверяем
-        if (onStart == null ||
-            onUpdate == null) {
-            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
-        }
-        // создаём приложение
-        this.onStart = onStart;
-        this.onUpdate = onUpdate;
+    public void run() {
         new Lwjgl3Application(this, config);
     }
 
     @Override
     public void create() {
          sprites = new SpriteBatch();
-         onStart.exec(WattCompiler.vm, false);
+         if (onStart != null) onStart.exec(WattCompiler.vm, false);
     }
 
     @Override
     public void resize(int width, int height) {
-        onResize.exec(WattCompiler.vm, false);
+        if (onResize != null) onResize.exec(WattCompiler.vm, false);
     }
 
     @Override
     public void render() {
         sprites.begin();
-        onUpdate.exec(WattCompiler.vm, false);
+        if (onUpdate != null) onUpdate.exec(WattCompiler.vm, false);
         sprites.end();
     }
 
     @Override
     public void pause() {
-        onPause.exec(WattCompiler.vm, false);
+        if (onPause != null) onPause.exec(WattCompiler.vm, false);
     }
 
     @Override
     public void resume() {
-        onResume.exec(WattCompiler.vm, false);
+        if (onResume != null) onResume.exec(WattCompiler.vm, false);
     }
 
     @Override
     public void dispose() {
-        onDispose.exec(WattCompiler.vm, false);
+        if (onDispose != null) onDispose.exec(WattCompiler.vm, false);
     }
 }
