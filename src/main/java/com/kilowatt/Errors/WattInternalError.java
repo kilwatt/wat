@@ -22,7 +22,6 @@ public class WattInternalError extends RuntimeException implements WattError {
         System.out.println("│ err: " + this.message);
         System.out.println("│ at: " + filename + "::" + line);
         System.out.println("│ 💡 " + hint);
-        System.out.println("│ at: " + filename + "::" + line);
         System.out.println("│———————————————");
         System.out.println("│ calls trace: ");
         for (StackTraceElement e : trace) {
