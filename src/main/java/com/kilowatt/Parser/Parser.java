@@ -446,30 +446,13 @@ public class Parser {
         return left;
     }
 
-    // условный оператор
-    private Token conditionalOperator() {
-        return switch (peek().type) {
-            case EQUAL -> consume(TokenType.EQUAL);
-            case NOT_EQUAL -> consume(TokenType.NOT_EQUAL);
-            case LESS -> consume(TokenType.LESS);
-            case GREATER -> consume(TokenType.GREATER);
-            case LESS_EQ -> consume(TokenType.LESS_EQ);
-            case GREATER_EQ -> consume(TokenType.GREATER_EQ);
-            default -> throw new WattParsingError(
-                    peek().line,
-                    filename,
-                    "invalid cond. op: " + peek().value,
-                    "available op-s: ==,!=,>,<,>=,<=");
-        };
-    }
-
     // условное выражение
     private Node conditional() {
         Node left = additive();
 
         if (check(TokenType.GREATER) || check(TokenType.LESS) || check(TokenType.GREATER_EQ) ||
             check(TokenType.LESS_EQ) || check(TokenType.EQUAL) || check(TokenType.NOT_EQUAL)) {
-            Token operator = conditionalOperator();
+            Token operator = advance();
             Node right = additive();
             return new ConditionalNode(left, right, operator);
         }
@@ -1023,6 +1006,22 @@ public class Parser {
                     "its end of file! last token: " + token.type + ":" + token.value);
         } else {
             return this.tokenList.get(current);
+        }
+    }
+
+    // получаем текущий токен и прыгаем дальше
+    private Token advance() {
+        if (isAtEnd()) {
+            Token token = this.tokenList.get(current-1);
+            throw new WattParsingError(
+                    token.line,
+                    filename,
+                    "couldn't advance token.",
+                    "its end of file! last token: " + token.type + ":" + token.value);
+        } else {
+            Token tk = this.tokenList.get(current);
+            current += 1;
+            return tk;
         }
     }
 }

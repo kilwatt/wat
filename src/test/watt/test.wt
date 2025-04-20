@@ -250,4 +250,4 @@ io.println(json.encode(json_dict))
 */
 import 'std.io'
 
-io.println('Hello world! ' + !true)
+io.println('Hello world! ' + !true + (3 > 5))
