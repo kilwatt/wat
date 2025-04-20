@@ -17,18 +17,24 @@ import java.util.List;
 @SuppressWarnings({"BooleanMethodIsAlwaysInverted"})
 @Getter
 public class Parser {
+    // имя файла
     private final String filename;
+    // токены
     private final ArrayList<Token> tokenList;
+    // префикс полного имени
     @Setter
     private String fullNamePrefix;
+    // текущий иднекс
     private int current = 0;
 
+    // конструктор
     public Parser(String filename, ArrayList<Token> tokenList) {
         this.filename = filename;
         this.fullNamePrefix = filename.replace(".wt", "");
         this.tokenList = tokenList;
     }
 
+    // парсинг
     public BlockNode parse() {
         return block();
     }
@@ -36,9 +42,9 @@ public class Parser {
     // аргументы
     private ArrayList<Node> args() {
         ArrayList<Node> nodes = new ArrayList<>();
-        consume(TokenType.LEFT_PAREN);
+        consume(TokenType.LPAREN);
 
-        if (!check(TokenType.RIGHT_PAREN)) {
+        if (!check(TokenType.RPAREN)) {
             do {
                 if (check(TokenType.COMMA)) {
                     consume(TokenType.COMMA);
@@ -47,14 +53,14 @@ public class Parser {
             } while (!isAtEnd() && check(TokenType.COMMA));
         }
 
-        consume(TokenType.RIGHT_PAREN);
+        consume(TokenType.RPAREN);
         return nodes;
     }
 
     // параметры
     private ArrayList<Token> params() {
         ArrayList<Token> params = new ArrayList<>();
-        consume(TokenType.LEFT_PAREN);
+        consume(TokenType.LPAREN);
 
         if (check(TokenType.ID)) {
             do {
@@ -65,7 +71,7 @@ public class Parser {
             } while (!isAtEnd() && check(TokenType.COMMA));
         }
 
-        consume(TokenType.RIGHT_PAREN);
+        consume(TokenType.RPAREN);
         return params;
     }
 
@@ -130,7 +136,7 @@ public class Parser {
                         var, expression(), new Token(TokenType.OPERATOR, op,
                         location.getLine(), location.getFileName())
                 ));
-            } else if (check(TokenType.LEFT_PAREN)) {
+            } else if (check(TokenType.LPAREN)) {
                 return new CallNode(prev, identifier, args());
             } else {
                 return new VarNode(prev, identifier);
@@ -193,9 +199,9 @@ public class Parser {
 
     // выражение в скобках
     private Node grouping() {
-        consume(TokenType.LEFT_PAREN);
+        consume(TokenType.LPAREN);
         Node expr = expression();
-        consume(TokenType.RIGHT_PAREN);
+        consume(TokenType.RPAREN);
         return expr;
     }
 
@@ -205,15 +211,15 @@ public class Parser {
         Token location = consume(TokenType.FUN);
         // параметры, если есть
         ArrayList<Token> parameters;
-        if (check(TokenType.LEFT_PAREN)) {
+        if (check(TokenType.LPAREN)) {
             parameters = params();
         } else {
             parameters = new ArrayList<>();
         }
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем анонимную функцию
         return new AnonymousFnNode(
                 location,
@@ -229,7 +235,7 @@ public class Parser {
         // параметры
         ArrayList<Token> parameters = params();
         // ->
-        consume(TokenType.GO);
+        consume(TokenType.ARROW);
         // выражение
         BlockNode node = BlockNode.of(
                 new ReturnNode(
@@ -313,13 +319,13 @@ public class Parser {
             case TokenType.BOOL -> {
                 return new BoolNode(consume(TokenType.BOOL));
             }
-            case TokenType.LEFT_PAREN -> {
+            case TokenType.LPAREN -> {
                 return grouping();
             }
-            case TokenType.LEFT_BRACKET -> {
+            case TokenType.LBRACKET -> {
                 return listNode();
             }
-            case TokenType.LEFT_BRACE -> {
+            case TokenType.LBRACE -> {
                 return mapNode();
             }
             case TokenType.NULL -> {
@@ -351,12 +357,12 @@ public class Parser {
     // список нод
     private Node listNode() {
         // [
-        Token location = consume(TokenType.LEFT_BRACKET);
+        Token location = consume(TokenType.LBRACKET);
         // список нод внутри
         ArrayList<Node> nodes = new ArrayList<>();
         // если список не пустой
-        if (check(TokenType.RIGHT_BRACKET)) {
-            consume(TokenType.RIGHT_BRACKET);
+        if (check(TokenType.RBRACKET)) {
+            consume(TokenType.RBRACKET);
             return new ListNode(location, nodes);
         }
         // парсим список
@@ -368,7 +374,7 @@ public class Parser {
         }
         while (check(TokenType.COMMA));
         // ]
-        consume(TokenType.RIGHT_BRACKET);
+        consume(TokenType.RBRACKET);
         // возвращаем
         return new ListNode(location, nodes);
     }
@@ -376,12 +382,12 @@ public class Parser {
     // словарь нод
     private Node mapNode() {
         // {
-        Token location = consume(TokenType.LEFT_BRACE);
+        Token location = consume(TokenType.LBRACE);
         // мапа нод внутри
         HashMap<Node, Node> nodes = new HashMap<>();
         // если словарь пуст
-        if (check(TokenType.RIGHT_BRACE)) {
-            consume(TokenType.RIGHT_BRACE);
+        if (check(TokenType.RBRACE)) {
+            consume(TokenType.RBRACE);
             return new MapNode(location, nodes);
         }
         // парсим мапу
@@ -396,15 +402,15 @@ public class Parser {
         }
         while (check(TokenType.COMMA));
         // }
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new MapNode(location, nodes);
     }
 
     // унарное выражение
     private Node unary() {
-        // унарный оператор - neg
-        if (check(TokenType.OPERATOR) && match("-")) {
+        // унарный оператор (neg, back)
+        if (check(TokenType.OPERATOR) && (match("-") || match("!"))) {
             Token op = consume(TokenType.OPERATOR);
             Node left = primary();
             return new UnaryNode(op, left);
@@ -445,10 +451,10 @@ public class Parser {
         return switch (peek().type) {
             case EQUAL -> consume(TokenType.EQUAL);
             case NOT_EQUAL -> consume(TokenType.NOT_EQUAL);
-            case LOWER -> consume(TokenType.LOWER);
-            case BIGGER -> consume(TokenType.BIGGER);
-            case LOWER_EQUAL -> consume(TokenType.LOWER_EQUAL);
-            case BIGGER_EQUAL -> consume(TokenType.BIGGER_EQUAL);
+            case LESS -> consume(TokenType.LESS);
+            case GREATER -> consume(TokenType.GREATER);
+            case LESS_EQ -> consume(TokenType.LESS_EQ);
+            case GREATER_EQ -> consume(TokenType.GREATER_EQ);
             default -> throw new WattParsingError(
                     peek().line,
                     filename,
@@ -461,8 +467,8 @@ public class Parser {
     private Node conditional() {
         Node left = additive();
 
-        if (check(TokenType.BIGGER) || check(TokenType.LOWER) || check(TokenType.BIGGER_EQUAL) ||
-            check(TokenType.LOWER_EQUAL) || check(TokenType.EQUAL) || check(TokenType.NOT_EQUAL)) {
+        if (check(TokenType.GREATER) || check(TokenType.LESS) || check(TokenType.GREATER_EQ) ||
+            check(TokenType.LESS_EQ) || check(TokenType.EQUAL) || check(TokenType.NOT_EQUAL)) {
             Token operator = conditionalOperator();
             Node right = additive();
             return new ConditionalNode(left, right, operator);
@@ -491,7 +497,7 @@ public class Parser {
 
     // текущий токен это закрывающая скобка?
     private boolean itsClosingBrace() {
-        return check(TokenType.RIGHT_BRACE);
+        return check(TokenType.RBRACE);
     }
 
     // блок кода
@@ -509,7 +515,7 @@ public class Parser {
     private Node nativeFunction() {
         consume(TokenType.NATIVE);
         Token name = consume(TokenType.ID);
-        consume(TokenType.GO);
+        consume(TokenType.ARROW);
         Token javaName = consume(TokenType.TEXT);
         return new NativeNode(name,toFullName(name),javaName);
     }
@@ -521,19 +527,19 @@ public class Parser {
         Token name = consume(TokenType.ID);
         // парсим параметры, если они есть
         ArrayList<Token> parameters;
-        if (check(TokenType.LEFT_PAREN)) {
+        if (check(TokenType.LPAREN)) {
              parameters = params();
         } else {
              parameters = new ArrayList<>();
         }
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
         // добавляем возврат null
         node.getNodes().add(new ReturnNode(
                 address, new NullNode(address))
         );
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем функцию
         return new FnNode(node,name,toFullName(name),parameters);
     }
@@ -546,11 +552,11 @@ public class Parser {
         Token name = consume(TokenType.ID);
         // аргументы конструктора если есть
         ArrayList<Token> constructor = new ArrayList<>();
-        if (check(TokenType.LEFT_PAREN)) {
+        if (check(TokenType.LPAREN)) {
             constructor = params();
         }
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
@@ -572,7 +578,7 @@ public class Parser {
                         "available: fun, variable definition; variable set.");
             }
         }
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new TypeNode(name, toFullName(name), nodes, constructor);
     }
@@ -584,7 +590,7 @@ public class Parser {
         // имя
         Token name = consume(TokenType.ID);
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         ArrayList<Node> nodes = new ArrayList<>();
         while (!isAtEnd() && !itsClosingBrace()) {
             Node node = statement();
@@ -605,7 +611,7 @@ public class Parser {
                         "available: fun, variable definition; variable set.");
             }
         }
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new UnitNode(name, toFullName(name), nodes);
     }
@@ -734,8 +740,8 @@ public class Parser {
         // список импортов
         ArrayList<ImportNode.WattImport> imports = new ArrayList<>();
         // если список импортов
-        if (check(TokenType.LEFT_PAREN)) {
-            consume(TokenType.LEFT_PAREN);
+        if (check(TokenType.LPAREN)) {
+            consume(TokenType.LPAREN);
             do {
                 if (check(TokenType.COMMA)) {
                     consume(TokenType.COMMA);
@@ -744,7 +750,7 @@ public class Parser {
             }
             while (check(TokenType.COMMA));
 
-            consume(TokenType.RIGHT_PAREN);
+            consume(TokenType.RPAREN);
         }
         // если импорт 1
         else {
@@ -758,9 +764,9 @@ public class Parser {
     private Node whileLoop() {
         Token location = consume(TokenType.WHILE);
         Node expr = expression();
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         return new WhileNode(location, node, expr);
     }
 
@@ -768,15 +774,15 @@ public class Parser {
     private Node tryNode() {
         // try
         consume(TokenType.TRY);
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode tryNode = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // catch
         consume(TokenType.CATCH);
         Token catchName = consume(TokenType.ID);
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode catchNode = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем ноду
         return new TryNode(
             tryNode,
@@ -798,9 +804,9 @@ public class Parser {
         // локация
         Token location = consume(TokenType.ELSE);
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new IfNode(location, node, new BoolNode(new Token(TokenType.BOOL, "true", location.line, filename)), null);
     }
@@ -812,9 +818,9 @@ public class Parser {
         // логическое выражение
         Node logical = expression();
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // нода
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else нода
@@ -834,9 +840,9 @@ public class Parser {
         // логическое выражение
         Node logical = expression();
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // нода
         IfNode ifNode = new IfNode(location, node, logical, null);
         // else
@@ -869,9 +875,9 @@ public class Parser {
         // выражение to
         Node to = expression();
         // тело
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         BlockNode node = block();
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new ForNode(node, name, new RangeNode(from, to, isDecrement));
     }
@@ -885,12 +891,12 @@ public class Parser {
         // кейсы
         List<MatchNode.Case> cases = new ArrayList<>();
         MatchNode.Case defaultCase;
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         // парсинг кейсов
         while (check(TokenType.CASE)) {
             consume(TokenType.CASE);
             Node equality = expression();
-            consume(TokenType.GO);
+            consume(TokenType.ARROW);
             cases.add(
                     new MatchNode.Case(
                             equality,
@@ -901,7 +907,7 @@ public class Parser {
         // парсинг дефолтного кейса
         if (check(TokenType.DEFAULT)) {
             consume(TokenType.DEFAULT);
-            consume(TokenType.GO);
+            consume(TokenType.ARROW);
             defaultCase = new MatchNode.Case(null, expression());
         } else {
             Token token = tokenList.get(current);
@@ -912,7 +918,7 @@ public class Parser {
                 "check your code."
             );
         }
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возвращаем
         return new MatchNode(
                 location,
@@ -931,32 +937,32 @@ public class Parser {
         // кейсы
         List<MatchNode.Case> cases = new ArrayList<>();
         MatchNode.Case defaultCase = null;
-        consume(TokenType.LEFT_BRACE);
+        consume(TokenType.LBRACE);
         // парсинг кейсов
         while (check(TokenType.CASE)) {
             consume(TokenType.CASE);
             Node equality = expression();
-            if (check(TokenType.GO)) {
-                consume(TokenType.GO);
+            if (check(TokenType.ARROW)) {
+                consume(TokenType.ARROW);
                 cases.add(new MatchNode.Case(equality, statement()));
             } else {
-                consume(TokenType.LEFT_BRACE);
+                consume(TokenType.LBRACE);
                 cases.add(new MatchNode.Case(equality, block()));
-                consume(TokenType.RIGHT_BRACE);
+                consume(TokenType.RBRACE);
             }
         }
         // парсинг дефолтного кейса
         if (check(TokenType.DEFAULT)) {
             consume(TokenType.DEFAULT);
-            if (check(TokenType.GO)) {
+            if (check(TokenType.ARROW)) {
                 defaultCase = new MatchNode.Case(null, statement());
             } else {
-                consume(TokenType.LEFT_BRACE);
+                consume(TokenType.LBRACE);
                 defaultCase = new MatchNode.Case(null, block());
-                consume(TokenType.RIGHT_BRACE);
+                consume(TokenType.RBRACE);
             }
         }
-        consume(TokenType.RIGHT_BRACE);
+        consume(TokenType.RBRACE);
         // возврощаем
         return new MatchNode(
                 location,

@@ -5,8 +5,8 @@ package com.kilowatt.Errors;
  */
 public class WattColors {
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[\u001B[3130m\";\n" +
-            "    public static final String ANSI_RED = \"m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[38;2;255;64;80m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[38;5;220m";
     public static final String ANSI_BLUE = "\u001B[34m";

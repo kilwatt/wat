@@ -82,7 +82,7 @@ public class Lexer {
                         addToken(TokenType.ASSIGN_SUB, "-=");
                         break;
                     } else if (match('>')) {
-                        addToken(TokenType.GO, "->");
+                        addToken(TokenType.ARROW, "->");
                         break;
                     } else {
                         addToken(TokenType.OPERATOR, "-");
@@ -126,12 +126,12 @@ public class Lexer {
                         break;
                     }
                 }
-                case '(': addToken(TokenType.LEFT_PAREN, "("); break;
-                case ')': addToken(TokenType.RIGHT_PAREN, ")"); break;
-                case '[': addToken(TokenType.LEFT_BRACKET, "["); break;
-                case ']': addToken(TokenType.RIGHT_BRACKET, "]"); break;
-                case '{': addToken(TokenType.LEFT_BRACE, "{"); break;
-                case '}': addToken(TokenType.RIGHT_BRACE, "}"); break;
+                case '(': addToken(TokenType.LPAREN, "("); break;
+                case ')': addToken(TokenType.RPAREN, ")"); break;
+                case '[': addToken(TokenType.LBRACKET, "["); break;
+                case ']': addToken(TokenType.RBRACKET, "]"); break;
+                case '{': addToken(TokenType.LBRACE, "{"); break;
+                case '}': addToken(TokenType.RBRACE, "}"); break;
                 case ',': addToken(TokenType.COMMA, ","); break;
                 case '.': addToken(TokenType.DOT, "."); break;
                 case ':': {
@@ -144,17 +144,17 @@ public class Lexer {
                 }
                 case '<': {
                     if (match('=')) {
-                        addToken(TokenType.LOWER_EQUAL, "<=");
+                        addToken(TokenType.LESS_EQ, "<=");
                     } else {
-                        addToken(TokenType.LOWER, "<");
+                        addToken(TokenType.LESS, "<");
                     }
                     break;
                 }
                 case '>': {
                     if (match('=')) {
-                        addToken(TokenType.BIGGER_EQUAL, ">=");
+                        addToken(TokenType.GREATER_EQ, ">=");
                     } else {
-                        addToken(TokenType.BIGGER, ">");
+                        addToken(TokenType.GREATER, ">");
                     }
                     break;
                 }
@@ -162,12 +162,7 @@ public class Lexer {
                     if (match('=')) {
                         addToken(TokenType.NOT_EQUAL, "!=");
                     } else {
-                        throw new WattParsingError(
-                                line,
-                                filename,
-                                "band op. is not available.",
-                                "you can use != instead."
-                        );
+                        addToken(TokenType.OPERATOR, "!");
                     }
                     break;
                 }
@@ -235,28 +230,20 @@ public class Lexer {
         StringBuilder text = new StringBuilder();
         while (peek() != '\'') {
             if (match('\n')) {
-                line += 1;
                 throw new WattParsingError(
                         line,
                         filename,
                         "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
-                        "did you forget to type \" symbol?");
+                        "did you forget to type ' symbol?");
             }
             if (isAtEnd()) {
                 throw new WattParsingError(
                         line,
                         filename,
                         "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
-                        "did you forget to type \" symbol?");
+                        "did you forget to type ' symbol?");
             }
             text.append(advance());
-        }
-        if (isAtEnd()) {
-            throw new WattParsingError(
-                    line,
-                    filename,
-                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
-                    "did you forget to type \" symbol?");
         }
         advance();
         return text.toString();

@@ -85,7 +85,7 @@ public class ForNode implements Node {
                         new VarNode(null, name, true),
                         isDecrement ? range.getFrom() : range.getTo(),
                         new Token(
-                                isDecrement ? TokenType.BIGGER : TokenType.LOWER,
+                                isDecrement ? TokenType.GREATER : TokenType.LESS,
                                 isDecrement ? ">" : "<",
                                 name.line, name.getFileName()
                         )

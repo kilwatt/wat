@@ -6,10 +6,10 @@ package com.kilowatt.Lexer;
 public enum TokenType {
     FUN,
     OPERATOR, // +, -, *, /
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    LEFT_BRACE,
-    RIGHT_BRACE,
+    LPAREN,
+    RPAREN,
+    LBRACE,
+    RBRACE,
     LAMBDA, // lambda
     WALRUS, // :=
     EQUAL, // ==
@@ -26,10 +26,10 @@ public enum TokenType {
     TYPE, // type
     NEW, // new
     DOT, // dot
-    BIGGER, // >
-    LOWER,  // <
-    BIGGER_EQUAL, // >=
-    LOWER_EQUAL, // <=
+    GREATER, // >
+    LESS,  // <
+    GREATER_EQ, // >=
+    LESS_EQ, // <=
     NULL, // null
     ELIF, // elif
     ELSE, // else
@@ -44,8 +44,8 @@ public enum TokenType {
     MATCH, // match
     CASE, // case
     DEFAULT, // default
-    LEFT_BRACKET, // [
-    RIGHT_BRACKET, // ]
+    LBRACKET, // [
+    RBRACKET, // ]
     COLON, // colon :
     FOR, // for
     TERNARY, // ternary
@@ -54,7 +54,7 @@ public enum TokenType {
     TRY, // try
     CATCH, // catch
     THROW, // throw
-    GO, // ->
+    ARROW, // ->
     UNIT, // unit
     TO, // to
     FROM, // from
