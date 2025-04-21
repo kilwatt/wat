@@ -2,11 +2,13 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattError;
+import com.kilowatt.Lexer.Token;
 import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +19,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ThrowNode implements Node {
+    // локация
+    private final Token location;
     // значение
-    private Node value;
+    private final Node value;
 
     @Override
     public void compile() {
@@ -27,13 +31,15 @@ public class ThrowNode implements Node {
         WattCompiler.code.writeTo(valueBox);
         value.compile();
         WattCompiler.code.endWrite();
+        // адрес
+        VmAddress address = location.asAddress();
         // итоговая компиляция
         WattCompiler.code.visitInstruction(
             new VmInstruction() {
                 @Override
                 public void run(WattVM vm, VmFrame<String, Object> scope) {
                     // объект
-                    Object o = valueBox.runAndGet(vm, scope);
+                    Object o = valueBox.runAndGet(vm, address, scope);
                     // если это ошибка - сразу выкидываем
                     if (o instanceof WattError e) {
                         // выкидываем

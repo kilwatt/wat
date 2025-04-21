@@ -25,8 +25,8 @@ public class VmInstructionBinOp implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop();
-        Object l = vm.pop();
+        Object r = vm.pop(addr);
+        Object l = vm.pop(addr);
         if (r.getClass() == VmNull.class || l.getClass() == VmNull.class) {
             String nullSide = r.getClass() == VmNull.class ? "right" : "left";
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),

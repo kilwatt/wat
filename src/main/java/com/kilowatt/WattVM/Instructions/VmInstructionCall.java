@@ -53,7 +53,7 @@ public class VmInstructionCall implements VmInstruction {
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
         } else {
-            Object last = vm.pop();
+            Object last = vm.pop(addr);
             if (last instanceof VmInstance vmInstance) {
                 callInstanceFunc(vm, frame, vmInstance);
             } else if (last instanceof VmUnit vmUnit){
@@ -66,7 +66,7 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "CALL("+name+")");
+        VmCodeDumper.dumpLine(indent, "CALL("+name+", SP: " + shouldPushResult + ")");
         VmCodeDumper.dumpLine(indent + 1, "ARGS:");
         for (VmInstruction instruction : args.getInstructionContainer()) {
             instruction.print(indent + 2);
@@ -171,7 +171,7 @@ public class VmInstructionCall implements VmInstruction {
         Object[] callArgs = new Object[argsAmount];
         // заполняем его
         for (int i = argsAmount - 1; i >= 0; i--) {
-            callArgs[i] = vm.pop();
+            callArgs[i] = vm.pop(addr);
         }
         // возвращаем аргументы
         return callArgs;

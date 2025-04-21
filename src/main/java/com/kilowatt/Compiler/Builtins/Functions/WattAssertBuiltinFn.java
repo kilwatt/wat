@@ -12,10 +12,12 @@ import com.kilowatt.WattVM.WattVM;
 public class WattAssertBuiltinFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
-        Object b = vm.pop();
+        // получаем объект из стека
+        Object b = vm.pop(address);
+        // проверяем
         if (b instanceof Boolean bool) {
             if (!bool) {
-                throw new WattParsingError(
+                throw new WattRuntimeError(
                     address.getLine(),
                     address.getFileName(),
                     "assertion error",

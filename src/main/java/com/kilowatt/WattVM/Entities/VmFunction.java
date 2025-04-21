@@ -72,7 +72,7 @@ public class VmFunction implements VmInstructionsBox {
         } catch (VmInstructionReturn e) {
             e.pushResult(vm, scope);
             if (!shouldPushResult) {
-                vm.pop();
+                vm.pop(addr);
             }
             return;
         }
@@ -89,7 +89,7 @@ public class VmFunction implements VmInstructionsBox {
                         "stack is empty! couldn't invoke function.",
                         "check args of function.");
             }
-            Object arg = vm.pop();
+            Object arg = vm.pop(addr);
             scope.define(addr, arguments.get(i), arg);
         }
     }

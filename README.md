@@ -31,7 +31,7 @@ type Pie(weight) {
 unit Bakery {
     fun bake(pies) {
         io.println('🍪 Cooking: ')
-        for i in 0 to pies.size() {
+        for i in 0..pies.size() {
             pies.get(i).cook()
         }
         io.println('🎉 Successfully cooked all pies!')

@@ -30,8 +30,8 @@ public class WattCompiler {
         parse.compile();
     }
 
-    // импорт дефайнов
-    public static void importDefinitions(VmAddress address, BlockNode block) {
+    // импорт дефайнов и их компиляция
+    public static void compileImport(VmAddress address, BlockNode block) {
         // компилируем
         for (Node node : block.getNodes()) {
             if (node instanceof UnitNode ||

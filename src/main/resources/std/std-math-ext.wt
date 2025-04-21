@@ -58,9 +58,9 @@ type Matrix(fill) {
         }
 
         // создаём массив
-        for y in 0 to fill.size() {
+        for y in 0..fill.size() {
             row := []
-            for x in 0 to fill.size() {
+            for x in 0..fill.size() {
                 row.add(fill.get(y).get(x))
             }
             arr.add(row)
@@ -105,8 +105,8 @@ type Matrix(fill) {
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
-        for y in 0 to arr.size() {
-            for x in 0 to arr.size() {
+        for y in 0..arr.size() {
+            for x in 0..arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value+matrix.arr.get(y).get(x))
             }
@@ -134,8 +134,8 @@ type Matrix(fill) {
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
-        for y in 0 to arr.size() {
-            for x in 0 to arr.size() {
+        for y in 0..arr.size() {
+            for x in 0..arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value-matrix.arr.get(y).get(x))
             }
@@ -163,8 +163,8 @@ type Matrix(fill) {
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
-        for y in 0 to arr.size() {
-            for x in 0 to arr.size() {
+        for y in 0..arr.size() {
+            for x in 0..arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value*matrix.arr.get(y).get(x))
             }
@@ -192,8 +192,8 @@ type Matrix(fill) {
         // новая матрица
         new_matrix := new Matrix(self.arr)
         // складываем
-        for y in 0 to arr.size() {
-            for x in 0 to arr.size() {
+        for y in 0..arr.size() {
+            for x in 0.. arr.size() {
                 old_value := new_matrix.arr.get(y).get(x)
                 new_matrix.arr.get(y).set(x, old_value/matrix.arr.get(y).get(x))
             }
@@ -206,7 +206,7 @@ type Matrix(fill) {
     fun to_string {
         str := '['
 
-        for elem in 0 to arr.size() {
+        for elem in 0..arr.size() {
             str += arr.get(elem).to_string()
         }
 

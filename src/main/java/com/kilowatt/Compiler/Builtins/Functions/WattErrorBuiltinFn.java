@@ -11,10 +11,18 @@ import com.kilowatt.WattVM.VmAddress;
 public class WattErrorBuiltinFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
-        Object hint = vm.pop();
-        Object text = vm.pop();
-        if (!shouldPushResult) return;
-        vm.push(new WattRuntimeError(address.getLine(), address.getFileName(), text.toString(), hint.toString()));
+        // получаем инфу об ошибке
+        Object hint = vm.pop(address);
+        Object text = vm.pop(address);
+        // создаём ошибку
+        WattRuntimeError error = new WattRuntimeError(
+            address.getLine(),
+            address.getFileName(),
+            text.toString(),
+            hint.toString()
+        );
+        // пушим
+        if (shouldPushResult) vm.push(error);
     }
 
     @Override

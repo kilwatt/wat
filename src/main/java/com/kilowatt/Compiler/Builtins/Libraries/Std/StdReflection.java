@@ -64,7 +64,7 @@ public class StdReflection {
             true
         ).run(WattCompiler.vm, WattCompiler.vm.getGlobals());
         // возврат значения
-        return WattCompiler.vm.pop();
+        return WattCompiler.vm.pop(address);
     }
 
     public Object get_field(Object object, String name) {
@@ -80,6 +80,6 @@ public class StdReflection {
                 true
         ).run(WattCompiler.vm, WattCompiler.vm.getGlobals());
         // возврат значения
-        return WattCompiler.vm.pop();
+        return WattCompiler.vm.pop(address);
     }
 }

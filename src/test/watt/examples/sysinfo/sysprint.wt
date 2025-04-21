@@ -11,7 +11,7 @@ type Label(key, value) {
 type Title(title, labels) {
     fun print {
         tui.render_line(colors.green + title + colors.reset)
-        for i in 0 to labels.size() {
+        for i in 0..labels.size() {
             labels.get(i).print()
         }
     }
@@ -22,7 +22,7 @@ type Printer {
 
     fun refresh(titles) {
         tui.clear()
-        for i in 0 to titles.size() {
+        for i in 0..titles.size() {
             titles.get(i).print()
         }
     }

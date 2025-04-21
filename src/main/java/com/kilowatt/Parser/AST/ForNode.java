@@ -2,12 +2,13 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
 import com.kilowatt.WattVM.Instructions.*;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
 import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
 
 /*
 Цикл for
@@ -16,15 +17,14 @@ import lombok.AllArgsConstructor;
 public class ForNode implements Node {
     private final BlockNode body;
     private final Token name;
-    private final RangeNode range;
+    private final Node iterable;
 
     @Override
     public void compile() {
-        compileDefinition(range.isDecrement());
+        compileIterator();
         VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(name.fileName, name.line));
         WattCompiler.code.writeTo(loop.getInstructions());
-        compileIncrement(range.isDecrement());
-        compileLogical(range.isDecrement());
+        compileBody();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);
     }
@@ -32,75 +32,88 @@ public class ForNode implements Node {
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
         analyzer.push(this);
-        range.analyze(analyzer);
+        iterable.analyze(analyzer);
         body.analyze(analyzer);
         analyzer.pop();
     }
 
-    private void compileDefinition(boolean isDecrement) {
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(box);
-        if (!isDecrement) {
-            range.getFrom().compile();
-            WattCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
-            WattCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), "-"));
-        } else {
-            range.getTo().compile();
-            WattCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
-            WattCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), "+"));
-        }
-        WattCompiler.code.endWrite();
-        WattCompiler.code.visitInstruction(
-                new VmInstructionDefine(
-                        name.asAddress(),
-                        name.value,
-                        false,
-                        box
-                )
+    private void compileIterator() {
+        // итератор
+        Token iteratorName = new Token(
+            TokenType.ID,
+            "@"+name.value,
+            name.getLine(),
+            name.getFileName()
         );
+        // дефайн итератора
+        new VarDefineNode(
+            null,
+            iteratorName,
+            iterable
+        ).compile();
     }
 
-    private void compileIncrement(boolean isDecrement) {
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
-        WattCompiler.code.writeTo(box);
-        WattCompiler.code.visitInstruction(new VmInstructionLoad(name.asAddress(), name.value, false, true));
-        WattCompiler.code.visitInstruction(new VmInstructionPush(name.asAddress(), 1));
-        WattCompiler.code.visitInstruction(new VmInstructionBinOp(name.asAddress(), isDecrement ? "-" : "+"));
-        WattCompiler.code.endWrite();
-        WattCompiler.code.visitInstruction(
-                new VmInstructionSet(
-                        name.asAddress(),
-                        name.value,
-                        false,
-                        box
-                )
+    private void compileBody() {
+        // итератор
+        Token iteratorName = new Token(
+                TokenType.ID,
+                "@"+name.value,
+                name.getLine(),
+                name.getFileName()
         );
-    }
-
-    private void compileLogical(boolean isDecrement) {
+        // иф
         new IfNode(
-                name,
-                body,
-                new ConditionalNode(
-                        new VarNode(null, name, true),
-                        isDecrement ? range.getFrom() : range.getTo(),
-                        new Token(
-                                isDecrement ? TokenType.GREATER : TokenType.LESS,
-                                isDecrement ? ">" : "<",
-                                name.line, name.getFileName()
-                        )
-                ),
-                new IfNode(
-                        name,
-                        BlockNode.of(new BreakNode(name)),
-                        new BoolNode(
-                                new Token(TokenType.BOOL,
-                                        "true",
-                                        name.getLine(),
-                                        name.getFileName())
+            name,
+            BlockNode.of(
+                new VarDefineNode(
+                    null,
+                    name,
+                    new CallNode(
+                        new VarNode(
+                            null,
+                            iteratorName,
+                            true
                         ),
-                        null
-                )
+                        new Token(
+                            TokenType.ID,
+                            "next",
+                            name.getLine(),
+                            name.getFileName()
+                        ),
+                        new ArrayList<>(),
+                        true
+                    )
+                ),
+                body
+            ),
+            new CallNode(
+                new VarNode(
+                    null,
+                    iteratorName,
+                    true
+                ),
+                new Token(
+                    TokenType.ID,
+                "hasNext",
+                    name.getLine(),
+                    name.getFileName()
+                ),
+                new ArrayList<>(),
+                true
+            ),
+            new IfNode(
+                name,
+                BlockNode.of(
+                    new BreakNode(name)
+                ),
+                new BoolNode(new Token(
+                    TokenType.BOOL,
+                    "true",
+                    name.line,
+                    name.fileName
+                )),
+                null
+            )
         ).compile();
     }
 }

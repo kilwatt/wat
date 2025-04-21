@@ -23,8 +23,8 @@ public class VmInstructionLogicalOp implements VmInstruction {
     }
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop();
-        Object l = vm.pop();
+        Object r = vm.pop(addr);
+        Object l = vm.pop(addr);
         switch (operator) {
             case "and" -> vm.push((boolean)l && ((boolean)r));
             case "or" -> vm.push((boolean)l || ((boolean)r));

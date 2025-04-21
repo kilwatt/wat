@@ -26,6 +26,13 @@ public class CallNode implements AccessNode {
         this.args = args;
     }
 
+    public CallNode(AccessNode previous, Token name, List<Node> args, boolean shouldPushResult) {
+        this.previous = previous;
+        this.name = name;
+        this.args = args;
+        this.shouldPushResult = shouldPushResult;
+    }
+
     @Override
     public void compile() {
         // аргументы

@@ -33,7 +33,7 @@ public class VmInstructionIf implements VmInstruction {
         VmFrame<String, Object> ifFrame = new VmFrame<>();
         ifFrame.setRoot(frame);
         // выполняем инструкции условий
-        Object val = conditions.runAndGet(vm, ifFrame);
+        Object val = conditions.runAndGet(vm, addr, ifFrame);
         // проверяем условия
         if (((Boolean) val)) {
             // выполняем тело

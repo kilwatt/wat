@@ -118,7 +118,7 @@ unit json {
                     } elif current == '"' {
                         tokens.add(lex_string())
                     } elif current == 't' {
-                        for i in 0 to 3 {
+                        for i in 0..3 {
                             advance()
                         }
                         tokens.add(new JsonToken(
@@ -126,7 +126,7 @@ unit json {
                             'true', line
                         ))
                     } elif current == 'f' {
-                        for i in 0 to 4 {
+                        for i in 0..4 {
                             advance()
                         }
                         tokens.add(new JsonToken(
@@ -248,7 +248,7 @@ unit json {
     fun encode_list(list) {
         string := '['
 
-        for i in 0 to list.size() {
+        for i in 0..list.size() {
             val := list.get(i)
 
             if typeof(val) == 'string' {
@@ -274,7 +274,7 @@ unit json {
         keys := map.keys()
         string := '{'
 
-        for i in 0 to keys.size() {
+        for i in 0..keys.size() {
             key := keys.get(i)
             val := map.get(key)
 

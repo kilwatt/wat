@@ -34,16 +34,16 @@ public class VmInstructionDefine implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         if (!hasPrevious) {
-            frame.define(addr, name, value.runAndGet(vm, frame));
+            frame.define(addr, name, value.runAndGet(vm, addr, frame));
         } else {
-            Object last = vm.pop();
+            Object last = vm.pop(addr);
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getFields().define(addr, name, value.runAndGet(vm, frame));
+                    instance.getFields().define(addr, name, value.runAndGet(vm, addr, frame));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().define(addr, name, value.runAndGet(vm, frame));
+                    unit.getFields().define(addr, name, value.runAndGet(vm, addr, frame));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +

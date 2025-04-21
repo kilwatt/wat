@@ -52,7 +52,7 @@ public class VmInstructionLoad implements VmInstruction {
                 );
             }
         } else {
-            Object last = vm.pop();
+            Object last = vm.pop(addr);
             switch (last) {
                 case VmInstance type -> {
                     vm.push(type.getFields().lookup(addr, name));

@@ -1,0 +1,53 @@
+package com.kilowatt.Compiler.Builtins.Functions;
+
+import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattIterator;
+import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
+import com.kilowatt.WattVM.VmAddress;
+import com.kilowatt.WattVM.WattVM;
+
+import java.util.ArrayList;
+
+/*
+Функция для создания рэнджа из чисел
+ */
+public class WattRangeBuiltinFn implements VmBuiltinFunction {
+    @Override
+    public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
+        // получаем объекты из стека
+        Object first = vm.pop(address);
+        Object second = vm.pop(address);
+        // проверяем
+        if (first instanceof Integer left &&
+            second instanceof Integer right) {
+            // ищем большее и меньшее число
+            int greater = left > right ? left : right;
+            int less = left == greater ? right : left;
+            // генерим итератор
+            ArrayList<Integer> range = new ArrayList<>();
+            for (int i = right; i < left; i++) {
+                range.add(i);
+            }
+            if (shouldPushResult) {
+                vm.push(new WattIterator<>(range.iterator()));
+            }
+        } else {
+            throw new WattRuntimeError(
+                address.getLine(),
+                address.getFileName(),
+                "couldn't create range with (" + first + "," + second + ")",
+                "you can create range with two ints."
+            );
+        }
+    }
+
+    @Override
+    public int args() {
+        return 2;
+    }
+
+    @Override
+    public String getName() {
+        return "rng";
+    }
+}

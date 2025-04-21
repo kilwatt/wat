@@ -21,7 +21,7 @@ public class VmInstructionNeg implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> scope) {
         // получаем значение
-        Object value = vm.pop();
+        Object value = vm.pop(addr);
         // создаём негативное число
         switch (value) {
             case Float f -> vm.push(-f);

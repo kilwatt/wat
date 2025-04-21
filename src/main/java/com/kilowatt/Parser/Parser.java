@@ -419,14 +419,30 @@ public class Parser {
         return primary();
     }
 
+    // рэндж
+    private Node range() {
+        Node left = unary();
+
+        if (check(TokenType.RANGE)) {
+            Token location = consume(TokenType.RANGE);
+            left = new RangeNode(
+                location,
+                left,
+                unary()
+            );
+        }
+
+        return left;
+    }
+
     // умножение, деление
     private Node multiplicative() {
-        Node left = unary();
+        Node left = range();
 
         while(check(TokenType.OPERATOR) && (match("*")
                 || match("/") || match("%"))) {
             Token operator = consume(TokenType.OPERATOR);
-            Node right = unary();
+            Node right = range();
             left = new BinNode(left, right, operator);
         }
 
@@ -776,9 +792,10 @@ public class Parser {
 
     // стэйтмент throw
     private Node throwNode() {
-        consume(TokenType.THROW);
+        Token location = consume(TokenType.THROW);
         return new ThrowNode(
-                expression()
+            location,
+            expression()
         );
     }
 
@@ -846,23 +863,14 @@ public class Parser {
         Token name = consume(TokenType.ID);
         // in
         consume(TokenType.IN);
-        // выражение from
-        Node from = expression();
-        boolean isDecrement = false;
-        if (check(TokenType.TO)) {
-            consume(TokenType.TO);
-        } else if (check(TokenType.FROM)) {
-            consume(TokenType.FROM);
-            isDecrement = true;
-        }
-        // выражение to
-        Node to = expression();
+        // выражение
+        Node range = expression();
         // тело
         consume(TokenType.LBRACE);
         BlockNode node = block();
         consume(TokenType.RBRACE);
         // возвращаем
-        return new ForNode(node, name, new RangeNode(from, to, isDecrement));
+        return new ForNode(node, name, range);
     }
 
     // выражение match

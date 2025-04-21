@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM;
 
 import com.kilowatt.Compiler.WattBuiltinProvider;
+import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Benchmark.VmBenchmark;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
 import com.kilowatt.WattVM.Entities.VmNull;
@@ -14,6 +15,7 @@ import lombok.Getter;
 
 import java.util.ArrayDeque;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /*
@@ -60,8 +62,17 @@ public class WattVM {
     }
 
     // удаление из стека
-    public Object pop() {
-        return getStack().pop();
+    public Object pop(VmAddress address) {
+        try {
+            return getStack().pop();
+        } catch (NoSuchElementException e) {
+            throw new WattRuntimeError(
+                address.getLine(),
+                address.getFileName(),
+                "couldn't pop. stack is empty.",
+                "check your actions."
+            );
+        }
     }
 
     // запуск

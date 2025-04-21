@@ -1,8 +1,11 @@
-for a in 0 to 100 {
+c := 0
+
+for a in 0..100 {
     if (a == 99) {
         a += 3
+        c = a
         continue
     }
+    c = a
 }
-
-assert(a == 103)
+assert(c == 102)

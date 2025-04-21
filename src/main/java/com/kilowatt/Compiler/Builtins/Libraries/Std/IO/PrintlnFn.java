@@ -11,7 +11,7 @@ public class PrintlnFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект
-        Object value = vm.pop();
+        Object value = vm.pop(address);
         // выводим
         System.out.println(value);
     }

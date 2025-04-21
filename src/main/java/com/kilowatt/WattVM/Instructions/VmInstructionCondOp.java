@@ -28,8 +28,8 @@ public class VmInstructionCondOp implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop();
-        Object l = vm.pop();
+        Object r = vm.pop(addr);
+        Object l = vm.pop(addr);
         switch (operator) {
             case "==" -> vm.push(equal(addr, l, r));
             case "!=" -> vm.push(!equal(addr, l, r));

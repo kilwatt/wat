@@ -33,7 +33,7 @@ public class VmInstructionMakeClosure implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> scope) {
         VmFunction fn;
         if (name == null) {
-            fn = (VmFunction) vm.pop();
+            fn = (VmFunction) vm.pop(addr);
         }
         else {
             fn = (VmFunction) scope.lookup(addr, name);

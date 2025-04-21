@@ -2,6 +2,7 @@ package com.kilowatt.WattVM.Boxes;
 
 
 import com.kilowatt.WattVM.Instructions.VmInstruction;
+import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
@@ -27,11 +28,11 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
     }
 
     // выполнение и получение результата
-    public Object runAndGet(WattVM vm, VmFrame<String, Object> frame)  {
+    public Object runAndGet(WattVM vm, VmAddress address, VmFrame<String, Object> frame)  {
         for (VmInstruction instr : instructionContainer) {
             instr.run(vm, frame);
         }
-        return vm.pop();
+        return vm.pop(address);
     }
 
     // запуск простой

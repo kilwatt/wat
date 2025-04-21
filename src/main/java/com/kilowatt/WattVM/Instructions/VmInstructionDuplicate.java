@@ -21,7 +21,7 @@ public class VmInstructionDuplicate implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object o = vm.pop();
+        Object o = vm.pop(addr);
         vm.push(o);
         vm.push(o);
     }

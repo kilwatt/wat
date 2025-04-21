@@ -22,7 +22,7 @@ public class VmInstructionPop implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        vm.pop();
+        vm.pop(addr);
     }
 
     @Override

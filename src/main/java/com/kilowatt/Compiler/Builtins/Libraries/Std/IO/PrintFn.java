@@ -10,7 +10,7 @@ IO -> Функция вывода
 public class PrintFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
-        System.out.print(vm.pop());
+        System.out.print(vm.pop(address));
     }
 
     @Override

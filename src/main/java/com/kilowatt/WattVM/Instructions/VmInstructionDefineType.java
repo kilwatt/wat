@@ -24,7 +24,7 @@ public class VmInstructionDefineType implements VmInstruction {
         // дефайн по имени
         vm.getTypeDefinitions().forceSet(addr, type.getName(), type);
         // дефайн по полному имени
-        if (type.getName() != null) vm.getTypeDefinitions().forceSet(addr, type.getFullName(), type);
+        if (type.getFullName() != null) vm.getTypeDefinitions().forceSet(addr, type.getFullName(), type);
     }
 
     @Override

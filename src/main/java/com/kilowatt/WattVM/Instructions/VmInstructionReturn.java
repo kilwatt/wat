@@ -35,7 +35,7 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
         for (VmInstruction i : ret.getInstructionContainer()) {
             i.run(vm, scope);
         }
-        return vm.pop();
+        return vm.pop(addr);
     }
 
     @Override

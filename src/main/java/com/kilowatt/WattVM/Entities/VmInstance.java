@@ -24,7 +24,7 @@ public class VmInstance implements VmFunctionOwner {
         this.addr = addr;
         // конструктор
         for (int i = type.getConstructor().size()-1; i >= 0; i--) {
-            Object arg = vm.pop();
+            Object arg = vm.pop(addr);
             fields.define(addr, type.getConstructor().get(i), arg);
         }
         // установка филдов

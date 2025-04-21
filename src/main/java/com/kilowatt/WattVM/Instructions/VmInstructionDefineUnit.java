@@ -33,7 +33,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
         // дефайн по имени
         vm.getUnitDefinitions().forceSet(addr, unit.getName(), unit);
         // дефайн по полному имени
-        vm.getUnitDefinitions().forceSet(addr, unit.getFullName(), unit);
+        if (unit.getFullName() != null) vm.getUnitDefinitions().forceSet(addr, unit.getFullName(), unit);
     }
 
     @Override

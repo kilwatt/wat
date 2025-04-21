@@ -133,7 +133,14 @@ public class Lexer {
                 case '{': addToken(TokenType.LBRACE, "{"); break;
                 case '}': addToken(TokenType.RBRACE, "}"); break;
                 case ',': addToken(TokenType.COMMA, ","); break;
-                case '.': addToken(TokenType.DOT, "."); break;
+                case '.': {
+                    if (match('.')) {
+                        addToken(TokenType.RANGE, "..");
+                    } else {
+                        addToken(TokenType.DOT, ".");
+                    }
+                    break;
+                }
                 case ':': {
                     if (match('=')) {
                         addToken(TokenType.WALRUS, ":=");
@@ -255,6 +262,7 @@ public class Lexer {
         boolean isFloat = false;
         while (isDigit(peek()) || peek() == '.') {
             if (peek() == '.') {
+                if (next() == '.') break;
                 if (isFloat) {
                     throw new WattParsingError(
                             line,

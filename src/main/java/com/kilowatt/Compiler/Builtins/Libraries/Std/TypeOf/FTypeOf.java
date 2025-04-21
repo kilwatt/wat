@@ -14,7 +14,7 @@ public class FTypeOf implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект
-        Object o = vm.pop();
+        Object o = vm.pop(address);
         // проверяем, нужно ли пушить
         if (!shouldPushResult) return;
         // если тип или юнит
