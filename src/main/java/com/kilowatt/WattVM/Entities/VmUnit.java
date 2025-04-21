@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Entities;
 
+import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -13,14 +14,17 @@ public class VmUnit implements VmFunctionOwner {
     // имена
     private final String name;
     private final String fullName;
+    // адрес
+    private final VmAddress address;
     // поля
     private final VmFrame<String, Object> fields = new VmFrame<>();
 
     // конструктор
-    public VmUnit(String name, String fullName) {
+    public VmUnit(VmAddress address, String name, String fullName) {
         // данные
         this.name = name;
         this.fullName = fullName;
+        this.address = address;
     }
 
     @Override
@@ -34,6 +38,7 @@ public class VmUnit implements VmFunctionOwner {
                 "name='" + name + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", fields=" + fields.getValues().keySet() +
+                ", address=" + address +
                 ')';
     }
 
@@ -56,9 +61,19 @@ public class VmUnit implements VmFunctionOwner {
      * @param name - имя функции
      * @param vm - ВМ
      */
-    public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
-        // копируем и вызываем функцию
-        VmFunction fun = (VmFunction) fields.lookup(inAddr, name);
-        fun.exec(vm, shouldPushResult);
+    public void call(VmAddress address, String name, WattVM vm, boolean shouldPushResult)  {
+        // ищем функцию
+        Object val = getFields().lookup(address, name);
+        // проверяем, функция ли
+        if (val instanceof VmFunction fn) {
+            fn.exec(vm, shouldPushResult);
+        } else {
+            throw new WattRuntimeError(
+                address.getLine(),
+                address.getFileName(),
+                "couldn't call: " + name + ", not a fn.",
+                "check your code"
+            );
+        }
     }
 }

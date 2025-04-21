@@ -235,6 +235,7 @@ import 'std.io'
 
 io.println('Hello world! ' + !true + (3 > 5))
 */
+/*
 import 'std.math.ext'
 import 'std.io'
 
@@ -251,3 +252,10 @@ matrix2 := new Matrix([
 ])
 
 io.println(matrix.add(matrix2).to_string())
+*/
+type Example() {
+    a := 3
+}
+
+e := new Example()
+e.a()

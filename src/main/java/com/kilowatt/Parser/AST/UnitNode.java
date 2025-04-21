@@ -30,7 +30,11 @@ public class UnitNode implements Node {
         WattCompiler.code.visitInstruction(
             new VmInstructionDefineUnit(
                 name.asAddress(),
-                new VmUnit(name.value, fullName.value),
+                new VmUnit(
+                    name.asAddress(),
+                    name.value,
+                    fullName.value
+                ),
                 compileBody()
             )
         );

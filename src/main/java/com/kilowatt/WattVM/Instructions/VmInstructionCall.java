@@ -90,6 +90,12 @@ public class VmInstructionCall implements VmInstruction {
             // вызов
             fn.exec(vm, addr, shouldPushResult);
         }
+        // в ином случае - ошибка
+        else {
+            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                "couldn't call: " + name + ", not a fn.",
+                "check your code.");
+        }
     }
 
     // Вызывает функцю юнита
@@ -108,6 +114,12 @@ public class VmInstructionCall implements VmInstruction {
             checkArgs(vmUnit.getName() + ":" + name, fn.args(), argsAmount);
             // вызов
             fn.exec(vm, addr, shouldPushResult);
+        }
+        // в ином случае - ошибка
+        else {
+            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                "couldn't call: " + name + ", not a fn.",
+                "check your code.");
         }
     }
 
@@ -133,9 +145,9 @@ public class VmInstructionCall implements VmInstruction {
         // выполнение метода
         if (fun == null) {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "jvm method not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
-                    argsAmount + ")",
-                    "check name for mistakes & passing args amount.");
+                "jvm method not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
+                argsAmount + ")",
+                "check name for mistakes & passing args amount.");
         }
         else {
             checkArgs(last.getClass().getName() + ":" + name,
@@ -192,8 +204,8 @@ public class VmInstructionCall implements VmInstruction {
                 fn.exec(vm, addr, shouldPushResult);
             } else {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "couldn't call: " + o.getClass().getSimpleName(),
-                        "check your code.");
+                    "couldn't call: " + name + ", not a fn.",
+                    "check your code.");
             }
         } else {
             // аргументы

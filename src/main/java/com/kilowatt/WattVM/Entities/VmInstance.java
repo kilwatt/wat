@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Entities;
 
+import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -15,17 +16,17 @@ public class VmInstance implements VmFunctionOwner {
     // скоуп
     private final VmFrame<String, Object> fields = new VmFrame<>();
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
 
     // конструктор
-    public VmInstance(WattVM vm, VmType type, VmAddress addr)  {
+    public VmInstance(WattVM vm, VmType type, VmAddress address)  {
         // данные
         this.type = type;
-        this.addr = addr;
+        this.address = address;
         // конструктор
         for (int i = type.getConstructor().size()-1; i >= 0; i--) {
-            Object arg = vm.pop(addr);
-            fields.define(addr, type.getConstructor().get(i), arg);
+            Object arg = vm.pop(address);
+            fields.define(address, type.getConstructor().get(i), arg);
         }
         // установка филдов
         fields.setRoot(vm.getGlobals());
@@ -34,7 +35,7 @@ public class VmInstance implements VmFunctionOwner {
         bindFunctionsToInstance();
         // init функция
         if (fields.has("init")) {
-            call(addr, "init", vm, false);
+            call(address, "init", vm, false);
         }
     }
 
@@ -57,10 +58,20 @@ public class VmInstance implements VmFunctionOwner {
      * @param name - имя функции
      * @param vm - ВМ
      */
-    public void call(VmAddress inAddr, String name, WattVM vm, boolean shouldPushResult)  {
-        // копируем и вызываем функцию
-        VmFunction fun = (VmFunction) getFields().lookup(inAddr, name);
-        fun.exec(vm, shouldPushResult);
+    public void call(VmAddress address, String name, WattVM vm, boolean shouldPushResult)  {
+        // ищем функцию
+        Object val = getFields().lookup(address, name);
+        // проверяем, функция ли
+        if (val instanceof VmFunction fn) {
+            fn.exec(vm, shouldPushResult);
+        } else {
+            throw new WattRuntimeError(
+                address.getLine(),
+                address.getFileName(),
+                "couldn't call: " + name + ", not a fn.",
+                "check your code"
+            );
+        }
     }
 
     // в строку
@@ -68,9 +79,9 @@ public class VmInstance implements VmFunctionOwner {
     @Override
     public String toString() {
         return "VmInstance(" +
-                "fields=" + fields.getValues().keySet() +
-                ", type=" + type.getName() +
-                ", addr=" + addr +
+                "type=" + type.getName() +
+                ", fields=" + fields.getValues().keySet() +
+                ", address=" + address +
                 ')';
     }
 
