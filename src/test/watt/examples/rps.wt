@@ -1,6 +1,5 @@
 import 'std.random'
 import 'std.io'
-import 'std.typeof'
 import 'std.convert'
 
 score := 0
@@ -38,13 +37,13 @@ while true {
             score += 1
         }
         elif chosen == 3 {
-            io.println('Проигыршь! Бот выбрал бумагу 📜')
+            io.println('Проигырш! Бот выбрал бумагу 📜')
             bot_score += 1
         }
     }
     elif input == 2 {
         if chosen == 1 {
-            io.println('Проигрышь! Бот выбрал камень 🪨')
+            io.println('Проигрыш! Бот выбрал камень 🪨')
             bot_score += 1
         }
         elif chosen == 3 {
@@ -58,7 +57,7 @@ while true {
             score += 1
         }
         elif chosen == 2 {
-            io.println('Проигрышь! Бот выбрал ножницы ✂️')
+            io.println('Проигрыш! Бот выбрал ножницы ✂️')
             bot_score += 1
         }
     }
