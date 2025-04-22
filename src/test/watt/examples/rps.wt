@@ -1,0 +1,71 @@
+import 'std.random'
+import 'std.io'
+import 'std.typeof'
+import 'std.convert'
+
+score := 0
+bot_score := 0
+
+fun user_input() {
+    io.println('Выберете вариант:')
+    io.println('1 - камень 🪨. 2 - ножницы ✂️. 3 - бумага 📜.')
+    input := io.input()
+    variant := 0
+    try {
+        variant = convert.parse_int(input)
+    }
+    catch e {
+        io.println('Неправильный ввод.')
+        return user_input()
+    }
+    if variant > 3 or variant < 1 {
+        io.println('Неправильный ввод.')
+        return user_input()
+    }
+    return variant
+}
+
+while true {
+    chosen := random.int(1, 4)
+    input := user_input()
+
+    if input == chosen {
+        io.println('Ничья.')
+    }
+    elif input == 1 {
+        if chosen == 2 {
+            io.println('Победа! Бот выбрал ножницы ✂️')
+            score += 1
+        }
+        elif chosen == 3 {
+            io.println('Проигыршь! Бот выбрал бумагу 📜')
+            bot_score += 1
+        }
+    }
+    elif input == 2 {
+        if chosen == 1 {
+            io.println('Проигрышь! Бот выбрал камень 🪨')
+            bot_score += 1
+        }
+        elif chosen == 3 {
+            io.println('Победа! Бот выбрал бумагу 📜')
+            score += 1
+        }
+    }
+    elif input == 3 {
+        if chosen == 1 {
+            io.println('Победа! Бот выбрал камень 🪨')
+            score += 1
+        }
+        elif chosen == 2 {
+            io.println('Проигрышь! Бот выбрал ножницы ✂️')
+            bot_score += 1
+        }
+    }
+
+    io.println('#################')
+    io.println('##     СЧЁТ      ')
+    io.println('## ИГРОК 🥬: ' + score)
+    io.println('## БОТ 🤖: ' + bot_score)
+    io.println('#################')
+}
