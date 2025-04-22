@@ -253,9 +253,8 @@ matrix2 := new Matrix([
 
 io.println(matrix.add(matrix2).to_string())
 */
-type Example() {
-    a := 3
+import 'std.io'
+list := [1,2,3,4,5]
+for elem in list.iter() {
+    io.println(elem)
 }
-
-e := new Example()
-e.a()

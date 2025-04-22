@@ -86,6 +86,9 @@ public class WattList {
 
         return -1;
     }
+    public WattIterator<Object> iter() {
+        return new WattIterator<>(this.array.iterator());
+    }
     public static WattList of(List<Object> values) {
         WattList arr = new WattList();
         arr.array = values;
