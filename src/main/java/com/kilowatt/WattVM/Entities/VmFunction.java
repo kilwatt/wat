@@ -102,7 +102,7 @@ public class VmFunction {
     public String toString() {
         return "VmFunction(" +
                 "name='" + name + '\'' +
-                ", addr=" + address +
+                ", address=" + address +
                 ", closure=" + (closure == null ? "no" : closure.getValues().keySet()) +
                 ')';
     }

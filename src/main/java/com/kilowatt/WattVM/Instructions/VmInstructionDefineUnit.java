@@ -16,7 +16,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class VmInstructionDefineUnit implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // юнит
     private final VmUnit unit;
     // тело юнита
@@ -31,9 +31,9 @@ public class VmInstructionDefineUnit implements VmInstruction {
         // бинды функций
         unit.bindFunctionsToUnit();
         // дефайн по имени
-        vm.getUnitDefinitions().forceSet(addr, unit.getName(), unit);
+        vm.getUnitDefinitions().forceSet(address, unit.getName(), unit);
         // дефайн по полному имени
-        if (unit.getFullName() != null) vm.getUnitDefinitions().forceSet(addr, unit.getFullName(), unit);
+        if (unit.getFullName() != null) vm.getUnitDefinitions().forceSet(address, unit.getFullName(), unit);
     }
 
     @Override

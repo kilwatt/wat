@@ -14,12 +14,12 @@ LOOP для VM
 @Getter
 public class VmInstructionLoop implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // инструкции
     private final VmChunk instructions = new VmChunk();
 
-    public VmInstructionLoop(VmAddress addr) {
-        this.addr = addr;
+    public VmInstructionLoop(VmAddress address) {
+        this.address = address;
     }
 
     public static <T> T cast(Class<T> clazz, Object o) {

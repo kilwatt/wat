@@ -13,19 +13,19 @@ import lombok.Getter;
 @Getter
 public class VmInstructionMakeClosure implements VmInstruction {
     // аддресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя функции
     private final String name;
 
     // конструктор
-    public VmInstructionMakeClosure(VmAddress addr, String name) {
-        this.addr = addr;
+    public VmInstructionMakeClosure(VmAddress address, String name) {
+        this.address = address;
         this.name = name;
     }
 
     // конструктор
-    public VmInstructionMakeClosure(VmAddress addr) {
-        this.addr = addr;
+    public VmInstructionMakeClosure(VmAddress address) {
+        this.address = address;
         this.name = null;
     }
 
@@ -33,10 +33,10 @@ public class VmInstructionMakeClosure implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> scope) {
         VmFunction fn;
         if (name == null) {
-            fn = (VmFunction) vm.pop(addr);
+            fn = (VmFunction) vm.pop(address);
         }
         else {
-            fn = (VmFunction) scope.lookup(addr, name);
+            fn = (VmFunction) scope.lookup(address, name);
         }
         fn.setClosure(scope);
     }

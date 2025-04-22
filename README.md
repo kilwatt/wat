@@ -1,4 +1,5 @@
-# Watt 💡
+# Watt ⚡🍹
+
 
 Watt is a dynamically typed scripting language that combines functional and object-oriented programming paradigms. ⚡
 It is designed to be expressive, flexible, and easy to use for scripting and application development.
@@ -8,7 +9,7 @@ Watt is compiled to its own virtual machine, VoltVM.
 VoltVM offering great flexibility for Watt development, and, of course,
 great reflection.
 
-# Examples 🔋
+# Examples 💡
 🪶 hello_world.wt
 ```kotlin
 import 'std.io'

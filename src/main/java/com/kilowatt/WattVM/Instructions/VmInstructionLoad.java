@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 @Getter
 public class VmInstructionLoad implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя переменной
     private final String name;
     // есть ли предыдущий аксесс
@@ -27,8 +27,8 @@ public class VmInstructionLoad implements VmInstruction {
     private final boolean shouldPushResult;
 
     // конструктор
-    public VmInstructionLoad(VmAddress addr, String name, boolean hasPrevious, boolean shouldPushResult) {
-        this.addr = addr;
+    public VmInstructionLoad(VmAddress address, String name, boolean hasPrevious, boolean shouldPushResult) {
+        this.address = address;
         this.name = name;
         this.hasPrevious = hasPrevious;
         this.shouldPushResult = shouldPushResult;
@@ -39,27 +39,27 @@ public class VmInstructionLoad implements VmInstruction {
         if (!shouldPushResult) return;
         if (!hasPrevious) {
             if (frame.has(name)) {
-                vm.push(frame.lookup(addr, name));
+                vm.push(frame.lookup(address, name));
             } else if (vm.getTypeDefinitions().has(name)) {
-                vm.push(vm.getTypeDefinitions().lookup(addr, name));
+                vm.push(vm.getTypeDefinitions().lookup(address, name));
             } else if (vm.getUnitDefinitions().has(name)) {
-                vm.push(vm.getUnitDefinitions().lookup(addr, name));
+                vm.push(vm.getUnitDefinitions().lookup(address, name));
             } else {
                 throw new WattRuntimeError(
-                        addr.getLine(), addr.getFileName(),
+                        address.getLine(), address.getFileName(),
                         "not found: " + name,
                         "did you type wrong name?"
                 );
             }
         } else {
-            Object last = vm.pop(addr);
+            Object last = vm.pop(address);
             switch (last) {
                 case VmInstance type -> {
-                    vm.push(type.getFields().lookup(addr, name));
+                    vm.push(type.getFields().lookup(address, name));
                     break;
                 }
                 case VmUnit unit -> {
-                    vm.push(unit.getFields().lookup(addr, name));
+                    vm.push(unit.getFields().lookup(address, name));
                     break;
                 }
                 case null -> throw new IllegalStateException(
@@ -73,15 +73,15 @@ public class VmInstructionLoad implements VmInstruction {
                         vm.push(field.get(last));
                     } catch (NoSuchFieldException e) {
                         throw new WattRuntimeError(
-                                addr.getLine(),
-                                addr.getFileName(),
+                                address.getLine(),
+                                address.getFileName(),
                                 "field not found: " + name,
                                 "check your reflection interaction."
                         );
                     } catch (IllegalAccessException e) {
                         throw new WattRuntimeError(
-                                addr.getLine(),
-                                addr.getFileName(),
+                                address.getLine(),
+                                address.getFileName(),
                                 "access failed: " + name,
                                 "check your reflection interaction."
                         );

@@ -17,12 +17,12 @@ import lombok.Getter;
 public class VmInstructionReturn extends RuntimeException implements VmInstruction {
     // адресс
     private final VmChunk ret;
-    private final VmAddress addr;
+    private final VmAddress address;
 
     // конструктор
-    public VmInstructionReturn(VmChunk ret, VmAddress addr) {
+    public VmInstructionReturn(VmChunk ret, VmAddress address) {
         this.ret = ret;
-        this.addr = addr;
+        this.address = address;
     }
 
     public void pushResult(WattVM vm, VmFrame<String, Object> scope)  {
@@ -35,7 +35,7 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
         for (VmInstruction i : ret.getInstructions()) {
             i.run(vm, scope);
         }
-        return vm.pop(addr);
+        return vm.pop(address);
     }
 
     @Override

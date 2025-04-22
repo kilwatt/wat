@@ -14,7 +14,7 @@ IF для VM
 @Getter
 public class VmInstructionIf implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // инструкции
     @Setter
     private VmChunk conditions = new VmChunk();
@@ -23,8 +23,8 @@ public class VmInstructionIf implements VmInstruction {
     @Setter
     private VmInstructionIf elseInstruction;
 
-    public VmInstructionIf(VmAddress addr) {
-        this.addr = addr;
+    public VmInstructionIf(VmAddress address) {
+        this.address = address;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class VmInstructionIf implements VmInstruction {
         VmFrame<String, Object> ifFrame = new VmFrame<>();
         ifFrame.setRoot(frame);
         // выполняем инструкции условий
-        Object val = conditions.runAndGet(vm, addr, ifFrame);
+        Object val = conditions.runAndGet(vm, address, ifFrame);
         // проверяем условия
         if (((Boolean) val)) {
             // выполняем тело

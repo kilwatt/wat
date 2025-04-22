@@ -17,15 +17,15 @@ import lombok.Getter;
 @Getter
 public class VmInstructionInstance implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя класса
     private final String className;
     // аргументы конструктора
     private final VmChunk args;
 
     // конструктор
-    public VmInstructionInstance(VmAddress addr, String className, VmChunk args) {
-        this.addr = addr;
+    public VmInstructionInstance(VmAddress address, String className, VmChunk args) {
+        this.address = address;
         this.className = className;
         this.args = args;
     }
@@ -34,9 +34,9 @@ public class VmInstructionInstance implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // конструктор
         int amount = passArgs(vm, frame);
-        VmType clazz = vm.getTypeDefinitions().lookup(addr, className);
+        VmType clazz = vm.getTypeDefinitions().lookup(address, className);
         checkArgs(clazz.getConstructor().size(), amount);
-        vm.push(new VmInstance(vm, clazz, addr));
+        vm.push(new VmInstance(vm, clazz, address));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class VmInstructionInstance implements VmInstruction {
     // проверка на колличество параметров и аргументов
     private void checkArgs(int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "invalid constructor args to create instance: "
                     + className + "(" + argsAmount + "/" + parameterAmount + ")",
                     "check args amount.");

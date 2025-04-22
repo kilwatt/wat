@@ -51,7 +51,7 @@ public class VmReflection {
     /*
     Поиск конструктора
      */
-    private Constructor findConstructor(VmAddress addr, Class<?> clazz, int argsAmount) {
+    private Constructor findConstructor(VmAddress address, Class<?> clazz, int argsAmount) {
         for (Constructor c : clazz.getConstructors()) {
             if (c.getParameterCount() == argsAmount) {
                 return c;
@@ -59,7 +59,7 @@ public class VmReflection {
         }
 
         throw new WattRuntimeError(
-                addr.getLine(), addr.getFileName(),
+                address.getLine(), address.getFileName(),
                 "constructor with args amount: "
                         + argsAmount + " not found.",
                 clazz.getSimpleName()

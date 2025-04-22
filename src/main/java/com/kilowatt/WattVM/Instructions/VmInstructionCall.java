@@ -27,7 +27,7 @@ import java.util.Objects;
 @Getter
 public class VmInstructionCall implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя
     private final String name;
     // есть ли предыдущий аксесс
@@ -38,9 +38,9 @@ public class VmInstructionCall implements VmInstruction {
     private final boolean shouldPushResult;
 
     // конструктор
-    public VmInstructionCall(VmAddress addr, String name, VmChunk args,
+    public VmInstructionCall(VmAddress address, String name, VmChunk args,
                              boolean hasPrevious, boolean shouldPushResult) {
-        this.addr = addr;
+        this.address = address;
         this.name = name; this.args = args; this.hasPrevious = hasPrevious;
         this.shouldPushResult = shouldPushResult;
     }
@@ -48,12 +48,12 @@ public class VmInstructionCall implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // устанавливаем инфу о последнем вызове
-        WattCompiler.vm.getCallsTrace().add(new VmCallInfo(addr, name, frame));
+        WattCompiler.vm.getCallsTrace().add(new VmCallInfo(address, name, frame));
         // вызов
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
         } else {
-            Object last = vm.pop(addr);
+            Object last = vm.pop(address);
             if (last instanceof VmInstance vmInstance) {
                 callInstanceFunc(vm, frame, vmInstance);
             } else if (last instanceof VmUnit vmUnit){
@@ -77,22 +77,22 @@ public class VmInstructionCall implements VmInstruction {
     private void callInstanceFunc(WattVM vm, VmFrame<String, Object> frame, VmInstance vmObj)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        Object val = vmObj.getFields().lookup(addr, name);
+        Object val = vmObj.getFields().lookup(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(vmObj.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
-            vmObj.call(addr, name, vm, shouldPushResult);
+            vmObj.call(address, name, vm, shouldPushResult);
         }
         // нативная функция
         else if (val instanceof VmBuiltinFunction fn) {
-            checkArgs(vmObj.getType().getName() + ":" + name, fn.args(), argsAmount);
+            checkArgs(vmObj.getType().getName() + ":" + name, fn.paramsAmount(), argsAmount);
             // вызов
-            fn.exec(vm, addr, shouldPushResult);
+            fn.exec(vm, address, shouldPushResult);
         }
         // в ином случае - ошибка
         else {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                 "couldn't call: " + name + ", not a fn.",
                 "check your code.");
         }
@@ -102,22 +102,22 @@ public class VmInstructionCall implements VmInstruction {
     private void callUnitFunc(WattVM vm, VmFrame<String, Object> frame, VmUnit vmUnit)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, frame);
-        Object val = vmUnit.getFields().lookup(addr, name);
+        Object val = vmUnit.getFields().lookup(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(vmUnit.getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
-            vmUnit.call(addr, name, vm, shouldPushResult);
+            vmUnit.call(address, name, vm, shouldPushResult);
         }
         // нативная функция
         else if (val instanceof VmBuiltinFunction fn) {
-            checkArgs(vmUnit.getName() + ":" + name, fn.args(), argsAmount);
+            checkArgs(vmUnit.getName() + ":" + name, fn.paramsAmount(), argsAmount);
             // вызов
-            fn.exec(vm, addr, shouldPushResult);
+            fn.exec(vm, address, shouldPushResult);
         }
         // в ином случае - ошибка
         else {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                 "couldn't call: " + name + ", not a fn.",
                 "check your code.");
         }
@@ -144,7 +144,7 @@ public class VmInstructionCall implements VmInstruction {
         }
         // выполнение метода
         if (fun == null) {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                 "jvm method not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
                 argsAmount + ")",
                 "check name for mistakes & passing args amount.");
@@ -160,7 +160,7 @@ public class VmInstructionCall implements VmInstruction {
                 }
             } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new WattRuntimeError(
-                    addr.getLine(), addr.getFileName(),
+                    address.getLine(), address.getFileName(),
                     "reflection err: " + e.getMessage(), "check your code."
                 );
             } catch (InvocationTargetException e) {
@@ -169,7 +169,7 @@ public class VmInstructionCall implements VmInstruction {
                     throw e.getCause();
                 } else {
                     throw new WattRuntimeError(
-                        addr.getLine(), addr.getFileName(),
+                        address.getLine(), address.getFileName(),
                         "reflection err: " + e.getCause().getMessage(), "check your code."
                     );
                 }
@@ -183,7 +183,7 @@ public class VmInstructionCall implements VmInstruction {
         Object[] callArgs = new Object[argsAmount];
         // заполняем его
         for (int i = argsAmount - 1; i >= 0; i--) {
-            callArgs[i] = vm.pop(addr);
+            callArgs[i] = vm.pop(address);
         }
         // возвращаем аргументы
         return callArgs;
@@ -194,16 +194,16 @@ public class VmInstructionCall implements VmInstruction {
         if (frame.has(name)) {
             // аргументы
             int argsAmount = passArgs(vm, frame);
-            Object o = frame.lookup(addr, name);
+            Object o = frame.lookup(address, name);
             if (o instanceof VmFunction fn) {
                 checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
                 fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
-                checkArgs(fn.getName(), fn.args(), argsAmount);
-                fn.exec(vm, addr, shouldPushResult);
+                checkArgs(fn.getName(), fn.paramsAmount(), argsAmount);
+                fn.exec(vm, address, shouldPushResult);
             } else {
-                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "couldn't call: " + name + ", not a fn.",
                     "check your code.");
             }
@@ -211,16 +211,16 @@ public class VmInstructionCall implements VmInstruction {
             // аргументы
             int argsAmount = passArgs(vm, frame);
             // вызов
-            Object o = vm.getGlobals().lookup(addr, name);
+            Object o = vm.getGlobals().lookup(address, name);
             if (o instanceof VmFunction fn) {
                 checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
                 fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
-                checkArgs(fn.getName(), fn.args(), argsAmount);
-                fn.exec(vm, addr, shouldPushResult);
+                checkArgs(fn.getName(), fn.paramsAmount(), argsAmount);
+                fn.exec(vm, address, shouldPushResult);
             } else {
-                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "couldn't call: " + o.getClass().getSimpleName(),
                     "check your code.");
             }
@@ -230,7 +230,7 @@ public class VmInstructionCall implements VmInstruction {
     // проверка на колличество параметров и аргументов
     private void checkArgs(String name, int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                 "invalid args amount for call: "
                         + name + "(" + argsAmount + "/" + parameterAmount + ")",
                 "check passing args amount.");

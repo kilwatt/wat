@@ -14,22 +14,22 @@ import lombok.Getter;
 @Getter
 public class VmInstructionBinOp implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // оператор
     private final String operator;
 
-    public VmInstructionBinOp(VmAddress addr, String operator) {
-        this.addr = addr;
+    public VmInstructionBinOp(VmAddress address, String operator) {
+        this.address = address;
         this.operator = operator;
     }
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop(addr);
-        Object l = vm.pop(addr);
+        Object r = vm.pop(address);
+        Object l = vm.pop(address);
         if (r.getClass() == VmNull.class || l.getClass() == VmNull.class) {
             String nullSide = r.getClass() == VmNull.class ? "right" : "left";
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "couldn't use " + operator + " operator with null from " + nullSide + " side.",
                     "check types.");
         }
@@ -40,12 +40,12 @@ public class VmInstructionBinOp implements VmInstruction {
                     if (r instanceof Number number) {
                         vm.push(l.toString().repeat(number.intValue()));
                     } else {
-                        throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                        throw new WattRuntimeError(address.getLine(), address.getFileName(),
                                 "couldn't use * operator with string && string.",
                                 "check types.");
                     }
                 }
-                default -> throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
                         "couldn't " + operator + " with strings.",
                         "check your code.");
             }
@@ -58,32 +58,30 @@ public class VmInstructionBinOp implements VmInstruction {
                         case "*" -> vm.push(mul(lNumber, rNumber));
                         case "/" -> {
                             if (rNumber.floatValue() == 0) {
-                                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                                throw new WattRuntimeError(address.getLine(), address.getFileName(),
                                         "can't divide by zero.",
                                         "check your code.");
                             }
                             vm.push(div(lNumber, rNumber));
                         } case "%" -> {
                             if (rNumber.floatValue() == 0) {
-                                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                                throw new WattRuntimeError(address.getLine(), address.getFileName(),
                                         "can't divide by zero.",
                                         "check your code.");
                             }
                             vm.push(rem(lNumber, rNumber));
-                        } default -> {
-                            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                                    "invalid binary op: " + operator,
-                                    "available binary operators: +, -, *, /, %");
-                        }
+                        } default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                                "invalid binary op: " + operator,
+                                "available binary operators: +, -, *, /, %");
                     }
                 } else {
-                    throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
                             "couldn't use op: " + operator + ". right is not a number: " + r,
                             "check your code.");
                 }
             }
             else {
-                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+                throw new WattRuntimeError(address.getLine(), address.getFileName(),
                         "couldn't use op: " + operator + ". left is not a number: " + l,
                         "check your code.");
             }

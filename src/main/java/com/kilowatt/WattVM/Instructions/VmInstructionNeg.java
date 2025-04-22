@@ -16,20 +16,20 @@ import lombok.Getter;
 @AllArgsConstructor
 public class VmInstructionNeg implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> scope) {
         // получаем значение
-        Object value = vm.pop(addr);
+        Object value = vm.pop(address);
         // создаём негативное число
         switch (value) {
             case Float f -> vm.push(-f);
             case Integer i -> vm.push(-i);
             case Long l -> vm.push(-l);
             case null, default -> throw new WattRuntimeError(
-                    addr.getLine(),
-                    addr.getFileName(),
+                    address.getLine(),
+                    address.getFileName(),
                     "not a number: " + value,
                     "check for types."
             );

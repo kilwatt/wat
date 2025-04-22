@@ -17,61 +17,61 @@ import lombok.Getter;
 @Getter
 public class VmInstructionCondOp implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // оператор
     private final String operator;
 
-    public VmInstructionCondOp(VmAddress addr, String operator) {
-        this.addr = addr;
+    public VmInstructionCondOp(VmAddress address, String operator) {
+        this.address = address;
         this.operator = operator;
     }
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop(addr);
-        Object l = vm.pop(addr);
+        Object r = vm.pop(address);
+        Object l = vm.pop(address);
         switch (operator) {
-            case "==" -> vm.push(equal(addr, l, r));
-            case "!=" -> vm.push(!equal(addr, l, r));
+            case "==" -> vm.push(equal(address, l, r));
+            case "!=" -> vm.push(!equal(address, l, r));
             case "<" -> {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isLessThan(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "not a number: " + (l instanceof Number ? r : l),
-                            "check types.");
+                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                        "not a number: " + (l instanceof Number ? r : l),
+                        "check types.");
                 }
             }
             case ">" -> {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isGreaterThan(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "not a number: " + (l instanceof Number ? r : l),
-                            "check types.");
+                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                        "not a number: " + (l instanceof Number ? r : l),
+                        "check types.");
                 }
             }
             case "<=" -> {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isLessOrEqual(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "not a number: " + (l instanceof Number ? r : l),
-                            "check types.");
+                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                        "not a number: " + (l instanceof Number ? r : l),
+                        "check types.");
                 }
             }
             case ">=" -> {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isGreaterOrEqual(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                            "not a number: " + (l instanceof Number ? r : l),
-                            "check types.");
+                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                        "not a number: " + (l instanceof Number ? r : l),
+                        "check types.");
                 }
             }
-            default -> throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "invalid cond. op: " + operator,
-                    "available op-s: ==,!=,>,>=,<=,<");
+            default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                "invalid cond. op: " + operator,
+                "available op-s: ==,!=,>,>=,<=,<");
         }
     }
 
@@ -81,7 +81,7 @@ public class VmInstructionCondOp implements VmInstruction {
     }
 
     // равны ли два объекта
-    public static boolean equal(VmAddress addr, Object l, Object r) {
+    public static boolean equal(VmAddress address, Object l, Object r) {
         if (l instanceof String left && r instanceof String right) {
             return left.equals(right);
         }
@@ -107,14 +107,14 @@ public class VmInstructionCondOp implements VmInstruction {
             return left == right;
         }
         else if (l instanceof Number a && r instanceof Number b) {
-            return compare(addr, a, b) == 0;
+            return compare(address, a, b) == 0;
         }
         else {
             return false;
         }
     }
 
-    private static int compare(VmAddress addr, Number a, Number b) {
+    private static int compare(VmAddress address, Number a, Number b) {
         if (a instanceof Double || b instanceof Double) {
             return Double.compare(a.doubleValue(), b.doubleValue());
         } else if (a instanceof Float || b instanceof Float) {
@@ -124,26 +124,26 @@ public class VmInstructionCondOp implements VmInstruction {
         } else if (a instanceof Integer || b instanceof Integer) {
             return Integer.compare(a.intValue(), b.intValue());
         } else {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "not a number: " + (a != null ? a : b),
                     "check types.");
         }
     }
 
     private boolean isGreaterThan(Number a, Number b) {
-        return compare(addr, a, b) > 0;
+        return compare(address, a, b) > 0;
     }
 
     private boolean isGreaterOrEqual(Number a, Number b) {
-        return compare(addr, a, b) >= 0;
+        return compare(address, a, b) >= 0;
     }
 
     private boolean isLessOrEqual(Number a, Number b) {
-        return compare(addr, a, b) <= 0;
+        return compare(address, a, b) <= 0;
     }
 
     private boolean isLessThan(Number a, Number b) {
-        return compare(addr, a, b) < 0;
+        return compare(address, a, b) < 0;
     }
 
     @Override

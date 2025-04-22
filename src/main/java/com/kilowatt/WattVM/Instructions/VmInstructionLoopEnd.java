@@ -11,12 +11,12 @@ import lombok.Getter;
 @Getter
 public class VmInstructionLoopEnd extends RuntimeException implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // только текущую итерацию
     private final boolean currentIteration;
 
-    public VmInstructionLoopEnd(VmAddress addr, boolean currentIteration) {
-        this.addr = addr;
+    public VmInstructionLoopEnd(VmAddress address, boolean currentIteration) {
+        this.address = address;
         this.currentIteration = currentIteration;
     }
 

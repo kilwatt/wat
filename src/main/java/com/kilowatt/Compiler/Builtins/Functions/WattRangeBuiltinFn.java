@@ -42,7 +42,7 @@ public class WattRangeBuiltinFn implements VmBuiltinFunction {
     }
 
     @Override
-    public int args() {
+    public int paramsAmount() {
         return 2;
     }
 

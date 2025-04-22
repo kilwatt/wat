@@ -12,10 +12,11 @@ import lombok.Getter;
 /*
 Определение переменной
  */
+@SuppressWarnings("UnnecessaryBreak")
 @Getter
 public class VmInstructionDefine implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя переменной
     private final String name;
     // есть ли предыдущий аксесс
@@ -24,8 +25,8 @@ public class VmInstructionDefine implements VmInstruction {
     private final VmChunk value;
 
     // конструктор
-    public VmInstructionDefine(VmAddress addr, String name, boolean hasPrevious, VmChunk value) {
-        this.addr = addr;
+    public VmInstructionDefine(VmAddress address, String name, boolean hasPrevious, VmChunk value) {
+        this.address = address;
         this.name = name;
         this.hasPrevious = hasPrevious;
         this.value = value;
@@ -34,16 +35,16 @@ public class VmInstructionDefine implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         if (!hasPrevious) {
-            frame.define(addr, name, value.runAndGet(vm, addr, frame));
+            frame.define(address, name, value.runAndGet(vm, address, frame));
         } else {
-            Object last = vm.pop(addr);
+            Object last = vm.pop(address);
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getFields().define(addr, name, value.runAndGet(vm, addr, frame));
+                    instance.getFields().define(address, name, value.runAndGet(vm, address, frame));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().define(addr, name, value.runAndGet(vm, addr, frame));
+                    unit.getFields().define(address, name, value.runAndGet(vm, address, frame));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +

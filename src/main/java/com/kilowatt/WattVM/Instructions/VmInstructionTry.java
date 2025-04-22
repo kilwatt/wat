@@ -15,7 +15,7 @@ TRY для VM
 @AllArgsConstructor
 public class VmInstructionTry implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // инструкции
     private final VmChunk tryBody;
     private final VmChunk catchBody;
@@ -29,7 +29,7 @@ public class VmInstructionTry implements VmInstruction {
             tryBody.run(vm, frame);
         } catch (RuntimeException e) {
             // устанавливаем переменную
-            frame.define(addr, catchVariableName, e);
+            frame.define(address, catchVariableName, e);
             // выполняем тело исключения
             catchBody.run(vm, frame);
             // удаляем переменную

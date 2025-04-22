@@ -13,16 +13,16 @@ import lombok.Getter;
 @Getter
 public class VmInstructionPop implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
 
     // конструктор
-    public VmInstructionPop(VmAddress addr) {
-        this.addr = addr;
+    public VmInstructionPop(VmAddress address) {
+        this.address = address;
     }
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        vm.pop(addr);
+        vm.pop(address);
     }
 
     @Override

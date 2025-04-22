@@ -16,7 +16,7 @@ import lombok.Getter;
 @Getter
 public class VmInstructionSet implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя переменной
     private final String name;
     // есть ли предыдущий аксесс
@@ -25,8 +25,8 @@ public class VmInstructionSet implements VmInstruction {
     private final VmChunk value;
 
     // конструктор
-    public VmInstructionSet(VmAddress addr, String name, boolean hasPrevious, VmChunk value) {
-        this.addr = addr;
+    public VmInstructionSet(VmAddress address, String name, boolean hasPrevious, VmChunk value) {
+        this.address = address;
         this.name = name;
         this.hasPrevious = hasPrevious;
         this.value = value;
@@ -35,16 +35,16 @@ public class VmInstructionSet implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         if (!hasPrevious) {
-            frame.set(addr, name, value.runAndGet(vm, addr, frame));
+            frame.set(address, name, value.runAndGet(vm, address, frame));
         } else {
-            Object last = vm.pop(addr);
+            Object last = vm.pop(address);
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getFields().set(addr, name, value.runAndGet(vm, addr, frame));
+                    instance.getFields().set(address, name, value.runAndGet(vm, address, frame));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().set(addr, name, value.runAndGet(vm, addr, frame));
+                    unit.getFields().set(address, name, value.runAndGet(vm, address, frame));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +

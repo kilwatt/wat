@@ -30,7 +30,7 @@ public class WattImportResolver {
     private final Path localPath;
 
     // импорт файла
-    public void resolve(VmAddress addr, String name, String fullNameOverride) {
+    public void resolve(VmAddress address, String name, String fullNameOverride) {
         // данные
         Lexer lexer;
         String fileName;
@@ -52,23 +52,23 @@ public class WattImportResolver {
                         lexer = new Lexer(fileName, new String(stream.readAllBytes()));
                     } else {
                         throw new WattResolveError(
-                            addr.getLine(),
-                            addr.getFileName(),
+                            address.getLine(),
+                            address.getFileName(),
                             "couldn't resolve name: " + name,
                             "check file exists!");
                     }
                 } catch (NullPointerException e) {
                     throw new WattResolveError(
-                        addr.getLine(),
-                        addr.getFileName(),
+                        address.getLine(),
+                        address.getFileName(),
                         "couldn't resolve name: " + name,
                         "check file exists!");
                 }
             }
         } catch (IOException e) {
             throw new WattResolveError(
-                addr.getLine(),
-                addr.getFileName(),
+                address.getLine(),
+                address.getFileName(),
                 "couldn't resolve name: " + localPath.resolve(name),
                 "check file exists!");
         }
@@ -84,7 +84,7 @@ public class WattImportResolver {
         // компилируем
         if (!imported.contains(pathString)) {
             WattCompiler.compileImport(
-                addr,
+                address,
                 result
             );
             imported.add(pathString);

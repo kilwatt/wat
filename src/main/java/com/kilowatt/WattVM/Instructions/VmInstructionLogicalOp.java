@@ -13,22 +13,22 @@ import lombok.Getter;
 @Getter
 public class VmInstructionLogicalOp implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // оператор
     private final String operator;
 
-    public VmInstructionLogicalOp(VmAddress addr, String operator) {
-        this.addr = addr;
+    public VmInstructionLogicalOp(VmAddress address, String operator) {
+        this.address = address;
         this.operator = operator;
     }
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object r = vm.pop(addr);
-        Object l = vm.pop(addr);
+        Object r = vm.pop(address);
+        Object l = vm.pop(address);
         switch (operator) {
             case "and" -> vm.push((boolean)l && ((boolean)r));
             case "or" -> vm.push((boolean)l || ((boolean)r));
-            default -> throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "Invalid operator: " + operator,
                     "Available conditional operators: and, or");
         }

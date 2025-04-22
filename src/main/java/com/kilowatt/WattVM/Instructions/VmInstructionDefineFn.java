@@ -15,7 +15,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class VmInstructionDefineFn implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя функции
     private final String name;
     // полное имя
@@ -28,10 +28,10 @@ public class VmInstructionDefineFn implements VmInstruction {
         // новая копия функции
         VmFunction newFnCopy = fn.copy();
         // по краткому имени
-        frame.define(addr, name,newFnCopy);
+        frame.define(address, name,newFnCopy);
         // по полному имени
         if (fullName != null) {
-            frame.define(addr, fullName, newFnCopy);
+            frame.define(address, fullName, newFnCopy);
         }
     }
 

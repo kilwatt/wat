@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VmInstructionDefineType implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // тип
     private final VmType type;
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // дефайн по имени
-        vm.getTypeDefinitions().forceSet(addr, type.getName(), type);
+        vm.getTypeDefinitions().forceSet(address, type.getName(), type);
         // дефайн по полному имени
-        if (type.getFullName() != null) vm.getTypeDefinitions().forceSet(addr, type.getFullName(), type);
+        if (type.getFullName() != null) vm.getTypeDefinitions().forceSet(address, type.getFullName(), type);
     }
 
     @Override

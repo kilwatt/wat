@@ -39,18 +39,18 @@ public class VmFrame<K, V> {
 
     /**
      * Ищет значение в фрейме
-     * @param addr - адрес
+     * @param address - адрес
      * @param name - имя значения
      * @return возвращает значение
      */
-    public V lookup(VmAddress addr, K name) {
+    public V lookup(VmAddress address, K name) {
         VmFrame<K, V> current = this;
         // фрэймы
         while (!current.existsInFrameOrClosure(name)) {
             if (current.root == null) {
                 throw new WattRuntimeError(
-                    addr.getLine(),
-                    addr.getFileName(),
+                    address.getLine(),
+                    address.getFileName(),
                     "not found: " + name.toString(),
                     "check variable existence!"
                 );
@@ -59,16 +59,16 @@ public class VmFrame<K, V> {
         }
         // проверяем
         if (current.getValues().containsKey(name)) return current.getValues().get(name);
-        else return current.getClosure().lookup(addr, name);
+        else return current.getClosure().lookup(address, name);
     }
 
     /**
      * Устанавливает значение в фрейм, учитывая предыдущие
-     * @param addr - адрес
+     * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
-    public void set(VmAddress addr, K name, V val) {
+    public void set(VmAddress address, K name, V val) {
         VmFrame<K, V> current = this;
         // фрэймы
         while (current != null) {
@@ -79,39 +79,39 @@ public class VmFrame<K, V> {
             }
             // проверка замыкания фрэйма
             else if (current.getClosure() != null && current.getClosure().has(name)) {
-                current.getClosure().set(addr, name, val);
+                current.getClosure().set(address, name, val);
                 return;
             }
             // прыгаем в рут
             current = current.root;
         }
         // ошибка
-        throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+        throw new WattRuntimeError(address.getLine(), address.getFileName(),
                 "variable is not defined: " + name, "verify you already defined it with := op.");
     }
 
     /**
      * Устанавливает значение в фрейм принудительно
-     * @param addr - адрес
+     * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
-    public void forceSet(VmAddress addr, K name, V val) {
+    public void forceSet(VmAddress address, K name, V val) {
         values.put(name, val);
     }
 
     /**
      * Устанавливает значение в фрейм, не учитывая предыдущие
-     * @param addr - адрес
+     * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
-    public void define(VmAddress addr, K name, V val) {
+    public void define(VmAddress address, K name, V val) {
         if (!getValues().containsKey(name)) {
             getValues().put(name, val);
         }
         else {
-            throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
                     "variable: " + name + " already defined!", "you can rename variable to define it.");
         }
     }

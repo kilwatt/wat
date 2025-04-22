@@ -8,6 +8,6 @@ import com.kilowatt.WattVM.VmAddress;
  */
 public interface VmBuiltinFunction {
     void exec(WattVM vm, VmAddress address, boolean shouldPushResult);
-    int args();
+    int paramsAmount();
     String getName();
 }

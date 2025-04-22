@@ -12,13 +12,13 @@ import lombok.Getter;
 @Getter
 public class VmInstructionPush implements VmInstruction {
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // данные для пуша
     private final Object data;
 
     // конструктор
-    public VmInstructionPush(VmAddress addr, Object data) {
-        this.addr = addr;
+    public VmInstructionPush(VmAddress address, Object data) {
+        this.address = address;
         this.data = data;
     }
 

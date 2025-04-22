@@ -34,7 +34,7 @@ public class InputFn implements VmBuiltinFunction {
     }
 
     @Override
-    public int args() {
+    public int paramsAmount() {
         return 0;
     }
 

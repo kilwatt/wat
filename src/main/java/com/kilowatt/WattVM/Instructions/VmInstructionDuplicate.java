@@ -12,16 +12,16 @@ import lombok.Getter;
 @Getter
 public class VmInstructionDuplicate implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
 
     // конструктор
-    public VmInstructionDuplicate(VmAddress addr) {
-        this.addr = addr;
+    public VmInstructionDuplicate(VmAddress address) {
+        this.address = address;
     }
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame) {
-        Object o = vm.pop(addr);
+        Object o = vm.pop(address);
         vm.push(o);
         vm.push(o);
     }

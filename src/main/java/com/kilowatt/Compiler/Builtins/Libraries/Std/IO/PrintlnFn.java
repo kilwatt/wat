@@ -17,7 +17,7 @@ public class PrintlnFn implements VmBuiltinFunction {
     }
 
     @Override
-    public int args() {
+    public int paramsAmount() {
         return 1;
     }
 

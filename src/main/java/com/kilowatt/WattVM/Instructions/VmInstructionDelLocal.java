@@ -12,12 +12,12 @@ import lombok.Getter;
 @Getter
 public class VmInstructionDelLocal implements VmInstruction {
     // адресс
-    private final VmAddress addr;
+    private final VmAddress address;
     // имя переменной
     private final String name;
 
-    public VmInstructionDelLocal(VmAddress addr, String name) {
-        this.addr = addr;
+    public VmInstructionDelLocal(VmAddress address, String name) {
+        this.address = address;
         this.name = name;
     }
 
