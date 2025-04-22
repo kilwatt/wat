@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Entities;
 
 import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionReturn;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
@@ -26,7 +26,7 @@ public class VmFunction {
     // параметры
     private final ArrayList<String> params;
     // адрес
-    private final VmAddress addr;
+    private final VmAddress address;
     // замыкание
     private VmFrame<String, Object> closure = null;
     // бинд к объекту
@@ -45,12 +45,10 @@ public class VmFunction {
         if (getClosure() != null) {
             scope.setClosure(closure);
         }
-        // ставим рут на переменные типа/юнита/глобал скоупа
-        // если closure == этому скоупу, то рут не устанавливается благодаря
-        // проверке внутри setRoot на цикличный рут.
+        // устанавливаем рут скоупа и переменную self
         if (selfBind != null) {
             scope.setRoot(selfBind.getLocalScope());
-            scope.define(addr, "self", selfBind);
+            scope.define(address, "self", selfBind);
         } else {
             scope.setRoot(vm.getGlobals());
         }
@@ -63,7 +61,7 @@ public class VmFunction {
         } catch (VmInstructionReturn e) {
             e.pushResult(vm, scope);
             if (!shouldPushResult) {
-                vm.pop(addr);
+                vm.pop(address);
             }
             return;
         }
@@ -76,12 +74,12 @@ public class VmFunction {
         // загружаем аргументы
         for (int i = params.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
-                throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "stack is empty! couldn't invoke function.",
-                        "check args of function.");
+                throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                "stack is empty! couldn't invoke function.",
+                "check args amount.");
             }
-            Object arg = vm.pop(addr);
-            scope.define(addr, params.get(i), arg);
+            Object arg = vm.pop(address);
+            scope.define(address, params.get(i), arg);
         }
     }
 
@@ -96,7 +94,7 @@ public class VmFunction {
     // копия функции
     public VmFunction copy() {
         // возвращаем
-        return new VmFunction(name, body, params, addr);
+        return new VmFunction(name, body, params, address);
     }
 
     // в строку
@@ -104,7 +102,7 @@ public class VmFunction {
     public String toString() {
         return "VmFunction(" +
                 "name='" + name + '\'' +
-                ", addr=" + addr +
+                ", addr=" + address +
                 ", closure=" + (closure == null ? "no" : closure.getValues().keySet()) +
                 ')';
     }

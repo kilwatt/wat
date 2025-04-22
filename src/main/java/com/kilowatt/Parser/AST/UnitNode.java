@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineUnit;
 import com.kilowatt.Lexer.Token;
@@ -47,7 +47,7 @@ public class UnitNode implements Node {
             throw new WattSemanticError(
                 name.getLine(),
                 name.getFileName(),
-                "couldn't create units outside global code",
+                "couldn't create units outside global scope",
                 "move the definition to the global code."
             );
         }
@@ -60,12 +60,12 @@ public class UnitNode implements Node {
     }
 
     private VmChunk compileBody() {
-        VmChunk box = new VmChunk();
-        WattCompiler.code.writeTo(box);
+        VmChunk chunk = new VmChunk();
+        WattCompiler.code.writeTo(chunk);
         for (Node node : body) {
             node.compile();
         }
         WattCompiler.code.endWrite();
-        return box;
+        return chunk;
     }
 }

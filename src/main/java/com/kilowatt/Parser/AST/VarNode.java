@@ -30,12 +30,12 @@ public class VarNode implements AccessNode {
     public void compile() {
         if (previous != null) previous.compile();
         WattCompiler.code.visitInstruction(
-                new VmInstructionLoad(
-                        name.asAddress(),
-                        name.getValue(),
-                        previous != null,
-                        shouldPushResult
-                )
+            new VmInstructionLoad(
+                name.asAddress(),
+                name.getValue(),
+                previous != null,
+                shouldPushResult
+            )
         );
     }
 

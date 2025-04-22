@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
 import com.kilowatt.WattVM.Instructions.VmInstructionMakeClosure;
@@ -24,20 +24,20 @@ public class AnonymousFnNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionPush(
-                        location.asAddress(),
-                        compileFn()
-                )
+            new VmInstructionPush(
+                location.asAddress(),
+                compileFn()
+            )
         );
         WattCompiler.code.visitInstruction(
-                new VmInstructionDuplicate(
-                        location.asAddress()
-                )
+            new VmInstructionDuplicate(
+                location.asAddress()
+            )
         );
         WattCompiler.code.visitInstruction(
-                new VmInstructionMakeClosure(
-                        location.asAddress()
-                )
+            new VmInstructionMakeClosure(
+                location.asAddress()
+            )
         );
     }
 

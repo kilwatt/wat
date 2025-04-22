@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattError;
 import com.kilowatt.Lexer.Token;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
@@ -27,8 +27,8 @@ public class ThrowNode implements Node {
     @Override
     public void compile() {
         // бокс со значением
-        VmChunk valueBox = new VmChunk();
-        WattCompiler.code.writeTo(valueBox);
+        VmChunk chunk = new VmChunk();
+        WattCompiler.code.writeTo(chunk);
         value.compile();
         WattCompiler.code.endWrite();
         // адрес
@@ -39,7 +39,7 @@ public class ThrowNode implements Node {
                 @Override
                 public void run(WattVM vm, VmFrame<String, Object> scope) {
                     // объект
-                    Object o = valueBox.runAndGet(vm, address, scope);
+                    Object o = chunk.runAndGet(vm, address, scope);
                     // если это ошибка - сразу выкидываем
                     if (o instanceof WattError e) {
                         // выкидываем
@@ -55,14 +55,14 @@ public class ThrowNode implements Node {
                 @Override
                 public void print(int indent) {
                     VmCodeDumper.dumpLine(indent, "THROW(), BODY:");
-                    for (VmInstruction instruction : valueBox.getInstructions()) {
+                    for (VmInstruction instruction : chunk.getInstructions()) {
                         instruction.print(indent + 1);
                     }
                 }
 
                 @Override
                 public String toString() {
-                    return "THROW(value: " + valueBox + ")";
+                    return "THROW(value: " + chunk + ")";
                 }
             }
         );

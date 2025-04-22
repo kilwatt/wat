@@ -18,10 +18,10 @@ public class BreakNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionLoopEnd(
-                        location.asAddress(),
-                        false
-                )
+            new VmInstructionLoopEnd(
+                location.asAddress(),
+                false
+            )
         );
     }
 

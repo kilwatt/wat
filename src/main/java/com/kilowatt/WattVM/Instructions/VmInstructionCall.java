@@ -4,7 +4,7 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmFunction;
@@ -160,8 +160,8 @@ public class VmInstructionCall implements VmInstruction {
                 }
             } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new WattRuntimeError(
-                        addr.getLine(), addr.getFileName(),
-                        "reflection err: " + e.getMessage(), "check your code."
+                    addr.getLine(), addr.getFileName(),
+                    "reflection err: " + e.getMessage(), "check your code."
                 );
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof WattRuntimeError ||
@@ -169,8 +169,8 @@ public class VmInstructionCall implements VmInstruction {
                     throw e.getCause();
                 } else {
                     throw new WattRuntimeError(
-                            addr.getLine(), addr.getFileName(),
-                            "reflection err: " + e.getCause().getMessage(), "check your code."
+                        addr.getLine(), addr.getFileName(),
+                        "reflection err: " + e.getCause().getMessage(), "check your code."
                     );
                 }
             }
@@ -221,8 +221,8 @@ public class VmInstructionCall implements VmInstruction {
                 fn.exec(vm, addr, shouldPushResult);
             } else {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                        "couldn't call: " + o.getClass().getSimpleName(),
-                        "check your code.");
+                    "couldn't call: " + o.getClass().getSimpleName(),
+                    "check your code.");
             }
         }
     }
@@ -231,9 +231,9 @@ public class VmInstructionCall implements VmInstruction {
     private void checkArgs(String name, int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
             throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
-                    "invalid args amount for call: "
-                            + name + "(" + argsAmount + "/" + parameterAmount + ")",
-                    "check passing args amount.");
+                "invalid args amount for call: "
+                        + name + "(" + argsAmount + "/" + parameterAmount + ")",
+                "check passing args amount.");
         }
     }
 

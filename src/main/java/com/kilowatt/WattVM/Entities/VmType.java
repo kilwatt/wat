@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Entities;
 
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -20,10 +20,10 @@ public class BoolNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionPush(
-                        new VmAddress(value.getFileName(), value.getLine()),
-                        Boolean.parseBoolean(value.getValue())
-                )
+            new VmInstructionPush(
+                new VmAddress(value.getFileName(), value.getLine()),
+                Boolean.parseBoolean(value.getValue())
+            )
         );
     }
 }

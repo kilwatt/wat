@@ -1,4 +1,4 @@
-package com.kilowatt.WattVM.Boxes;
+package com.kilowatt.WattVM.Chunks;
 
 
 import com.kilowatt.WattVM.Instructions.VmInstruction;
@@ -43,11 +43,11 @@ public class VmChunk {
 
     // создание бокса инструкций из их списка
     public static VmChunk of(VmInstruction... instructions) {
-        VmChunk box = new VmChunk();
+        VmChunk chunk = new VmChunk();
         for (VmInstruction instruction : instructions) {
-            box.visitInstr(instruction);
+            chunk.visitInstr(instruction);
         }
-        return box;
+        return chunk;
     }
 
     // в строку

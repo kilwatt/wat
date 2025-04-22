@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineType;
 import com.kilowatt.Lexer.Token;
@@ -44,7 +44,7 @@ public class TypeNode implements Node {
             throw new WattSemanticError(
                 name.getLine(),
                 name.getFileName(),
-                "couldn't create types outside global code",
+                "couldn't create types outside global scope",
                 "move the definition to the global code."
             );
         }
@@ -62,17 +62,17 @@ public class TypeNode implements Node {
         for (Token token : constructor) {
             newConstructor.add(token.getValue());
         }
-        return new VmType(name.value, fullName.value, newConstructor, compileFields());
+        return new VmType(name.value, fullName.value, newConstructor, compileBody());
     }
 
-    // компиляция полей
-    private VmChunk compileFields() {
-        VmChunk box = new VmChunk();
-        WattCompiler.code.writeTo(box);
+    // компиляция тела
+    private VmChunk compileBody() {
+        VmChunk chunk = new VmChunk();
+        WattCompiler.code.writeTo(chunk);
         for (Node node : body) {
             node.compile();
         }
         WattCompiler.code.endWrite();
-        return box;
+        return chunk;
     }
 }

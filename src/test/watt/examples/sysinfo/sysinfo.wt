@@ -45,7 +45,7 @@ while true {
             ]
         ),
         new Title(
-            '🎯 Cpu',
+            '🎯 Cpu' + processor.getProcessorIdentifier().getName(),
             [
                 new Label(
                     'CpuPhysicalCores',
@@ -66,7 +66,7 @@ while true {
             ]
         ),
         new Title(
-            '💡 Gpu',
+            '💡 Gpu ' + card.getName(),
             [
                 new Label(
                     '',

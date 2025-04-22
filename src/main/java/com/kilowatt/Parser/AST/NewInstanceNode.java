@@ -2,7 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionInstance;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class NewInstanceNode implements AccessNode {
 
     @Override
     public void compile() {
-        WattCompiler.code.visitInstruction(new VmInstructionInstance(name.asAddress(), name.value, compileArgs()));
+        WattCompiler.code.visitInstruction(new VmInstructionInstance(name.asAddress(), name.value, compileConstructor()));
     }
 
     @Override
@@ -34,14 +34,14 @@ public class NewInstanceNode implements AccessNode {
         }
     }
 
-    private VmChunk compileArgs() {
-        VmChunk box = new VmChunk();
-        WattCompiler.code.writeTo(box);
+    private VmChunk compileConstructor() {
+        VmChunk constructorChunk = new VmChunk();
+        WattCompiler.code.writeTo(constructorChunk);
         for (Node node : args) {
             node.compile();
         }
         WattCompiler.code.endWrite();
-        return box;
+        return constructorChunk;
     }
 
     @Override

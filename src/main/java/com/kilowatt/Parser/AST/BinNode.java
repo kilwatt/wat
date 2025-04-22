@@ -23,7 +23,7 @@ public class BinNode implements Node {
         left.compile();
         right.compile();
         WattCompiler.code.visitInstruction(new VmInstructionBinOp(
-                new VmAddress(operator.fileName, operator.line), operator.value
+            new VmAddress(operator.fileName, operator.line), operator.value
         ));
     }
 

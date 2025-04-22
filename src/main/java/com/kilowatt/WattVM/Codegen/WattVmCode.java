@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Codegen;
 
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.WattVM;
 import lombok.Getter;
@@ -23,8 +23,8 @@ public class WattVmCode {
     }
 
     // запись в бокс
-    public void writeTo(VmChunk box) {
-        writing.push(box);
+    public void writeTo(VmChunk chunk) {
+        writing.push(chunk);
     }
 
     // конец записи в бокс
@@ -44,16 +44,16 @@ public class WattVmCode {
             System.out.println("Send your code with this message to developers. #003::CompilationPhase");
         }
         // получаем код
-        VmChunk box = ((VmChunk)this.writing.getFirst());
+        VmChunk chunk = this.writing.getFirst();
         // запускаем
-        box.run(vm, vm.getGlobals());
+        chunk.run(vm, vm.getGlobals());
     }
 
     // вывод кода
     public void print(boolean asFile) {
         // получаем код
-        VmChunk box = ((VmChunk)this.writing.getFirst());
+        VmChunk chunk = this.writing.getFirst();
         // дампим
-        VmCodeDumper.dump(box.getInstructions(), asFile);
+        VmCodeDumper.dump(chunk.getInstructions(), asFile);
     }
 }

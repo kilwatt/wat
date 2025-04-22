@@ -2,7 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmChunk;
+import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionCall;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;
@@ -36,8 +36,8 @@ public class CallNode implements AccessNode {
     @Override
     public void compile() {
         // аргументы
-        VmChunk argsBox = new VmChunk();
-        WattCompiler.code.writeTo(argsBox);
+        VmChunk argsChunk = new VmChunk();
+        WattCompiler.code.writeTo(argsChunk);
         for (Node node : args) {
             node.compile();
         }
@@ -45,13 +45,13 @@ public class CallNode implements AccessNode {
         // компиляция
         if (previous != null) previous.compile();
         WattCompiler.code.visitInstruction(
-                new VmInstructionCall(
-                        name.asAddress(),
-                        name.getValue(),
-                        argsBox,
-                        previous != null,
-                        shouldPushResult
-                )
+            new VmInstructionCall(
+                name.asAddress(),
+                name.getValue(),
+                    argsChunk,
+                previous != null,
+                shouldPushResult
+            )
         );
     }
 

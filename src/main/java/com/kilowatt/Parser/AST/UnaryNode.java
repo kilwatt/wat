@@ -3,7 +3,6 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.Lexer.Token;
-import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
 import com.kilowatt.WattVM.Instructions.VmInstructionNeg;
 import com.kilowatt.WattVM.Instructions.VmInstructionPush;
@@ -13,7 +12,6 @@ import lombok.Getter;
 /*
 Унарная операция
  */
-@SuppressWarnings("SwitchStatementWithTooFewBranches")
 @Getter
 @AllArgsConstructor
 public class UnaryNode implements Node {
