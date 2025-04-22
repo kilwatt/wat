@@ -2,7 +2,7 @@ package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
@@ -46,7 +46,7 @@ public class StdReflection {
         // помещаем объект
         WattCompiler.vm.push(object);
         // аргументы
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
+        VmChunk box = new VmChunk();
         for (Object arg: args.getArray()) {
             box.visitInstr(
                 new VmInstructionPush(

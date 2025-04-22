@@ -23,6 +23,14 @@ public class WattTests {
                         .name("pattern matching")
                         .build(),
                 WattTest.builder().path(
+                                "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\functions.wt")
+                        .name("fn-s")
+                        .build(),
+                WattTest.builder().path(
+                                "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\closures.wt")
+                        .name("closures")
+                        .build(),
+                WattTest.builder().path(
                                 "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\types.wt")
                         .name("custom types")
                         .build(),

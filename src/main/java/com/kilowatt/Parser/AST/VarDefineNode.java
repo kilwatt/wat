@@ -2,7 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefine;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class VarDefineNode implements AccessNode {
     @Override
     public void compile() {
         // аргументы
-        VmBaseInstructionsBox argsBox = new VmBaseInstructionsBox();
+        VmChunk argsBox = new VmChunk();
         WattCompiler.code.writeTo(argsBox);
         value.compile();
         WattCompiler.code.endWrite();

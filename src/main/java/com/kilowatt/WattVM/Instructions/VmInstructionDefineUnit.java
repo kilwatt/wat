@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
@@ -20,7 +20,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
     // юнит
     private final VmUnit unit;
     // тело юнита
-    private final VmBaseInstructionsBox body;
+    private final VmChunk body;
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
@@ -40,7 +40,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "DEFINE_UNIT(" + unit.getName() + ", " + unit.getFullName() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : getBody().getInstructionContainer()) {
+        for (VmInstruction instruction : getBody().getInstructions()) {
             instruction.print(indent + 2);
         }
     }

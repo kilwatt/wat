@@ -3,6 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineFn;
 import com.kilowatt.WattVM.Instructions.VmInstructionMakeClosure;
@@ -60,14 +61,14 @@ public class FnNode implements Node {
     }
 
     public VmFunction compileFn() {
-        ArrayList<String> parsed = new ArrayList<>();
+        ArrayList<String> params = new ArrayList<>();
         for (Token tk : parameters) {
-            parsed.add(tk.value);
+            params.add(tk.value);
         }
-        VmFunction fn = new VmFunction(name.value, parsed, name.asAddress());
-        WattCompiler.code.writeTo(fn);
+        VmChunk body = new VmChunk();
+        WattCompiler.code.writeTo(body);
         node.compile();
         WattCompiler.code.endWrite();
-        return fn;
+        return new VmFunction(name.value, body, params, name.asAddress());
     }
 }

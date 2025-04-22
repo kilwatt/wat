@@ -2,7 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionIf;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
@@ -36,7 +36,7 @@ public class IfNode implements Node {
 
     public VmInstructionIf getCompiled() {
         // условия
-        VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
+        VmChunk conditions = new VmChunk();
         WattCompiler.code.writeTo(conditions);
         logical.compile();
         WattCompiler.code.endWrite();

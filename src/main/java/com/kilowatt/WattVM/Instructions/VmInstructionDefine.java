@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
@@ -21,10 +21,10 @@ public class VmInstructionDefine implements VmInstruction {
     // есть ли предыдущий аксесс
     private final boolean hasPrevious;
     // значение
-    private final VmBaseInstructionsBox value;
+    private final VmChunk value;
 
     // конструктор
-    public VmInstructionDefine(VmAddress addr, String name, boolean hasPrevious, VmBaseInstructionsBox value) {
+    public VmInstructionDefine(VmAddress addr, String name, boolean hasPrevious, VmChunk value) {
         this.addr = addr;
         this.name = name;
         this.hasPrevious = hasPrevious;
@@ -56,7 +56,7 @@ public class VmInstructionDefine implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "DEFINE("+name+")");
         VmCodeDumper.dumpLine(indent + 1, "VALUE:");
-        for (VmInstruction instruction : value.getInstructionContainer()) {
+        for (VmInstruction instruction : value.getInstructions()) {
             instruction.print(indent + 2);
         }
     }

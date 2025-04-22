@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionReturn;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class ReturnNode implements Node {
 
     @Override
     public void compile() {
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
+        VmChunk box = new VmChunk();
         WattCompiler.code.writeTo(box);
         forReturn.compile();
         WattCompiler.code.endWrite();

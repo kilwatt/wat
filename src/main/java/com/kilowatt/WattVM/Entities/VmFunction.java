@@ -1,30 +1,30 @@
 package com.kilowatt.WattVM.Entities;
 
 import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.WattVM.Boxes.VmInstructionsBox;
-import com.kilowatt.WattVM.Instructions.VmInstruction;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionReturn;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /*
 Функция вм
  */
 @SuppressWarnings("UnnecessaryReturnStatement")
 @Getter
-public class VmFunction implements VmInstructionsBox {
+@RequiredArgsConstructor
+public class VmFunction {
     // имя функции
     private final String name;
     // инструкции
-    private List<VmInstruction> instructions = new ArrayList<>();
-    // аргументы
-    private final ArrayList<String> arguments;
+    private final VmChunk body;
+    // параметры
+    private final ArrayList<String> params;
     // адрес
     private final VmAddress addr;
     // замыкание
@@ -32,13 +32,6 @@ public class VmFunction implements VmInstructionsBox {
     // бинд к объекту
     @Setter
     private VmFunctionOwner selfBind;
-
-    // конструкция
-    public VmFunction(String name, ArrayList<String> arguments, VmAddress addr) {
-        this.name = name;
-        this.arguments = arguments;
-        this.addr = addr;
-    }
 
     /**
      * Выполнение функции
@@ -66,9 +59,7 @@ public class VmFunction implements VmInstructionsBox {
         // инструкции
         try {
             // исполняем функцию
-            for (VmInstruction instr : instructions) {
-                instr.run(vm, scope);
-            }
+            body.run(vm, scope);
         } catch (VmInstructionReturn e) {
             e.pushResult(vm, scope);
             if (!shouldPushResult) {
@@ -83,24 +74,15 @@ public class VmFunction implements VmInstructionsBox {
      */
     private void loadArgs(WattVM vm, VmFrame<String, Object> scope) {
         // загружаем аргументы
-        for (int i = arguments.size()-1; i >= 0; i--) {
+        for (int i = params.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
                 throw new WattRuntimeError(addr.getLine(), addr.getFileName(),
                         "stack is empty! couldn't invoke function.",
                         "check args of function.");
             }
             Object arg = vm.pop(addr);
-            scope.define(addr, arguments.get(i), arg);
+            scope.define(addr, params.get(i), arg);
         }
-    }
-
-    /**
-     * Добавляет инструкцию
-     * @param instr - инструкция
-     */
-    @Override
-    public void visitInstr(VmInstruction instr) {
-        this.instructions.add(instr);
     }
 
     // установка замыкания
@@ -114,9 +96,7 @@ public class VmFunction implements VmInstructionsBox {
     // копия функции
     public VmFunction copy() {
         // возвращаем
-        VmFunction fn = new VmFunction(name, arguments, addr);
-        fn.instructions = new ArrayList<>(instructions);
-        return fn;
+        return new VmFunction(name, body, params, addr);
     }
 
     // в строку

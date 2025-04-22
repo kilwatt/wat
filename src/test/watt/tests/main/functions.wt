@@ -1,0 +1,4 @@
+fun a() {
+    return 14
+}
+assert(a() == 14)

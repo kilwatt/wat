@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
@@ -21,10 +21,10 @@ public class VmInstructionInstance implements VmInstruction {
     // имя класса
     private final String className;
     // аргументы конструктора
-    private final VmBaseInstructionsBox args;
+    private final VmChunk args;
 
     // конструктор
-    public VmInstructionInstance(VmAddress addr, String className, VmBaseInstructionsBox args) {
+    public VmInstructionInstance(VmAddress addr, String className, VmChunk args) {
         this.addr = addr;
         this.className = className;
         this.args = args;
@@ -43,20 +43,20 @@ public class VmInstructionInstance implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "INSTANCE("+className+")");
         VmCodeDumper.dumpLine(indent + 1, "CONSTRUCTOR:");
-        for (VmInstruction instruction : args.getInstructionContainer()) {
+        for (VmInstruction instruction : args.getInstructions()) {
             instruction.print(indent + 2);
         }
     }
 
     @Override
     public String toString() {
-        return "NEW_INSTANCE(" + className + "," + args.getInstructionContainer().size() + ")";
+        return "NEW_INSTANCE(" + className + "," + args.getInstructions().size() + ")";
     }
 
     // передача аргументов
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getInstructionContainer()) {
+        for (VmInstruction instr : args.getInstructions()) {
             instr.run(vm, frame);
         }
         return vm.getStack().size()-size;

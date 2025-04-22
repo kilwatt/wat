@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
@@ -16,23 +16,23 @@ import lombok.Getter;
 @Getter
 public class VmInstructionReturn extends RuntimeException implements VmInstruction {
     // адресс
-    private final VmBaseInstructionsBox ret;
+    private final VmChunk ret;
     private final VmAddress addr;
 
     // конструктор
-    public VmInstructionReturn(VmBaseInstructionsBox ret, VmAddress addr) {
+    public VmInstructionReturn(VmChunk ret, VmAddress addr) {
         this.ret = ret;
         this.addr = addr;
     }
 
     public void pushResult(WattVM vm, VmFrame<String, Object> scope)  {
-        for (VmInstruction i : ret.getInstructionContainer()) {
+        for (VmInstruction i : ret.getInstructions()) {
             i.run(vm, scope);
         }
     }
 
     public Object getResult(WattVM vm, VmFrame<String, Object> scope)  {
-        for (VmInstruction i : ret.getInstructionContainer()) {
+        for (VmInstruction i : ret.getInstructions()) {
             i.run(vm, scope);
         }
         return vm.pop(addr);
@@ -47,7 +47,7 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "RET()");
         VmCodeDumper.dumpLine(indent + 1, "VALUE:");
-        for (VmInstruction instruction : ret.getInstructionContainer()) {
+        for (VmInstruction instruction : ret.getInstructions()) {
             instruction.print(indent + 2);
         }
     }

@@ -2,7 +2,7 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Lexer.Token;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionTry;
 import lombok.AllArgsConstructor;
 
@@ -18,9 +18,9 @@ public class TryNode implements Node {
     @Override
     public void compile() {
         // бокс для try
-        VmBaseInstructionsBox tryBox = new VmBaseInstructionsBox();
+        VmChunk tryBox = new VmChunk();
         // бокс для catch
-        VmBaseInstructionsBox catchBox = new VmBaseInstructionsBox();
+        VmChunk catchBox = new VmChunk();
         // компилируем try
         WattCompiler.code.writeTo(
                 tryBox

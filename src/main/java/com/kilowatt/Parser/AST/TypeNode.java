@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Instructions.VmInstructionDefineType;
 import com.kilowatt.Lexer.Token;
@@ -66,8 +66,8 @@ public class TypeNode implements Node {
     }
 
     // компиляция полей
-    private VmBaseInstructionsBox compileFields() {
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
+    private VmChunk compileFields() {
+        VmChunk box = new VmChunk();
         WattCompiler.code.writeTo(box);
         for (Node node : body) {
             node.compile();

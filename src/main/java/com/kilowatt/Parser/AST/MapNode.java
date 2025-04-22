@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattMap;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Instructions.VmInstructionCall;
 import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
@@ -47,7 +47,7 @@ public class MapNode implements Node {
         });
         for (Node node : map.keySet()) {
             WattCompiler.code.visitInstruction(new VmInstructionDuplicate(address));
-            VmBaseInstructionsBox container = new VmBaseInstructionsBox();
+            VmChunk container = new VmChunk();
             WattCompiler.code.writeTo(container);
             node.compile();
             map.get(node).compile();

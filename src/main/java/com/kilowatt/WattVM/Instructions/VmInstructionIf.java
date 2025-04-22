@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
@@ -17,8 +17,8 @@ public class VmInstructionIf implements VmInstruction {
     private final VmAddress addr;
     // инструкции
     @Setter
-    private VmBaseInstructionsBox conditions = new VmBaseInstructionsBox();
-    private final VmBaseInstructionsBox body = new VmBaseInstructionsBox();
+    private VmChunk conditions = new VmChunk();
+    private final VmChunk body = new VmChunk();
     // else
     @Setter
     private VmInstructionIf elseInstruction;
@@ -51,11 +51,11 @@ public class VmInstructionIf implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "IF():");
         VmCodeDumper.dumpLine(indent + 1, "CONDITIONS:");
-        for (VmInstruction instruction : conditions.getInstructionContainer()) {
+        for (VmInstruction instruction : conditions.getInstructions()) {
             instruction.print(indent + 2);
         }
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : body.getInstructionContainer()) {
+        for (VmInstruction instruction : body.getInstructions()) {
             instruction.print(indent + 2);
         }
         if (elseInstruction != null) {

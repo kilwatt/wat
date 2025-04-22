@@ -16,11 +16,11 @@ import lombok.Getter;
 public class VmInstructionDefineFn implements VmInstruction {
     // адрес
     private final VmAddress addr;
-    // имя юнита
+    // имя функции
     private final String name;
     // полное имя
     private final String fullName;
-    // юнит
+    // функция
     private final VmFunction fn;
 
     @Override
@@ -39,17 +39,17 @@ public class VmInstructionDefineFn implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "DEFINE_FN(" + fn.getName() + ", " + fullName + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : fn.getInstructions()) {
+        for (VmInstruction instruction : fn.getBody().getInstructions()) {
             instruction.print(indent + 2);
         }
         VmCodeDumper.dumpLine(indent + 1, "ARGS:");
-        for (String arg : fn.getArguments()) {
+        for (String arg : fn.getParams()) {
             VmCodeDumper.dumpLine(indent + 2, arg);
         }
     }
 
     @Override
     public String toString() {
-        return "DEFINE_FUNC(" + fn.getName() + ", " + fullName + ", " + fn.getInstructions() + ")";
+        return "DEFINE_FUNC(" + fn.getName() + ", " + fullName + ", " + fn.getBody().getInstructions() + ")";
     }
 }

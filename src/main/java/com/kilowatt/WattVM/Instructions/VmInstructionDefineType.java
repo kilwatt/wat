@@ -31,7 +31,7 @@ public class VmInstructionDefineType implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + type.getName() + ", " + type.getFullName() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : type.getBody().getInstructionContainer()) {
+        for (VmInstruction instruction : type.getBody().getInstructions()) {
             instruction.print(indent + 2);
         }
         VmCodeDumper.dumpLine(indent + 1, "ARGS:");

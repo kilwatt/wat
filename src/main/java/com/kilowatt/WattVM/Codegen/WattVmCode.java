@@ -1,7 +1,6 @@
 package com.kilowatt.WattVM.Codegen;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
-import com.kilowatt.WattVM.Boxes.VmInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.WattVM;
 import lombok.Getter;
@@ -16,15 +15,15 @@ import java.util.ArrayDeque;
 @Setter
 public class WattVmCode {
     // стэк боксов для написания
-    private final ArrayDeque<VmInstructionsBox> writing = new ArrayDeque<>();
+    private final ArrayDeque<VmChunk> writing = new ArrayDeque<>();
 
     // конструктор
     public WattVmCode() {
-        this.writing.add(new VmBaseInstructionsBox());
+        this.writing.add(new VmChunk());
     }
 
     // запись в бокс
-    public void writeTo(VmInstructionsBox box) {
+    public void writeTo(VmChunk box) {
         writing.push(box);
     }
 
@@ -45,7 +44,7 @@ public class WattVmCode {
             System.out.println("Send your code with this message to developers. #003::CompilationPhase");
         }
         // получаем код
-        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.getFirst());
+        VmChunk box = ((VmChunk)this.writing.getFirst());
         // запускаем
         box.run(vm, vm.getGlobals());
     }
@@ -53,8 +52,8 @@ public class WattVmCode {
     // вывод кода
     public void print(boolean asFile) {
         // получаем код
-        VmBaseInstructionsBox box = ((VmBaseInstructionsBox)this.writing.getFirst());
+        VmChunk box = ((VmChunk)this.writing.getFirst());
         // дампим
-        VmCodeDumper.dump(box.getInstructionContainer(), asFile);
+        VmCodeDumper.dump(box.getInstructions(), asFile);
     }
 }

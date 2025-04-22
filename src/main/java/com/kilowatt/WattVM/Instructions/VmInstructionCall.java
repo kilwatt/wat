@@ -4,7 +4,7 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmFunction;
@@ -33,12 +33,12 @@ public class VmInstructionCall implements VmInstruction {
     // есть ли предыдущий аксесс
     private final boolean hasPrevious;
     // аргументы
-    private final VmBaseInstructionsBox args;
+    private final VmChunk args;
     // выключен ли пуш
     private final boolean shouldPushResult;
 
     // конструктор
-    public VmInstructionCall(VmAddress addr, String name, VmBaseInstructionsBox args,
+    public VmInstructionCall(VmAddress addr, String name, VmChunk args,
                              boolean hasPrevious, boolean shouldPushResult) {
         this.addr = addr;
         this.name = name; this.args = args; this.hasPrevious = hasPrevious;
@@ -68,7 +68,7 @@ public class VmInstructionCall implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "CALL("+name+", SP: " + shouldPushResult + ")");
         VmCodeDumper.dumpLine(indent + 1, "ARGS:");
-        for (VmInstruction instruction : args.getInstructionContainer()) {
+        for (VmInstruction instruction : args.getInstructions()) {
             instruction.print(indent + 2);
         }
     }
@@ -80,7 +80,7 @@ public class VmInstructionCall implements VmInstruction {
         Object val = vmObj.getFields().lookup(addr, name);
         // функция
         if (val instanceof VmFunction fn) {
-            checkArgs(vmObj.getType().getName() + ":" + name, fn.getArguments().size(), argsAmount);
+            checkArgs(vmObj.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
             vmObj.call(addr, name, vm, shouldPushResult);
         }
@@ -105,7 +105,7 @@ public class VmInstructionCall implements VmInstruction {
         Object val = vmUnit.getFields().lookup(addr, name);
         // функция
         if (val instanceof VmFunction fn) {
-            checkArgs(vmUnit.getName() + ":" + name, fn.getArguments().size(), argsAmount);
+            checkArgs(vmUnit.getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
             vmUnit.call(addr, name, vm, shouldPushResult);
         }
@@ -196,7 +196,7 @@ public class VmInstructionCall implements VmInstruction {
             int argsAmount = passArgs(vm, frame);
             Object o = frame.lookup(addr, name);
             if (o instanceof VmFunction fn) {
-                checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
+                checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
                 fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
@@ -213,7 +213,7 @@ public class VmInstructionCall implements VmInstruction {
             // вызов
             Object o = vm.getGlobals().lookup(addr, name);
             if (o instanceof VmFunction fn) {
-                checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
+                checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
                 fn.exec(vm, shouldPushResult);
             }
             else if (o instanceof VmBuiltinFunction fn) {
@@ -240,7 +240,7 @@ public class VmInstructionCall implements VmInstruction {
     // помещает аргументы в стек
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getInstructionContainer()) {
+        for (VmInstruction instr : args.getInstructions()) {
             instr.run(vm, frame);
         }
         return vm.getStack().size()-size;
@@ -248,6 +248,6 @@ public class VmInstructionCall implements VmInstruction {
 
     @Override
     public String toString() {
-        return "CALL_FUNCTION(" + name + ",instrs:" + args.getInstructionContainer().size() + ")";
+        return "CALL_FUNCTION(" + name + ",instrs:" + args.getInstructions().size() + ")";
     }
 }

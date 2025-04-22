@@ -1,8 +1,7 @@
 package com.kilowatt.Parser.AST;
 
-import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Instructions.*;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class NativeNode implements Node {
     @Override
     public void compile() {
         // компилируем функцию
-        VmBaseInstructionsBox value = compileFn();
+        VmChunk value = compileFn();
         // дефайн по имени
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefine(
@@ -42,9 +41,9 @@ public class NativeNode implements Node {
         );
     }
 
-    private VmBaseInstructionsBox compileFn() {
+    private VmChunk compileFn() {
         // компиляция
-        VmBaseInstructionsBox value = new VmBaseInstructionsBox();
+        VmChunk value = new VmChunk();
         WattCompiler.code.writeTo(value);
         WattCompiler.code.visitInstruction(
                 new VmInstructionLoad(
@@ -54,7 +53,7 @@ public class NativeNode implements Node {
                         true
                 )
         );
-        VmBaseInstructionsBox args = new VmBaseInstructionsBox();
+        VmChunk args = new VmChunk();
         WattCompiler.code.writeTo(args);
         WattCompiler.code.visitInstruction(
                 new VmInstructionPush(

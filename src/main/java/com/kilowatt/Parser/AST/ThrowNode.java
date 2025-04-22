@@ -3,7 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattError;
 import com.kilowatt.Lexer.Token;
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
@@ -27,7 +27,7 @@ public class ThrowNode implements Node {
     @Override
     public void compile() {
         // бокс со значением
-        VmBaseInstructionsBox valueBox = new VmBaseInstructionsBox();
+        VmChunk valueBox = new VmChunk();
         WattCompiler.code.writeTo(valueBox);
         value.compile();
         WattCompiler.code.endWrite();
@@ -55,7 +55,7 @@ public class ThrowNode implements Node {
                 @Override
                 public void print(int indent) {
                     VmCodeDumper.dumpLine(indent, "THROW(), BODY:");
-                    for (VmInstruction instruction : valueBox.getInstructionContainer()) {
+                    for (VmInstruction instruction : valueBox.getInstructions()) {
                         instruction.print(indent + 1);
                     }
                 }

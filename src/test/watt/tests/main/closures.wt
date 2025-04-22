@@ -1,0 +1,18 @@
+type A {
+    i := 3
+    fun do() {
+        j := 5
+        fun inner() {
+            g := 7
+            fun inner_inner() {
+                return self.i + j + g
+            }
+            return inner_inner
+        }
+        return inner
+    }
+}
+
+a := new A().do()
+b := a()
+assert(b() == 15)

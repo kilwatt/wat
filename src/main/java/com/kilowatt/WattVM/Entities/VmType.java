@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Entities;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ public class VmType {
     private final String name;
     private final String fullName;
     private final ArrayList<String> constructor;
-    private final VmBaseInstructionsBox body;
+    private final VmChunk body;
 
     @Override
     public String toString() {

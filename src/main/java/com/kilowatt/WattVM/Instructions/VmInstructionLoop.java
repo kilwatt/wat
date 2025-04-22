@@ -1,6 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 
-import com.kilowatt.WattVM.Boxes.VmBaseInstructionsBox;
+import com.kilowatt.WattVM.Boxes.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
@@ -16,7 +16,7 @@ public class VmInstructionLoop implements VmInstruction {
     // адресс
     private final VmAddress addr;
     // инструкции
-    private final VmBaseInstructionsBox instructions = new VmBaseInstructionsBox();
+    private final VmChunk instructions = new VmChunk();
 
     public VmInstructionLoop(VmAddress addr) {
         this.addr = addr;
@@ -49,7 +49,7 @@ public class VmInstructionLoop implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "LOOP()");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : instructions.getInstructionContainer()) {
+        for (VmInstruction instruction : instructions.getInstructions()) {
             instruction.print(indent + 2);
         }
     }

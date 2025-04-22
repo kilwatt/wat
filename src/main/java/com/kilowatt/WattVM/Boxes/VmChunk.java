@@ -14,22 +14,21 @@ import java.util.ArrayList;
  */
 @Getter
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-public class VmBaseInstructionsBox implements VmInstructionsBox {
+public class VmChunk {
     // контейнер
-    private final ArrayList<VmInstruction> instructionContainer = new ArrayList<>();
+    private final ArrayList<VmInstruction> instructions = new ArrayList<>();
 
     /**
      * Выполняет инструкцию
      * @param instr - инструкция
      */
-    @Override
     public void visitInstr(VmInstruction instr) {
-        this.instructionContainer.add(instr);
+        this.instructions.add(instr);
     }
 
     // выполнение и получение результата
     public Object runAndGet(WattVM vm, VmAddress address, VmFrame<String, Object> frame)  {
-        for (VmInstruction instr : instructionContainer) {
+        for (VmInstruction instr : instructions) {
             instr.run(vm, frame);
         }
         return vm.pop(address);
@@ -37,14 +36,14 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
 
     // запуск простой
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
-        for (VmInstruction instr : instructionContainer) {
+        for (VmInstruction instr : instructions) {
             instr.run(vm, frame);
         }
     }
 
     // создание бокса инструкций из их списка
-    public static VmBaseInstructionsBox of(VmInstruction... instructions) {
-        VmBaseInstructionsBox box = new VmBaseInstructionsBox();
+    public static VmChunk of(VmInstruction... instructions) {
+        VmChunk box = new VmChunk();
         for (VmInstruction instruction : instructions) {
             box.visitInstr(instruction);
         }
@@ -55,6 +54,6 @@ public class VmBaseInstructionsBox implements VmInstructionsBox {
 
     @Override
     public String toString() {
-        return getInstructionContainer().toString();
+        return getInstructions().toString();
     }
 }
