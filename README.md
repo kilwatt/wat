@@ -45,7 +45,7 @@ Volt VM brings:
 A few simple programs to show the expressive power of **Watt**.
 
 > ✨ Watt files use the `.wt` extension.  
-> 📂 More examples live in [`src/test/watt/example`](src/test/watt/example)
+> 📂 More examples live in [`src/test/watt/examples`](src/test/watt/example)
 
 🪶 hello_world.wt
 ```kotlin
