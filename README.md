@@ -1,15 +1,57 @@
-# Watt ⚡🍹
+<p align="center">
+  <pre>
+
+.--.      .--.   ____   ,---------. ,---------.  
+|  |_     |  | .'  __ `.\          \\          \ 
+| _( )_   |  |/   '  \  \`--.  ,---' `--.  ,---'
+|(_ o _)  |  ||___|  /  |   |   \       |   \    
+| (_,_) \ |  |   _.-`   |   :_ _:       :_ _:    
+|  |/    \|  |.'   _    |   (_I_)       (_I_)    
+|  '  /\  `  ||  _( )_  |  (_(=)_)     (_(=)_)   
+|    /  \    |\ (_ o _) /   (_I_)       (_I_)    
+`---'    `---` '.(_,_).'    '---'       '---'
+
+  </pre>
+  <h1 align="center">⚡🍹 Watt</h1>
+  <p align="center"><i>A lightweight, expressive scripting language powered by VoltVM</i></p>
+</p>
+
+<p align="center">
+<img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue?style=flat-square" />
+<img alt="Build" src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" />
+<img alt="License" src="https://img.shields.io/badge/license-MIT-yellow?style=flat-square" />
+<img alt="Language" src="https://img.shields.io/badge/made_with-Watt-ff69b4?style=flat-square" />
+</p>
 
 
+# 🤔 About 
 Watt is a dynamically typed scripting language that combines functional and object-oriented programming paradigms. ⚡
 It is designed to be expressive, flexible, and easy to use for scripting and application development.
 
-# New 🚀
-Watt is compiled to its own virtual machine, VoltVM.
-VoltVM offering great flexibility for Watt development, and, of course,
-great reflection.
+# ✨ Features
 
-# Examples 💡
+- 🔄 Dynamically typed
+- 🧠 FP + OOP 
+- 🪶 Clean syntax
+- ⚙️ Compiled to bytecode (VoltVM)
+- 🔍 Built-in reflection support
+- 😋 Easy to learn
+
+# 🚀 New 
+Watt is compiled to its own virtual machine, VoltVM.
+Volt VM brings:
+- Great flexibility 🧩
+- Good performance 🐇
+- Nice reflection 🪞
+
+
+# 💡 Examples
+
+A few simple programs to show the expressive power of **Watt**.
+
+> ✨ Watt files use the `.wt` extension.  
+> 📂 More examples live in [`src/test/watt/example`](src/test/watt/example)
+
 🪶 hello_world.wt
 ```kotlin
 import 'std.io'
@@ -64,13 +106,10 @@ fun fib(n) {
 io.println(fib(1000))
 ```
 
-# Documentation 🌺
-Work in progress, stay soon!
+# 📚 Documentation
+Work in progress... Stay tuned! 🛠️
+📖 Official Docs (coming soon)
 
-# Looking to the feature 🔭
-Our current tasks is:
-- finish std lib
-- create utils lib
-- start work on arc2d lib
-
-# Thanks you 🔥️
+# ❤️ Thanks
+Big thanks to all contributors and enthusiasts!
+Feel free to ⭐️ star the project, give feedback, or contribute!
