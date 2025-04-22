@@ -1,17 +1,4 @@
-<style>
-    .huge-text {
-        font-size: 100px;
-    }
-</style>
 <p align="center">
-  <pre>
- __          __  _______ _______ 
- \ \        / /\|__   __|__   __|
-  \ \  /\  / /  \  | |     | |   
-   \ \/  \/ / /\ \ | |     | |   
-    \  /\  / ____ \| |     | |   
-     \/  \/_/    \_\_|     |_|   
-  </pre>
   <h1 align="center" class="huge-text">⚡🍹 Watt</h1>
   <p align="center"><i>A lightweight, expressive scripting language powered by VoltVM</i></p>
 </p>
