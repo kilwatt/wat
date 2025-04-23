@@ -94,7 +94,7 @@ public class ForNode implements Node {
                 ),
                 new Token(
                     TokenType.ID,
-                "hasNext",
+                "has_next",
                     name.getLine(),
                     name.getFileName()
                 ),

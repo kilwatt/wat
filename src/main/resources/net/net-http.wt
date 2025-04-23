@@ -1,0 +1,47 @@
+unit HttpRequestType {
+    GET := 'GET'
+    POST := 'POST'
+    PUT := 'PUT'
+    PATCH := 'PATCH'
+    HEAD := 'HEAD'
+    DELETE := 'DELETE'
+}
+
+type HttpResponse(status, headers, body) {}
+type HttpRequest(request_type, body) {}
+
+unit http {
+    http_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Net.NetHttp',
+        []
+    )
+
+    fun send(url, request) {
+        match request.request_type {
+            case HttpRequestType.GET {
+                return http_reflection.get_request(url)
+            }
+            case HttpRequestType.POST {
+                return http_reflection.post_request(url, request.body)
+            }
+            case HttpRequestType.PUT {
+                return http_reflection.put_request(url, request.body)
+            }
+            case HttpRequestType.PATCH {
+                return http_reflection.put_request(url, request.body)
+            }
+            case HttpRequestType.DELETE {
+                return http_reflection.put_request(url)
+            }
+            case HttpRequestType.HEAD {
+                return http_reflection.head_request(url)
+            }
+            default {
+                throw error(
+                    'undefined request type: ' + request.request_type,
+                    'possible types: get,post,put,patch,delete,head.'
+                )
+            }
+        }
+    }
+}

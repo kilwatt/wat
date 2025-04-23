@@ -1,0 +1,12 @@
+import 'net.http'
+import 'utils.json'
+import 'std.io'
+
+request := new HttpRequest(
+    HttpRequestType.GET,
+    null
+)
+response := http.send('https://httpbin.org', request)
+io.println(response.status)
+io.println(response.headers)
+io.println(response.body)

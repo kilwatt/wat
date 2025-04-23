@@ -11,7 +11,7 @@ import java.util.Iterator;
 public class WattIterator<T> {
     private final Iterator<T> iterable;
 
-    public boolean hasNext() {
+    public boolean has_next() {
         return iterable.hasNext();
     }
 
