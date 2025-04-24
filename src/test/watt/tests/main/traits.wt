@@ -19,22 +19,15 @@ e.greet()
 e.summary()
 */
 
-trait A {
-    fun a() {
-        io.println('a trait')
+trait Hello {
+    fun do(name)
+}
+
+type World {
+    fun do(name) {
+        io.println('Hello, ' + name)
     }
 }
 
-trait B {
-    fun b()
-}
-
-type Example impl A, B {
-    fun b() {
-        io.println('b trait')
-    }
-}
-
-e := new Example()
-e.a()
-e.b()
+a := new World()
+a.do('World!')
