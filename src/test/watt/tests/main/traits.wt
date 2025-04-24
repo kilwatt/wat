@@ -23,7 +23,7 @@ trait Hello {
     fun do(name)
 }
 
-type World {
+type World impl Hello {
     fun do(name) {
         io.println('Hello, ' + name)
     }
