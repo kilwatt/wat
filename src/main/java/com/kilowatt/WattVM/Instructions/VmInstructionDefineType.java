@@ -29,7 +29,7 @@ public class VmInstructionDefineType implements VmInstruction {
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + type.getName() + ", " + type.getFullName() + ", " + type.getTraits().size() + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_TYPE(" + type.getName() + ", " + type.getFullName() + ", traits: " + type.getTraits() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : type.getBody().getInstructions()) {
             instruction.print(indent + 2);
