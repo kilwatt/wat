@@ -554,6 +554,17 @@ public class Parser {
         if (check(TokenType.LPAREN)) {
             constructor = params();
         }
+        // трэйты
+        ArrayList<Token> traits = new ArrayList<>();
+        if (check(TokenType.IMPL)) {
+            consume(TokenType.IMPL);
+            do {
+                if (check(TokenType.COMMA)) {
+                    consume(TokenType.COMMA);
+                }
+                traits.add(consume(TokenType.ID));
+            } while (check(TokenType.COMMA));
+        }
         // тело
         consume(TokenType.LBRACE);
         ArrayList<Node> nodes = new ArrayList<>();
@@ -579,7 +590,7 @@ public class Parser {
         }
         consume(TokenType.RBRACE);
         // возвращаем
-        return new TypeNode(name, toFullName(name), nodes, constructor);
+        return new TypeNode(name, toFullName(name), nodes, constructor, traits);
     }
 
     // объявление юнита
@@ -628,6 +639,71 @@ public class Parser {
         Token name = consume(TokenType.ID);
         // возвращаем ноду
         return new NewInstanceNode(name, args());
+    }
+
+    // трэйты
+    private Node trait() {
+        // trait
+        consume(TokenType.TRAIT);
+        // имя
+        Token name = consume(TokenType.ID);
+        // тело
+        consume(TokenType.LBRACE);
+        // функции трэйта
+        ArrayList<TraitNode.TraitFn> fns = new ArrayList<>();
+        // парсим функции
+        while (!isAtEnd() && !itsClosingBrace()) {
+            if (check(TokenType.FUN)) {
+                consume(TokenType.FUN);
+                Token fnName = this.consume(TokenType.ID);
+                // параметры, если есть
+                ArrayList<Token> parameters;
+                if (check(TokenType.LPAREN)) {
+                    parameters = params();
+                } else {
+                    parameters = new ArrayList<>();
+                }
+                // имлпементация, если есть
+                if (check(TokenType.LBRACE)) {
+                    // тело
+                    consume(TokenType.LBRACE);
+                    BlockNode node = block();
+                    consume(TokenType.RBRACE);
+                    // добавляем функцию
+                    fns.add(new TraitNode.TraitFn(
+                        fnName,
+                        parameters.size(),
+                        new FnNode(
+                            node,
+                            fnName,
+                            null,
+                            parameters
+                        )
+                    ));
+                } else {
+                    // добавляем функцию
+                    fns.add(new TraitNode.TraitFn(
+                        fnName,
+                        parameters.size(),
+                        null
+                    ));
+                }
+            } else {
+                throw new WattParsingError(
+                    name.getLine(),
+                    name.getFileName(),
+                    "only fn-s can be declared in trait.",
+                    "check your code."
+                );
+            }
+        }
+        consume(TokenType.RBRACE);
+        // возвращаем
+        return new TraitNode(
+            name,
+            toFullName(name),
+            fns
+        );
     }
 
     // инструкция
@@ -684,6 +760,9 @@ public class Parser {
             }
             case TokenType.THROW -> {
                 return throwNode();
+            }
+            case TokenType.TRAIT -> {
+                return trait();
             }
             default -> throw new WattParsingError(
                     peek().line,

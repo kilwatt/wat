@@ -31,8 +31,6 @@ public class FnNode implements Node {
         WattCompiler.code.visitInstruction(
                 new VmInstructionDefineFn(
                         name.asAddress(),
-                        name.getValue(),
-                        fullName != null ? fullName.getValue() : null,
                         compileFn()
                 )
         );
@@ -69,6 +67,7 @@ public class FnNode implements Node {
         WattCompiler.code.writeTo(body);
         node.compile();
         WattCompiler.code.endWrite();
-        return new VmFunction(name.value, body, params, name.asAddress());
+        if (fullName == null) return new VmFunction(name.value, null, body, params, name.asAddress());
+        return new VmFunction(name.value, fullName.value, body, params, name.asAddress());
     }
 }

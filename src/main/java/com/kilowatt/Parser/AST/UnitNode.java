@@ -13,13 +13,13 @@ import lombok.Getter;
 import java.util.ArrayList;
 
 /*
-Опредление юнит
+Опредление юнита
  */
 @AllArgsConstructor
 @Getter
 public class UnitNode implements Node {
     // имя
-    private Token name;
+    private final Token name;
     // полное имя
     private Token fullName;
     // тело

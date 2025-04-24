@@ -54,6 +54,9 @@ public class Lexer {
         put("native", TokenType.NATIVE);
         put("lambda", TokenType.LAMBDA);
         put("with", TokenType.WITH);
+        put("trait", TokenType.TRAIT);
+        put("impl", TokenType.IMPL);
+        put("impls", TokenType.IMPLS);
     }};
 
     // сканнер

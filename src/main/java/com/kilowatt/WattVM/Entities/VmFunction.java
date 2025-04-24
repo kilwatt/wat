@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class VmFunction {
     // имя функции
     private final String name;
+    // полное имя функции
+    private final String fullName;
     // инструкции
     private final VmChunk body;
     // параметры
@@ -94,7 +96,7 @@ public class VmFunction {
     // копия функции
     public VmFunction copy() {
         // возвращаем
-        return new VmFunction(name, body, params, address);
+        return new VmFunction(name, fullName, body, params, address);
     }
 
     // в строку
@@ -102,6 +104,7 @@ public class VmFunction {
     public String toString() {
         return "VmFunction(" +
                 "name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", address=" + address +
                 ", closure=" + (closure == null ? "no" : closure.getValues().keySet()) +
                 ')';

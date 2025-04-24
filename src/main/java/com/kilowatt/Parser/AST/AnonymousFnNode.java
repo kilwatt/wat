@@ -57,6 +57,6 @@ public class AnonymousFnNode implements Node {
         WattCompiler.code.writeTo(body);
         node.compile();
         WattCompiler.code.endWrite();
-        return new VmFunction("$lambda", body, params, location.asAddress());
+        return new VmFunction("$lambda", "$lambda", body, params, location.asAddress());
     }
 }

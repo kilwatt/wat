@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 Опредление типа
@@ -26,6 +27,8 @@ public class TypeNode implements Node {
     private final ArrayList<Node> body;
     // конструктор
     private final ArrayList<Token> constructor;
+    // трэйты
+    private final List<Token> traits;
 
     @Override
     public void compile() {
@@ -60,9 +63,13 @@ public class TypeNode implements Node {
     private VmType compileType() {
         ArrayList<String> newConstructor = new ArrayList<>();
         for (Token token : constructor) {
-            newConstructor.add(token.getValue());
+            newConstructor.add(token.value);
         }
-        return new VmType(name.value, fullName.value, newConstructor, compileBody());
+        ArrayList<String> newTraits = new ArrayList<>();
+        for (Token token : traits) {
+            newTraits.add(token.value);
+        }
+        return new VmType(name.value, fullName.value, newConstructor, newTraits, compileBody());
     }
 
     // компиляция тела

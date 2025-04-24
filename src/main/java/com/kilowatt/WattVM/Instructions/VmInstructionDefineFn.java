@@ -16,10 +16,6 @@ import lombok.Getter;
 public class VmInstructionDefineFn implements VmInstruction {
     // адрес
     private final VmAddress address;
-    // имя функции
-    private final String name;
-    // полное имя
-    private final String fullName;
     // функция
     private final VmFunction fn;
 
@@ -28,16 +24,14 @@ public class VmInstructionDefineFn implements VmInstruction {
         // новая копия функции
         VmFunction newFnCopy = fn.copy();
         // по краткому имени
-        frame.define(address, name,newFnCopy);
+        frame.define(address, fn.getName(), newFnCopy);
         // по полному имени
-        if (fullName != null) {
-            frame.define(address, fullName, newFnCopy);
-        }
+        if (fn.getFullName() != null) frame.define(address, fn.getFullName(), newFnCopy);
     }
 
     @Override
     public void print(int indent) {
-        VmCodeDumper.dumpLine(indent, "DEFINE_FN(" + fn.getName() + ", " + fullName + ")");
+        VmCodeDumper.dumpLine(indent, "DEFINE_FN(" + fn.getName() + ", " + fn.getFullName() + ")");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
         for (VmInstruction instruction : fn.getBody().getInstructions()) {
             instruction.print(indent + 2);
@@ -50,6 +44,6 @@ public class VmInstructionDefineFn implements VmInstruction {
 
     @Override
     public String toString() {
-        return "DEFINE_FUNC(" + fn.getName() + ", " + fullName + ", " + fn.getBody().getInstructions() + ")";
+        return "DEFINE_FUNC(" + fn.getName() + ", " + fn.getFullName() + ", " + fn.getBody().getInstructions() + ")";
     }
 }

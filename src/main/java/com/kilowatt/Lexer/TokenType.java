@@ -61,5 +61,8 @@ public enum TokenType {
     NATIVE, // native
     PIPE, // pipe
     WITH, // with
-    RANGE // range
+    RANGE, // range
+    TRAIT, // trait
+    IMPL, // impl
+    IMPLS // impls
 }

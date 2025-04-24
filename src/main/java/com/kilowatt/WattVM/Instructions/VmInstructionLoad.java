@@ -44,6 +44,8 @@ public class VmInstructionLoad implements VmInstruction {
                 vm.push(vm.getTypeDefinitions().lookup(address, name));
             } else if (vm.getUnitDefinitions().has(name)) {
                 vm.push(vm.getUnitDefinitions().lookup(address, name));
+            } else if (vm.getTraitDefinitions().has(name)) {
+                vm.push(vm.getTraitDefinitions().lookup(address, name));
             } else {
                 throw new WattRuntimeError(
                         address.getLine(), address.getFileName(),

@@ -5,6 +5,7 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Benchmark.VmBenchmark;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
 import com.kilowatt.WattVM.Entities.VmNull;
+import com.kilowatt.WattVM.Entities.VmTrait;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
@@ -25,9 +26,11 @@ import java.util.Objects;
 public class WattVM {
     // стэк
     private final ThreadLocal<ArrayDeque<Object>> stack = new ThreadLocal<>();
+    // глобальные переменные
     private final VmFrame<String, Object> globals = new VmFrame<>();
     private final VmFrame<String, VmType> typeDefinitions = new VmFrame<>();
     private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<>();
+    private final VmFrame<String, VmTrait> traitDefinitions = new VmFrame<>();
     // рефлексия
     private final VmReflection reflection = new VmReflection(this);
     // трэйс(история) вызовов

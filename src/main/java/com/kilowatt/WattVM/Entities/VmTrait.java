@@ -7,25 +7,21 @@ import lombok.Getter;
 import java.util.ArrayList;
 
 /*
-Кастомный тип VM
+Кастомный трэйт VM
  */
 @Getter
 @AllArgsConstructor
-public class VmType {
+public class VmTrait {
     private final String name;
     private final String fullName;
-    private final ArrayList<String> constructor;
-    private final ArrayList<String> traits;
-    private final VmChunk body;
+    private final ArrayList<VmTraitFunction> functions;
 
     @Override
     public String toString() {
-        return "VmType(" +
+        return "VmTrait(" +
                 "name='" + name + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", constructor=" + constructor +
-                ", traits=" + traits +
-                ", body=" + body +
+                ", functions=" + functions +
                 ')';
     }
 }

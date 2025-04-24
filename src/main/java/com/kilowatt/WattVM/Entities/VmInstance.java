@@ -31,11 +31,55 @@ public class VmInstance implements VmFunctionOwner {
         // установка филдов
         fields.setRoot(vm.getGlobals());
         type.getBody().run(vm, fields);
+        // проверка трэйтов
+        checkTraits(vm);
         // бинды функций
         bindFunctionsToInstance();
         // init функция
         if (fields.has("init")) {
             call(address, "init", vm, false);
+        }
+    }
+
+    /**
+     * Проверка трэйтов.
+     * Добавление дефолтных реализаций, если
+     * тип не реализует трэйт
+     * @param vm - ВМ
+     */
+    void checkTraits(WattVM vm) {
+        for (String traitName : getType().getTraits()) {
+            VmTrait trait = vm.getTraitDefinitions().lookup(address, traitName);
+            // проходимся по функциям трэйта
+            for (VmTraitFunction traitFn : trait.getFunctions()) {
+                // если есть имплементация
+                if (fields.has(traitFn.getName())) {
+                    // проверяем имплементацию
+                    Object impl = fields.lookup(address, traitFn.getName());
+                    if (impl instanceof VmFunction fnImpl) {
+                        if (fnImpl.getParams().size() != traitFn.getParamsAmount()) {
+
+                        }
+                    }
+                }
+                // если нет имлпементации
+                else {
+                    // если есть дефолтная имплементация
+                    if (traitFn.getDefaultImpl() != null) {
+                        traitFn.getDefaultImpl().run(vm, fields);
+                    }
+                    // если нет дефолтной имплементации
+                    else {
+                        throw new WattRuntimeError(
+                                address.getLine(),
+                                address.getFileName(),
+                                "type " + type.getName() + " impls trait " + traitName + ", but doesn't impl fn " +
+                                        traitFn.getName() + " (" + traitFn.getParamsAmount() + ")",
+                                "you can create default impl in trait."
+                        );
+                    }
+                }
+            }
         }
     }
 
