@@ -28,27 +28,13 @@ public class StdThreading {
     }
 
     public Thread run(VmFunction fn, WattList list) {
-        Thread thread = new Thread(() -> {
-            try {
-                WattCompiler.vm.initForThread();
-                for (Object o : list.getArray()) {
-                    WattCompiler.vm.push(o);
-                }
-                fn.exec(WattCompiler.vm, false);
-            } catch (WattParsingError | WattRuntimeError |
-                     WattResolveError | WattSemanticError error) {
-                error.panic();
-            } catch (RuntimeException error) {
-                VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
-                new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
-                    "jvm runtime exception: " + error.getMessage(),
-                    "check your code."
-                ).panic();
+        Thread thread = WattCompiler.vm.getThreads().submit(() -> {
+            WattCompiler.vm.initForThread();
+            for (Object o : list.getArray()) {
+                WattCompiler.vm.push(o);
             }
+            fn.exec(WattCompiler.vm, false);
         });
-        thread.start();
         return thread;
     }
 }

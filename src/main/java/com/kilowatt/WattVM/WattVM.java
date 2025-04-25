@@ -11,6 +11,7 @@ import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import com.kilowatt.WattVM.Reflection.VmReflection;
 import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Threads.VmThreads;
 import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
 
@@ -35,6 +36,8 @@ public class WattVM {
     private final VmReflection reflection = new VmReflection(this);
     // трэйс(история) вызовов
     private final ThreadLocal<VmCallsTrace> callsTrace = new ThreadLocal<>();
+    // потоки
+    private final VmThreads threads = new VmThreads();
 
     // получение провайдера истории вызовов
     public VmCallsTrace getCallsTrace() {
@@ -93,7 +96,9 @@ public class WattVM {
         mark.start();
         // запуск кода
         code.run(this);
-        // время выполнение
+        // ждём завершения всех потоков
+        threads.awaitAll();
+        // время выполнения
         if (needBenchmarkInfo) {
             System.out.println("exec time: " + mark.end() + " ms. stack: " + stack.get());
         }

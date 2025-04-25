@@ -6,16 +6,24 @@ import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.WattVM.Entities.VmFunction;
+import com.kilowatt.WattVM.Threads.VmThreadPool;
 import com.kilowatt.WattVM.VmAddress;
 import io.javalin.Javalin;
 import lombok.SneakyThrows;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 /*
 Net -> HttpServer
  */
 public class NetHttpServer {
     public Javalin app() {
-        return Javalin.create();
+        return Javalin.create(javalinConfig -> {
+            // настраиваем работу с потоками под Ватт
+            QueuedThreadPool threadPool = new VmThreadPool(WattCompiler.vm);
+            threadPool.setName("JavalinWatt");
+            threadPool.setMinThreads(2);
+            javalinConfig.jetty.threadPool = threadPool;
+        });
     }
 
     @SneakyThrows
