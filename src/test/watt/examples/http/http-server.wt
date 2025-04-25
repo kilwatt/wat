@@ -1,7 +1,7 @@
 import 'net.http'
 
 app := new HttpServer(1080)
-app.get('/example/', fun(ctx) {
-    ctx.json('Hello, world!')
+app.get('/hello/{name}', fun(ctx) {
+    ctx.json('Hello, ' + ctx.pathParam('name') + '!')
 })
 app.run()
