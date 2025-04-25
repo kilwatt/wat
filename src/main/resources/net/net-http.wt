@@ -1,3 +1,5 @@
+import 'std.io'
+
 unit HttpRequestType {
     GET := 'GET'
     POST := 'POST'
@@ -5,6 +7,7 @@ unit HttpRequestType {
     PATCH := 'PATCH'
     HEAD := 'HEAD'
     DELETE := 'DELETE'
+    OPTIONS := 'OPTIONS'
 }
 
 type HttpResponse(status, headers, body) {}
@@ -36,6 +39,9 @@ unit http {
             case HttpRequestType.HEAD {
                 return http_reflection.head_request(url)
             }
+            case HttpRequestType.OPTIONS {
+                return http_reflection.options_request(url)
+            }
             default {
                 throw error(
                     'undefined request type: ' + request.request_type,
@@ -43,5 +49,49 @@ unit http {
                 )
             }
         }
+    }
+}
+
+type HttpServer(port) {
+    http_server_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Net.NetHttpServer',
+        []
+    )
+
+    fun init {
+        self.app := http_server_reflection.app()
+    }
+
+    fun run {
+        io.println('http server started on: ' + port)
+        http_server_reflection.run(app, port)
+    }
+
+    fun get(path, fn) {
+        http_server_reflection.get(app, path, fn)
+    }
+
+    fun delete(path, fn) {
+        http_server_reflection.delete(app, path, fn)
+    }
+
+    fun put(path, fn) {
+        http_server_reflection.put(app, path, fn)
+    }
+
+    fun patch(path, fn) {
+        http_server_reflection.patch(app, path, fn)
+    }
+
+    fun options(path, fn) {
+        http_server_reflection.options(app, path, fn)
+    }
+
+    fun post(path, fn) {
+        http_server_reflection.post(app, path, fn)
+    }
+
+    fun head(path, fn) {
+        http_server_reflection.head(app, path, fn)
     }
 }

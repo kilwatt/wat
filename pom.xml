@@ -28,7 +28,12 @@
         <dependency>
             <groupId>org.jline</groupId>
             <artifactId>jline</artifactId>
-            <version>3.21.0</version>
+            <version>3.25.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>6.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.fusesource.jansi</groupId>

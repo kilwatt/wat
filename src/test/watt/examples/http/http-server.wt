@@ -1,0 +1,7 @@
+import 'net.http'
+
+app := new HttpServer(1080)
+app.get('/example/', fun(ctx) {
+    ctx.json('Hello, world!')
+})
+app.run()

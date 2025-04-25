@@ -2,6 +2,7 @@ package com.kilowatt.WattVM.Reflection;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.VmAddress;
 
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 /*
@@ -11,6 +12,8 @@ Jvm-классы для получения
 public class VmJvmClasses {
     // список классов
     private static final ArrayList<Class<?>> defined = new ArrayList<>();
+    // класс лоадер
+    public static final VmJvmClassLoader classLoader = new VmJvmClassLoader();
 
     /**
      * Получения класса. Если класс
