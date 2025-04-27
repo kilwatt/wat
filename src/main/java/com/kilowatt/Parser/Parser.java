@@ -271,18 +271,9 @@ public class Parser {
                 // локация
                 Token location = consume(TokenType.PIPE);
                 // следующее выражение
-                if (expr instanceof CallNode) {
-                    if (expression() instanceof CallNode nextCallNode) {
-                        nextCallNode.getArgs().addFirst(expr);
-                        expr = nextCallNode;
-                    } else {
-                        throw new WattParsingError(
-                                location.getLine(),
-                                location.getFileName(),
-                                "expected call expr in pipes.",
-                                "check your code."
-                        );
-                    }
+                if (accessExpr() instanceof CallNode nextCallNode) {
+                    nextCallNode.getArgs().addFirst(expr);
+                    expr = nextCallNode;
                 } else {
                     throw new WattParsingError(
                             location.getLine(),
