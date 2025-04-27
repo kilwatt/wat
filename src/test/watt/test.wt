@@ -257,5 +257,7 @@ matrix2 := new Matrix([
     [3,2,1]
 ])
 
-matrix.add(matrix2).to_string()
+to_string := lambda(it) -> it.to_string()
+matrix.add(matrix2)
+    |> to_string()
     |> io.println()
