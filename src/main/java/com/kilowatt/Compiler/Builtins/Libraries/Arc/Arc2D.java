@@ -5,11 +5,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import lombok.Getter;
+
+import java.nio.file.Path;
 
 /*
 Библиотека для 2Д графики
@@ -24,7 +28,7 @@ public class Arc2D implements ApplicationListener {
     // конфигурация
     private final Lwjgl3ApplicationConfiguration config;
     // батч для отрисовки спрайтов
-    private SpriteBatch sprites;
+    private SpriteBatch batch;
     // при старте
     private VmFunction onStart;
     // при апдейте
@@ -74,13 +78,37 @@ public class Arc2D implements ApplicationListener {
     }
 
     // создание спрайта по пути
-    public Sprite sprite(String path) {
-        return new Sprite(new Texture(Gdx.files.internal(path)));
+    public Arc2DSprite sprite(Path path) {
+        return new Arc2DSprite(
+            new Sprite(new Texture(Gdx.files.internal(path.toString())))
+        );
+    }
+
+    // создание шрифта по пути
+    public Arc2DText freetype(Path path, int size) {
+        // генератор
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path.toString()));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        // генерация
+        parameter.size = size;
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose();
+
+        // возвращаем шрифт
+        return new Arc2DText(
+            font
+        );
     }
 
     // отрисовка спрайта
-    public void draw(Sprite sprite) {
-        sprite.draw(sprites);
+    public void draw_sprite(Arc2DSprite sprite) {
+        sprite.getSprite().draw(batch);
+    }
+
+    // отрисовка спрайта
+    public void draw_font(Arc2DText text) {
+        text.getFont().draw(batch, text.getValue(), text.getX(), text.getY());
     }
 
     // запуск
@@ -90,7 +118,7 @@ public class Arc2D implements ApplicationListener {
 
     @Override
     public void create() {
-         sprites = new SpriteBatch();
+         batch = new SpriteBatch();
          if (onStart != null) onStart.exec(WattCompiler.vm, false);
     }
 
@@ -101,9 +129,9 @@ public class Arc2D implements ApplicationListener {
 
     @Override
     public void render() {
-        sprites.begin();
+        batch.begin();
         if (onUpdate != null) onUpdate.exec(WattCompiler.vm, false);
-        sprites.end();
+        batch.end();
     }
 
     @Override

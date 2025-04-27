@@ -1,11 +1,14 @@
 import 'arc.2d'
+import 'std.fs'
 
 window := new Arc2D(720, 640, 'SomeWindow')
 sprite := null
 window.on_start(fun {
-    sprite = window.sprite('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+    sprite = window.sprite(
+        fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+    )
 })
 window.on_update(fun {
-    window.draw(sprite)
+    window.draw_sprite(sprite)
 })
 window.run()

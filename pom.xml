@@ -87,6 +87,17 @@
             <version>1.12.1</version>
             <classifier>natives-desktop</classifier>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>1.12.0</version> <!-- или твоя версия libGDX -->
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype-platform</artifactId>
+            <version>1.12.0</version>
+            <classifier>natives-desktop</classifier> <!-- если ты делаешь desktop-приложение -->
+        </dependency>
     </dependencies>
     <build>
         <plugins>
