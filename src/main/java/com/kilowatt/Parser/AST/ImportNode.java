@@ -54,7 +54,7 @@ public class ImportNode implements Node {
             throw new WattSemanticError(
                 location.getLine(),
                 location.getFileName(),
-                "couldn't import outside global code",
+                "couldn't use import outside global code",
                 "move this imports."
             );
         }
