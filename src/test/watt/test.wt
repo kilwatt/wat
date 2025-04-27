@@ -257,4 +257,5 @@ matrix2 := new Matrix([
     [3,2,1]
 ])
 
-io.println(matrix.add(matrix2).to_string())
+matrix.add(matrix2).to_string()
+    |> io.println()

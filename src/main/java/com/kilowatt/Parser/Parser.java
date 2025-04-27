@@ -271,10 +271,11 @@ public class Parser {
                 // локация
                 Token location = consume(TokenType.PIPE);
                 // следующее выражение
-                if (accessExpr() instanceof CallNode nextCallNode) {
-                    nextCallNode.getArgs().addFirst(expr);
-                    expr = nextCallNode;
-                } else {
+                if (accessExpr() instanceof CallNode callNode) {
+                    callNode.getArgs().addFirst(expr);
+                    expr = callNode;
+                }
+                else {
                     throw new WattParsingError(
                             location.getLine(),
                             location.getFileName(),
