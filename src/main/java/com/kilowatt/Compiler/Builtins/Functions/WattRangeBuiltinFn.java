@@ -21,8 +21,8 @@ public class WattRangeBuiltinFn implements VmBuiltinFunction {
         if (first instanceof Integer left &&
             second instanceof Integer right) {
             // ищем большее и меньшее число
-            int greater = left > right ? left : right;
-            int less = left == greater ? right : left;
+            int greater = Math.max(left, right);
+            int less = Math.min(left, right);
             // генерим итератор
             ArrayList<Integer> range = new ArrayList<>();
             for (int i = right; i < left; i++) {

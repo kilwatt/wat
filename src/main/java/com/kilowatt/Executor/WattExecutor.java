@@ -57,8 +57,7 @@ public class WattExecutor {
             WattBuiltinProvider.provide();
             // запускаем код
             WattCompiler.vm.run(WattCompiler.code, true);
-        } catch (WattParsingError | WattRuntimeError |
-                 WattResolveError | WattSemanticError error) {
+        } catch (WattError error) {
             // если есть ошибка - выводим
             error.panic();
         } catch (RuntimeException error) {

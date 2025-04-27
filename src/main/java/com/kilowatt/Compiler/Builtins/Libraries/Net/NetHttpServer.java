@@ -1,10 +1,7 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Net;
 
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattParsingError;
-import com.kilowatt.Errors.WattResolveError;
-import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Errors.*;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Threads.VmThreadPool;
 import com.kilowatt.WattVM.VmAddress;
@@ -34,8 +31,7 @@ public class NetHttpServer {
     private void execFnSafely(VmFunction fn) {
         try {
             fn.exec(WattCompiler.vm, false);
-        } catch (WattParsingError | WattRuntimeError |
-                 WattResolveError | WattSemanticError error) {
+        } catch (WattError error) {
             error.panic();
         } catch (RuntimeException error) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();

@@ -25,9 +25,9 @@ trait Hello {
 
 type World impl Hello {
     fun do(name) {
-        io.println('Hello, ' + name)
+        return 'Hello, ' + name
     }
 }
 
 a := new World()
-a.do('World!')
+assert(a.do('World!') == 'Hello, World!')

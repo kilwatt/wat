@@ -1,10 +1,7 @@
 package com.kilowatt.WattVM.Threads;
 
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattParsingError;
-import com.kilowatt.Errors.WattResolveError;
-import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.Errors.WattSemanticError;
+import com.kilowatt.Errors.*;
 import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
@@ -35,8 +32,7 @@ public class VmThreads {
             try {
                 WattCompiler.vm.initForThread();
                 task.run();
-            } catch (WattParsingError | WattRuntimeError |
-                     WattResolveError | WattSemanticError error) {
+            } catch (WattError error) {
                 error.panic();
             } catch (RuntimeException error) {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
@@ -64,8 +60,7 @@ public class VmThreads {
             try {
                 WattCompiler.vm.initForThread();
                 task.run();
-            } catch (WattParsingError | WattRuntimeError |
-                     WattResolveError | WattSemanticError error) {
+            } catch (WattError error) {
                 error.panic();
             } catch (RuntimeException error) {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();

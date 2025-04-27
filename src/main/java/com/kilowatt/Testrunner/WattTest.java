@@ -1,9 +1,5 @@
 package com.kilowatt.Testrunner;
 
-import com.kilowatt.Errors.WattError;
-import com.kilowatt.Errors.WattParsingError;
-import com.kilowatt.Errors.WattResolveError;
-import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.Executor.WattExecutor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +23,7 @@ public class WattTest {
         try {
             WattExecutor.test(path);
             return null;
-        } catch (IOException | WattRuntimeError | WattParsingError | WattResolveError e) {
+        } catch (IOException | RuntimeException e) {
             return e;
         }
     }

@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class WattInternalError extends RuntimeException implements WattError {
+public class WattInternalError extends WattError {
     private final int line;
     private final String filename;
     private final String message;

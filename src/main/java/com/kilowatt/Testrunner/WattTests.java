@@ -39,6 +39,10 @@ public class WattTests {
                         .name("custom units")
                         .build(),
                 WattTest.builder().path(
+                                "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\traits.wt")
+                        .name("custom traits")
+                        .build(),
+                WattTest.builder().path(
                                 "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\main\\while.wt")
                         .name("while")
                         .build(),

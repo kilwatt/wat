@@ -814,7 +814,7 @@ public class Parser {
     // стэйтмент import
     private Node importNode() {
         // import
-        consume(TokenType.IMPORT);
+        Token location = consume(TokenType.IMPORT);
         // список импортов
         ArrayList<ImportNode.WattImport> imports = new ArrayList<>();
         // если список импортов
@@ -835,7 +835,7 @@ public class Parser {
             imports.add(singleImport());
         }
         // возвращаем
-        return new ImportNode(imports);
+        return new ImportNode(location, imports);
     }
 
     // стэйтмент while
