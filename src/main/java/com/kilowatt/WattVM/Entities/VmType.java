@@ -12,10 +12,14 @@ import java.util.ArrayList;
 @Getter
 @AllArgsConstructor
 public class VmType {
+    // имя, полное имя
     private final String name;
     private final String fullName;
+    // конструктор
     private final ArrayList<String> constructor;
+    // трэйты
     private final ArrayList<String> traits;
+    // чанк инициализации
     private final VmChunk body;
 
     @Override
@@ -27,5 +31,10 @@ public class VmType {
                 ", traits=" + traits +
                 ", body=" + body +
                 ')';
+    }
+
+    // есть ли трэйт
+    public boolean hasTrait(VmTrait trait) {
+        return traits.contains(trait.getName()) || traits.contains(trait.getFullName());
     }
 }

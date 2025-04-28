@@ -242,6 +242,7 @@ for elem in list.iter() {
     io.println(elem)
 }
 */
+/*
 import 'std.math.ext'
 import 'std.io'
 
@@ -261,3 +262,24 @@ to_string := lambda(it) -> it.to_string()
 matrix.add(matrix2)
     |> to_string()
     |> io.println()
+*/
+import 'std.io'
+
+trait Trait2 {
+    fun do()
+}
+
+trait Trait {
+    fun do()
+}
+
+type Type impl Trait {
+    fun do() {
+        io.println('Hello, world!')
+    }
+}
+
+o := new Type()
+if o impls Trait {
+    o.do()
+}

@@ -454,14 +454,30 @@ public class Parser {
         return left;
     }
 
+    // выражение проверки имплементации
+    private Node impls() {
+        Node left = additive();
+
+        if (check(TokenType.IMPLS)) {
+            consume(TokenType.IMPLS);
+            Token name = consume(TokenType.ID);
+            left = new ImplsNode(
+                left,
+                name
+            );
+        }
+
+        return left;
+    }
+
     // условное выражение
     private Node conditional() {
-        Node left = additive();
+        Node left = impls();
 
         if (check(TokenType.GREATER) || check(TokenType.LESS) || check(TokenType.GREATER_EQ) ||
             check(TokenType.LESS_EQ) || check(TokenType.EQUAL) || check(TokenType.NOT_EQUAL)) {
             Token operator = advance();
-            Node right = additive();
+            Node right = impls();
             return new ConditionalNode(left, right, operator);
         }
 

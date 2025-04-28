@@ -5,6 +5,7 @@ import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionInstance;
 import com.kilowatt.Lexer.Token;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -13,18 +14,18 @@ import java.util.ArrayList;
 Создание экземпляра класса.
  */
 @Getter
+@AllArgsConstructor
 public class NewInstanceNode implements AccessNode {
     private final Token name;
     private final ArrayList<Node> args;
 
-    public NewInstanceNode(Token name, ArrayList<Node> args) {
-        this.name = name;
-        this.args = args;
-    }
-
     @Override
     public void compile() {
-        WattCompiler.code.visitInstruction(new VmInstructionInstance(name.asAddress(), name.value, compileConstructor()));
+        WattCompiler.code.visitInstruction(new VmInstructionInstance(
+            name.asAddress(),
+            name.value,
+            compileConstructor()
+        ));
     }
 
     @Override
