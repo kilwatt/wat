@@ -265,10 +265,6 @@ matrix.add(matrix2)
 */
 import 'std.io'
 
-trait Trait2 {
-    fun do()
-}
-
 trait Trait {
     fun do()
 }
