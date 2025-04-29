@@ -23,10 +23,10 @@ public class ReturnNode implements Node {
         forReturn.compile();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(
-                new VmInstructionReturn(
-                        valueChunk,
-                        location.asAddress()
-                )
+            new VmInstructionReturn(
+                valueChunk,
+                location.asAddress()
+            )
         );
     }
 

@@ -28,9 +28,14 @@ public class VmInstance implements VmFunctionOwner {
             Object arg = vm.pop(address);
             fields.define(address, type.getConstructor().get(i), arg);
         }
-        // установка филдов
+        // рут
         fields.setRoot(vm.getGlobals());
+        // временные self, для выполнения тела
+        fields.define(address, "self", this);
+        // выполнения тела
         type.getBody().run(vm, fields);
+        // удаление временного self
+        fields.getValues().remove("self");
         // проверка трэйтов
         checkTraits(vm);
         // бинды функций
@@ -58,7 +63,13 @@ public class VmInstance implements VmFunctionOwner {
                     Object impl = fields.lookup(address, traitFn.getName());
                     if (impl instanceof VmFunction fnImpl) {
                         if (fnImpl.getParams().size() != traitFn.getParamsAmount()) {
-
+                            throw new WattRuntimeError(
+                                address.getLine(),
+                                address.getFileName(),
+                                "type " + type.getName() + " impls trait " + traitName + ", but doesn't impl fn " +
+                                        traitFn.getName() + " (" + traitFn.getParamsAmount() + ")",
+                                "you can create default impl in trait."
+                            );
                         }
                     }
                 }

@@ -42,28 +42,27 @@ public class VmFunction {
      */
     public void exec(WattVM vm, boolean shouldPushResult)  {
         // новый фрэйм
-        VmFrame<String, Object> scope = new VmFrame<>();
+        VmFrame<String, Object> frame = new VmFrame<>();
         // замыкание
         if (getClosure() != null) {
-            scope.setClosure(closure);
+            frame.setClosure(closure);
         }
         // устанавливаем рут скоупа и переменную self
         if (selfBind != null) {
-            scope.setRoot(selfBind.getLocalScope());
-            scope.define(address, "self", selfBind);
+            frame.setRoot(selfBind.getLocalScope());
+            frame.define(address, "self", selfBind);
         } else {
-            scope.setRoot(vm.getGlobals());
+            frame.setRoot(vm.getGlobals());
         }
         // аргументы
-        loadArgs(vm, scope);
+        loadArgs(vm, frame);
         // инструкции
         try {
             // исполняем функцию
-            body.run(vm, scope);
-        } catch (VmInstructionReturn e) {
-            e.pushResult(vm, scope);
-            if (!shouldPushResult) {
-                vm.pop(address);
+            body.run(vm, frame);
+        } catch (VmReturnable returnable) {
+            if (shouldPushResult) {
+                vm.push(returnable.getObject());
             }
             return;
         }

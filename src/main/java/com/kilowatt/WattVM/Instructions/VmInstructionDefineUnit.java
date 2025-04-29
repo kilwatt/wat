@@ -25,9 +25,13 @@ public class VmInstructionDefineUnit implements VmInstruction {
     @Override
     public void run(WattVM vm, VmFrame<String, Object> frame)  {
         // генерация юнита
-        unit.getFields().setRoot(frame);
+        unit.getFields().setRoot(vm.getGlobals());
+        // временные self, для выполнения тела
+        unit.getFields().define(address, "self", this);
+        // выполнения тела
         body.run(vm, unit.getFields());
-        unit.getFields().delRoot();
+        // удаление временного self
+        unit.getFields().getValues().remove("self");
         // бинды функций
         unit.bindFunctionsToUnit();
         // дефайн по имени

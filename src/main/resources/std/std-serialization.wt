@@ -1,0 +1,108 @@
+import 'std.refl'
+
+trait Serializable {
+    fun serialize(stream)
+    fun deserialize(stream)
+}
+
+unit serialization {
+    fun serialize(file, serializable) {
+        if serializable impls Serializable {
+            return serializable.serialize(
+                new SWriteStream(file)
+            )
+        } else {
+            throw error(
+                'could not serialize. not a serializable: ' + serializable,
+                'check type impls trait "Serializable".'
+            )
+        }
+    }
+    fun deserialize(file, serializable_type) {
+        if serializable_type impls Serializable {
+            serializable := reflect.instance(serializable_type, [])
+            serializable.deserialize(
+                new SReadStream(file)
+            )
+            return serializable
+        } else {
+            throw error(
+                'could not deserialize. not a serializable type: ' + serializable_type,
+                'check type impls trait "Serializable".'
+            )
+        }
+    }
+}
+
+type SReadStream(filename) {
+    file_stream := __refl__.reflect(
+        'java.io.FileInputStream',
+        [filename]
+    )
+    stream := __refl__.reflect(
+        'java.io.DataInputStream',
+        [self.file_stream]
+    )
+    fun read_int {
+        return stream.readInt()
+    }
+    fun read_float {
+        return stream.readFloat()
+    }
+    fun read_string {
+        return stream.readUTF()
+    }
+    fun read_bool {
+        return stream.readBoolean()
+    }
+    fun read_long {
+        return stream.readLong()
+    }
+    fun read_byte {
+        return stream.readByte()
+    }
+    fun skip(n) {
+        stream.skipBytes(n)
+    }
+    fun close {
+        stream.close()
+    }
+}
+
+type SWriteStream(filename) {
+    file_stream := __refl__.reflect(
+        'java.io.FileOutputStream',
+        [self.filename]
+    )
+    stream := __refl__.reflect(
+        'java.io.DataOutputStream',
+        [self.file_stream]
+    )
+    fun write_int(n) {
+        stream. writeInt(n)
+    }
+    fun write_float(n) {
+        stream.writeFloat(n)
+    }
+    fun write_string(n) {
+        stream.writeUTF(n)
+    }
+    fun write_bool(n) {
+        stream.writeBoolean(n)
+    }
+    fun write_long(n) {
+        stream.writeLong(n)
+    }
+    fun write_byte(n) {
+        stream.writeByte(n)
+    }
+    fun write_bytes(n) {
+        stream.writeBytes(n)
+    }
+    fun size {
+        return stream.size()
+    }
+    fun close {
+        stream.close()
+    }
+}

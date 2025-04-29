@@ -14,6 +14,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /*
 Рефлексия в ВМ
@@ -37,9 +40,18 @@ public class VmReflection {
             // колличество аргументов
             int argsAmount = args.size();
             // ищем конструктор
-            Constructor constructor = findConstructor(address, clazz, argsAmount);
-            return constructor.newInstance(args.getArray().toArray());
+            Constructor constructor = findConstructor(
+                address,
+                clazz,
+                argsAmount,
+                args.getArray().stream()
+                    .map(Object::getClass)
+                    .toArray(Class[]::new)
+            );
+            // создаём экземпляр
+            return constructor.newInstance(castJvmArgs(constructor, args.getArray()));
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            // ошибки
             Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             if (cause instanceof WattRuntimeError
                     || cause instanceof WattParsingError) {
@@ -78,19 +90,49 @@ public class VmReflection {
     }
 
     /*
-    Поиск конструктора
+    Каст аргументов
      */
-    private Constructor findConstructor(VmAddress address, Class<?> clazz, int argsAmount) {
-        for (Constructor c : clazz.getConstructors()) {
-            if (c.getParameterCount() == argsAmount) {
-                return c;
+    private Object[] castJvmArgs(Constructor constructor, List<Object> objects) {
+        ArrayList<Object> jvmArgs = new ArrayList<>();
+        for (int c = 0; c < constructor.getParameterCount(); c++) {
+            Class<?> clazz = constructor.getParameterTypes()[c];
+            jvmArgs.add(clazz.cast(objects.get(c)));
+        }
+        return jvmArgs.toArray();
+    }
+
+    /*
+    Сравнение аргументов
+     */
+    private boolean checkParameters(Class<?>[] expected, Class<?>[] passed) {
+        for (int i = 0; i < expected.length; i++) {
+            if (!expected[i].isAssignableFrom(passed[i])) {
+                return false;
             }
         }
 
+        return true;
+    }
+
+    /*
+    Поиск конструктора
+     */
+    private Constructor findConstructor(VmAddress address, Class<?> clazz,
+            int argsAmount, Class<?>[] parameterTypes) {
+        // ищем конструктор
+        for (Constructor c : clazz.getConstructors()) {
+            if (c.getParameterCount() == argsAmount &&
+                checkParameters(c.getParameterTypes(), parameterTypes)
+            ) {
+                return c;
+            }
+        }
+        // в ином случае, ошибка
         throw new WattRuntimeError(
                 address.getLine(), address.getFileName(),
-                "constructor with args amount: "
-                        + argsAmount + " not found.",
+                "constructor with args: "
+                        + Arrays.toString(parameterTypes) + " for: " +
+                        clazz.getSimpleName() + " is not found.",
                 clazz.getSimpleName()
         );
     }

@@ -38,7 +38,8 @@ public class WattCompiler {
                 node instanceof TypeNode ||
                 node instanceof FnNode ||
                 node instanceof NativeNode ||
-                node instanceof ImportNode) {
+                node instanceof ImportNode ||
+                node instanceof TraitNode) {
                 node.compile();
             }
         }

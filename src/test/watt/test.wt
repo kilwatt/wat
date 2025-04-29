@@ -263,6 +263,7 @@ matrix.add(matrix2)
     |> to_string()
     |> io.println()
 */
+/*
 import 'std.io'
 
 trait Trait {
@@ -279,3 +280,23 @@ o := new Type()
 if o impls Trait {
     o.do()
 }
+*/
+import 'std.serialization'
+import 'std.io'
+
+type A impl Serializable {
+    fun serialize(stream) {
+        stream.write_int(14)
+        stream.write_string('Hello, world!')
+    }
+
+    fun deserialize(stream) {
+        self.version := stream.read_int()
+        self.string := stream.read_string()
+    }
+}
+
+serialization.serialize('binary.bin', new A())
+value := serialization.deserialize('binary.bin', A)
+io.println(value.version)
+io.println(value.string)
