@@ -2,7 +2,7 @@ package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Entities.VmReturnable;
+import com.kilowatt.WattVM.Entities.VmReturnValue;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -35,7 +35,7 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> scope) {
-        throw new VmReturnable(getResult(vm, scope));
+        throw new VmReturnValue(getResult(vm, scope));
     }
 
     @Override

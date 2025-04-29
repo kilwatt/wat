@@ -2,6 +2,7 @@ package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
+import com.kilowatt.WattVM.Entities.VmLoopBreak;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -35,7 +36,7 @@ public class VmInstructionLoop implements VmInstruction {
         while (true) {
             try {
                 instructions.run(vm, loopFrame);
-            } catch (VmInstructionLoopEnd loopEnd) {
+            } catch (VmLoopBreak loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;
                 } else {

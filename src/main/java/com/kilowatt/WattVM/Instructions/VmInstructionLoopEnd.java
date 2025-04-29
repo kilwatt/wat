@@ -1,5 +1,6 @@
 package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
+import com.kilowatt.WattVM.Entities.VmLoopBreak;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -22,7 +23,7 @@ public class VmInstructionLoopEnd extends RuntimeException implements VmInstruct
 
     @Override
     public void run(WattVM vm, VmFrame<String, Object> scope) {
-        throw this;
+        throw new VmLoopBreak(currentIteration);
     }
 
     @Override

@@ -1,0 +1,17 @@
+unit zlib {
+    zlib_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsZlib',
+        []
+    )
+    fun decode(bytes) {
+        inflater := __refl__.reflect(
+            'java.util.zip.Inflater',
+            []
+        )
+        inflater.setInput(bytes, 0, zlib_reflection.len(bytes))
+        output := zlib_reflection.new_bytes_array(zlib_reflection.len(bytes)*1000)
+        inflater.inflate(output)
+        inflater.end()
+        return output
+    }
+}

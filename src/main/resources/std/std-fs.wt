@@ -8,15 +8,15 @@ unit fs {
         return std_reflection_fs.read_text(path)
     }
 
-    fun read_byes(path) {
-        return std_reflection_fs.read_text(path)
+    fun read_bytes(path) {
+        return std_reflection_fs.read_bytes(path)
     }
 
     fun write_text(path, text) {
         return std_reflection_fs.write_text(path, text)
     }
 
-    fun write_byes(path, bytes) {
+    fun write_bytes(path, bytes) {
         return std_reflection_fs.write_bytes(path, bytes)
     }
 
@@ -42,5 +42,40 @@ unit fs {
 
     fun delete_path(path) {
         std_reflection_fs.delete_path(path)
+    }
+}
+
+type ReadBytesStream(bytes) {
+    bytes_stream := __refl__.reflect(
+        'java.io.ByteArrayInputStream',
+        [bytes]
+    )
+    stream := __refl__.reflect(
+        'java.io.DataInputStream',
+        [self.bytes_stream]
+    )
+    fun read_int {
+        return stream.readInt()
+    }
+    fun read_float {
+        return stream.readFloat()
+    }
+    fun read_string {
+        return stream.readUTF()
+    }
+    fun read_bool {
+        return stream.readBoolean()
+    }
+    fun read_long {
+        return stream.readLong()
+    }
+    fun read_byte {
+        return stream.readByte()
+    }
+    fun skip(n) {
+        stream.skipBytes(n)
+    }
+    fun close {
+        stream.close()
     }
 }

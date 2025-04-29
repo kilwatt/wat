@@ -2,7 +2,6 @@ package com.kilowatt.WattVM.Entities;
 
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Chunks.VmChunk;
-import com.kilowatt.WattVM.Instructions.VmInstructionReturn;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -60,7 +59,7 @@ public class VmFunction {
         try {
             // исполняем функцию
             body.run(vm, frame);
-        } catch (VmReturnable returnable) {
+        } catch (VmReturnValue returnable) {
             if (shouldPushResult) {
                 vm.push(returnable.getObject());
             }

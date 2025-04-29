@@ -31,5 +31,6 @@ public class WattLibraries {
         put("utils.json", "utils/utils-json.wt");
         put("arc.2d", "arc/arc-2d.wt");
         put("std.serialization", "std/std-serialization.wt");
+        put("utils.zlib", "utils/utils-zlib.wt");
     }};
 }

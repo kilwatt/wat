@@ -8,6 +8,6 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class VmReturnable extends RuntimeException {
+public class VmReturnValue extends RuntimeException {
     private final Object object;
 }
