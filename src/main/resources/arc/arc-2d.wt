@@ -1,3 +1,7 @@
+unit Key {
+
+}
+
 type Arc2D(width,height,title) {
     fun init() {
         self.arc_reflection := __refl__.reflect(
@@ -32,6 +36,38 @@ type Arc2D(width,height,title) {
 
     fun on_dispose(fn) {
         self.arc_reflection.on_dispose(fn)
+    }
+
+    fun on_mouse_down(fn) {
+        self.arc_reflection.getInput().on_mouse_down(fn)
+    }
+
+    fun on_mouse_up(fn) {
+        self.arc_reflection.getInput().on_mouse_up(fn)
+    }
+
+    fun on_mouse_dragged(fn) {
+        self.arc_reflection.getInput().on_mouse_dragged(fn)
+    }
+
+    fun on_mouse_moved(fn) {
+        self.arc_reflection.getInput().on_mouse_moved(fn)
+    }
+
+    fun on_key_down(fn) {
+        self.arc_reflection.getInput().on_key_down(fn)
+    }
+
+    fun on_key_up(fn) {
+        self.arc_reflection.getInput().on_key_up(fn)
+    }
+
+    fun on_typed(fn) {
+        self.arc_reflection.getInput().on_typed(fn)
+    }
+
+    fun on_scroll(fn) {
+        self.arc_reflection.getInput().on_mouse_dragged(fn)
     }
 
     fun sprite(path) {

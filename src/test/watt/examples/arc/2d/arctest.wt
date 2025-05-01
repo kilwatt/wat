@@ -1,5 +1,6 @@
 import 'arc.2d'
 import 'std.fs'
+import 'std.io'
 
 window := new Arc2D(720, 640, 'SomeWindow')
 sprite := null
@@ -10,5 +11,8 @@ window.on_start(fun {
 })
 window.on_update(fun {
     window.draw_sprite(sprite)
+})
+window.on_key_down(fun(key) {
+    io.println('key down: ' + key)
 })
 window.run()

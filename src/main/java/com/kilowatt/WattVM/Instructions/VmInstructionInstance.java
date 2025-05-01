@@ -51,9 +51,7 @@ public class VmInstructionInstance implements VmInstruction {
     // передача аргументов
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getInstructions()) {
-            instr.run(vm, frame);
-        }
+        args.run(vm, frame);
         return vm.getStack().size()-size;
     }
 

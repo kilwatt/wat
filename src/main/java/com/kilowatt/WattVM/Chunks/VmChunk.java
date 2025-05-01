@@ -27,7 +27,7 @@ public class VmChunk {
     }
 
     // выполнение и получение результата
-    public Object runAndGet(WattVM vm, VmAddress address, VmFrame<String, Object> frame)  {
+    public Object runAndGet(WattVM vm, VmFrame<String, Object> frame, VmAddress address)  {
         for (VmInstruction instr : instructions) {
             instr.run(vm, frame);
         }

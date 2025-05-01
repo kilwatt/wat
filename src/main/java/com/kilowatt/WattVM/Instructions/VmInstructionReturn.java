@@ -17,20 +17,17 @@ import lombok.Getter;
 @Getter
 public class VmInstructionReturn extends RuntimeException implements VmInstruction {
     // адресс
-    private final VmChunk ret;
+    private final VmChunk value;
     private final VmAddress address;
 
     // конструктор
-    public VmInstructionReturn(VmChunk ret, VmAddress address) {
-        this.ret = ret;
+    public VmInstructionReturn(VmChunk value, VmAddress address) {
+        this.value = value;
         this.address = address;
     }
 
-    public Object getResult(WattVM vm, VmFrame<String, Object> frame)  {
-        for (VmInstruction i : ret.getInstructions()) {
-            i.run(vm, frame);
-        }
-        return vm.pop(address);
+    public Object getResult(WattVM vm, VmFrame<String, Object> scope)  {
+        return value.runAndGet(vm, scope, address);
     }
 
     @Override
@@ -42,13 +39,13 @@ public class VmInstructionReturn extends RuntimeException implements VmInstructi
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "RET()");
         VmCodeDumper.dumpLine(indent + 1, "VALUE:");
-        for (VmInstruction instruction : ret.getInstructions()) {
+        for (VmInstruction instruction : value.getInstructions()) {
             instruction.print(indent + 2);
         }
     }
 
     @Override
     public String toString() {
-        return "RETURN_VALUE(" + getRet() + ")";
+        return "RETURN_VALUE(" + value + ")";
     }
 }

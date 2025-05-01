@@ -41,6 +41,8 @@ public class Arc2D implements ApplicationListener {
     private VmFunction onResize;
     // при уничтожении
     private VmFunction onDispose;
+    // процессор инпута
+    private final Arc2DInput input = new Arc2DInput();
 
     // конструктор
     public Arc2D(int width, int height, String title) {
@@ -119,6 +121,7 @@ public class Arc2D implements ApplicationListener {
     @Override
     public void create() {
          batch = new SpriteBatch();
+         Gdx.input.setInputProcessor(input);
          if (onStart != null) onStart.exec(WattCompiler.vm, false);
     }
 

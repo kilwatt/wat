@@ -23,7 +23,7 @@ public class ForNode implements Node {
     public void compile() {
         compileIterator();
         VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(name.fileName, name.line));
-        WattCompiler.code.writeTo(loop.getInstructions());
+        WattCompiler.code.writeTo(loop.getBody());
         compileBody();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);

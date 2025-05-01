@@ -33,18 +33,18 @@ public class VmInstructionSet implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmFrame<String, Object> scope)  {
         if (!hasPrevious) {
-            frame.set(address, name, value.runAndGet(vm, address, frame));
+            scope.set(address, name, value.runAndGet(vm, scope, address));
         } else {
             Object last = vm.pop(address);
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getFields().set(address, name, value.runAndGet(vm, address, frame));
+                    instance.getFields().set(address, name, value.runAndGet(vm, scope, address));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().set(address, name, value.runAndGet(vm, address, frame));
+                    unit.getFields().set(address, name, value.runAndGet(vm, scope, address));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +

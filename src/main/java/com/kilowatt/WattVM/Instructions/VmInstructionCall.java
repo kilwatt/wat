@@ -18,7 +18,6 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Objects;
 
 /*
@@ -241,9 +240,7 @@ public class VmInstructionCall implements VmInstruction {
     // помещает аргументы в стек
     private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
         int size = vm.getStack().size();
-        for (VmInstruction instr : args.getInstructions()) {
-            instr.run(vm, frame);
-        }
+        args.run(vm, frame);
         return vm.getStack().size()-size;
     }
 

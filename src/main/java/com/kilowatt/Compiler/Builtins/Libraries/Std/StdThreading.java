@@ -27,14 +27,14 @@ public class StdThreading {
         }
     }
 
-    public Thread run(VmFunction fn, WattList list) {
-        Thread thread = WattCompiler.vm.getThreads().submit(() -> {
+    public Thread run(VmFunction fn, WattList args) {
+        return WattCompiler.vm.getThreads().submit(() -> {
             WattCompiler.vm.initForThread();
-            for (Object o : list.getArray()) {
+
+            for (Object o : args.getArray()) {
                 WattCompiler.vm.push(o);
             }
             fn.exec(WattCompiler.vm, false);
         });
-        return thread;
     }
 }

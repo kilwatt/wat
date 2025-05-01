@@ -17,7 +17,7 @@ public class VmInstructionLoop implements VmInstruction {
     // адресс
     private final VmAddress address;
     // инструкции
-    private final VmChunk instructions = new VmChunk();
+    private final VmChunk body = new VmChunk();
 
     public VmInstructionLoop(VmAddress address) {
         this.address = address;
@@ -35,7 +35,7 @@ public class VmInstructionLoop implements VmInstruction {
         // цикл
         while (true) {
             try {
-                instructions.run(vm, loopFrame);
+                body.run(vm, loopFrame);
             } catch (VmLoopBreak loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;
@@ -50,13 +50,13 @@ public class VmInstructionLoop implements VmInstruction {
     public void print(int indent) {
         VmCodeDumper.dumpLine(indent, "LOOP()");
         VmCodeDumper.dumpLine(indent + 1, "BODY:");
-        for (VmInstruction instruction : instructions.getInstructions()) {
+        for (VmInstruction instruction : body.getInstructions()) {
             instruction.print(indent + 2);
         }
     }
 
     @Override
     public String toString() {
-        return "START_LOOP(" + instructions + ")";
+        return "START_LOOP(" + body + ")";
     }
 }

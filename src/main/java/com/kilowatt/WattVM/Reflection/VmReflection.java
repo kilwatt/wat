@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -95,8 +94,12 @@ public class VmReflection {
     private Object[] castJvmArgs(Constructor constructor, List<Object> objects) {
         ArrayList<Object> jvmArgs = new ArrayList<>();
         for (int c = 0; c < constructor.getParameterCount(); c++) {
-            Class<?> clazz = constructor.getParameterTypes()[c];
-            jvmArgs.add(clazz.cast(objects.get(c)));
+            try {
+                Class<?> clazz = constructor.getParameterTypes()[c];
+                jvmArgs.add(clazz.cast(objects.get(c)));
+            } catch (ClassCastException _) {
+                jvmArgs.add(objects.get(c));
+            }
         }
         return jvmArgs.toArray();
     }
@@ -127,11 +130,25 @@ public class VmReflection {
                 return c;
             }
         }
+        // ищем сырой конструктор
+        return findRawConstructor(address, clazz, argsAmount);
+    }
+
+    /*
+    Поиск raw конструктора
+     */
+    private Constructor findRawConstructor(VmAddress address, Class<?> clazz, int argsAmount) {
+        // ищем конструктор
+        for (Constructor c : clazz.getConstructors()) {
+            if (c.getParameterCount() == argsAmount) {
+                return c;
+            }
+        }
         // в ином случае, ошибка
         throw new WattRuntimeError(
                 address.getLine(), address.getFileName(),
-                "constructor with args: "
-                        + Arrays.toString(parameterTypes) + " for: " +
+                "constructor with args amount: "
+                        + argsAmount + " for: " +
                         clazz.getSimpleName() + " is not found.",
                 clazz.getSimpleName()
         );

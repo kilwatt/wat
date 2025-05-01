@@ -20,7 +20,7 @@ public class WhileNode implements Node {
     @Override
     public void compile() {
         VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(location.fileName, location.line));
-        WattCompiler.code.writeTo(loop.getInstructions());
+        WattCompiler.code.writeTo(loop.getBody());
         compileLogical();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);

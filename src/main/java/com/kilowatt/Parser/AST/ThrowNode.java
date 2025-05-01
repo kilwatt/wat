@@ -39,7 +39,7 @@ public class ThrowNode implements Node {
                 @Override
                 public void run(WattVM vm, VmFrame<String, Object> scope) {
                     // объект
-                    Object o = chunk.runAndGet(vm, address, scope);
+                    Object o = chunk.runAndGet(vm, scope, address);
                     // если это ошибка - сразу выкидываем
                     if (o instanceof WattError e) {
                         // выкидываем
