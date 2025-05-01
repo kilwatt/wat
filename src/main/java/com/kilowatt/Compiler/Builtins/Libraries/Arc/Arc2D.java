@@ -87,7 +87,7 @@ public class Arc2D implements ApplicationListener {
     }
 
     // создание шрифта по пути
-    public Arc2DText freetype(Path path, int size) {
+    public BitmapFont font(Path path, int size) {
         // генератор
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path.toString()));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -98,8 +98,14 @@ public class Arc2D implements ApplicationListener {
         generator.dispose();
 
         // возвращаем шрифт
+        return font;
+    }
+
+    // создание текста
+    public Arc2DText text(BitmapFont font) {
+        // возвращаем шрифт
         return new Arc2DText(
-            font
+                font
         );
     }
 
@@ -109,7 +115,7 @@ public class Arc2D implements ApplicationListener {
     }
 
     // отрисовка спрайта
-    public void draw_font(Arc2DText text) {
+    public void draw_text(Arc2DText text) {
         text.getFont().draw(batch, text.getValue(), text.getX(), text.getY());
     }
 

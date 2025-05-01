@@ -74,15 +74,19 @@ type Arc2D(width,height,title) {
         return self.arc_reflection.sprite(path)
     }
 
-    fun freetype(path) {
-        return self.arc_reflection.freetype(path)
+    fun font(path) {
+        return self.arc_reflection.font(path)
+    }
+
+    fun text(font) {
+        return self.arc_reflection.text(font)
     }
 
     fun draw_sprite(sprite) {
         return self.arc_reflection.draw_sprite(sprite)
     }
 
-    fun draw_font(font) {
-        return self.arc_reflection.draw_font(font)
+    fun draw_text(text) {
+        return self.arc_reflection.draw_text(text)
     }
 }
