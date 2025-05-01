@@ -10,7 +10,7 @@ type Arc2D(width,height,title) {
         )
     }
 
-    fun run() {
+    fun run {
         self.arc_reflection.run()
     }
 
