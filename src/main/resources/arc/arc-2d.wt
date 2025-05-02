@@ -70,6 +70,10 @@ type Arc2D(width,height,title) {
         self.arc_reflection.getInput().on_mouse_dragged(fn)
     }
 
+    fun on_collision(first, second, fn) {
+        self.arc_reflection.on_collision(first, second, fn)
+    }
+
     fun sprite(path) {
         return self.arc_reflection.sprite(path)
     }

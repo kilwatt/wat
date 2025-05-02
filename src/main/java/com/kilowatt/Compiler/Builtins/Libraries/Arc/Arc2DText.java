@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class Arc2DText {
+    // данные
     private final BitmapFont font;
     private int x = 0;
     private int y = 0;

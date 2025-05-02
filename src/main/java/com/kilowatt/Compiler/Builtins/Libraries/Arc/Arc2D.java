@@ -14,6 +14,8 @@ import com.kilowatt.WattVM.Entities.VmFunction;
 import lombok.Getter;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Библиотека для 2Д графики
@@ -41,6 +43,8 @@ public class Arc2D implements ApplicationListener {
     private VmFunction onResize;
     // при уничтожении
     private VmFunction onDispose;
+    // при столкновении
+    private final List<Arc2DCollision> onCollision = new ArrayList<>();
     // процессор инпута
     private final Arc2DInput input = new Arc2DInput();
 
@@ -77,6 +81,10 @@ public class Arc2D implements ApplicationListener {
 
     public void on_dispose(VmFunction onDispose) {
         this.onDispose = onDispose;
+    }
+
+    public void on_collision(Arc2DSprite first, Arc2DSprite second, VmFunction onCollision) {
+        this.onCollision.add(new Arc2DCollision(first, second, onCollision));
     }
 
     // создание спрайта по пути
@@ -138,9 +146,24 @@ public class Arc2D implements ApplicationListener {
 
     @Override
     public void render() {
+        // рендер
         batch.begin();
         if (onUpdate != null) onUpdate.exec(WattCompiler.vm, false);
         batch.end();
+        // коллизии
+        for (Arc2DCollision handler : onCollision) {
+            // ректы
+            var firstRect = handler.getFirst()
+                .getSprite().getBoundingRectangle();
+            var secondRect = handler.getSecond()
+                .getSprite().getBoundingRectangle();
+            // проверка коллизии
+            if (firstRect.overlaps(secondRect)) {
+                WattCompiler.vm.push(handler.getFirst());
+                WattCompiler.vm.push(handler.getSecond());
+                handler.getFn().exec(WattCompiler.vm, false);
+            }
+        }
     }
 
     @Override

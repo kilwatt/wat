@@ -4,13 +4,22 @@ import 'std.io'
 
 window := new Arc2D(720, 640, 'SomeWindow')
 sprite := null
+sprite2 := null
 window.on_start(fun {
     sprite = window.sprite(
         fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
     )
+    sprite2 = window.sprite(
+        fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+    )
+    sprite.set_x(500)
+    window.on_collision(sprite, sprite2, fun(sprite, sprite2) {
+        io.println('collision detected')
+    })
 })
 window.on_update(fun {
     window.draw_sprite(sprite)
+    window.draw_sprite(sprite2)
 })
 window.on_key_down(fun(key) {
     io.println('key down: ' + key)
