@@ -26,4 +26,6 @@ public class Arc2DSprite {
     public void set_origin(float x, float y) { sprite.setOrigin(x, y); }
     public float get_origin_x() { return sprite.getOriginX(); }
     public float get_origin_y() { return sprite.getOriginX(); }
+    public float get_scale_x() { return sprite.getScaleX(); }
+    public float get_scale_y() { return sprite.getScaleY(); }
 }
