@@ -56,8 +56,6 @@ public enum TokenType {
     THROW, // throw
     ARROW, // ->
     UNIT, // unit
-    TO, // to
-    FROM, // from
     NATIVE, // native
     PIPE, // pipe
     WITH, // with

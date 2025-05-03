@@ -49,8 +49,6 @@ public class Lexer {
         put("throw", TokenType.THROW);
         put("in", TokenType.IN);
         put("unit", TokenType.UNIT);
-        put("to", TokenType.TO);
-        put("from", TokenType.FROM);
         put("native", TokenType.NATIVE);
         put("lambda", TokenType.LAMBDA);
         put("with", TokenType.WITH);

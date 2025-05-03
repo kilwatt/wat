@@ -48,9 +48,9 @@ public class VmInstructionLoad implements VmInstruction {
                 vm.push(vm.getTraitDefinitions().lookup(address, name));
             } else {
                 throw new WattRuntimeError(
-                        address.getLine(), address.getFileName(),
-                        "not found: " + name,
-                        "did you type wrong name?"
+                    address.getLine(), address.getFileName(),
+                    "not found: " + name,
+                    "did you type wrong name?"
                 );
             }
         } else {
@@ -65,7 +65,7 @@ public class VmInstructionLoad implements VmInstruction {
                     break;
                 }
                 case null -> throw new IllegalStateException(
-                        "unexpected value: null. send this error with your code to the developer!"
+                    "unexpected value: null. send this error with your code to the developer!"
                 );
                 default -> {
                     Class<?> clazz = last.getClass();
@@ -77,7 +77,7 @@ public class VmInstructionLoad implements VmInstruction {
                         throw new WattRuntimeError(
                                 address.getLine(),
                                 address.getFileName(),
-                                "field not found: " + name,
+                                "not found: " + name,
                                 "check your reflection interaction."
                         );
                     } catch (IllegalAccessException e) {

@@ -1,7 +1,7 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Arc;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
+import com.badlogic.gdx.math.Rectangle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -28,4 +28,5 @@ public class Arc2DSprite {
     public float get_origin_y() { return sprite.getOriginX(); }
     public float get_scale_x() { return sprite.getScaleX(); }
     public float get_scale_y() { return sprite.getScaleY(); }
+    public Rectangle get_rect() { return sprite.getBoundingRectangle(); }
 }

@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Entities.VmFunction;
+import com.kilowatt.WattVM.Entities.VmInstance;
+import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
 import java.nio.file.Path;
@@ -31,6 +34,10 @@ public class Arc2D implements ApplicationListener {
     private final Lwjgl3ApplicationConfiguration config;
     // батч для отрисовки спрайтов
     private SpriteBatch batch;
+    // рендерер для отрисовки фигур
+    private ShapeRenderer shapeRenderer;
+    // заливать ли фигуры
+    private boolean shapesFilled = false;
     // при старте
     private VmFunction onStart;
     // при апдейте
@@ -127,6 +134,90 @@ public class Arc2D implements ApplicationListener {
         text.getFont().draw(batch, text.getValue(), text.getX(), text.getY());
     }
 
+    // отрисовка линии
+    public void draw_line(float from_x, float from_y, float to_x,
+                          float to_y, VmInstance color) {
+        // адрес
+        VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+        // цвет
+        float r = ((Number) color.getFields().lookup(address, "r")).floatValue();
+        float g = ((Number) color.getFields().lookup(address, "g")).floatValue();
+        float b = ((Number) color.getFields().lookup(address, "b")).floatValue();
+        float a = ((Number) color.getFields().lookup(address, "a")).floatValue();
+        // установка цвета
+        shapeRenderer.setColor(r, g, b, a);
+        // отрисовка
+        shapeRenderer.line(from_x, from_y, to_x, to_y);
+    }
+
+    // отрисовка прямоугольника
+    public void draw_rectangle(float x, float y, float width,
+                               float height, VmInstance color) {
+        // адрес
+        VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+        // цвет
+        float r = ((Number) color.getFields().lookup(address, "r")).floatValue();
+        float g = ((Number) color.getFields().lookup(address, "g")).floatValue();
+        float b = ((Number) color.getFields().lookup(address, "b")).floatValue();
+        float a = ((Number) color.getFields().lookup(address, "a")).floatValue();
+        // установка цвета
+        shapeRenderer.setColor(r, g, b, a);
+        // отрисовка
+        shapeRenderer.rect(x, y, width, height);
+    }
+
+    // отрисовка дуги
+    public void draw_arc(float x, float y, float radius,
+                         float start, float degree, VmInstance color) {
+        // адрес
+        VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+        // цвет
+        float r = ((Number) color.getFields().lookup(address, "r")).floatValue();
+        float g = ((Number) color.getFields().lookup(address, "g")).floatValue();
+        float b = ((Number) color.getFields().lookup(address, "b")).floatValue();
+        float a = ((Number) color.getFields().lookup(address, "a")).floatValue();
+        // установка цвета
+        shapeRenderer.setColor(r, g, b, a);
+        // отрисовка
+        shapeRenderer.arc(x, y, radius, start, degree);
+    }
+
+    // отрисовка круга
+    public void draw_circle(float x, float y, float radius, VmInstance color) {
+        // адрес
+        VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+        // цвет
+        float r = ((Number) color.getFields().lookup(address, "r")).floatValue();
+        float g = ((Number) color.getFields().lookup(address, "g")).floatValue();
+        float b = ((Number) color.getFields().lookup(address, "b")).floatValue();
+        float a = ((Number) color.getFields().lookup(address, "a")).floatValue();
+        // установка цвета
+        shapeRenderer.setColor(r, g, b, a);
+        // отрисовка
+        shapeRenderer.circle(x, y, radius);
+    }
+
+    // отрисовка треугольника
+    public void draw_triangle(float x, float y, float x_2, float y_2,
+                              float x_3, float y_3, VmInstance color) {
+        // адрес
+        VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+        // цвет
+        float r = ((Number) color.getFields().lookup(address, "r")).floatValue();
+        float g = ((Number) color.getFields().lookup(address, "g")).floatValue();
+        float b = ((Number) color.getFields().lookup(address, "b")).floatValue();
+        float a = ((Number) color.getFields().lookup(address, "a")).floatValue();
+        // установка цвета
+        shapeRenderer.setColor(r, g, b, a);
+        // отрисовка
+        shapeRenderer.triangle(x, y, x_2, y_2, x_3, y_3);
+    }
+
+    // установка заливки фигур
+    public void set_filled(boolean filled) {
+        this.shapesFilled = filled;
+    }
+
     // запуск
     public void run() {
         new Lwjgl3Application(this, config);
@@ -135,6 +226,7 @@ public class Arc2D implements ApplicationListener {
     @Override
     public void create() {
          batch = new SpriteBatch();
+         shapeRenderer = new ShapeRenderer();
          Gdx.input.setInputProcessor(input);
          if (onStart != null) onStart.exec(WattCompiler.vm, false);
     }
@@ -148,8 +240,10 @@ public class Arc2D implements ApplicationListener {
     public void render() {
         // рендер
         batch.begin();
+        shapeRenderer.begin(shapesFilled ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
         if (onUpdate != null) onUpdate.exec(WattCompiler.vm, false);
         batch.end();
+        shapeRenderer.end();
         // коллизии
         for (Arc2DCollision handler : onCollision) {
             // ректы

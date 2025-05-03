@@ -145,7 +145,7 @@ public class VmInstructionCall implements VmInstruction {
         // выполнение метода
         if (fun == null) {
             throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                "jvm method not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
+                "jvm fn not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
                 argsAmount + ")",
                 "check name for mistakes & passing args amount.");
         }
@@ -161,7 +161,7 @@ public class VmInstructionCall implements VmInstruction {
             } catch (IllegalAccessException | IllegalArgumentException e) {
                 throw new WattRuntimeError(
                     address.getLine(), address.getFileName(),
-                    "reflection err: " + e.getMessage() + ", while calling: " + name, "check your code."
+                    "jvm call error: (" + name + ")" + e.getMessage(), "check your code."
                 );
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof WattRuntimeError ||
@@ -170,7 +170,7 @@ public class VmInstructionCall implements VmInstruction {
                 } else {
                     throw new WattRuntimeError(
                         address.getLine(), address.getFileName(),
-                        "reflection err: " + e.getCause().getMessage() + ", while calling: " + name, "check your code."
+                        "jvm call error: (" + name + ")" + e.getCause().getMessage(), "check your code."
                     );
                 }
             }

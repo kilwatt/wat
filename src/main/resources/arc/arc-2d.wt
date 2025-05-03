@@ -1,7 +1,7 @@
-unit Key {
+import 'std.typeof'
+import 'std.math.ext'
 
-}
-
+type Color(r, g, b, a) {}
 type Arc2D(width,height,title) {
     fun init() {
         self.arc_reflection := __refl__.reflect(
@@ -87,10 +87,34 @@ type Arc2D(width,height,title) {
     }
 
     fun draw_sprite(sprite) {
-        return self.arc_reflection.draw_sprite(sprite)
+        self.arc_reflection.draw_sprite(sprite)
     }
 
     fun draw_text(text) {
-        return self.arc_reflection.draw_text(text)
+        self.arc_reflection.draw_text(text)
+    }
+
+    fun draw_line(from, to, color) {
+        self.arc_reflection.draw_line(x, y, x2, y2, color)
+    }
+
+    fun draw_arc(pos, radius, start, degree, color) {
+        self.arc_reflection.draw_arc(pos.x, pos.y, radius, start, degree, color)
+    }
+
+    fun draw_circle(pos, radius, color) {
+        self.arc_reflection.draw_line(pos.x, pos.y, radius, color)
+    }
+
+    fun draw_triangle(p1, p2, p3, color) {
+        self.arc_reflection.draw_triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, color)
+    }
+
+    fun draw_rectangle(pos, size, radius, color) {
+        self.arc_reflection.draw_rectangle(pos.x, pos.y, size.x, size.y, color)
+    }
+
+    fun set_filled(filled) {
+        self.arc_reflection.set_filled(filled)
     }
 }

@@ -3,6 +3,7 @@ import 'std.fs'
 import 'std.io'
 
 window := new Arc2D(720, 640, 'SomeWindow')
+/*
 sprite := null
 sprite2 := null
 window.on_start(fun {
@@ -24,4 +25,11 @@ window.on_update(fun {
 window.on_key_down(fun(key) {
     io.println('key down: ' + key)
 })
+window.run()
+*/
+window.set_filled(false)
+window.on_update(fun {
+    window.draw_arc(new Vec2(100,100), 100, 100, 100, new Color(0.3,1,0.3,1))
+})
+
 window.run()
