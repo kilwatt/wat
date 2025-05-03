@@ -1,6 +1,6 @@
-import 'ext.tui'
+import 'utils.terminal'
 import 'std.threads'
-import 'ext.wfiglet'
+import 'utils.wfiglet'
 import 'std.io'
 
 colors := ['[31m', '[32m', '[38;5;220m', '[34m', '[92m']
@@ -13,7 +13,7 @@ while true {
     ))
 
     threads.sleep(1000)
-    tui.clear()
+    terminal.clear()
 
     if color + 1 < 5 {
         color += 1

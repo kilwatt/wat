@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Ext;
+package com.kilowatt.Compiler.Builtins.Libraries.Utils;
 
 
 import com.github.lalyos.jfiglet.FigletFont;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 /*
 Ext -> Figlet
  */
-public class ExtFiglet {
+public class UtilsFiglet {
     public String art(String fontName, String text) {
         // генерация арта
         String asciiArt;

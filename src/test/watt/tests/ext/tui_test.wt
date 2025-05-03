@@ -1,5 +1,5 @@
-import 'ext.tui'
+import 'utils.terminal'
 import 'std.io'
 
-tui.render_line('Hello world!')
-tui.render_line('key: ' + tui.read_key().toString())
+terminal.render_line('Hello world!')
+terminal.render_line('key: ' + terminal.read_key().toString())

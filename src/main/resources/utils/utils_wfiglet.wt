@@ -1,7 +1,7 @@
 unit wfiglet {
     // рефлекися
     figlet_reflection := __refl__.reflect(
-        'com.kilowatt.Compiler.Builtins.Libraries.Ext.ExtFiglet',
+        'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsFiglet',
         []
     )
 

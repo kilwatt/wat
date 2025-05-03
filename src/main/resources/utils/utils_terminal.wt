@@ -1,0 +1,26 @@
+unit terminal {
+    std_reflection_terminal := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsTerminal',
+        []
+    )
+
+    fun println(text) {
+        std_reflection_terminal.println(text)
+    }
+
+    fun print(text) {
+        std_reflection_terminal.print(text)
+    }
+
+    fun clear {
+        std_reflection_terminal.clear()
+    }
+
+    fun clear_line {
+        std_reflection_terminal.clear_line()
+    }
+
+    fun read_key {
+        return std_reflection_terminal.read_key()
+    }
+}
