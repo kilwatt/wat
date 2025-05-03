@@ -32,7 +32,7 @@ public class UtilsTerminal {
     }
 
     // вход в рав мод
-    public void enterRawMode() {
+    public void enter_raw_mode() {
         terminal.enterRawMode();
     }
 

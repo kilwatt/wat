@@ -4,7 +4,7 @@ import 'std.fs'
 import 'utils.json'
 import 'std.sys'
 
-path := fs.path_of('G:\Kilowatt\Watt\src\test\watt\examples\weather\weather.json')
+path := fs.path_of('./weather.json')
 api_key := ''
 
 if system.args().size() > 0 {
