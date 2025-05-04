@@ -6,6 +6,7 @@ import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 
 import java.io.IOException;
 
@@ -70,7 +71,7 @@ public class UtilsTerminal {
 
     // установка позиции курсора
     public void set_cursor(int x, int y) {
-        terminal.writer().print("\033[" + x + ";" + y + "H");
+        terminal.puts(InfoCmp.Capability.cursor_address, x, y);
     }
 
     /*
