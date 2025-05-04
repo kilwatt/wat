@@ -13,13 +13,11 @@ public class SemanticAnalyzer {
 
     // пуш в стэк контекста
     public void push(Node node) {
-        System.out.println("push: " + node);
         context.push(node);
     }
 
     // поп из контекста
     public void pop() {
-        System.out.println("pop");
         context.pop();
     }
 
