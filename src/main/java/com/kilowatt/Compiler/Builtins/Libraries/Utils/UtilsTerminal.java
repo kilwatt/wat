@@ -39,7 +39,7 @@ public class UtilsTerminal {
     /*
     Функции рендера
      */
-    public void print_line(Object line) {
+    public void println(Object line) {
         terminal.writer().println(line);
         terminal.writer().flush();
     }

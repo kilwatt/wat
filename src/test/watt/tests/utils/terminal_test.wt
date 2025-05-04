@@ -1,0 +1,5 @@
+import 'utils.terminal'
+import 'std.io'
+
+terminal.println('Hello world!')
+terminal.println('key: ' + terminal.read_key().toString())

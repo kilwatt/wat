@@ -1,5 +1,0 @@
-import 'utils.terminal'
-import 'std.io'
-
-terminal.render_line('Hello world!')
-terminal.render_line('key: ' + terminal.read_key().toString())
