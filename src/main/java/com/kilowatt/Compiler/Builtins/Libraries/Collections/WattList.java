@@ -20,8 +20,8 @@ public class WattList {
     public void delete_at(int index) {
         array.remove(index);
     }
-    public void delete(int index) {
-        array.remove(index);
+    public void delete(Object v) {
+        array.remove(v);
     }
     public Object get(int index) {
         return array.get(index);

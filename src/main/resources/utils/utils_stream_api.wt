@@ -146,4 +146,27 @@ type Stream(list) {
         }
         return current
     }
+
+    fun delete(fn) {
+        for i in list.iter() {
+            if fn(i) {
+                list.delete(i)
+                break
+            }
+        }
+        return self
+    }
+
+    fun delete_all(fn) {
+        for_delete := []
+        for i in list.iter() {
+            if fn(i) {
+                for_delete.add(i)
+            }
+        }
+        for r in for_delete.iter() {
+            list.delete(r)
+        }
+        return self
+    }
 }
