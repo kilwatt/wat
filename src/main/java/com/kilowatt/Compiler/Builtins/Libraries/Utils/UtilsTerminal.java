@@ -53,7 +53,7 @@ public class UtilsTerminal {
     Функции очистки
      */
     public void clear() {
-        terminal.writer().print("\033[H\033[2J");
+        terminal.puts(org.jline.utils.InfoCmp.Capability.clear_screen);
         terminal.flush();
     }
     public void clear_line() {

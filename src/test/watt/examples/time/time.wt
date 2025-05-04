@@ -12,6 +12,6 @@ while true {
         'E:\wat_lang\wat\src\test\watt\examples\time\mini.flf',
         time.date().toString()
     )
-    terminal.clear()
     threads.sleep(1000)
+    terminal.clear()
 }
