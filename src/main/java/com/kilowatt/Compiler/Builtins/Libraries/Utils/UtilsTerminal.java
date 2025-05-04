@@ -59,13 +59,18 @@ public class UtilsTerminal {
 
     // очистка консоли
     public void clear() {
-        System.out.println("\033[2J");
-        System.out.println("\033[H");
+        terminal.writer().println("\033[2J");
+        terminal.writer().println("\033[H");
     }
 
     // очистка линии
     public void clear_line() {
-        System.out.println("\033[2K");
+        terminal.writer().println("\033[2K");
+    }
+
+    // установка позиции курсора
+    public void set_cursor(int x, int y) {
+        terminal.writer().print("\033[" + x + ";" + y + "H");
     }
 
     /*
