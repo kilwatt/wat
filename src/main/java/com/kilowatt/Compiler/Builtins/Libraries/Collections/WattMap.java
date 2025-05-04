@@ -17,7 +17,7 @@ public class WattMap {
         map.put(k,v);
     }
 
-    public void del(Object k) {
+    public void delete(Object k) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
                     WattCompiler.vm.getCallsHistory().getLast().getAddress(),

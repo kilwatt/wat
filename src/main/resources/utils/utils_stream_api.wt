@@ -1,0 +1,52 @@
+type Stream(list) {
+    fun for_each(fn) {
+        for i in list.iter() {
+            fn(i)
+        }
+        return self
+    }
+
+    fun sort {
+        new_list := list.copy()
+        for i in 0..new_list.size() {
+            for j in 0..(new_list.size()-i-1) {
+                if new_list.get(j) > new_list.get(j + 1) {
+                    first := new_list.get(j)
+                    second := new_list.get(j + 1)
+                    new_list.set(j, second)
+                    new_list.set(j + 1, first)
+                }
+            }
+        }
+        return new Stream(new_list)
+    }
+
+    fun sort_by(fn) {
+        new_list := list.copy()
+        for i in 0..new_list.size() {
+            for j in 0..(new_list.size()-i-1) {
+                if fn(new_list.get(j)) > fn(new_list.get(j + 1)) {
+                    first := new_list.get(j)
+                    second := new_list.get(j + 1)
+                    new_list.set(j, second)
+                    new_list.set(j + 1, first)
+                }
+            }
+        }
+        return new Stream(new_list)
+    }
+
+    fun get {
+        return self.list
+    }
+
+    fun filter(fn) {
+        new_list := []
+        for elem in list.iter() {
+            if fn(elem) == true {
+                new_list.add(elem)
+            }
+        }
+        return new Stream(new_list)
+    }
+}

@@ -216,15 +216,21 @@ public class Parser {
         } else {
             parameters = new ArrayList<>();
         }
-        // тело
+        // {
         consume(TokenType.LBRACE);
+        // тело
         BlockNode node = block();
+        // добавляем возврат null
+        node.getNodes().add(new ReturnNode(
+                location, new NullNode(location)
+        ));
+        // }
         consume(TokenType.RBRACE);
         // возвращаем анонимную функцию
         return new AnonymousFnNode(
-                location,
-                node,
-                parameters
+            location,
+            node,
+            parameters
         );
     }
 
@@ -238,16 +244,20 @@ public class Parser {
         consume(TokenType.ARROW);
         // выражение
         BlockNode node = BlockNode.of(
-                new ReturnNode(
-                        location,
-                        expression()
-                )
+            new ReturnNode(
+                location,
+                expression()
+            ),
+            new ReturnNode(
+                location,
+                new NullNode(location)
+            )
         );
         // возвращаем анонимную функцию
         return new AnonymousFnNode(
-                location,
-                node,
-                parameters
+            location,
+            node,
+            parameters
         );
     }
 
@@ -530,7 +540,7 @@ public class Parser {
     // функция
     private Node function() {
         // адресс и имя
-        Token address = consume(TokenType.FUN);
+        Token location = consume(TokenType.FUN);
         Token name = consume(TokenType.ID);
         // парсим параметры, если они есть
         ArrayList<Token> parameters;
@@ -539,13 +549,15 @@ public class Parser {
         } else {
              parameters = new ArrayList<>();
         }
-        // тело
+        // {
         consume(TokenType.LBRACE);
+        // тело
         BlockNode node = block();
         // добавляем возврат null
         node.getNodes().add(new ReturnNode(
-                address, new NullNode(address))
-        );
+            location, new NullNode(location)
+        ));
+        // }
         consume(TokenType.RBRACE);
         // возвращаем функцию
         return new FnNode(node,name,toFullName(name),parameters);

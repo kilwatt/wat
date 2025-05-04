@@ -8,7 +8,7 @@ type Stack {
     fun pop() {
         index := stack.size() - 1
         val := stack.get(index)
-        stack.del(index)
+        stack.delete_at(index)
         return val
     }
 

@@ -17,15 +17,15 @@ public class WattList {
     public void add(Object o) {
         array.add(o);
     }
-
-    public void del(int index) {
+    public void delete_at(int index) {
         array.remove(index);
     }
-
+    public void delete(int index) {
+        array.remove(index);
+    }
     public Object get(int index) {
         return array.get(index);
     }
-
     public Object contains(Object obj) {
         for (Object o : array) {
             if (VmInstructionCondOp.equal(
@@ -39,19 +39,15 @@ public class WattList {
 
         return false;
     }
-
     public void set(int i, Object v) {
         array.set(i, v);
     }
-
     public int size() {
         return array.size();
     }
-
     public Object to_string() {
         return this;
     }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("[");
@@ -68,11 +64,9 @@ public class WattList {
         s.append("]");
         return s.toString();
     }
-
     public void insert(int i, Object v) {
         array.add(i, v);
     }
-
     public int index_of(Object obj) {
         for (Object o : array) {
             if (VmInstructionCondOp.equal(
@@ -101,5 +95,8 @@ public class WattList {
     }
     public void del_all(WattList arr) {
         this.array.removeAll(arr.array);
+    }
+    public WattList copy() {
+        return WattList.of(array);
     }
 }

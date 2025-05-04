@@ -32,6 +32,8 @@ public class WattAssertBuiltinFn implements VmBuiltinFunction {
                 "check your code."
             );
         }
+        // проверка на пуш
+        if (shouldPushResult) vm.push(null);
     }
 
     @Override

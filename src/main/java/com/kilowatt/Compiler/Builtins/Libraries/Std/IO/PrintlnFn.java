@@ -14,6 +14,8 @@ public class PrintlnFn implements VmBuiltinFunction {
         Object value = vm.pop(address);
         // выводим
         System.out.println(value);
+        // проверка на пуш
+        if (shouldPushResult) vm.push(null);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class AnonymousFnNode implements Node {
     private final Token location;
-    private final BlockNode node;
+    private final Node node;
     private final ArrayList<Token> parameters;
 
     @Override

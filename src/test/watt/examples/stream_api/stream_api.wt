@@ -1,0 +1,8 @@
+import 'utils.stream.api'
+import 'std.io'
+
+list := [7, 9, 1, 0, 4, 14, 2, 3, 7]
+result := new Stream(list)
+    .sort()
+    .filter(lambda(x) -> x > 5)
+    .for_each(lambda(x) -> io.println(x))

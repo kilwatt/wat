@@ -29,13 +29,13 @@ public class FnNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionDefineFn(
-                        name.asAddress(),
-                        compileFn()
-                )
+            new VmInstructionDefineFn(
+                name.asAddress(),
+                compileFn()
+            )
         );
         WattCompiler.code.visitInstruction(
-                new VmInstructionMakeClosure(name.asAddress(), name.value)
+            new VmInstructionMakeClosure(name.asAddress(), name.value)
         );
     }
 
