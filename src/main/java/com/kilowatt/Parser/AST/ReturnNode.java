@@ -32,8 +32,8 @@ public class ReturnNode implements Node {
 
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
-        if (analyzer.topIs(FnNode.class) ||
-            analyzer.topIs(AnonymousFnNode.class)) {
+        if (analyzer.hierarchyContains(FnNode.class) ||
+            analyzer.hierarchyContains(AnonymousFnNode.class)) {
             forReturn.analyze(analyzer);
         } else {
             throw new WattSemanticError(

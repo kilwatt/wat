@@ -42,7 +42,7 @@ public class FnNode implements Node {
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
         // анализ самой функции
-        if (analyzer.topIs(TypeNode.class) || analyzer.topIs(UnitNode.class)) {
+        if (analyzer.hierarchyContains(TypeNode.class) || analyzer.hierarchyContains(UnitNode.class)) {
             if (name.value.equals("init") && !parameters.isEmpty()) {
                 throw new WattSemanticError(
                     name.getLine(),

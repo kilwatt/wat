@@ -43,10 +43,107 @@ type Stream(list) {
     fun filter(fn) {
         new_list := []
         for elem in list.iter() {
-            if fn(elem) == true {
+            if fn(elem) {
                 new_list.add(elem)
             }
         }
         return new Stream(new_list)
+    }
+
+    fun distinct {
+        new_list := []
+        for elem in list.iter() {
+            if !new_list.contains(elem) {
+                new_list.add(elem)
+            }
+        }
+        return new Stream(new_list)
+    }
+
+    fun take(n) {
+        if n >= list.size() {
+            throw error(
+                'could not take: ' + n + ', list size is: ' + list.size(),
+                'you can take any number < ' + list.size()
+            )
+        } else {
+            new_list := []
+            for i in 0..n {
+                new_list.add(list.get(i))
+            }
+            return new Stream(new_list)
+        }
+    }
+
+    fun skip(n) {
+        if n >= list.size() {
+            throw error(
+                'could not skip: ' + n + ', list size is: ' + list.size(),
+                'you can skip any number < ' + list.size()
+            )
+        } else {
+            new_list := []
+            for i in n..list.size() {
+                new_list.add(list.get(i))
+            }
+            return new Stream(new_list)
+        }
+    }
+
+    fun reverse {
+        new_list := []
+        for i in list.size()..0 {
+            new_list.add(list.get(i))
+        }
+        return new Stream(new_list)
+    }
+
+    fun find(fn) {
+        for i in list.iter() {
+            if fn(i) {
+                return i
+            }
+        }
+        return null
+    }
+
+    fun all(fn) {
+        new_list := []
+        for i in list.iter() {
+            if fn(i) {
+                new_list.add(i)
+            }
+        }
+        return new Stream(new_list)
+    }
+
+    fun find_last(fn) {
+        last := null
+        for i in list.iter() {
+            if fn(i) {
+                last = i
+            }
+        }
+        return last
+    }
+
+    fun max {
+        current := 0
+        for i in list.iter() {
+            if i > current {
+                current = i
+            }
+        }
+        return current
+    }
+
+    fun min {
+        current := 0
+        for i in list.iter() {
+            if i < current {
+                current = i
+            }
+        }
+        return current
     }
 }

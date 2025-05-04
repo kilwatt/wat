@@ -13,11 +13,13 @@ public class SemanticAnalyzer {
 
     // пуш в стэк контекста
     public void push(Node node) {
+        System.out.println("push: " + node);
         context.push(node);
     }
 
     // поп из контекста
     public void pop() {
+        System.out.println("pop");
         context.pop();
     }
 
@@ -27,9 +29,12 @@ public class SemanticAnalyzer {
         return context.peek();
     }
 
-    // проверка на конкретную ноды
-    public boolean topIs(Class<?> clazz) {
-        return !context.isEmpty() && context.peek().getClass() == clazz;
+    // проверка на наличие ноды в иерархии
+    public boolean hierarchyContains(Class<?> clazz) {
+        for (Node node : context.stream().toList()) {
+            if (node.getClass() == clazz) return true;
+        }
+        return false;
     }
 
     // анализ

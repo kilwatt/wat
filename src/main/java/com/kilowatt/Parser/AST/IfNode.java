@@ -32,6 +32,7 @@ public class IfNode implements Node {
     public void analyze(SemanticAnalyzer analyzer) {
         logical.analyze(analyzer);
         node.analyze(analyzer);
+        if (elseNode != null) elseNode.analyze(analyzer);
     }
 
     public VmInstructionIf getCompiled() {

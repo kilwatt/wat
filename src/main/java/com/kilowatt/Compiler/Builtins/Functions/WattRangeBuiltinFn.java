@@ -15,23 +15,29 @@ public class WattRangeBuiltinFn implements VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объекты из стека
-        Object first = vm.pop(address);
         Object second = vm.pop(address);
+        Object first = vm.pop(address);
         // проверяем
         if (first instanceof Integer left &&
             second instanceof Integer right) {
-            // ищем большее и меньшее число
-            int greater = Math.max(left, right);
-            int less = Math.min(left, right);
             // генерим итератор
             ArrayList<Integer> range = new ArrayList<>();
-            for (int i = right; i < left; i++) {
-                range.add(i);
+            // в зависимости от его направления
+            if (left < right) {
+                for (int i = left; i < right; i++) {
+                    range.add(i);
+                }
+            } else {
+                for (int i = left - 1; i >= right; i--) {
+                    range.add(i);
+                }
             }
+            // пушим
             if (shouldPushResult) {
                 vm.push(new WattIterator<>(range.iterator()));
             }
         } else {
+            // ошибка
             throw new WattRuntimeError(
                 address.getLine(),
                 address.getFileName(),

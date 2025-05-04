@@ -29,8 +29,8 @@ public class ContinueNode implements Node {
 
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
-        if (!analyzer.topIs(WhileNode.class) &&
-                !analyzer.topIs(ForNode.class)) {
+        if (!analyzer.hierarchyContains(WhileNode.class) &&
+                !analyzer.hierarchyContains(ForNode.class)) {
             throw new WattSemanticError(
                 location.getLine(),
                 location.getFileName(),
