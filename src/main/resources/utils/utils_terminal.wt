@@ -27,4 +27,8 @@ unit terminal {
     fun enter_raw_mode {
         std_reflection_terminal.enter_raw_mode()
     }
+
+    fun exit_raw_mode {
+        std_reflection_terminal.exit_raw_mode()
+    }
 }
