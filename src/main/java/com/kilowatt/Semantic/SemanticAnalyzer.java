@@ -28,7 +28,7 @@ public class SemanticAnalyzer {
     }
 
     // проверка на наличие ноды в иерархии
-    public boolean hierarchyContains(Class<?> clazz) {
+    public boolean hasTop(Class<?> clazz) {
         for (Node node : context.stream().toList()) {
             if (node.getClass() == clazz) return true;
         }

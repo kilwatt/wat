@@ -27,8 +27,8 @@ public class BreakNode implements Node {
 
     @Override
     public void analyze(SemanticAnalyzer analyzer) {
-        if (!analyzer.hierarchyContains(WhileNode.class) &&
-            !analyzer.hierarchyContains(ForNode.class)) {
+        if (!analyzer.hasTop(WhileNode.class) &&
+            !analyzer.hasTop(ForNode.class)) {
             throw new WattSemanticError(
                 location.getLine(),
                 location.getFileName(),
