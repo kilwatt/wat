@@ -24,6 +24,10 @@ unit terminal {
         return std_reflection_terminal.read_key()
     }
 
+    fun set_cursor(x,y) {
+        std_reflection_terminal.set_cursor(x,y)
+    }
+
     fun enter_raw_mode {
         std_reflection_terminal.enter_raw_mode()
     }
