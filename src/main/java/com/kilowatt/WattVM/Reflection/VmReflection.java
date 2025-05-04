@@ -48,7 +48,7 @@ public class VmReflection {
                     .toArray(Class[]::new)
             );
             // создаём экземпляр
-            return constructor.newInstance(castJvmArgs(constructor, args.getArray()));
+            return constructor.newInstance(args.getArray().toArray());
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             // ошибки
             Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
@@ -86,22 +86,6 @@ public class VmReflection {
                 "check your code."
             );
         }
-    }
-
-    /*
-    Каст аргументов
-     */
-    private Object[] castJvmArgs(Constructor constructor, List<Object> objects) {
-        ArrayList<Object> jvmArgs = new ArrayList<>();
-        for (int c = 0; c < constructor.getParameterCount(); c++) {
-            try {
-                Class<?> clazz = constructor.getParameterTypes()[c];
-                jvmArgs.add(clazz.cast(objects.get(c)));
-            } catch (ClassCastException _) {
-                jvmArgs.add(objects.get(c));
-            }
-        }
-        return jvmArgs.toArray();
     }
 
     /*
