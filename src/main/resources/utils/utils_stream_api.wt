@@ -169,4 +169,36 @@ type Stream(list) {
         }
         return self
     }
+
+    fun map(fn) {
+        for i in 0..list.size() {
+            list.set(i, fn(list.get(i)))
+        }
+        return self
+    }
+
+    fun avg {
+        elements_sum := 0
+        for i in list.iter() {
+            elements_sum += i
+        }
+        return elements_sum / list.size()
+    }
+
+    fun reduce(initial, fn) {
+        accumulator := initial
+        for i in list.iter() {
+            accumulator = fn(accumulator, i)
+        }
+        return accumulator
+    }
+
+    fun contains(fn) {
+        for i in list.iter() {
+            if fn(i) {
+                return true
+            }
+        }
+        return false
+    }
 }
