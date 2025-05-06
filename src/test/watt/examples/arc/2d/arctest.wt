@@ -1,9 +1,10 @@
 import 'arc.2d'
 import 'std.fs'
 import 'std.io'
+import 'std.random'
 
 window := new Arc2D(720, 640, 'SomeWindow')
-/*
+
 sprite := null
 sprite2 := null
 window.on_start(fun {
@@ -26,10 +27,42 @@ window.on_key_down(fun(key) {
     io.println('key down: ' + key)
 })
 window.run()
-*/
+
+/*
 window.set_filled(false)
+window.on_start(fun {
+    audio := window.sound(fs.path_of('C:\Users\MuraDana\Downloads\1.mp3'))
+    audio.loop(1)
+})
+x := random.int(0, 720)
+y := random.int(0, 360)
+chosen := random.int(0, 3)
+frames := 0
+max_frames := 2000
+amount := 3
+// new Vec2(370,320)
 window.on_update(fun {
-    window.draw_arc(new Vec2(100,100), 100, 100, 100, new Color(0.3,1,0.3,1))
+    for _ in 0..amount {
+        if chosen == 0 {
+            window.draw_arc(new Vec2(x, y), random.int(0, 360), random.int(0, 360), random.int(0, 360), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
+        } elif chosen == 1 {
+            window.draw_rectangle(new Vec2(x, y), new Vec2(random.int(0, 360), random.int(0, 360)), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
+        } elif chosen == 2 {
+            window.draw_triangle(new Vec2(x, y), new Vec2(random.int(0, 360), random.int(0, 360)), new Vec2(random.int(0, 360), random.int(0, 360)), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
+        }
+        frames += 1
+        if frames > max_frames {
+            chosen = random.int(0, 3)
+            frames := 0
+            x = random.int(0, 720)
+            y = random.int(0, 360)
+            max_frames -= 1
+            if amount + 1 < 30 {
+                amount += 1
+            }
+        }
+    }
 })
 
 window.run()
+*/

@@ -86,6 +86,10 @@ type Arc2D(width,height,title) {
         return self.arc_reflection.text(font)
     }
 
+    fun sound(path) {
+        return self.arc_reflection.sound(path)
+    }
+
     fun draw_sprite(sprite) {
         self.arc_reflection.draw_sprite(sprite)
     }
@@ -110,7 +114,7 @@ type Arc2D(width,height,title) {
         self.arc_reflection.draw_triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, color)
     }
 
-    fun draw_rectangle(pos, size, radius, color) {
+    fun draw_rectangle(pos, size, color) {
         self.arc_reflection.draw_rectangle(pos.x, pos.y, size.x, size.y, color)
     }
 

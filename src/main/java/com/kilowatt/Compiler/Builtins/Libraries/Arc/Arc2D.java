@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -124,6 +125,11 @@ public class Arc2D implements ApplicationListener {
         );
     }
 
+    // создание звука
+    public Arc2DSound sound(Path path) {
+        return new Arc2DSound(Gdx.audio.newSound(Gdx.files.internal(path.toString())));
+    }
+
     // отрисовка спрайта
     public void draw_sprite(Arc2DSprite sprite) {
         sprite.getSprite().draw(batch);
@@ -218,6 +224,12 @@ public class Arc2D implements ApplicationListener {
         this.shapesFilled = filled;
     }
 
+    // очистка экрана
+    public void clear() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
     // запуск
     public void run() {
         new Lwjgl3Application(this, config);
@@ -238,6 +250,8 @@ public class Arc2D implements ApplicationListener {
 
     @Override
     public void render() {
+        // очистка
+        clear();
         // рендер
         batch.begin();
         shapeRenderer.begin(shapesFilled ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
