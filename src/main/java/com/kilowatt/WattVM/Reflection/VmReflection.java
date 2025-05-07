@@ -25,7 +25,7 @@ public class VmReflection {
     // вм
     private final WattVM vm;
 
-    // рефлексия
+    // создание экземпляра jvm-класса
     @SneakyThrows
     public Object reflect(String name, WattList args) {
         // адрес

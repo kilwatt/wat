@@ -1,0 +1,7 @@
+import 'utils.crypto'
+import 'std.io'
+
+encoded := crypto.b64('Hello, world!')
+decoded := crypto.de_b64(encoded)
+
+io.println('Hello, world!')

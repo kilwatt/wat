@@ -33,5 +33,6 @@ public class WattLibraries {
         put("std.serialization", "std/std_serialization.wt");
         put("utils.zlib", "utils/utils_zlib.wt");
         put("utils.stream.api", "utils/utils_stream_api.wt");
+        put("utils.crypto", "utils/utils_crypto.wt");
     }};
 }

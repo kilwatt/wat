@@ -1,0 +1,14 @@
+unit crypto {
+    crypto_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsCrypto',
+        []
+    )
+    fun b64(text) {
+        encoder := crypto_reflection.get_base64_encoder()
+        return encoder.encodeToString(text.getBytes())
+    }
+    fun de_b64(text) {
+        decoder := crypto_reflection.get_base64_decoder()
+        return decoder.decode(text.getBytes())
+    }
+}

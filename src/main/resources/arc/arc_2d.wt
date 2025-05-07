@@ -121,4 +121,8 @@ type Arc2D(width,height,title) {
     fun set_filled(filled) {
         self.arc_reflection.set_filled(filled)
     }
+
+    fun get_delta_time {
+        return self.arc_reflection.get_delta_time()
+    }
 }

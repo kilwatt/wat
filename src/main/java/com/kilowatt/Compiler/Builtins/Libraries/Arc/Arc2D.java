@@ -230,6 +230,11 @@ public class Arc2D implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
+    // получение дельта тайма
+    public float get_delta_time() {
+        return Gdx.graphics.getDeltaTime();
+    }
+
     // запуск
     public void run() {
         new Lwjgl3Application(this, config);
