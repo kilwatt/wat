@@ -1,9 +1,12 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Collections;
 
 import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
+import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,22 +15,23 @@ import java.util.List;
  */
 @Getter
 public class WattList {
-    private List<Object> array = new ArrayList<>();
+    private List<Object> list = new ArrayList<>();
 
     public void add(Object o) {
-        array.add(o);
+        list.add(o);
     }
+    public void add_all(WattList another) { this.list.addAll(another.list); }
     public void delete_at(int index) {
-        array.remove(index);
+        list.remove(index);
     }
     public void delete(Object v) {
-        array.remove(v);
+        list.remove(v);
     }
     public Object get(int index) {
-        return array.get(index);
+        return list.get(index);
     }
     public Object contains(Object obj) {
-        for (Object o : array) {
+        for (Object o : list) {
             if (VmInstructionCondOp.equal(
                     WattCompiler.vm.getCallsHistory().getLast().getAddress(),
                     o,
@@ -40,10 +44,10 @@ public class WattList {
         return false;
     }
     public void set(int i, Object v) {
-        array.set(i, v);
+        list.set(i, v);
     }
     public int size() {
-        return array.size();
+        return list.size();
     }
     public Object to_string() {
         return this;
@@ -51,11 +55,11 @@ public class WattList {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("[");
-        for (int i = 0; i < array.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             // получаем по индексу
-            Object o = array.get(i);
+            Object o = list.get(i);
             // форматирум
-            if (i + 1 == array.size()) {
+            if (i + 1 == list.size()) {
                 s.append(o);
             } else {
                 s.append(o).append(",");
@@ -65,38 +69,55 @@ public class WattList {
         return s.toString();
     }
     public void insert(int i, Object v) {
-        array.add(i, v);
+        list.add(i, v);
     }
     public int index_of(Object obj) {
-        for (Object o : array) {
+        for (Object o : list) {
             if (VmInstructionCondOp.equal(
                     WattCompiler.vm.getCallsHistory().getLast().getAddress(),
                     o,
                     obj
             )) {
-                return array.indexOf(o);
+                return list.indexOf(o);
             }
         }
 
         return -1;
     }
     public WattIterator<Object> iter() {
-        return new WattIterator<>(this.array.iterator());
+        return new WattIterator<>(this.list.iterator());
     }
     public static WattList of(List<Object> values) {
         WattList arr = new WattList();
-        arr.array = values;
+        arr.list = values;
         return arr;
     }
     public static WattList of(Object[] values) {
         WattList arr = new WattList();
-        arr.array = List.of(values);
+        arr.list = List.of(values);
         return arr;
     }
+    public void add_java(Object values) {
+        if (values instanceof ArrayList<?> another) {
+            this.list.addAll(another);
+        } else if (values.getClass().isArray()) {
+            for (int i = 0; i < Array.getLength(values); i++) {
+                list.add(Array.get(values, i));
+            }
+        } else {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                address.getLine(),
+                address.getFileName(),
+                "couldn't use add_java with " + values.getClass().getSimpleName(),
+                "can be used with: ArrayList<?>, ?[]"
+            );
+        }
+    }
     public void del_all(WattList arr) {
-        this.array.removeAll(arr.array);
+        this.list.removeAll(arr.list);
     }
     public WattList copy() {
-        return WattList.of(array);
+        return WattList.of(list);
     }
 }

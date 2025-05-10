@@ -2,10 +2,7 @@ package com.kilowatt.Compiler.Builtins.Libraries.Std;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattParsingError;
-import com.kilowatt.Errors.WattResolveError;
 import com.kilowatt.Errors.WattRuntimeError;
-import com.kilowatt.Errors.WattSemanticError;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.VmAddress;
 
@@ -31,7 +28,7 @@ public class StdThreading {
         return WattCompiler.vm.getThreads().submit(() -> {
             WattCompiler.vm.initForThread();
 
-            for (Object o : args.getArray()) {
+            for (Object o : args.getList()) {
                 WattCompiler.vm.push(o);
             }
             fn.exec(WattCompiler.vm, false);

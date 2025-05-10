@@ -1,14 +1,33 @@
+import 'std.typeof'
 unit crypto {
     crypto_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsCrypto',
         []
     )
     fun b64(text) {
-        encoder := crypto_reflection.get_base64_encoder()
-        return encoder.encodeToString(text.getBytes())
+        return crypto_reflection.b64(text)
     }
     fun de_b64(text) {
-        decoder := crypto_reflection.get_base64_decoder()
-        return decoder.decode(text.getBytes())
+        return crypto_reflection.de_b64(text)
+    }
+    fun sha256(text) {
+        encoder := crypto_reflection.digest('SHA-256')
+        return crypto_reflection.to_hex(encoder.digest(text.getBytes()))
+    }
+    fun sha512(text) {
+        encoder := crypto_reflection.digest('SHA-512')
+        return crypto_reflection.to_hex(encoder.digest(text.getBytes()))
+    }
+    fun sha384(text) {
+        encoder := crypto_reflection.digest('SHA-384')
+        return crypto_reflection.to_hex(encoder.digest(text.getBytes()))
+    }
+    fun md5(text) {
+        encoder := crypto_reflection.digest('MD5')
+        return crypto_reflection.to_hex(encoder.digest(text.getBytes()))
+    }
+    fun sha1(text) {
+        encoder := crypto_reflection.digest('SHA-1')
+        return crypto_reflection.to_hex(encoder.digest(text.getBytes()))
     }
 }

@@ -19,7 +19,7 @@ public class StdReflection {
         // адрес
         VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
         // аргументы
-        for (Object o : args.getArray()) {
+        for (Object o : args.getList()) {
             WattCompiler.vm.push(o);
         }
         // инстанс
@@ -47,7 +47,7 @@ public class StdReflection {
         WattCompiler.vm.push(object);
         // аргументы
         VmChunk argsChunk = new VmChunk();
-        for (Object arg: args.getArray()) {
+        for (Object arg: args.getList()) {
             argsChunk.visitInstr(
                 new VmInstructionPush(
                     address,

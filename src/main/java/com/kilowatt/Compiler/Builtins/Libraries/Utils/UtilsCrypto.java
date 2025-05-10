@@ -28,13 +28,22 @@ public class UtilsCrypto {
     }
 
     /*
-    работа с base64
+    В base64
      */
-    public Base64.Decoder get_base64_decoder() {
-        return Base64.getDecoder();
+    public String b64(String text) {
+        return Base64.getEncoder().encodeToString(text.getBytes());
+    }
+    public String de_b64(String text) {
+        return new String(Base64.getDecoder().decode(text.getBytes()));
     }
 
-    public Base64.Encoder get_base64_encoder() {
-        return Base64.getEncoder();
+    /*
+    В hex
+     */
+    public String to_hex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+        for(byte b: bytes)
+            sb.append(String.format("%02x", b));
+        return sb.toString();
     }
 }

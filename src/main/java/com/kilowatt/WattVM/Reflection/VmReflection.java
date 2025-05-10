@@ -41,12 +41,12 @@ public class VmReflection {
                 address,
                 clazz,
                 argsAmount,
-                args.getArray().stream()
+                args.getList().stream()
                     .map(Object::getClass)
                     .toArray(Class[]::new)
             );
             // создаём экземпляр
-            return constructor.newInstance(args.getArray().toArray());
+            return constructor.newInstance(args.getList().toArray());
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             // ошибки
             Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;

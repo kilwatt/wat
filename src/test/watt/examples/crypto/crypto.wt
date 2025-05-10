@@ -1,7 +1,10 @@
 import 'utils.crypto'
 import 'std.io'
 
+io.println(' -- BASE64 -- ')
 encoded := crypto.b64('Hello, world!')
+io.println('encoded: ' + encoded)
 decoded := crypto.de_b64(encoded)
-
-io.println('Hello, world!')
+io.println('decoded: ' + decoded)
+io.println(' -- SHA -- ')
+io.println('encoded: ' + crypto.sha256('Hello, world!'))
