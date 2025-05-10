@@ -12,6 +12,7 @@ import lombok.SneakyThrows;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -102,8 +103,8 @@ public class VmReflection {
     /*
     Поиск конструктора
      */
-    private Constructor findConstructor(VmAddress address, Class<?> clazz,
-            int argsAmount, Class<?>[] parameterTypes) {
+    public Constructor findConstructor(VmAddress address, Class<?> clazz,
+           int argsAmount, Class<?>[] parameterTypes) {
         // ищем конструктор
         for (Constructor c : clazz.getConstructors()) {
             if (c.getParameterCount() == argsAmount &&
@@ -119,7 +120,8 @@ public class VmReflection {
     /*
     Поиск raw конструктора
      */
-    private Constructor findRawConstructor(VmAddress address, Class<?> clazz, int argsAmount) {
+    public Constructor findRawConstructor(VmAddress address, Class<?> clazz,
+           int argsAmount) {
         // ищем конструктор
         for (Constructor c : clazz.getConstructors()) {
             if (c.getParameterCount() == argsAmount) {
@@ -129,8 +131,48 @@ public class VmReflection {
         // в ином случае, ошибка
         throw new WattRuntimeError(
                 address.getLine(), address.getFileName(),
-                "constructor with args amount: "
-                        + argsAmount + " for: " +
+                "constructor with args ("
+                        + argsAmount + ") for: " +
+                        clazz.getSimpleName() + " is not found.",
+                clazz.getSimpleName()
+        );
+    }
+
+    /*
+    Поиск метода
+     */
+    public Method findMethod(VmAddress address, Class<?> clazz, String name,
+           int argsAmount, Class<?>[] parameterTypes) {
+        // ищем конструктор
+        for (Method m : clazz.getMethods()) {
+            if (m.getName().equals(name) &&
+                    m.getParameterCount() == argsAmount &&
+                    checkParameters(m.getParameterTypes(), parameterTypes)
+            ) {
+                return m;
+            }
+        }
+        // ищем сырой конструктор
+        return findRawMethod(address, clazz, name, argsAmount);
+    }
+
+    /*
+    Поиск raw конструктора
+     */
+    public Method findRawMethod(VmAddress address, Class<?> clazz,
+           String name, int argsAmount) {
+        // ищем конструктор
+        for (Method m : clazz.getMethods()) {
+            if (m.getName().equals(name) &&
+                    m.getParameterCount() == argsAmount) {
+                return m;
+            }
+        }
+        // в ином случае, ошибка
+        throw new WattRuntimeError(
+                address.getLine(), address.getFileName(),
+                "method " + name + " ("
+                        + argsAmount + ") from: " +
                         clazz.getSimpleName() + " is not found.",
                 clazz.getSimpleName()
         );

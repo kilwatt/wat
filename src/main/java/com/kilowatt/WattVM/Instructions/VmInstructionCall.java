@@ -18,6 +18,7 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Objects;
 
 /*
@@ -128,51 +129,35 @@ public class VmInstructionCall implements VmInstruction {
     private void callReflectionFunc(WattVM vm, VmFrame<String, Object> frame, Object last) {
         // аргументы
         int argsAmount = passArgs(vm, frame);
-        Object[] callArgs = null;
-        // рефлексийный вызов
-        Method[] methods = last.getClass().getMethods();
+        Object[] callArgs = toJvmArgs(vm, argsAmount);
         // поиск метода
-        Method fun = null;
-        for (Method m : methods) {
-            if (m.getName().equals(name)) {
-                if (argsAmount == m.getParameterCount()) {
-                    callArgs = toJvmArgs(vm, argsAmount);
-                    fun = m;
-                    break;
-                }
+        Method fun = vm.getReflection().findMethod(
+                address, last.getClass(), name,
+                argsAmount, Arrays.stream(callArgs)
+                    .map(Object::getClass)
+                    .toArray(Class[]::new)
+        );
+        // вызов
+        try {
+            // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
+            Object returned = fun.invoke(last, callArgs);
+            if (shouldPushResult) {
+                vm.push(Objects.requireNonNullElseGet(returned, VmNull::new));
             }
-        }
-        // выполнение метода
-        if (fun == null) {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                "jvm fn not found: " + last.getClass().getSimpleName() + ":" + name + " (args:" +
-                argsAmount + ")",
-                "check name for mistakes & passing args amount.");
-        }
-        else {
-            checkArgs(last.getClass().getName() + ":" + name,
-                    fun.getParameterCount()-1, callArgs.length-1);
-            try {
-                // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
-                Object returned = fun.invoke(last, callArgs);
-                if (shouldPushResult) {
-                    vm.push(Objects.requireNonNullElseGet(returned, VmNull::new));
-                }
-            } catch (IllegalAccessException | IllegalArgumentException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            throw new WattRuntimeError(
+                address.getLine(), address.getFileName(),
+                "jvm call error (" + name + "): " + e.getMessage(), "check your code."
+            );
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof WattRuntimeError ||
+                    e.getCause() instanceof WattParsingError) {
+                throw e.getCause();
+            } else {
                 throw new WattRuntimeError(
                     address.getLine(), address.getFileName(),
-                    "jvm call error (" + name + "): " + e.getMessage(), "check your code."
+                    "jvm call error (" + name + "): " + e.getCause().getMessage(), "check your code."
                 );
-            } catch (InvocationTargetException e) {
-                if (e.getCause() instanceof WattRuntimeError ||
-                        e.getCause() instanceof WattParsingError) {
-                    throw e.getCause();
-                } else {
-                    throw new WattRuntimeError(
-                        address.getLine(), address.getFileName(),
-                        "jvm call error (" + name + "): " + e.getCause().getMessage(), "check your code."
-                    );
-                }
             }
         }
     }
@@ -191,39 +176,24 @@ public class VmInstructionCall implements VmInstruction {
 
     // Вызов функции из глобального скоупа
     private void callGlobalFunc(WattVM vm, VmFrame<String, Object> frame)  {
-        if (frame.has(name)) {
-            // аргументы
-            int argsAmount = passArgs(vm, frame);
-            Object o = frame.lookup(address, name);
-            if (o instanceof VmFunction fn) {
-                checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
-                fn.exec(vm, shouldPushResult);
-            }
-            else if (o instanceof VmBuiltinFunction fn) {
-                checkArgs(fn.getName(), fn.paramsAmount(), argsAmount);
-                fn.exec(vm, address, shouldPushResult);
-            } else {
-                throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                    "couldn't call: " + name + ", not a fn.",
-                    "check your code.");
-            }
-        } else {
-            // аргументы
-            int argsAmount = passArgs(vm, frame);
-            // вызов
-            Object o = vm.getGlobals().lookup(address, name);
-            if (o instanceof VmFunction fn) {
-                checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
-                fn.exec(vm, shouldPushResult);
-            }
-            else if (o instanceof VmBuiltinFunction fn) {
-                checkArgs(fn.getName(), fn.paramsAmount(), argsAmount);
-                fn.exec(vm, address, shouldPushResult);
-            } else {
-                throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                    "couldn't call: " + o.getClass().getSimpleName(),
-                    "check your code.");
-            }
+        // аргументы
+        int argsAmount = passArgs(vm, frame);
+        Object o = frame.lookup(address, name);
+        // функция
+        if (o instanceof VmFunction fn) {
+            checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
+            fn.exec(vm, shouldPushResult);
+        }
+        // нативная функция
+        else if (o instanceof VmBuiltinFunction fn) {
+            checkArgs(fn.getName(), fn.paramsAmount(), argsAmount);
+            fn.exec(vm, address, shouldPushResult);
+        }
+        // в ином случае - ошибка
+        else {
+            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                "couldn't call: " + name + ", not a fn.",
+                "check your code.");
         }
     }
 
