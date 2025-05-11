@@ -1,3 +1,5 @@
+import 'std.random'
+
 type Stream(list) {
     fun for_each(fn) {
         for i in list.iter() {
@@ -200,5 +202,17 @@ type Stream(list) {
             }
         }
         return false
+    }
+
+    fun shuffle {
+        new_list := list.copy()
+        for i in 0..new_list.size() {
+            j := random.int(0, new_list.size())
+            first := new_list.get(i)
+            second := new_list.get(j)
+            new_list.set(i, second)
+            new_list.set(j, first)
+        }
+        return new Stream(new_list)
     }
 }

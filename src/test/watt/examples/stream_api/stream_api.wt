@@ -1,16 +1,27 @@
 import 'utils.stream.api'
 import 'std.io'
 
-list := [1, 2, 3, 4, 5]
+list := [1, 2, 3, 4, 5, 6, 7, 8, 9]
+/*
 result := new Stream(list)
     .sort()
     .filter(lambda(x) -> x > 2)
     .distinct()
-    .take(4)
+    .take(3)
     .skip(1)
     .reverse()
     .delete_all(lambda(x) -> x < 5)
     .map(lambda(x) -> x + 1)
     .reduce(0, lambda(acc, x) -> acc + x)
+*/
+result := new Stream(list)
+    .sort()
+    .filter(lambda(x) -> x > 2)
+    .distinct()
+    .take(3)
+    .reverse()
+    .map(lambda(x) -> x + 1)
+    .shuffle()
+    .get()
 
 io.println(result)

@@ -1,4 +1,5 @@
 import 'std.io'
+import 'std.threads'
 fun fib(n) {
     if n <= 1 {
         return n
@@ -6,4 +7,4 @@ fun fib(n) {
         return fib(n - 1) + fib(n - 2)
     }
 }
-io.println(fib(23))
+io.println(fib(30))

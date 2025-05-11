@@ -33,8 +33,8 @@ public class VmFrame<K, V> {
      * @return да или нет
      */
     private boolean existsInFrameOrClosure(K name) {
-        return (getValues().containsKey(name)) ||
-                (getClosure() != null && getClosure().has(name));
+        return (values.containsKey(name)) ||
+                (closure != null && closure.has(name));
     }
 
     /**
@@ -58,8 +58,8 @@ public class VmFrame<K, V> {
             current = current.root;
         }
         // проверяем
-        if (current.getValues().containsKey(name)) return current.getValues().get(name);
-        else return current.getClosure().lookup(address, name);
+        if (current.values.containsKey(name)) return current.values.get(name);
+        else return current.closure.lookup(address, name);
     }
 
     /**
@@ -73,13 +73,13 @@ public class VmFrame<K, V> {
         // фрэймы
         while (current != null) {
             // проверка фрэйма
-            if (current.getValues().containsKey(name)) {
-                current.getValues().put(name, val);
+            if (current.values.containsKey(name)) {
+                current.values.put(name, val);
                 return;
             }
             // проверка замыкания фрэйма
-            else if (current.getClosure() != null && current.getClosure().has(name)) {
-                current.getClosure().set(address, name, val);
+            else if (current.closure != null && current.closure.has(name)) {
+                current.closure.set(address, name, val);
                 return;
             }
             // прыгаем в рут
@@ -107,8 +107,8 @@ public class VmFrame<K, V> {
      * @param val - значение
      */
     public void define(VmAddress address, K name, V val) {
-        if (!getValues().containsKey(name)) {
-            getValues().put(name, val);
+        if (!values.containsKey(name)) {
+            values.put(name, val);
         }
         else {
             throw new WattRuntimeError(address.getLine(), address.getFileName(),
@@ -149,9 +149,9 @@ public class VmFrame<K, V> {
         if (this.root == rootFrame || this == rootFrame) { return; }
         // ищем объект с пустым рутом
         VmFrame<K, V> current = this;
-        while (current.getRoot() != null) {
-            if (current.getRoot() == rootFrame || current == rootFrame) { return; }
-            current = current.getRoot();
+        while (current.root != null) {
+            if (current.root == rootFrame || current == rootFrame) { return; }
+            current = current.root;
         }
         // устанавливаем рут
         current.root = rootFrame;
