@@ -13,11 +13,9 @@ import java.util.List;
 @Getter
 public class WattTestRunner {
     private final ArrayList<WattTest> tests = new ArrayList<>();
-
     public WattTestRunner(WattTest... tests) {
         this.tests.addAll(List.of(tests));
     }
-
     // запуск тестов
     public void run() {
         // зелёный цвет

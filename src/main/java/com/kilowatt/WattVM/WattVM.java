@@ -14,6 +14,7 @@ import com.kilowatt.WattVM.Storage.VmFrame;
 import com.kilowatt.WattVM.Threads.VmThreads;
 import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
+import org.openjdk.jmh.annotations.Benchmark;
 
 import java.util.ArrayDeque;
 import java.util.List;

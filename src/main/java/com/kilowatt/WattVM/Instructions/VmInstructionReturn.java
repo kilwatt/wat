@@ -15,7 +15,7 @@ import lombok.Getter;
 инструкцией Store
  */
 @Getter
-public class VmInstructionReturn extends RuntimeException implements VmInstruction {
+public class VmInstructionReturn implements VmInstruction {
     // адресс
     private final VmChunk value;
     private final VmAddress address;

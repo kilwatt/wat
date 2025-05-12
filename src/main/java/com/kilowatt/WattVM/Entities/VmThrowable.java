@@ -24,4 +24,10 @@ public class VmThrowable extends RuntimeException {
     public Object value() {
         return this.value;
     }
+
+    // заполнение стак трейса
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }

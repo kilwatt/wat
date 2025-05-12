@@ -9,5 +9,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class VmLoopBreak extends RuntimeException {
+    // только текущая итерация
     private final boolean currentIteration;
+
+    // заполнение стак трейса
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }
