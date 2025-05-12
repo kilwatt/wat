@@ -1,0 +1,13 @@
+import 'std.threads'
+import 'std.io'
+
+local := new ThreadLocal()
+local.set(1)
+io.println('thread-1: ' + local.get())
+thread := threads.run(fun {
+    io.println('thread-2: ' + local.get())
+    local.set(2)
+    io.println('thread-2: ' + local.get())
+}, [])
+thread.join()
+io.println('thread-1: ' + local.get())

@@ -16,3 +16,18 @@ unit threads {
         return threads_reflection.run(fn, constructor)
     }
 }
+
+type ThreadLocal {
+    thread_local := __refl__.reflect(
+        'java.lang.ThreadLocal',
+        []
+    )
+
+    fun set(value) {
+        self.thread_local.set(value)
+    }
+
+    fun get {
+        return self.thread_local.get()
+    }
+}

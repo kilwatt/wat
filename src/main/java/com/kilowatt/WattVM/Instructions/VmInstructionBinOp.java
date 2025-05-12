@@ -3,14 +3,13 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*
 Инструкция арифметической операции
  */
-@SuppressWarnings({"ClassCanBeRecord", "UnnecessaryToStringCall"})
+@SuppressWarnings({"ClassCanBeRecord"})
 @Getter
 public class VmInstructionBinOp implements VmInstruction {
     // адресс
@@ -27,12 +26,6 @@ public class VmInstructionBinOp implements VmInstruction {
     public void run(WattVM vm, VmFrame<String, Object> frame) {
         Object r = vm.pop(address);
         Object l = vm.pop(address);
-        if (r.getClass() == VmNull.class || l.getClass() == VmNull.class) {
-            String nullSide = r.getClass() == VmNull.class ? "right" : "left";
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                    "couldn't use " + operator + " operator with null from " + nullSide + " side.",
-                    "check types.");
-        }
         if (r instanceof String || l instanceof String) {
             switch (operator) {
                 case "+" -> vm.push(l.toString() + r.toString());
