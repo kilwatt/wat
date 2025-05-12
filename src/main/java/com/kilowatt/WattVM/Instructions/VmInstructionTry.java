@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.WattVM.Chunks.VmChunk;
+import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -27,9 +28,13 @@ public class VmInstructionTry implements VmInstruction {
         try {
             // выполняем тело
             tryBody.run(vm, frame);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException error) {
             // устанавливаем переменную
-            frame.define(address, catchVariableName, e);
+            if (error instanceof VmThrowable throwable) {
+                frame.define(address, catchVariableName, throwable);
+            } else {
+                frame.define(address, catchVariableName, new VmThrowable(error));
+            }
             // выполняем тело исключения
             catchBody.run(vm, frame);
             // удаляем переменную

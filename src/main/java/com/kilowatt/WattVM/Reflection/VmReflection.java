@@ -172,7 +172,7 @@ public class VmReflection {
         throw new WattRuntimeError(
                 address.getLine(), address.getFileName(),
                 "method " + name + " ("
-                        + argsAmount + ") from: " +
+                        + argsAmount + ") from " +
                         clazz.getSimpleName() + " is not found.",
                 clazz.getSimpleName()
         );

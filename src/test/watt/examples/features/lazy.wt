@@ -1,0 +1,9 @@
+import 'utils.features'
+import 'std.io'
+
+apples := new Lazy(fun {
+    io.println('computed')
+    return 14
+})
+io.println('computing...')
+value := apples.get()

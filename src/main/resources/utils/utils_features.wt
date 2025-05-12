@@ -1,0 +1,367 @@
+import 'std.threads'
+
+type Option(value) {
+    fun if_some(fn) {
+        if value != null {
+            fn()
+        }
+    }
+
+    fun if_nothing(fn) {
+        if value == null {
+            fn()
+        }
+    }
+
+    fun if_some_else_nothing(fn, fn_else) {
+        if value != null {
+            fn()
+        } else {
+            fn_else()
+        }
+    }
+
+    fun unwrap {
+        if value != null {
+            return self.value
+        } else {
+            throw error(
+                'value is none, could not get it from option.',
+                'check the value is null by "is_nothing" and "is_some"'
+            )
+        }
+    }
+
+    fun unwrap_or(default_value) {
+        if value != null {
+            return value
+        } else {
+            return default_value
+        }
+    }
+
+    fun is_some {
+        return value != null
+    }
+
+    fun is_nothing {
+        return value == null
+    }
+
+    fun map(fn) {
+        if value != null {
+            return new Option(fn(value))
+        }
+        else {
+            return self
+        }
+    }
+}
+
+type Result(ok, err) {
+    fun init {
+        if self.ok != null and self.err != null {
+            throw error(
+                'could not create result with ok and error at the same time.',
+                'you can create result with or OR error value'
+            )
+        }
+    }
+
+    fun is_ok {
+        return ok != null
+    }
+
+    fun is_err {
+        return err != null
+    }
+
+    fun unwrap {
+        if err != null {
+            throw error(
+                'could not unwrap result with ok value, because of error: ' + err,
+                'you can check result value by "is_ok" and "is_err"'
+            )
+        } else {
+            return ok
+        }
+    }
+
+    fun unwrap_err {
+        if err == null {
+            throw error(
+                'could not unwrap result with err value, because of ok: ' + ok,
+                'you can check result value by "is_ok" and "is_err"'
+            )
+        } else {
+            return err
+        }
+    }
+
+    fun if_ok(fn) {
+        if err == null {
+            fn()
+        }
+    }
+
+    fun if_err(fn) {
+        if err != null {
+            fn()
+        }
+    }
+
+    fun if_ok_else_err(fn, fn_else) {
+        if err == null {
+            fn()
+        } else {
+            fn_else()
+        }
+    }
+
+    fun map(fn) {
+        if err == null {
+            return new Result(fn(ok), null)
+        }
+        else {
+            return self
+        }
+    }
+
+    fun map_err(fn) {
+        if err != null {
+            return new Result(null, fn(err))
+        }
+        else {
+            return self
+        }
+    }
+}
+
+type TryResult(fn) {
+    fun run {
+        try {
+            return new Result(fn(), null)
+        } catch err {
+            return new Result(null, err)
+        }
+    }
+}
+
+type Lazy(fn) {
+    cached := null
+
+    fun get {
+        if cached == null {
+            cached = fn()
+        }
+        return cached
+    }
+}
+
+type Either(l, r) {
+    fun init {
+        if self.l != null and self.r != null {
+            throw error(
+                'could not create either with left and right at the same time.',
+                'you can create either with left OR right value'
+            )
+        }
+    }
+
+    fun is_left {
+        return l != null
+    }
+
+    fun is_right {
+        return r != null
+    }
+
+    fun unwrap_left {
+        if l == null {
+            throw error(
+                'could not unwrap either with left value, because of right: ' + r,
+                'you can check either value by "is_left" and "is_right"'
+            )
+        } else {
+            return l
+        }
+    }
+
+    fun unwrap_right {
+        if r == null {
+            throw error(
+                'could not unwrap either with right value, because of left: ' + l,
+                'you can check either value by "is_left" and "is_right"'
+            )
+        } else {
+            return r
+        }
+    }
+
+    fun if_left(fn) {
+        if l != null {
+            fn()
+        }
+    }
+
+    fun if_right(fn) {
+        if r != null {
+            fn()
+        }
+    }
+
+    fun if_left_else_right(fn, fn_else) {
+        if l != null {
+            fn()
+        } else {
+            fn_else()
+        }
+    }
+
+    fun if_right_else_left(fn, fn_else) {
+        if r != null {
+            fn()
+        } else {
+            fn_else()
+        }
+    }
+
+    fun map_left(fn) {
+        if l == null {
+            return new Either(fn(l), null)
+        }
+        else {
+            return self
+        }
+    }
+
+    fun map_right(fn) {
+        if r != null {
+            return new Result(null, fn(r))
+        }
+        else {
+            return self
+        }
+    }
+}
+
+type Validation(ok, errs) {
+    fun init {
+        if self.ok != null and self.errs != null {
+            throw error(
+                'could not create validation with ok and errors at the same time.',
+                'you can create validation with or OR errors value'
+            )
+        }
+    }
+
+    fun is_ok {
+        return ok != null
+    }
+
+    fun is_errs {
+        return errs != null
+    }
+
+    fun unwrap {
+        if errs != null {
+            throw error(
+                'could not unwrap validation with ok value, because of errors: ' + errs,
+                'you can check validation value by "is_ok" and "is_errs"'
+            )
+        } else {
+            return ok
+        }
+    }
+
+    fun unwrap_errs {
+        if err == null {
+            throw error(
+                'could not unwrap validation with errs value, because of ok: ' + ok,
+                'you can check validation value by "is_ok" and "is_err"'
+            )
+        } else {
+            return errs
+        }
+    }
+
+    fun if_ok(fn) {
+        if err == null {
+            fn()
+        }
+    }
+
+    fun if_errs(fn) {
+        if errs != null {
+            fn()
+        }
+    }
+
+    fun if_ok_else_errs(fn, fn_else) {
+        if errs == null {
+            fn()
+        } else {
+            fn_else()
+        }
+    }
+
+    fun map(fn) {
+        if errs == null {
+            return new Validation(fn(ok), null)
+        }
+        else {
+            return self
+        }
+    }
+
+    fun map_err(fn) {
+        if errs != null {
+            return new Validation(null, fn(err))
+        }
+        else {
+            return self
+        }
+    }
+}
+
+type IO(effect_fn) {
+    fun run {
+        return effect_fn()
+    }
+
+    fun map(fn) {
+        return new IO(fn(effect_fn()))
+    }
+}
+
+type Pair(l, r) {
+    fun left {
+        return l
+    }
+
+    fun right {
+        return r
+    }
+
+    fun swap {
+        return new Pair(r, l)
+    }
+}
+
+type Promise(fn) {
+    listeners := []
+
+    fun do {
+        threads.run(fun {
+            fn()
+            for f in self.listeners.iter() {
+                f()
+            }
+        }, [])
+    }
+
+    fun then(fn) {
+        listeners.add(fn)
+        return self
+    }
+}

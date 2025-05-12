@@ -1,0 +1,7 @@
+import 'utils.features'
+import 'std.io'
+
+option := new Option(1)
+if option.is_some() {
+    io.println('has value! value: ' + option.unwrap())
+}

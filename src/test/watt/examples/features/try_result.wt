@@ -1,0 +1,7 @@
+import 'utils.features'
+import 'std.io'
+
+try_result := new TryResult(fun {
+    return e()
+})
+io.println(try_result.run().unwrap_err().value())

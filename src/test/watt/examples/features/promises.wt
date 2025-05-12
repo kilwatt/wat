@@ -1,0 +1,9 @@
+import 'utils.features'
+import 'std.io'
+
+new Promise(fun {
+    threads.sleep(1000)
+    io.println('promise success')
+}).then(fun {
+    io.println('then success')
+}).do()
