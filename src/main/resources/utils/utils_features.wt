@@ -377,3 +377,15 @@ type Signal {
         }
     }
 }
+
+type Undoable(fn, undo_fn) {
+    fun do {
+        fn()
+    }
+    fun undo {
+        undo_fn()
+    }
+    fun redo {
+        fn()
+    }
+}
