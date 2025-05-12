@@ -365,3 +365,15 @@ type Promise(fn) {
         return self
     }
 }
+
+type Signal {
+    subscribers := []
+    fun subscribe(fn) {
+        subscribers.add(fn)
+    }
+    fun call {
+        for fn in subscribers.iter() {
+            fn()
+        }
+    }
+}
