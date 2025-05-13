@@ -142,7 +142,7 @@ public class VmInstructionCall implements VmInstruction {
             // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
             Object returned = fun.invoke(last, callArgs);
             if (shouldPushResult) {
-                vm.push(Objects.requireNonNullElseGet(returned, VmNull::new));
+                vm.push(returned);
             }
         } catch (IllegalAccessException | IllegalArgumentException e) {
             throw new WattRuntimeError(

@@ -28,11 +28,6 @@ public class VmUnit implements VmFunctionOwner {
     }
 
     @Override
-    public VmFrame<String, Object> getLocalScope() {
-        return fields;
-    }
-
-    @Override
     public String toString() {
         return "VmUnit(" +
                 "name='" + name + '\'' +

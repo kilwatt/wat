@@ -75,17 +75,17 @@ public class VmInstructionLoad implements VmInstruction {
                         vm.push(field.get(last));
                     } catch (NoSuchFieldException e) {
                         throw new WattRuntimeError(
-                                address.getLine(),
-                                address.getFileName(),
-                                "not found: " + name,
-                                "check your reflection interaction."
+                            address.getLine(),
+                            address.getFileName(),
+                            "not found: " + name,
+                            "did you type wrong name?"
                         );
                     } catch (IllegalAccessException e) {
                         throw new WattRuntimeError(
-                                address.getLine(),
-                                address.getFileName(),
-                                "access failed: " + name,
-                                "check your reflection interaction."
+                            address.getLine(),
+                            address.getFileName(),
+                            "access failed: " + name,
+                            "check your reflection interaction."
                         );
                     }
                 }

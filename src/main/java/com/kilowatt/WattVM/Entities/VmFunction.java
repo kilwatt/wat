@@ -48,7 +48,7 @@ public class VmFunction {
         }
         // устанавливаем рут скоупа и переменную self
         if (selfBind != null) {
-            frame.setRoot(selfBind.getLocalScope());
+            frame.setRoot(selfBind.getFields());
             frame.define(address, "self", selfBind);
         } else {
             frame.setRoot(vm.getGlobals());

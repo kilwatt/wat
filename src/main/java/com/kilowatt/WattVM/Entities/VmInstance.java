@@ -142,7 +142,7 @@ public class VmInstance implements VmFunctionOwner {
 
     // получение локального скоупа
     @Override
-    public VmFrame<String, Object> getLocalScope() {
+    public VmFrame<String, Object> getFields() {
         return fields;
     }
 }
