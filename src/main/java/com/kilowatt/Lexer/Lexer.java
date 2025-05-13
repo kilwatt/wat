@@ -263,7 +263,6 @@ public class Lexer {
     private Token scanNumber(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
         boolean isFloat = false;
-        int startColumn = column - 1;
         while (isDigit(peek()) || peek() == '.') {
             if (peek() == '.') {
                 if (next() == '.') break;
@@ -281,13 +280,12 @@ public class Lexer {
                 break;
             }
         }
-        return new Token(TokenType.NUM, text.toString(), line, startColumn, filename, lineText);
+        return new Token(TokenType.NUM, text.toString(), line, column, filename, lineText);
     }
 
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
-        int startColumn = column - 1;
         while (isId(peek())) {
             if (match('\n')) {
                 newLine();
@@ -299,13 +297,13 @@ public class Lexer {
             }
         }
         TokenType type = keywords.getOrDefault(text.toString(), TokenType.ID);
-        return new Token(type, text.toString(), line, startColumn, filename, lineText);
+        return new Token(type, text.toString(), line, column, filename, lineText);
     }
 
     // скип новой строки
     private void newLine() {
         line++;
-        column = 1;
+        column = 0;
         lineText = getLineText();
     }
 
