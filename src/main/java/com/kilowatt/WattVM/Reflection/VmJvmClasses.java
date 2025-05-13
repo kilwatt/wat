@@ -2,7 +2,6 @@ package com.kilowatt.WattVM.Reflection;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.VmAddress;
 
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 /*
@@ -32,7 +31,7 @@ public class VmJvmClasses {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                     "jvm class is not defined: " + name, "check class name for mistakes.");
         }
     }

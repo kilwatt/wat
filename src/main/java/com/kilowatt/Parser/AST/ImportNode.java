@@ -52,8 +52,7 @@ public class ImportNode implements Node {
     public void analyze(SemanticAnalyzer analyzer) {
         if (analyzer.top() != null) {
             throw new WattSemanticError(
-                location.getLine(),
-                location.getFileName(),
+                location.asAddress(),
                 "couldn't use import outside global code",
                 "move this imports."
             );

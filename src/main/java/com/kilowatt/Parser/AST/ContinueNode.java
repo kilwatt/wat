@@ -21,7 +21,7 @@ public class ContinueNode implements Node {
     public void compile() {
         WattCompiler.code.visitInstruction(
             new VmInstructionLoopEnd(
-                new VmAddress(location.getFileName(), location.getLine()),
+                location.asAddress(),
                 true
             )
         );
@@ -32,8 +32,7 @@ public class ContinueNode implements Node {
         if (!analyzer.hasTop(WhileNode.class) &&
                 !analyzer.hasTop(ForNode.class)) {
             throw new WattSemanticError(
-                location.getLine(),
-                location.getFileName(),
+                location.asAddress(),
                 "couldn't use continue outside a loop",
                 "check your code."
             );

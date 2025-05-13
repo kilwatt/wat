@@ -74,9 +74,11 @@ public class VmFunction {
         // загружаем аргументы
         for (int i = params.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
-                throw new WattRuntimeError(address.getLine(), address.getFileName(),
-                "stack is empty! couldn't invoke function.",
-                "check args amount.");
+                throw new WattRuntimeError(
+                    address,
+                    "stack is empty! couldn't invoke function.",
+                    "check args amount."
+                );
             }
             Object arg = vm.pop(address);
             scope.define(address, params.get(i), arg);

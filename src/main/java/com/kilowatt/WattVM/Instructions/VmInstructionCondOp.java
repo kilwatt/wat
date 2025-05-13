@@ -37,7 +37,7 @@ public class VmInstructionCondOp implements VmInstruction {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isLessThan(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                    throw new WattRuntimeError(address,
                         "not a number: " + (l instanceof Number ? r : l),
                         "check types.");
                 }
@@ -46,7 +46,7 @@ public class VmInstructionCondOp implements VmInstruction {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isGreaterThan(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                    throw new WattRuntimeError(address,
                         "not a number: " + (l instanceof Number ? r : l),
                         "check types.");
                 }
@@ -55,7 +55,7 @@ public class VmInstructionCondOp implements VmInstruction {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isLessOrEqual(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                    throw new WattRuntimeError(address,
                         "not a number: " + (l instanceof Number ? r : l),
                         "check types.");
                 }
@@ -64,12 +64,12 @@ public class VmInstructionCondOp implements VmInstruction {
                 if (l instanceof Number lNumber && r instanceof Number rNumber) {
                     vm.push(isGreaterOrEqual(lNumber, rNumber));
                 } else {
-                    throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                    throw new WattRuntimeError(address,
                         "not a number: " + (l instanceof Number ? r : l),
                         "check types.");
                 }
             }
-            default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            default -> throw new WattRuntimeError(address,
                 "invalid cond. op: " + operator,
                 "available op-s: ==,!=,>,>=,<=,<");
         }
@@ -124,7 +124,7 @@ public class VmInstructionCondOp implements VmInstruction {
         } else if (a instanceof Integer || b instanceof Integer) {
             return Integer.compare(a.intValue(), b.intValue());
         } else {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                     "not a number: " + (a != null ? a : b),
                     "check types.");
         }

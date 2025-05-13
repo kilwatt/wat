@@ -64,8 +64,7 @@ public class VmUnit implements VmFunctionOwner {
             fn.exec(vm, shouldPushResult);
         } else {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't call: " + name + ", not a fn.",
                 "check your code"
             );

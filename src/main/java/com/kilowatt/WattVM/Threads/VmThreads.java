@@ -37,10 +37,9 @@ public class VmThreads {
             } catch (RuntimeException error) {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
+                    address,
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code."
                 ).panic();
             }
             finally {
@@ -65,10 +64,9 @@ public class VmThreads {
             } catch (RuntimeException error) {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code."
+                    address,
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code."
                 ).panic();
             }
             finally {

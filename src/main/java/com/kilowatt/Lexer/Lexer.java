@@ -1,6 +1,7 @@
 package com.kilowatt.Lexer;
 
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
+import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -20,8 +21,10 @@ public class Lexer {
     // код
     private final String code;
     // текущие значения
-    private int line = 1;
+    private int line = 0;
     private int current = 0;
+    private int column = 0;
+    private String lineText = "";
     // кейворды
     private static final Map<String, TokenType> keywords = new HashMap<>() {{
         put("fun", TokenType.FUN);
@@ -66,6 +69,9 @@ public class Lexer {
 
     // скан кода
     public ArrayList<Token> scan() {
+        // первая строка
+        newLine();
+        // лексинг
         while (!isAtEnd()) {
             char current = advance();
             switch (current) {
@@ -107,12 +113,12 @@ public class Lexer {
                         while (!match('\n') && !isAtEnd()) {
                             advance();
                         }
-                        line += 1;
+                        newLine();
                         break;
                     } else if (match('*')) {
                         while(!(peek() == '*' && next() == '/') && !isAtEnd()) {
                             if (match('\n')) {
-                                line += 1;
+                                newLine();
                                 continue;
                             }
                             advance();
@@ -193,7 +199,7 @@ public class Lexer {
                     break;
                 }
                 case '\n': {
-                    line++;
+                    newLine();
                     break;
                 }
                 case '\'': {
@@ -204,11 +210,10 @@ public class Lexer {
                     if (match('>')) {
                         addToken(TokenType.PIPE, "|>");
                     } else {
-                        throw new WattParsingError(
-                                line,
-                                filename,
-                                "expected > after | for pipe!",
-                                "check your code."
+                        throw new WattParseError(
+                            new VmAddress(filename, line, column, lineText),
+                            "expected > after | for pipe!",
+                            "check your code."
                         );
                     }
                     break;
@@ -219,11 +224,10 @@ public class Lexer {
                     } else if (isId(current)) {
                         tokens.add(scanIdentifierOrKeyword(current));
                     } else {
-                        throw new WattParsingError(
-                                line,
-                                filename,
-                                "unexpected char: " + current,
-                                "delete char: " + current);
+                        throw new WattParseError(
+                            new VmAddress(filename, line, column, lineText),
+                            "unexpected char: " + current,
+                            "delete char: " + current);
                     }
                 }
             }
@@ -238,18 +242,16 @@ public class Lexer {
         StringBuilder text = new StringBuilder();
         while (peek() != '\'') {
             if (match('\n')) {
-                throw new WattParsingError(
-                        line,
-                        filename,
-                        "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
-                        "did you forget to type ' symbol?");
+                throw new WattParseError(
+                    new VmAddress(filename, line, column, lineText),
+                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                    "did you forget to type ' symbol?");
             }
             if (isAtEnd()) {
-                throw new WattParsingError(
-                        line,
-                        filename,
-                        "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
-                        "did you forget to type ' symbol?");
+                throw new WattParseError(
+                    new VmAddress(filename, line, column, lineText),
+                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                    "did you forget to type ' symbol?");
             }
             text.append(advance());
         }
@@ -261,37 +263,34 @@ public class Lexer {
     private Token scanNumber(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
         boolean isFloat = false;
+        int startColumn = column - 1;
         while (isDigit(peek()) || peek() == '.') {
             if (peek() == '.') {
                 if (next() == '.') break;
                 if (isFloat) {
-                    throw new WattParsingError(
-                            line,
-                            filename,
-                            "double dot number: " + text + ".",
-                            "check your code."
+                    throw new WattParseError(
+                        new VmAddress(filename, line, column, lineText),
+                        "double dot number: " + text + ".",
+                        "check your code."
                     );
                 }
                 isFloat = true;
-            }
-            if (match('\n')) {
-                line += 1;
-                continue;
             }
             text.append(advance());
             if (isAtEnd()) {
                 break;
             }
         }
-        return new Token(TokenType.NUM, text.toString(), line, filename);
+        return new Token(TokenType.NUM, text.toString(), line, startColumn, filename, lineText);
     }
 
     // сканируем идентификатор или ключевое слово
     private Token scanIdentifierOrKeyword(char start) {
         StringBuilder text = new StringBuilder(String.valueOf(start));
+        int startColumn = column - 1;
         while (isId(peek())) {
             if (match('\n')) {
-                line += 1;
+                newLine();
                 continue;
             }
             text.append(advance());
@@ -300,7 +299,25 @@ public class Lexer {
             }
         }
         TokenType type = keywords.getOrDefault(text.toString(), TokenType.ID);
-        return new Token(type, text.toString(), line, filename);
+        return new Token(type, text.toString(), line, startColumn, filename, lineText);
+    }
+
+    // скип новой строки
+    private void newLine() {
+        line++;
+        column = 1;
+        lineText = getLineText();
+    }
+
+    // получение текста строки
+    private String getLineText() {
+        int i = 0;
+        StringBuilder text = new StringBuilder();
+        while (!(current + i >= code.length()) && peek(i) != '\n') {
+            text.append(peek(i));
+            i += 1;
+        }
+        return text.toString();
     }
 
     // в конце ли
@@ -310,7 +327,9 @@ public class Lexer {
 
     // следующий символ
     private char advance() {
-        return code.charAt(current++);
+        char ch = code.charAt(current++);
+        column++;
+        return ch;
     }
 
     // символ на текущей позиции без добавления
@@ -318,6 +337,12 @@ public class Lexer {
     private char peek() {
         if (isAtEnd()) return '\1';
         return code.charAt(current);
+    }
+
+    // символ на текущей позиции + оффсет
+    private char peek(int offset) {
+        if (isAtEnd()) return '\1';
+        return code.charAt(current + offset);
     }
 
     // символ на следующей позиции без добавления
@@ -329,7 +354,7 @@ public class Lexer {
 
     // добавление токена
     private void addToken(TokenType type, String value) {
-        tokens.add(new Token(type, value, line, filename));
+        tokens.add(new Token(type, value, line, column - 1, filename, lineText));
     }
 
     // проверка на текущий
@@ -337,6 +362,7 @@ public class Lexer {
         if (isAtEnd()) return false;
         if (code.charAt(current) == character) {
             current += 1;
+            column++;
             return true;
         } else {
             return false;

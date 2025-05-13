@@ -22,8 +22,7 @@ public class NetHttp {
         } catch (IOException | InterruptedException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "http request error: " + e.getMessage(),
                 "check your request body."
             );

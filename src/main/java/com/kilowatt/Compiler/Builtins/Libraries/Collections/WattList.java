@@ -107,8 +107,7 @@ public class WattList {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't use add_java with " + values.getClass().getSimpleName(),
                 "can be used with: ArrayList<?>, ?[]"
             );

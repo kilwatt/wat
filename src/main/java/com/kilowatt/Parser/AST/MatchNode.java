@@ -1,6 +1,6 @@
 package com.kilowatt.Parser.AST;
 
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
 import com.kilowatt.Semantic.SemanticAnalyzer;
@@ -59,7 +59,9 @@ public class MatchNode implements Node {
                         TokenType.OPERATOR,
                         "==",
                         location.getLine(),
-                        location.getFileName()
+                        location.getColumn(),
+                        location.getFileName(),
+                        location.getLineText()
                     )
                 ),
                 null
@@ -83,19 +85,20 @@ public class MatchNode implements Node {
                     location,
                     defaultCase.getBody(),
                     new BoolNode(
-                            new Token(
-                                    TokenType.BOOL,
-                                    "true",
-                                    location.getLine(),
-                                    location.getFileName()
-                            )
+                        new Token(
+                            TokenType.BOOL,
+                            "true",
+                            location.getLine(),
+                            location.getColumn(),
+                            location.getFileName(),
+                            location.getLineText()
+                        )
                     ),
                     null
                 ));
             } else {
-                throw new WattParsingError(
-                    location.getLine(),
-                    location.getFileName(),
+                throw new WattParseError(
+                    location.asAddress(),
                     "couldn't compile match with no default case.",
                     "add default case for match."
                 );
@@ -103,9 +106,8 @@ public class MatchNode implements Node {
             // компилируем if
             rootCase.compile();
         } else {
-            throw new WattParsingError(
-                location.getLine(),
-                location.getFileName(),
+            throw new WattParseError(
+                location.asAddress(),
                 "couldn't compile match with no cases.",
                 "add some cases for match."
             );

@@ -15,4 +15,8 @@ public class VmAddress {
     private final String fileName;
     // строка
     private final int line;
+    // позиция в строке
+    private final int column;
+    // строка
+    private final String lineText;
 }

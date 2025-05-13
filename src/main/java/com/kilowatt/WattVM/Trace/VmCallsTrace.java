@@ -14,12 +14,12 @@ public class VmCallsTrace {
     // история
     private final List<VmCallInfo> callsHistory = new ArrayList<>();
     // максимальный размер истории
-    private final int maxSize = 8;
+    private final int maxSize = 6;
 
     // добавление элемента
     public void add(VmCallInfo info) {
         // если переполнение - удаляем первый элемент
-        if (callsHistory.size() + 1 >= maxSize) {
+        if (callsHistory.size() + 1 > maxSize) {
             callsHistory.removeFirst();
         }
         // добавляем в стэк вызовов

@@ -1,6 +1,5 @@
 package com.kilowatt.Compiler.Builtins.Functions;
 
-import com.kilowatt.Errors.WattParsingError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.VmAddress;
@@ -18,16 +17,14 @@ public class WattAssertBuiltinFn implements VmBuiltinFunction {
         if (b instanceof Boolean bool) {
             if (!bool) {
                 throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "assertion error",
                     "check your code"
                 );
             }
         } else {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 b + " not a bool",
                 "check your code."
             );

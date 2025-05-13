@@ -22,8 +22,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "io exception in fs: " + path,
                 "check file exists."
             );
@@ -36,8 +35,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + e.getMessage(),
                     "check file exists."
             );
@@ -50,8 +48,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + path,
                     "check file exists."
             );
@@ -64,8 +61,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + e.getMessage(),
                     "check file exists."
             );
@@ -82,8 +78,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + e.getMessage(),
                     "check file exists."
             );
@@ -96,8 +91,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + e.getMessage(),
                     "check file exists."
             );
@@ -110,8 +104,7 @@ public class StdFs {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io exception in fs: " + e.getMessage(),
                     "check file exists."
             );

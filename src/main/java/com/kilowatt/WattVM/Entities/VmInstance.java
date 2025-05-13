@@ -64,8 +64,7 @@ public class VmInstance implements VmFunctionOwner {
                     if (impl instanceof VmFunction fnImpl) {
                         if (fnImpl.getParams().size() != traitFn.getParamsAmount()) {
                             throw new WattRuntimeError(
-                                address.getLine(),
-                                address.getFileName(),
+                                address,
                                 "type " + type.getName() + " impls trait " + traitName + ", but doesn't impl fn " +
                                         traitFn.getName() + " (" + traitFn.getParamsAmount() + ")",
                                 "you can create default impl in trait."
@@ -82,11 +81,10 @@ public class VmInstance implements VmFunctionOwner {
                     // если нет дефолтной имплементации
                     else {
                         throw new WattRuntimeError(
-                                address.getLine(),
-                                address.getFileName(),
-                                "type " + type.getName() + " impls trait " + traitName + ", but doesn't impl fn " +
-                                        traitFn.getName() + " (" + traitFn.getParamsAmount() + ")",
-                                "you can create default impl in trait."
+                            address,
+                            "type " + type.getName() + " impls trait " + traitName + ", but doesn't impl fn " +
+                                    traitFn.getName() + " (" + traitFn.getParamsAmount() + ")",
+                            "you can create default impl in trait."
                         );
                     }
                 }
@@ -121,8 +119,7 @@ public class VmInstance implements VmFunctionOwner {
             fn.exec(vm, shouldPushResult);
         } else {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't call: " + name + ", not a fn.",
                 "check your code"
             );

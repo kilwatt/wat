@@ -50,8 +50,7 @@ public class TraitNode implements Node {
         // смотрим на правильность определения
         if (analyzer.top() != null) {
             throw new WattSemanticError(
-                name.getLine(),
-                name.getFileName(),
+                name.asAddress(),
                 "couldn't create units outside global scope",
                 "move the definition to the global code."
             );

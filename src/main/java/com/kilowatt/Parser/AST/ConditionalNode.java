@@ -22,7 +22,7 @@ public class ConditionalNode implements Node {
         right.compile();
         WattCompiler.code.visitInstruction(
             new VmInstructionCondOp(
-                new VmAddress(operator.getFileName(), operator.getLine()),
+                operator.asAddress(),
                 operator.value
             )
         );

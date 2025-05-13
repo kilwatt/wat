@@ -16,8 +16,7 @@ public class StdThreading {
         } catch (InterruptedException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "thread interruption error.",
                     "check your code."
             );

@@ -36,8 +36,7 @@ public class NetHttpServer {
         } catch (RuntimeException error) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "jvm runtime exception: " + error.getMessage(),
                 "check your code."
             ).panic();
@@ -50,8 +49,7 @@ public class NetHttpServer {
         // проверяем функцию
         if (fn.getParams().size() != 1) {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't create handler " + path + ", fn should take 1 param.",
                 "params: javalin context"
             );

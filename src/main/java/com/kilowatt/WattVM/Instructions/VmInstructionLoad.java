@@ -48,7 +48,7 @@ public class VmInstructionLoad implements VmInstruction {
                 vm.push(vm.getTraitDefinitions().lookup(address, name));
             } else {
                 throw new WattRuntimeError(
-                    address.getLine(), address.getFileName(),
+                    address,
                     "not found: " + name,
                     "did you type wrong name?"
                 );
@@ -75,15 +75,13 @@ public class VmInstructionLoad implements VmInstruction {
                         vm.push(field.get(last));
                     } catch (NoSuchFieldException e) {
                         throw new WattRuntimeError(
-                            address.getLine(),
-                            address.getFileName(),
+                            address,
                             "not found: " + name,
                             "did you type wrong name?"
                         );
                     } catch (IllegalAccessException e) {
                         throw new WattRuntimeError(
-                            address.getLine(),
-                            address.getFileName(),
+                            address,
                             "access failed: " + name,
                             "check your reflection interaction."
                         );

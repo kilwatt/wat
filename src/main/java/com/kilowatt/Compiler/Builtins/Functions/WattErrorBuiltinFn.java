@@ -16,8 +16,7 @@ public class WattErrorBuiltinFn implements VmBuiltinFunction {
         Object text = vm.pop(address);
         // создаём ошибку
         WattRuntimeError error = new WattRuntimeError(
-            address.getLine(),
-            address.getFileName(),
+            address,
             text.toString(),
             hint.toString()
         );

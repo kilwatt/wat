@@ -21,7 +21,7 @@ public class BoolNode implements Node {
     public void compile() {
         WattCompiler.code.visitInstruction(
             new VmInstructionPush(
-                new VmAddress(value.getFileName(), value.getLine()),
+                value.asAddress(),
                 Boolean.parseBoolean(value.getValue())
             )
         );

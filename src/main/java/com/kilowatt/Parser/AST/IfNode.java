@@ -4,7 +4,6 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionIf;
-import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,8 +41,7 @@ public class IfNode implements Node {
         logical.compile();
         WattCompiler.code.endWrite();
         // тело
-        VmInstructionIf vmInstructionIf
-                = new VmInstructionIf(new VmAddress(location.getFileName(), location.getLine()));
+        VmInstructionIf vmInstructionIf = new VmInstructionIf(location.asAddress());
         vmInstructionIf.setConditions(conditions);
         WattCompiler.code.writeTo(vmInstructionIf.getBody());
         node.compile();

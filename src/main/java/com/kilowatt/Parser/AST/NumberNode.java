@@ -2,7 +2,6 @@ package com.kilowatt.Parser.AST;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Instructions.VmInstructionPush;
-import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;
 
@@ -20,7 +19,7 @@ public class NumberNode implements Node {
     @Override
     public void compile() {
         WattCompiler.code.visitInstruction(
-                new VmInstructionPush(new VmAddress(value.getFileName(), value.getLine()), toNumber())
+                new VmInstructionPush(value.asAddress(), toNumber())
         );
     }
 

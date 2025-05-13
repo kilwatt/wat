@@ -28,10 +28,9 @@ public class VmInstructionNeg implements VmInstruction {
             case Integer i -> vm.push(-i);
             case Long l -> vm.push(-l);
             case null, default -> throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
-                    "not a number: " + value,
-                    "check for types."
+                address,
+                "not a number: " + value,
+                "check for types."
             );
         }
     }

@@ -1,6 +1,6 @@
 package com.kilowatt.Parser;
 
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Lexer.TokenType;
 import com.kilowatt.Parser.AST.*;
@@ -81,7 +81,9 @@ public class Parser {
             TokenType.TEXT,
             fullNamePrefix + ":" + name.getValue(),
             name.getLine(),
-            name.getFileName()
+            name.getColumn(),
+            name.getFileName(),
+            name.getLineText()
         );
     }
 
@@ -122,9 +124,8 @@ public class Parser {
                         location = consume(TokenType.ASSIGN_DIVIDE);
                         op = "/";
                     }
-                    default -> throw new WattParsingError(
-                            identifier.getLine(),
-                            identifier.getFileName(),
+                    default -> throw new WattParseError(
+                            identifier.asAddress(),
                             "operator not found: " + peek(),
                             "check your code."
                     );
@@ -132,10 +133,22 @@ public class Parser {
                 // возвращаем
                 VarNode var = new VarNode(prev, identifier);
                 var.setShouldPushResult(true);
-                return new VarSetNode(prev, identifier, new BinNode(
-                        var, expression(), new Token(TokenType.OPERATOR, op,
-                        location.getLine(), location.getFileName())
-                ));
+                return new VarSetNode(
+                    prev,
+                    identifier,
+                    new BinNode(
+                        var,
+                        expression(),
+                        new Token(
+                            TokenType.OPERATOR,
+                            op,
+                            location.getLine(),
+                            location.getColumn(),
+                            location.getFileName(),
+                            location.getLineText()
+                        )
+                    )
+                );
             } else if (check(TokenType.LPAREN)) {
                 return new CallNode(prev, identifier, args());
             } else {
@@ -158,16 +171,14 @@ public class Parser {
             left.setShouldPushResult(true);
             left = accessPart(left);
             if (left instanceof VarDefineNode defineNode) {
-                throw new WattParsingError(
-                        defineNode.getName().line,
-                        filename,
+                throw new WattParseError(
+                        defineNode.getName().asAddress(),
                         "couldn't use define in expr.",
                         "check your code.");
             }
             else if (left instanceof VarSetNode defineNode) {
-                throw new WattParsingError(
-                        defineNode.getName().line,
-                        filename,
+                throw new WattParseError(
+                        defineNode.getName().asAddress(),
                         "couldn't use assign in expr.",
                         "check your code.");
             }
@@ -268,9 +279,8 @@ public class Parser {
         if (expr instanceof AccessNode accessExpr) {
             accessExpr.setShouldPushResult(true);
         } else {
-            throw new WattParsingError(
-                    peek().getLine(),
-                    peek().getFileName(),
+            throw new WattParseError(
+                    peek().asAddress(),
                     "expected call expr in pipes.",
                     "check your code."
             );
@@ -286,9 +296,8 @@ public class Parser {
                     expr = callNode;
                 }
                 else {
-                    throw new WattParsingError(
-                            location.getLine(),
-                            location.getFileName(),
+                    throw new WattParseError(
+                            location.asAddress(),
                             "expected call expr in pipes.",
                             "check your code."
                     );
@@ -342,9 +351,8 @@ public class Parser {
             case TokenType.MATCH -> {
                 return matchExpr();
             }
-            default -> throw new WattParsingError(
-                     peek().line,
-                     filename,
+            default -> throw new WattParseError(
+                     peek().asAddress(),
                      "invalid token in primary parsing: " + peek().type + "::" + peek().value,
                     "did you write wrong expr?");
         }
@@ -601,9 +609,8 @@ public class Parser {
                 nodes.add(node);
             }
             else {
-                throw new WattParsingError(
-                        peek().line,
-                        filename,
+                throw new WattParseError(
+                        peek().asAddress(),
                         "invalid node token for type: " + peek().type + ":" + peek().value,
                         "available: fun, variable definition; variable set.");
             }
@@ -634,9 +641,8 @@ public class Parser {
                 // добавляем ноду
                 nodes.add(node);
             } else {
-                throw new WattParsingError(
-                        peek().line,
-                        filename,
+                throw new WattParseError(
+                        peek().asAddress(),
                         "invalid node token for unit: " + peek().type + "::" + peek().value,
                         "available: fun, variable definition; variable set.");
             }
@@ -709,9 +715,8 @@ public class Parser {
                     ));
                 }
             } else {
-                throw new WattParsingError(
-                    name.getLine(),
-                    name.getFileName(),
+                throw new WattParseError(
+                    name.asAddress(),
                     "only fn-s can be declared in trait.",
                     "check your code."
                 );
@@ -784,11 +789,10 @@ public class Parser {
             case TokenType.TRAIT -> {
                 return trait();
             }
-            default -> throw new WattParsingError(
-                    peek().line,
-                    filename,
-                    "unexpected stmt token: " + peek(),
-                    "check your code.");
+            default -> throw new WattParseError(
+                peek().asAddress(),
+                "unexpected stmt token: " + peek(),
+                "check your code.");
         }
     }
 
@@ -907,7 +911,21 @@ public class Parser {
         BlockNode node = block();
         consume(TokenType.RBRACE);
         // возвращаем
-        return new IfNode(location, node, new BoolNode(new Token(TokenType.BOOL, "true", location.line, filename)), null);
+        return new IfNode(
+            location,
+            node,
+            new BoolNode(
+                new Token(
+                    TokenType.BOOL,
+                    "true",
+                    location.getLine(),
+                    location.getColumn(),
+                    location.getFileName(),
+                    location.getLineText()
+                )
+            ),
+            null
+        );
     }
 
     // стэйтмент elif
@@ -1001,9 +1019,8 @@ public class Parser {
             defaultCase = new MatchNode.Case(null, expression());
         } else {
             Token token = tokenList.get(current);
-            throw new WattParsingError(
-                token.getLine(),
-                token.getFileName(),
+            throw new WattParseError(
+                token.asAddress(),
                 "couldn't use match expr without default case.",
                 "check your code."
             );
@@ -1083,9 +1100,8 @@ public class Parser {
     private Token consume(TokenType expected) {
         if (isAtEnd()) {
             Token token = this.tokenList.get(current-1);
-            throw new WattParsingError(
-                token.line,
-                filename,
+            throw new WattParseError(
+                token.asAddress(),
                 "couldn't consume token.",
                 "its end of file! last token: " + token.type + ":" + token.value);
         }
@@ -1094,9 +1110,8 @@ public class Parser {
             current += 1;
             return token;
         } else {
-            throw new WattParsingError(
-                    token.line,
-                    filename,
+            throw new WattParseError(
+                    token.asAddress(),
                     "unexpected token: " + token.type + ":" + token.value,
                     "did you mean " + expected + "?");
         }
@@ -1106,9 +1121,8 @@ public class Parser {
     private Token peek() {
         if (isAtEnd()) {
             Token token = this.tokenList.get(current-1);
-            throw new WattParsingError(
-                    token.line,
-                    filename,
+            throw new WattParseError(
+                    token.asAddress(),
                     "couldn't peek token.",
                     "its end of file! last token: " + token.type + ":" + token.value);
         } else {
@@ -1120,9 +1134,8 @@ public class Parser {
     private Token advance() {
         if (isAtEnd()) {
             Token token = this.tokenList.get(current-1);
-            throw new WattParsingError(
-                    token.line,
-                    filename,
+            throw new WattParseError(
+                    token.asAddress(),
                     "couldn't advance token.",
                     "its end of file! last token: " + token.type + ":" + token.value);
         } else {

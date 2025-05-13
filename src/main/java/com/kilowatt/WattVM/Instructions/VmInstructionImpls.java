@@ -27,8 +27,7 @@ public class VmInstructionImpls implements VmInstruction {
            vm.push(type.hasTrait(trait));
         } else {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't check impls, not a instance or type: " + obj.getClass().getSimpleName(),
                 "check your code."
             );

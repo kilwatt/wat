@@ -14,7 +14,6 @@ import com.kilowatt.WattVM.Storage.VmFrame;
 import com.kilowatt.WattVM.Threads.VmThreads;
 import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
-import org.openjdk.jmh.annotations.Benchmark;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -74,8 +73,7 @@ public class WattVM {
             return getStack().pop();
         } catch (NoSuchElementException e) {
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't pop. stack is empty.",
                 "check your actions."
             );

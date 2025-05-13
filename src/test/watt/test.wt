@@ -281,6 +281,7 @@ if o impls Trait {
     o.do()
 }
 */
+/*
 import 'std.serialization'
 import 'std.io'
 
@@ -300,3 +301,6 @@ serialization.serialize('binary.bin', new A())
 value := serialization.deserialize('binary.bin', A)
 io.println(value.version)
 io.println(value.string)
+*/
+import 'std.io'
+io.println('Hello, world!').k()

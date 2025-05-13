@@ -4,7 +4,6 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Semantic.SemanticAnalyzer;
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Instructions.VmInstructionSet;
-import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import lombok.Getter;
 
@@ -34,10 +33,10 @@ public class VarSetNode implements AccessNode {
         if (previous != null) previous.compile();
         WattCompiler.code.visitInstruction(
             new VmInstructionSet(
-                new VmAddress(name.fileName, name.line),
+                name.asAddress(),
                 name.getValue(),
                 previous != null,
-                    valueChunk
+                valueChunk
             )
         );
     }

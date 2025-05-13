@@ -22,7 +22,9 @@ public class ForNode implements Node {
     @Override
     public void compile() {
         compileIterator();
-        VmInstructionLoop loop = new VmInstructionLoop(new VmAddress(name.fileName, name.line));
+        VmInstructionLoop loop = new VmInstructionLoop(
+            name.asAddress()
+        );
         WattCompiler.code.writeTo(loop.getBody());
         compileBody();
         WattCompiler.code.endWrite();
@@ -43,7 +45,9 @@ public class ForNode implements Node {
             TokenType.ID,
             "@"+name.value,
             name.getLine(),
-            name.getFileName()
+            name.getColumn(),
+            name.getFileName(),
+            "true"
         );
         // дефайн итератора
         new VarDefineNode(
@@ -56,10 +60,12 @@ public class ForNode implements Node {
     private void compileBody() {
         // итератор
         Token iteratorName = new Token(
-                TokenType.ID,
-                "@"+name.value,
-                name.getLine(),
-                name.getFileName()
+            TokenType.ID,
+            "@"+name.value,
+            name.getLine(),
+            name.getColumn(),
+            name.getFileName(),
+            "true"
         );
         // иф
         new IfNode(
@@ -78,7 +84,9 @@ public class ForNode implements Node {
                             TokenType.ID,
                             "next",
                             name.getLine(),
-                            name.getFileName()
+                            name.getColumn(),
+                            name.getFileName(),
+                            "true"
                         ),
                         new ArrayList<>(),
                         true
@@ -96,7 +104,9 @@ public class ForNode implements Node {
                     TokenType.ID,
                 "has_next",
                     name.getLine(),
-                    name.getFileName()
+                    name.getColumn(),
+                    name.getFileName(),
+                    "true"
                 ),
                 new ArrayList<>(),
                 true
@@ -109,8 +119,10 @@ public class ForNode implements Node {
                 new BoolNode(new Token(
                     TokenType.BOOL,
                     "true",
-                    name.line,
-                    name.fileName
+                    name.getLine(),
+                    name.getColumn(),
+                    name.getFileName(),
+                    "true"
                 )),
                 null
             )

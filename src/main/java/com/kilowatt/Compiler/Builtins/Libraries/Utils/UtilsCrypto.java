@@ -19,8 +19,7 @@ public class UtilsCrypto {
         } catch (NoSuchAlgorithmException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 algo + " crypto algo not found.",
                     "available: sha-256, md5, sha-512, sha-1."
             );

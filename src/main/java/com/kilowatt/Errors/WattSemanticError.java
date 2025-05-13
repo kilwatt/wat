@@ -1,5 +1,6 @@
 package com.kilowatt.Errors;
 
+import com.kilowatt.WattVM.VmAddress;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,19 +10,20 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class WattSemanticError extends WattError {
-    private final int line;
-    private final String filename;
+    private final VmAddress address;
     private final String message;
     private final String hint;
 
     @Override
     public void panic() {
         System.out.print(WattColors.ANSI_RED);
-        System.out.println("╭ ⚡ semantic error.");
-        System.out.println("│ err: " + this.message);
-        System.out.println("│ at: " + filename + "::" + line);
-        System.out.println("│ 💡 " + hint);
-        System.out.println("╰");
+        System.out.println(WattColors.ANSI_RED + "error: " + WattColors.ANSI_RESET + message);
+        System.out.println();
+        System.out.println("┌─ " + address.getFileName() + ":" + address.getLine() + ":" + address.getColumn());
+        System.out.println("│ " + address.getLineText());
+        System.out.println("│ " + " ".repeat(address.getColumn() - 1) + WattColors.ANSI_RED + "^" + WattColors.ANSI_RESET);
+        System.out.println();
+        System.out.println(WattColors.ANSI_YELLOW + "hint: " + WattColors.ANSI_RESET + hint);
         System.out.print(WattColors.ANSI_RESET);
         System.exit(errorCode());
     }
@@ -38,6 +40,6 @@ public class WattSemanticError extends WattError {
 
     @Override
     public int address() {
-        return line;
+        return address.getLine();
     }
 }

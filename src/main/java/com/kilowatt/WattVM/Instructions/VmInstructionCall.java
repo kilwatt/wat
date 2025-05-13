@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Instructions;
 
 import com.kilowatt.Compiler.WattCompiler;
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Chunks.VmChunk;
@@ -9,7 +9,6 @@ import com.kilowatt.WattVM.Builtins.VmBuiltinFunction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
-import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import com.kilowatt.WattVM.Storage.VmFrame;
@@ -19,7 +18,6 @@ import lombok.SneakyThrows;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Objects;
 
 /*
 Вызов функции в VM
@@ -93,7 +91,7 @@ public class VmInstructionCall implements VmInstruction {
         }
         // в ином случае - ошибка
         else {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                 "couldn't call: " + name + ", not a fn.",
                 "check your code.");
         }
@@ -118,7 +116,7 @@ public class VmInstructionCall implements VmInstruction {
         }
         // в ином случае - ошибка
         else {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                 "couldn't call: " + name + ", not a fn.",
                 "check your code.");
         }
@@ -146,16 +144,16 @@ public class VmInstructionCall implements VmInstruction {
             }
         } catch (IllegalAccessException | IllegalArgumentException e) {
             throw new WattRuntimeError(
-                address.getLine(), address.getFileName(),
+                address,
                 "jvm call error (" + name + "): " + e.getMessage(), "check your code."
             );
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof WattRuntimeError ||
-                    e.getCause() instanceof WattParsingError) {
+                    e.getCause() instanceof WattParseError) {
                 throw e.getCause();
             } else {
                 throw new WattRuntimeError(
-                    address.getLine(), address.getFileName(),
+                    address,
                     "jvm call error (" + name + "): " + e.getCause().getMessage(), "check your code."
                 );
             }
@@ -191,7 +189,7 @@ public class VmInstructionCall implements VmInstruction {
         }
         // в ином случае - ошибка
         else {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                 "couldn't call: " + name + ", not a fn.",
                 "check your code.");
         }
@@ -200,7 +198,7 @@ public class VmInstructionCall implements VmInstruction {
     // проверка на колличество параметров и аргументов
     private void checkArgs(String name, int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
-            throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            throw new WattRuntimeError(address,
                 "invalid args amount for call: "
                         + name + "(" + argsAmount + "/" + parameterAmount + ")",
                 "check passing args amount.");

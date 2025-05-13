@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /*
-Ошбика ресолва файла
+Ошбика компиляции
  */
 @Getter
 @AllArgsConstructor
-public class WattResolveError extends WattError{
+public class WattParseError extends WattError {
     private final VmAddress address;
     private final String message;
     private final String hint;
@@ -30,7 +30,7 @@ public class WattResolveError extends WattError{
 
     @Override
     public int errorCode() {
-        return 3;
+        return 1;
     }
 
     @Override

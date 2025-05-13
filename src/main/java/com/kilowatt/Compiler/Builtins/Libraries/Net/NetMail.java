@@ -39,8 +39,7 @@ public class NetMail {
         } catch (MessagingException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "mail error: " + e.getMessage(),
                     "check your code."
             );
@@ -54,8 +53,7 @@ public class NetMail {
         } catch (MessagingException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "mail error: " + e.getMessage(),
                     "check your code."
             );
@@ -76,8 +74,7 @@ public class NetMail {
         } catch (MessagingException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "mail error: " + e.getMessage(),
                 "check your code."
             );

@@ -46,8 +46,10 @@ public class WattMap {
             }
         }
         throw new WattRuntimeError(
-                address.getLine(), address.getFileName(),
-                "key: " + k.toString() + " is not exists.", "check key for mistakes.");
+            address,
+            "key: " + k.toString() + " is not exists.",
+            "check key for mistakes."
+        );
     }
 
     public Object has_key(Object obj) {

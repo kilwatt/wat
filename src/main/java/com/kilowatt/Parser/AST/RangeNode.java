@@ -21,7 +21,9 @@ public class RangeNode implements Node {
                 TokenType.ID,
                 "rng",
                 location.getLine(),
-                location.getFileName()
+                location.getColumn(),
+                location.getFileName(),
+                location.getLineText()
             ),
             CallNode.args(
                 from,

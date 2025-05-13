@@ -30,8 +30,7 @@ public class BreakNode implements Node {
         if (!analyzer.hasTop(WhileNode.class) &&
             !analyzer.hasTop(ForNode.class)) {
             throw new WattSemanticError(
-                location.getLine(),
-                location.getFileName(),
+                location.asAddress(),
                 "couldn't use break outside a loop",
                 "check your code."
             );

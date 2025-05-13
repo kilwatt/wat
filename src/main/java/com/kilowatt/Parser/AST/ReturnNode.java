@@ -37,10 +37,9 @@ public class ReturnNode implements Node {
             forReturn.analyze(analyzer);
         } else {
             throw new WattSemanticError(
-                    location.getLine(),
-                    location.getFileName(),
-                    "couldn't use return outside a function",
-                    "check your code."
+                location.asAddress(),
+                "couldn't use return outside a function",
+                "check your code."
             );
         }
     }

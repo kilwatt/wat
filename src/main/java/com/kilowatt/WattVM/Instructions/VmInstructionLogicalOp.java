@@ -28,7 +28,7 @@ public class VmInstructionLogicalOp implements VmInstruction {
         switch (operator) {
             case "and" -> vm.push((boolean)l && ((boolean)r));
             case "or" -> vm.push((boolean)l || ((boolean)r));
-            default -> throw new WattRuntimeError(address.getLine(), address.getFileName(),
+            default -> throw new WattRuntimeError(address,
                     "Invalid operator: " + operator,
                     "Available conditional operators: and, or");
         }

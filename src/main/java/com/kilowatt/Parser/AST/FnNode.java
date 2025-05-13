@@ -45,8 +45,7 @@ public class FnNode implements Node {
         if (analyzer.hasTop(TypeNode.class) || analyzer.hasTop(UnitNode.class)) {
             if (name.value.equals("init") && !parameters.isEmpty()) {
                 throw new WattSemanticError(
-                    name.getLine(),
-                    name.getFileName(),
+                    name.asAddress(),
                     "couldn't create init function with args.",
                     "check your code."
                 );

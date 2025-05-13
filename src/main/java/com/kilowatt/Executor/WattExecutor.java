@@ -66,20 +66,18 @@ public class WattExecutor {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code.",
-                        error.getStackTrace()
+                    address,
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code.",
+                    error.getStackTrace()
                 ).panic();
             } else {
                 // ошибка
                 new WattInternalError(
-                        -1,
-                        "no-file",
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code.",
-                        error.getStackTrace()
+                    new VmAddress("no-file", -1, -1, "no-file"),
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code.",
+                    error.getStackTrace()
                 ).panic();
             }
         }
@@ -117,20 +115,18 @@ public class WattExecutor {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 // ошибка
                 new WattInternalError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code.",
-                        error.getStackTrace()
+                    address,
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code.",
+                    error.getStackTrace()
                 ).panic();
             } else {
                 // ошибка
                 new WattInternalError(
-                        -1,
-                        "no-file",
-                        "jvm runtime exception: " + error.getMessage(),
-                        "check your code.",
-                        error.getStackTrace()
+                    new VmAddress("no-file", -1, -1, "no-file"),
+                    "jvm runtime exception: " + error.getMessage(),
+                    "check your code.",
+                    error.getStackTrace()
                 ).panic();
             }
         }

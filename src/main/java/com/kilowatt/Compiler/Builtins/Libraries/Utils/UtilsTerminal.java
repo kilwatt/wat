@@ -28,8 +28,7 @@ public class UtilsTerminal {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             // ошибка
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "io error, while starting jline terminal: " + e.getMessage(),
                 "check your code."
             );
@@ -50,8 +49,7 @@ public class UtilsTerminal {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             // ошибка
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io error, while starting jline terminal: " + e.getMessage(),
                     "check your code."
             );

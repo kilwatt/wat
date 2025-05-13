@@ -1,16 +1,17 @@
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.VmAddress;
 
 /*
 Тест ошибок
  */
 public class ErrorTests implements WattTest {
     public void errorTest0() {
-        new WattRuntimeError(1, "bake.wt", "test error", "did you forget something?").panic();
+        new WattRuntimeError(new VmAddress("bake.wt", -1, -1, "text"), "test error", "did you forget something?").panic();
     }
 
     public void errorTest1() {
-        new WattParsingError(1, "bake.wt", "here", "did you forget something?").panic();
+        new WattParseError(new VmAddress("bake.wt", -1, -1, "text"), "here", "did you forget something?").panic();
     }
 
     @Override

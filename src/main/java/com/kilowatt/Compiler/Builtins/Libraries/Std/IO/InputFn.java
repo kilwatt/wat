@@ -25,8 +25,7 @@ public class InputFn implements VmBuiltinFunction {
             vm.push(value);
         } catch (IOException e) {
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "io error with input fn: " + e.getMessage(),
                     "check your code."
             );

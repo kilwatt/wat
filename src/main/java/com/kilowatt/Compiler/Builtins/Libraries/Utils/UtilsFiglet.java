@@ -23,8 +23,7 @@ public class UtilsFiglet {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "io exception in figlet: " + e.getMessage(),
                 "check your code."
             );

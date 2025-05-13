@@ -21,8 +21,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -41,8 +40,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -61,8 +59,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -79,8 +76,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -97,8 +93,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -116,10 +111,9 @@ public class StdMath {
             } else {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 throw new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "not a number: " + value,
-                        "check your code."
+                    address,
+                    "not a number: " + value,
+                    "check your code."
                 );
             }
         } else if (value instanceof Long) {
@@ -132,10 +126,9 @@ public class StdMath {
             } else {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 throw new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "not a number: " + value,
-                        "check your code."
+                    address,
+                    "not a number: " + value,
+                    "check your code."
                 );
             }
         } else if (value instanceof Float) {
@@ -148,17 +141,15 @@ public class StdMath {
             } else {
                 VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
                 throw new WattRuntimeError(
-                        address.getLine(),
-                        address.getFileName(),
-                        "not a number: " + value,
-                        "check your code."
+                    address,
+                    "not a number: " + value,
+                    "check your code."
                 );
             }
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -175,8 +166,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );
@@ -193,8 +183,7 @@ public class StdMath {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address.getLine(),
-                    address.getFileName(),
+                    address,
                     "not a number: " + value,
                     "check your code."
             );

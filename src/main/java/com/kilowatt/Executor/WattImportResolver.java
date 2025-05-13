@@ -52,25 +52,23 @@ public class WattImportResolver {
                         lexer = new Lexer(fileName, new String(stream.readAllBytes()));
                     } else {
                         throw new WattResolveError(
-                            address.getLine(),
-                            address.getFileName(),
+                            address,
                             "couldn't resolve name: " + name,
                             "check file exists!");
                     }
                 } catch (NullPointerException e) {
                     throw new WattResolveError(
-                        address.getLine(),
-                        address.getFileName(),
+                        address,
                         "couldn't resolve name: " + name,
                         "check file exists!");
                 }
             }
         } catch (IOException e) {
             throw new WattResolveError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't resolve name: " + localPath.resolve(name),
-                "check file exists!");
+                "check file exists!"
+            );
         }
         // парсер
         Parser parser = new Parser(fileName, lexer.scan());

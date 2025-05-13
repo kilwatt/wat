@@ -22,9 +22,12 @@ public class BinNode implements Node {
     public void compile() {
         left.compile();
         right.compile();
-        WattCompiler.code.visitInstruction(new VmInstructionBinOp(
-            new VmAddress(operator.fileName, operator.line), operator.value
-        ));
+        WattCompiler.code.visitInstruction(
+            new VmInstructionBinOp(
+                operator.asAddress(),
+                operator.value
+            )
+        );
     }
 
     @Override

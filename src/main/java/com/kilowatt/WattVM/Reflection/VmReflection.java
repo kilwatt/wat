@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Reflection;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
-import com.kilowatt.Errors.WattParsingError;
+import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
@@ -52,10 +52,10 @@ public class VmReflection {
             // ошибки
             Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             if (cause instanceof WattRuntimeError
-                    || cause instanceof WattParsingError) {
+                    || cause instanceof WattParseError) {
                 throw cause;
             } else {
-                throw new WattRuntimeError(address.getLine(), address.getFileName(),
+                throw new WattRuntimeError(address,
                         "error in jvm constructor: " + e.getMessage(), "check your code.");
             }
         }
@@ -79,8 +79,7 @@ public class VmReflection {
             VmAddress address = vm.getCallsHistory().getLast().getAddress();
             // оишбка
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't define class " + className + ", " + e.getMessage(),
                 "check your code."
             );
@@ -130,7 +129,7 @@ public class VmReflection {
         }
         // в ином случае, ошибка
         throw new WattRuntimeError(
-                address.getLine(), address.getFileName(),
+                address,
                 "constructor with args ("
                         + argsAmount + ") for: " +
                         clazz.getSimpleName() + " is not found.",
@@ -170,11 +169,11 @@ public class VmReflection {
         }
         // в ином случае, ошибка
         throw new WattRuntimeError(
-                address.getLine(), address.getFileName(),
-                "method " + name + " ("
-                        + argsAmount + ") from " +
-                        clazz.getSimpleName() + " is not found.",
-                clazz.getSimpleName()
+            address,
+            "fn " + name + "("
+                    + argsAmount + ") in " +
+                    clazz.getSimpleName() + " is not found.",
+            "did you type wrong name?"
         );
     }
 }

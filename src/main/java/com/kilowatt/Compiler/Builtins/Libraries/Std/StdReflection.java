@@ -23,7 +23,7 @@ public class StdReflection {
             WattCompiler.vm.push(o);
         }
         // инстанс
-        return new VmInstance(WattCompiler.vm, type, new VmAddress("_refl_", -1));
+        return new VmInstance(WattCompiler.vm, type, new VmAddress("__refl__", -1, -1, "__refl__"));
     }
 
     public VmType lookup_type(String name) {

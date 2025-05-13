@@ -39,8 +39,7 @@ public class WattRangeBuiltinFn implements VmBuiltinFunction {
         } else {
             // ошибка
             throw new WattRuntimeError(
-                address.getLine(),
-                address.getFileName(),
+                address,
                 "couldn't create range with (" + first + "," + second + ")",
                 "you can create range with two ints."
             );
