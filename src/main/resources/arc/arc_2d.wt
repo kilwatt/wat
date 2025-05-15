@@ -1,5 +1,5 @@
 import 'std.typeof'
-import 'std.math.ext'
+import 'std.math'
 
 type Color(r, g, b, a) {}
 type Arc2D(width,height,title) {

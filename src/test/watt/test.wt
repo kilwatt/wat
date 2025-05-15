@@ -114,7 +114,7 @@ for i in 0 to 1 {
 io.println(a)
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 vec := new Vec3(3,2,1)
@@ -122,14 +122,14 @@ vec.add(new Vec3(1,2,3))
 io.println(vec)
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 vec := new Vec4(3,4,-5,6)
 io.println(vec.normalize().to_string())
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 complex := new Complex(3, 4)
@@ -144,7 +144,7 @@ io.println(typeof(io))
 io.println(full_typeof(io))
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 complex := new Complex(2, 7)
@@ -160,7 +160,7 @@ io.println(system.get_property('banana'))
 io.println(system.get_env('JAVA_HOME'))
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 matrix := new Matrix([
@@ -243,7 +243,7 @@ for elem in list.iter() {
 }
 */
 /*
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 matrix := new Matrix([
@@ -303,4 +303,11 @@ io.println(value.version)
 io.println(value.string)
 */
 import 'std.io'
-io.println('Hello, world!').k()
+import 'std.math'
+
+io.println(math.root(16, 4))
+io.println(math.sin(math.pi/2))
+io.println(math.acos(0))
+io.println(math.asin(1))
+io.println(math.atan(1))
+io.println(math.atan(10))

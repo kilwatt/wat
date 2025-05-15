@@ -1,4 +1,4 @@
-import 'std.math.ext'
+import 'std.math'
 import 'std.io'
 
 // vectors
