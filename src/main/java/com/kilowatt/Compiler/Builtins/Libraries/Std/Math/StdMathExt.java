@@ -21,9 +21,9 @@ public class StdMathExt {
         } else {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address,
-                    "not a number: " + value,
-                    "check your code."
+                address,
+                "not a number: " + value,
+                "check your code."
             );
         }
     }

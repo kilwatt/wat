@@ -1,3 +1,5 @@
+import 'std.convert'
+
 unit math {
     // константы
     pi := 3.141592
@@ -11,26 +13,56 @@ unit math {
         []
     )
 
-    // важные функции, написанные на джаве
+    // функции
     fun floor(x) {
-        return math_reflection.floor(x)
+        i := convert.to_int(x)
+        if x >= 0 or x == i {
+            return i
+        } else {
+            return i - 1
+        }
     }
 
     fun ceil(x) {
-        return math_reflection.ceil(x)
+        i := convert.to_int(x)
+        if x >= 0 or x == i {
+            return i
+        } else {
+            return i + 1
+        }
+    }
+
+    fun round(x) {
+        i := convert.to_int(x)
+        frac := x - i
+        if x > 0 {
+            if frac >= 0.5 {
+                return i + 1
+            } else {
+                return i
+            }
+        } else {
+            if frac <= -0.5 {
+                return i + 1
+            } else {
+                return i
+            }
+        }
     }
 
     fun pow(x, y) {
         return math_reflection.pow(x, y)
     }
 
-    // функции
     fun abs(x) {
         if x >= 0 { return x }
         else { return -x }
     }
 
     fun sqrt(x) {
+        // в флоат
+        x = convert.to_float(x)
+
         // если негативное число
         if x < 0 {
             throw error(
@@ -60,6 +92,9 @@ unit math {
     }
 
     fun cbrt(x) {
+        // в флоат
+        x = convert.to_float(x)
+
         // если число 0
         if x == 0 { return 0 }
 
@@ -120,6 +155,10 @@ unit math {
     }
 
     fun exp(x) {
+        // в флоат
+        x = convert.to_float(x)
+
+        // вычисление
         terms := 30
         result := 1
         term := 1
@@ -130,7 +169,10 @@ unit math {
         return result
     }
 
-    fun ln(x) {
+    fun log(x) {
+        // в флоат
+        x = convert.to_float(x)
+        // вычисление
         terms := 50
         if x <= 0 {
             throw error(
@@ -138,13 +180,28 @@ unit math {
                 'you can use it with 1.'
             )
         }
+        k := 0.0
+        while x > 2 {
+            x /= self.e
+            k += 1
+        }
+        while x < 0.5 {
+            x *= self.e
+            k -= 1
+        }
         y := (x - 1) / (x + 1)
-        y2 = pow(y, 2)
+        y2 := pow(y, 2)
         result := 0
         for n in 0..terms {
-            term = (2 * n + 1)
-            result += pow(y, term) / term
+            term := pow(y, (2 * n + 1)) / (2 * n + 1)
+            result += term
         }
+        return 2 * result + k
+    }
+
+    fun log10(x) {
+        ln10 := 2.302585092994046
+        return log(x) / ln10
     }
 
     fun factorial(n) {
@@ -156,6 +213,9 @@ unit math {
     }
 
     fun normalize_angle(x) {
+        // в флоат
+        x = convert.to_float(x)
+        // вычисление
         while x > pi {
             x -= tui
         }
@@ -167,7 +227,7 @@ unit math {
 
     fun sin(x) {
         terms := 15
-        x = normalize_angle(x)
+        x = normalize_angle(convert.to_float(x))
         result := 0.0
         for n in 0..terms {
             sign := pow((-1), n)
@@ -179,6 +239,9 @@ unit math {
     }
 
     fun asin(x) {
+        // в флоат
+        x = convert.to_float(x)
+        // вычисление
         if abs(x) > 1 {
             throw error(
                 'could not use asin to |x| > 1: ' + x,
@@ -201,6 +264,9 @@ unit math {
     }
 
     fun atan(x) {
+        // в флоат
+        x = convert.to_float(x)
+        // вычисление
         terms := 50
         half_pi := pi / 2.0
         if abs(x) > 1 {
@@ -229,13 +295,13 @@ unit math {
                 'you can use cot with x, when tan of x > 0 or < 0'
             )
         }
-        return 1 / tan
+        return 1.0 / tan
     }
 
     fun cos(x) {
         terms := 15
-        x = normalize_angle(x)
-        result := 0
+        x = normalize_angle(convert.to_float(x))
+        result := 0.0
         for n in 0..terms {
             sign := pow((-1), n)
             numerator := pow(x, (2 * n))
@@ -254,14 +320,6 @@ unit math {
             )
         }
         return sin(x) / cos
-    }
-
-    fun log(x) {
-        return math_reflection.log(x)
-    }
-
-    fun log10(x) {
-        return math_reflection.log10(x)
     }
 }
 
