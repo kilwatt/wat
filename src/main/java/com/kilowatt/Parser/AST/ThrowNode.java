@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class ThrowNode implements Node {
         WattCompiler.code.visitInstruction(
             new VmInstruction() {
                 @Override
-                public void run(WattVM vm, VmFrame<String, Object> scope) {
+                public void run(WattVM vm, VmTable<String, Object> scope) {
                     // объект
                     Object o = chunk.runAndGet(vm, scope, address);
                     // если это ошибка - сразу выкидываем

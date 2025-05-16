@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -26,9 +26,9 @@ public class VmInstructionInstance implements VmInstruction {
     private final VmChunk args;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // конструктор
-        int amount = passArgs(vm, frame);
+        int amount = passArgs(vm, table);
         VmType clazz = vm.getTypeDefinitions().lookup(address, typeName);
         checkArgs(clazz.getConstructor().size(), amount);
         vm.push(new VmInstance(vm, clazz, address));
@@ -49,9 +49,9 @@ public class VmInstructionInstance implements VmInstruction {
     }
 
     // передача аргументов
-    private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
+    private int passArgs(WattVM vm, VmTable<String, Object> table)  {
         int size = vm.getStack().size();
-        args.run(vm, frame);
+        args.run(vm, table);
         return vm.getStack().size()-size;
     }
 

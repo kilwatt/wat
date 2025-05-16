@@ -4,7 +4,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class VmInstructionDefineType implements VmInstruction {
     private final VmType type;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // дефайн по имени
         vm.getTypeDefinitions().forceSet(address, type.getName(), type);
         // дефайн по полному имени

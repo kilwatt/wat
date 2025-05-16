@@ -5,7 +5,7 @@ import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmLoopBreak;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -28,10 +28,10 @@ public class VmInstructionLoop implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         // создаём новый фрэйм для цикла
-        VmFrame<String, Object> loopFrame = new VmFrame<>();
-        loopFrame.setRoot(frame);
+        VmTable<String, Object> loopFrame = new VmTable<>();
+        loopFrame.setRoot(table);
         // цикл
         while (true) {
             try {

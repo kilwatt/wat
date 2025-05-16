@@ -3,7 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.*;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -23,7 +23,7 @@ public class VmInstructionBinOp implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         Object r = vm.pop(address);
         Object l = vm.pop(address);
         if (r instanceof String || l instanceof String) {

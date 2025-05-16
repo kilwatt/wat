@@ -4,7 +4,7 @@ import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,13 +20,13 @@ public class VmInstructionDefineFn implements VmInstruction {
     private final VmFunction fn;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // новая копия функции
         VmFunction newFnCopy = fn.copy();
         // по краткому имени
-        frame.define(address, fn.getName(), newFnCopy);
+        table.define(address, fn.getName(), newFnCopy);
         // по полному имени
-        if (fn.getFullName() != null) frame.define(address, fn.getFullName(), newFnCopy);
+        if (fn.getFullName() != null) table.define(address, fn.getFullName(), newFnCopy);
     }
 
     @Override

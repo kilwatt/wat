@@ -10,7 +10,7 @@ import com.kilowatt.WattVM.Instructions.VmInstructionDuplicate;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class ListNode implements Node {
         VmAddress address = location.asAddress();
         WattCompiler.code.visitInstruction(new VmInstruction() {
             @Override
-            public void run(WattVM vm, VmFrame<String, Object> scope) {
+            public void run(WattVM vm, VmTable<String, Object> scope) {
                 vm.push(new WattList());
             }
 

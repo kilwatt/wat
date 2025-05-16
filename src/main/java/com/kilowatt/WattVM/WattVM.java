@@ -10,7 +10,7 @@ import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
 import com.kilowatt.WattVM.Reflection.VmReflection;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.Threads.VmThreads;
 import com.kilowatt.WattVM.Trace.VmCallsTrace;
 import lombok.Getter;
@@ -28,10 +28,10 @@ public class WattVM {
     // стэк
     private final ThreadLocal<ArrayDeque<Object>> stack = new ThreadLocal<>();
     // глобальные переменные
-    private final VmFrame<String, Object> globals = new VmFrame<>();
-    private final VmFrame<String, VmType> typeDefinitions = new VmFrame<>();
-    private final VmFrame<String, VmUnit> unitDefinitions = new VmFrame<>();
-    private final VmFrame<String, VmTrait> traitDefinitions = new VmFrame<>();
+    private final VmTable<String, Object> globals = new VmTable<>();
+    private final VmTable<String, VmType> typeDefinitions = new VmTable<>();
+    private final VmTable<String, VmUnit> unitDefinitions = new VmTable<>();
+    private final VmTable<String, VmTrait> traitDefinitions = new VmTable<>();
     // рефлексия
     private final VmReflection reflection = new VmReflection(this);
     // трэйс(история) вызовов

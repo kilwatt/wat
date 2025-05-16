@@ -11,7 +11,7 @@ import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Reflection.VmCallInfo;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -45,20 +45,20 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // устанавливаем инфу о последнем вызове
-        WattCompiler.vm.getCallsTrace().add(new VmCallInfo(address, name, frame));
+        WattCompiler.vm.getCallsTrace().add(new VmCallInfo(address, name, table));
         // вызов
         if (!hasPrevious) {
-            callGlobalFunc(vm, frame);
+            callGlobalFunc(vm, table);
         } else {
             Object last = vm.pop(address);
             if (last instanceof VmInstance vmInstance) {
-                callInstanceFunc(vm, frame, vmInstance);
+                callInstanceFunc(vm, table, vmInstance);
             } else if (last instanceof VmUnit vmUnit){
-                callUnitFunc(vm, frame, vmUnit);
+                callUnitFunc(vm, table, vmUnit);
             } else {
-                callReflectionFunc(vm, frame, last);
+                callReflectionFunc(vm, table, last);
             }
         }
     }
@@ -73,10 +73,10 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызывает функцю объекта
-    private void callInstanceFunc(WattVM vm, VmFrame<String, Object> frame, VmInstance vmObj)  {
+    private void callInstanceFunc(WattVM vm, VmTable<String, Object> table, VmInstance vmObj)  {
         // аргументы и поиск функции
-        int argsAmount = passArgs(vm, frame);
-        Object val = vmObj.getFields().lookup(address, name);
+        int argsAmount = passArgs(vm, table);
+        Object val = vmObj.getFields().find(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(vmObj.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
@@ -98,10 +98,10 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызывает функцю юнита
-    private void callUnitFunc(WattVM vm, VmFrame<String, Object> frame, VmUnit vmUnit)  {
+    private void callUnitFunc(WattVM vm, VmTable<String, Object> table, VmUnit vmUnit)  {
         // аргументы и поиск функции
-        int argsAmount = passArgs(vm, frame);
-        Object val = vmUnit.getFields().lookup(address, name);
+        int argsAmount = passArgs(vm, table);
+        Object val = vmUnit.getFields().find(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(vmUnit.getName() + ":" + name, fn.getParams().size(), argsAmount);
@@ -124,9 +124,9 @@ public class VmInstructionCall implements VmInstruction {
 
     // Вызывает рефлексийную функцию
     @SneakyThrows
-    private void callReflectionFunc(WattVM vm, VmFrame<String, Object> frame, Object last) {
+    private void callReflectionFunc(WattVM vm, VmTable<String, Object> table, Object last) {
         // аргументы
-        int argsAmount = passArgs(vm, frame);
+        int argsAmount = passArgs(vm, table);
         Object[] callArgs = toJvmArgs(vm, argsAmount);
         // поиск метода
         Method fun = vm.getReflection().findMethod(
@@ -173,10 +173,10 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызов функции из глобального скоупа
-    private void callGlobalFunc(WattVM vm, VmFrame<String, Object> frame)  {
+    private void callGlobalFunc(WattVM vm, VmTable<String, Object> table)  {
         // аргументы
-        int argsAmount = passArgs(vm, frame);
-        Object o = frame.lookup(address, name);
+        int argsAmount = passArgs(vm, table);
+        Object o = table.lookup(address, name);
         // функция
         if (o instanceof VmFunction fn) {
             checkArgs(fn.getName(), fn.getParams().size(), argsAmount);
@@ -206,9 +206,9 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // помещает аргументы в стек
-    private int passArgs(WattVM vm, VmFrame<String, Object> frame)  {
+    private int passArgs(WattVM vm, VmTable<String, Object> table)  {
         int size = vm.getStack().size();
-        args.run(vm, frame);
+        args.run(vm, table);
         return vm.getStack().size()-size;
     }
 

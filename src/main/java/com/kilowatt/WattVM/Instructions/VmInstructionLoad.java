@@ -6,7 +6,7 @@ import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
@@ -35,11 +35,11 @@ public class VmInstructionLoad implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         if (!shouldPushResult) return;
         if (!hasPrevious) {
-            if (frame.has(name)) {
-                vm.push(frame.lookup(address, name));
+            if (table.has(name)) {
+                vm.push(table.lookup(address, name));
             } else if (vm.getTypeDefinitions().has(name)) {
                 vm.push(vm.getTypeDefinitions().lookup(address, name));
             } else if (vm.getUnitDefinitions().has(name)) {
@@ -57,11 +57,11 @@ public class VmInstructionLoad implements VmInstruction {
             Object last = vm.pop(address);
             switch (last) {
                 case VmInstance type -> {
-                    vm.push(type.getFields().lookup(address, name));
+                    vm.push(type.getFields().find(address, name));
                     break;
                 }
                 case VmUnit unit -> {
-                    vm.push(unit.getFields().lookup(address, name));
+                    vm.push(unit.getFields().find(address, name));
                     break;
                 }
                 case null -> throw new IllegalStateException(

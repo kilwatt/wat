@@ -3,7 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmTrait;
 import com.kilowatt.WattVM.Entities.VmTraitFunction;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class VmInstructionDefineTrait implements VmInstruction {
     private final VmTrait trait;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // дефайн по имени
         vm.getTraitDefinitions().forceSet(address, trait.getName(), trait);
         // дефайн по полному имени

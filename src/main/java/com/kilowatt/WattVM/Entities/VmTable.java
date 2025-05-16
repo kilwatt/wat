@@ -1,4 +1,4 @@
-package com.kilowatt.WattVM.Storage;
+package com.kilowatt.WattVM.Entities;
 
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.VmAddress;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @SuppressWarnings({"StringTemplateMigration"})
 @Getter
-public class VmFrame<K, V> {
+public class VmTable<K, V> {
     // значения для хранения
     private final ConcurrentHashMap<K, V> values = new ConcurrentHashMap<>();
     /* рутовый фрейм, предназначен для поиска
@@ -21,10 +21,10 @@ public class VmFrame<K, V> {
        выглядит в виде иерархии:
        функци -> класс -> глобал
      */
-    private VmFrame<K, V> root;
+    private VmTable<K, V> root;
     // замыкание
     @Setter
-    private VmFrame<K, V> closure;
+    private VmTable<K, V> closure;
 
     /**
      * Содержится ли объект в этом фрэйме или
@@ -38,13 +38,13 @@ public class VmFrame<K, V> {
     }
 
     /**
-     * Ищет значение в фрейме
+     * Ищет значение в таблице, и рутах
      * @param address - адрес
      * @param name - имя значения
      * @return возвращает значение
      */
     public V lookup(VmAddress address, K name) {
-        VmFrame<K, V> current = this;
+        VmTable<K, V> current = this;
         // фрэймы
         while (!current.existsInFrameOrClosure(name)) {
             if (current.root == null) {
@@ -62,13 +62,30 @@ public class VmFrame<K, V> {
     }
 
     /**
+     * Ищет значение ТОЛЬКО в этой таблице
+     * @param address - адрес
+     * @param name - имя значения
+     * @return возвращает значение
+     */
+    public V find(VmAddress address, K name) {
+        // возвращаем
+        if (values.containsKey(name)) return values.get(name);
+        else if (closure != null && closure.has(name)) return closure.lookup(address, name);
+        else throw new WattRuntimeError(
+            address,
+            "not found: " + name,
+            "check variables existence"
+        );
+    }
+
+    /**
      * Устанавливает значение в фрейм, учитывая предыдущие
      * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
     public void set(VmAddress address, K name, V val) {
-        VmFrame<K, V> current = this;
+        VmTable<K, V> current = this;
         // фрэймы
         while (current != null) {
             // проверка фрэйма
@@ -121,7 +138,7 @@ public class VmFrame<K, V> {
      * @return - найдено ли (бул)
      */
     public boolean has(K name) {
-        VmFrame<K, V> current = this;
+        VmTable<K, V> current = this;
         // фрэймы
         while (current != null) {
             if (current.existsInFrameOrClosure(name)) {
@@ -143,11 +160,11 @@ public class VmFrame<K, V> {
      * </p>
      * @param rootFrame - фрейм
      */
-    public void setRoot(VmFrame<K, V> rootFrame) {
+    public void setRoot(VmTable<K, V> rootFrame) {
         // проверка на цикличную зависимость
         if (this.root == rootFrame || this == rootFrame) { return; }
         // ищем объект с пустым рутом
-        VmFrame<K, V> current = this;
+        VmTable<K, V> current = this;
         while (current.root != null) {
             if (current.root == rootFrame || current == rootFrame) { return; }
             current = current.root;

@@ -4,7 +4,6 @@ import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,7 +28,7 @@ public class VmFunction {
     // адрес
     private final VmAddress address;
     // замыкание
-    private VmFrame<String, Object> closure = null;
+    private VmTable<String, Object> closure = null;
     // бинд к объекту
     @Setter
     private VmFunctionOwner selfBind;
@@ -41,24 +40,24 @@ public class VmFunction {
      */
     public void exec(WattVM vm, boolean shouldPushResult)  {
         // новый фрэйм
-        VmFrame<String, Object> frame = new VmFrame<>();
+        VmTable<String, Object> table = new VmTable<>();
         // замыкание
         if (getClosure() != null) {
-            frame.setClosure(closure);
+            table.setClosure(closure);
         }
         // устанавливаем рут скоупа и переменную self
         if (selfBind != null) {
-            frame.setRoot(selfBind.getFields());
-            frame.define(address, "self", selfBind);
+            table.setRoot(selfBind.getFields());
+            table.define(address, "self", selfBind);
         } else {
-            frame.setRoot(vm.getGlobals());
+            table.setRoot(vm.getGlobals());
         }
         // аргументы
-        loadArgs(vm, frame);
+        loadArgs(vm, table);
         // инструкции
         try {
             // исполняем функцию
-            body.run(vm, frame);
+            body.run(vm, table);
         } catch (VmReturnValue returnable) {
             if (shouldPushResult) {
                 vm.push(returnable.getObject());
@@ -70,7 +69,7 @@ public class VmFunction {
     /**
      * Загрузка аргументов в функции
      */
-    private void loadArgs(WattVM vm, VmFrame<String, Object> scope) {
+    private void loadArgs(WattVM vm, VmTable<String, Object> scope) {
         // загружаем аргументы
         for (int i = params.size()-1; i >= 0; i--) {
             if (vm.getStack().isEmpty()) {
@@ -86,7 +85,7 @@ public class VmFunction {
     }
 
     // установка замыкания
-    public void setClosure(VmFrame<String, Object> closure) {
+    public void setClosure(VmTable<String, Object> closure) {
         // устанавливаем замыкание функции
         if (this.getClosure() == null) {
             this.closure = closure;

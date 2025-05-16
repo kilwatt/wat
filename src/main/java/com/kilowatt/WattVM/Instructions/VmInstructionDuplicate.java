@@ -3,7 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -20,7 +20,7 @@ public class VmInstructionDuplicate implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         Object o = vm.pop(address);
         vm.push(o);
         vm.push(o);

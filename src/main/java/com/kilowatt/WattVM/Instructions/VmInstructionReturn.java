@@ -5,7 +5,7 @@ import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmReturnValue;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -26,12 +26,12 @@ public class VmInstructionReturn implements VmInstruction {
         this.address = address;
     }
 
-    public Object getResult(WattVM vm, VmFrame<String, Object> scope)  {
+    public Object getResult(WattVM vm, VmTable<String, Object> scope)  {
         return value.runAndGet(vm, scope, address);
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> scope) {
+    public void run(WattVM vm, VmTable<String, Object> scope) {
         throw new VmReturnValue(getResult(vm, scope));
     }
 

@@ -4,7 +4,7 @@ import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +28,10 @@ public class VmInstructionIf implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         // создаём новый фрэйм
-        VmFrame<String, Object> ifFrame = new VmFrame<>();
-        ifFrame.setRoot(frame);
+        VmTable<String, Object> ifFrame = new VmTable<>();
+        ifFrame.setRoot(table);
         // выполняем инструкции условий
         Object val = conditions.runAndGet(vm, ifFrame, address);
         // проверяем условия
@@ -42,7 +42,7 @@ public class VmInstructionIf implements VmInstruction {
         // в ином случае
         else {
             if (elseInstruction != null) {
-                elseInstruction.run(vm, frame);
+                elseInstruction.run(vm, table);
             }
         }
     }

@@ -5,7 +5,7 @@ import com.kilowatt.WattVM.Entities.VmUnit;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,7 +23,7 @@ public class VmInstructionDefineUnit implements VmInstruction {
     private final VmChunk body;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         // генерация юнита
         unit.getFields().setRoot(vm.getGlobals());
         // временные self, для выполнения тела

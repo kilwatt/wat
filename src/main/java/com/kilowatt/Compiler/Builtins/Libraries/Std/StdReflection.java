@@ -74,10 +74,10 @@ public class StdReflection {
         WattCompiler.vm.push(object);
         // вызов
         new VmInstructionLoad(
-                address,
-                name,
-                true,
-                true
+            address,
+            name,
+            true,
+            true
         ).run(WattCompiler.vm, WattCompiler.vm.getGlobals());
         // возврат значения
         return WattCompiler.vm.pop(address);

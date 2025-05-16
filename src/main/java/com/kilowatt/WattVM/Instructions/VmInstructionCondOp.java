@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.Entities.VmNull;
 import com.kilowatt.WattVM.Entities.VmType;
 import com.kilowatt.WattVM.Entities.VmUnit;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -27,7 +27,7 @@ public class VmInstructionCondOp implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         Object r = vm.pop(address);
         Object l = vm.pop(address);
         switch (operator) {

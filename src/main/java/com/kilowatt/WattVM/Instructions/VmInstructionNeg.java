@@ -3,7 +3,7 @@ package com.kilowatt.WattVM.Instructions;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class VmInstructionNeg implements VmInstruction {
     private final VmAddress address;
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> scope) {
+    public void run(WattVM vm, VmTable<String, Object> scope) {
         // получаем значение
         Object value = vm.pop(address);
         // создаём негативное число

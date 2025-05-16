@@ -3,7 +3,7 @@ import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.Entities.VmLoopBreak;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -22,7 +22,7 @@ public class VmInstructionLoopEnd extends RuntimeException implements VmInstruct
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> scope) {
+    public void run(WattVM vm, VmTable<String, Object> scope) {
         throw new VmLoopBreak(currentIteration);
     }
 

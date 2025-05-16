@@ -4,7 +4,7 @@ import com.kilowatt.WattVM.Chunks.VmChunk;
 import com.kilowatt.WattVM.Entities.VmThrowable;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,21 +24,21 @@ public class VmInstructionTry implements VmInstruction {
     private final String catchVariableName;
     
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> frame) {
+    public void run(WattVM vm, VmTable<String, Object> table) {
         try {
             // выполняем тело
-            tryBody.run(vm, frame);
+            tryBody.run(vm, table);
         } catch (RuntimeException error) {
             // устанавливаем переменную
             if (error instanceof VmThrowable throwable) {
-                frame.define(address, catchVariableName, throwable);
+                table.define(address, catchVariableName, throwable);
             } else {
-                frame.define(address, catchVariableName, new VmThrowable(error));
+                table.define(address, catchVariableName, new VmThrowable(error));
             }
             // выполняем тело исключения
-            catchBody.run(vm, frame);
+            catchBody.run(vm, table);
             // удаляем переменную
-            frame.getValues().remove(catchVariableName);
+            table.getValues().remove(catchVariableName);
         }
     }
 

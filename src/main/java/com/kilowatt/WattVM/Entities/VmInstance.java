@@ -3,7 +3,6 @@ package com.kilowatt.WattVM.Entities;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*
@@ -14,7 +13,7 @@ public class VmInstance implements VmFunctionOwner {
     // класс
     private final VmType type;
     // скоуп
-    private final VmFrame<String, Object> fields = new VmFrame<>();
+    private final VmTable<String, Object> fields = new VmTable<>();
     // адрес
     private final VmAddress address;
 
@@ -139,7 +138,7 @@ public class VmInstance implements VmFunctionOwner {
 
     // получение локального скоупа
     @Override
-    public VmFrame<String, Object> getFields() {
+    public VmTable<String, Object> getFields() {
         return fields;
     }
 }

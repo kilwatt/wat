@@ -3,12 +3,7 @@ package com.kilowatt.Parser.AST;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Lexer.Token;
 import com.kilowatt.Semantic.SemanticAnalyzer;
-import com.kilowatt.WattVM.Chunks.VmChunk;
-import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.Instructions.VmInstructionImpls;
-import com.kilowatt.WattVM.Instructions.VmInstructionPush;
-import com.kilowatt.WattVM.Storage.VmFrame;
-import com.kilowatt.WattVM.WattVM;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

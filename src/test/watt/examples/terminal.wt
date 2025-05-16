@@ -1,0 +1,61 @@
+import 'std.io'
+import 'utils.terminal'
+import 'std.random'
+
+terminal.enter_raw_mode()
+possible_symbols := ['$','@','#','^','&','*','0','1','\', '/']
+width := 110
+height := 40
+
+type MatrixColumn(x, inactive) {
+	fun init {
+		self.length := random.int(5, height / 2)
+		self.speed := random.float(0.05, 0.3)
+		self.position := random.int(-height, 0)
+		self.symbols := []
+		for _ in 0..length {
+			self.symbols.add(random.choice(possible_symbols))
+		}
+	}
+	fun update {
+		self.position += 1
+		if self.position - self.length > height {
+			self.position = random.int(-height, 0)
+			self.speed = random.float(0.05, 0.3)
+			self.length = random.int(5, height / 2)
+			self.symbols = []
+			for _ in 0..length {
+				self.symbols.add(random.choice(possible_symbols))
+			}
+		} else {
+			self.symbols.delete_at(0)
+			self.symbols.add(random.choice(possible_symbols))
+		}
+	}
+	fun draw(screen) {
+		if inactive { return null }
+		for i in 1..self.length {
+			char := self.symbols.get(self.length - i)
+			y := self.position - (self.length - 1) + i
+			if 0 <= y and y < height {
+				if i + 1 == self.symbols.size() {
+					screen.get(y).set(x, '[0m' + char)
+				} else {
+					screen.get(y).set(x, '[92m' + char)
+				}
+			}
+		}
+	}
+}
+
+fun clear_screen {
+	terminal.clear_screen()
+}
+
+columns := []
+inactive := false
+for i in 0..width {
+	columns.add(new MatrixColumn(i, inactive))
+	inactive = !inactive
+}
+clear_screen()

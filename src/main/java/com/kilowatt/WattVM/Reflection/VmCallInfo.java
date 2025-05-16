@@ -1,7 +1,7 @@
 package com.kilowatt.WattVM.Reflection;
 
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ public class VmCallInfo {
     // имя функции
     private final String name;
     // фрэйм вызова
-    private final VmFrame<String, Object> frame;
+    private final VmTable<String, Object> table;
 
     // в строку
     @Override

@@ -4,7 +4,7 @@ package com.kilowatt.WattVM.Chunks;
 import com.kilowatt.WattVM.Instructions.VmInstruction;
 import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -27,17 +27,17 @@ public class VmChunk {
     }
 
     // выполнение и получение результата
-    public Object runAndGet(WattVM vm, VmFrame<String, Object> frame, VmAddress address)  {
+    public Object runAndGet(WattVM vm, VmTable<String, Object> table, VmAddress address)  {
         for (VmInstruction instr : instructions) {
-            instr.run(vm, frame);
+            instr.run(vm, table);
         }
         return vm.pop(address);
     }
 
     // запуск простой
-    public void run(WattVM vm, VmFrame<String, Object> frame)  {
+    public void run(WattVM vm, VmTable<String, Object> table)  {
         for (VmInstruction instr : instructions) {
-            instr.run(vm, frame);
+            instr.run(vm, table);
         }
     }
 

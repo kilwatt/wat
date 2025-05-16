@@ -3,7 +3,6 @@ package com.kilowatt.WattVM.Entities;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
 import lombok.Getter;
 
 /*
@@ -17,7 +16,7 @@ public class VmUnit implements VmFunctionOwner {
     // адрес
     private final VmAddress address;
     // поля
-    private final VmFrame<String, Object> fields = new VmFrame<>();
+    private final VmTable<String, Object> fields = new VmTable<>();
 
     // конструктор
     public VmUnit(VmAddress address, String name, String fullName) {

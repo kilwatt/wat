@@ -4,7 +4,7 @@ import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Codegen.VmCodeDumper;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.WattVM.VmAddress;
-import com.kilowatt.WattVM.Storage.VmFrame;
+import com.kilowatt.WattVM.Entities.VmTable;
 import lombok.Getter;
 
 /*
@@ -30,7 +30,7 @@ public class VmInstructionMakeClosure implements VmInstruction {
     }
 
     @Override
-    public void run(WattVM vm, VmFrame<String, Object> scope) {
+    public void run(WattVM vm, VmTable<String, Object> scope) {
         VmFunction fn;
         if (name == null) {
             fn = (VmFunction) vm.pop(address);
