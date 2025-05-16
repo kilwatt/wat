@@ -107,7 +107,7 @@ type Arc2D(width,height,title) {
     }
 
     fun draw_circle(pos, radius, color) {
-        self.arc_reflection.draw_line(pos.x, pos.y, radius, color)
+        self.arc_reflection.draw_circle(pos.x, pos.y, radius, color)
     }
 
     fun draw_triangle(p1, p2, p3, color) {
