@@ -227,6 +227,9 @@ unit math {
                 'you can use it with number > 0'
             )
         }
+        if n == 0 {
+            return 1
+        }
         result := 1
         for i in 2..(n+1) {
             result *= i
@@ -248,40 +251,32 @@ unit math {
     }
 
     fun sin(x) {
-        terms := 15
-        x = normalize_angle(convert.to_float(x))
         result := 0.0
+        terms := 10
         for n in 0..terms {
-            sign := pow((-1), n)
-            numerator := pow(x, (2 * n + 1))
-            denominator := factorial(2 * n + 1)
-            result += sign * numerator / denominator
+            coef := pow(-1, n)
+            num := pow(x, 2*n+1)
+            denom := factorial(2*n+1)
+            result += coef * num / denom
         }
         return result
     }
 
     fun asin(x) {
-        x = convert.to_float(x)
-
         if abs(x) > 1 {
             throw error(
                 'could not use asin for |x| > 1: ' + x,
                 'asin is only defined in range [-1, 1]'
             )
         }
-
         result := 0.0
-        term := x
-        n := 0
-        max_iter := 30
-        while n < max_iter {
-            numerator := factorial(2 * n)
-            denominator := pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)
-            term = numerator / denominator * pow(x, 2 * n + 1)
+        terms := 10
+        for n in 0..terms {
+            num := factorial(2*n)
+            denom := pow(4, n) * pow(factorial(n), 2) * (2*n+1)
+            term := (num / denom) * pow(x, 2*n+1)
             result += term
-            n += 1
         }
-
         return result
     }
 
@@ -325,14 +320,13 @@ unit math {
     }
 
     fun cos(x) {
-        terms := 20
-        x = normalize_angle(convert.to_float(x))
         result := 0.0
+        terms := 10
         for n in 0..terms {
-            sign := pow((-1.0), n)
-            numerator := pow(x, (2.0 * n))
-            denominator := factorial(2 * n)
-            result += sign * numerator / denominator
+            coef := pow(-1, n)
+            num := pow(x, 2*n)
+            denom := factorial(2*n)
+            result += coef * num / denom
         }
         return result
     }
