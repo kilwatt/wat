@@ -48,7 +48,7 @@ unit math {
         x := convert.to_float(x)
         result := 1.0
         term := 1.0
-        terms := 100
+        terms := 10
         for n in 1..terms {
             term *= x / n
             result += term
@@ -189,7 +189,7 @@ unit math {
         // в флоат
         x = convert.to_float(x)
         // вычисление
-        terms := 50
+        terms := 10
         if x <= 0 {
             throw error(
                 'could not use ln with x <= 0: ' + x,
@@ -288,7 +288,7 @@ unit math {
         // в флоат
         x = convert.to_float(x)
         // вычисление
-        terms := 50
+        terms := 10
         half_pi := pi / 2.0
         if abs(x) > 1 {
             inv := atan(1.0 / abs(x))
