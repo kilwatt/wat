@@ -1,6 +1,7 @@
 import 'std.io'
 import 'utils.terminal'
 import 'std.random'
+import 'std.threads'
 
 terminal.enter_raw_mode()
 possible_symbols := ['$','@','#','^','&','*','0','1','\', '/']
@@ -49,7 +50,7 @@ type MatrixColumn(x, inactive) {
 }
 
 fun clear_screen {
-	terminal.clear_screen()
+	terminal.clear()
 }
 
 columns := []
@@ -59,3 +60,18 @@ for i in 0..width {
 	inactive = !inactive
 }
 clear_screen()
+while true {
+    screen := []
+    for y in 0..height {
+        screen.add([])
+        for x in 0..width {
+            screen.get(y).add(' ')
+        }
+    }
+    for col in columns.iter() {
+        col.update()
+        col.draw(screen)
+    }
+    threads.sleep(300)
+    clear_screen()
+}
