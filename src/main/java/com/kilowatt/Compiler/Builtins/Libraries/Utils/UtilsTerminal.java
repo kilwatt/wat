@@ -58,13 +58,16 @@ public class UtilsTerminal {
 
     // очистка консоли
     public void clear() {
-        terminal.writer().println("\033[2J");
-        terminal.writer().println("\033[H");
+        terminal.puts(InfoCmp.Capability.clear_screen);
+        terminal.flush();
     }
 
     // очистка линии
     public void clear_line() {
         terminal.writer().println("\033[2K");
+    }
+    public void clear_ch() {
+        terminal.writer().println("\b \b");
     }
 
     // установка позиции курсора

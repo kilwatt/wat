@@ -20,6 +20,10 @@ unit terminal {
         std_reflection_terminal.clear_line()
     }
 
+    fun clear_ch {
+        std_reflection_terminal.clear_ch()
+    }
+
     fun read_key {
         return std_reflection_terminal.read_key()
     }
