@@ -352,7 +352,7 @@ public class Lexer {
 
     // добавление токена
     private void addToken(TokenType type, String value) {
-        tokens.add(new Token(type, value, line, column - 1, filename, lineText));
+        tokens.add(new Token(type, value, line, column, filename, lineText));
     }
 
     // проверка на текущий
