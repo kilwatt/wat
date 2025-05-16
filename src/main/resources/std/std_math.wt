@@ -50,8 +50,45 @@ unit math {
         }
     }
 
+    fun exp(x) {
+        x := convert.to_float(x)
+        result := 1.0
+        term := 1.0
+        terms := 100
+        for n in 1..terms {
+            term *= x / n
+            result += term
+        }
+        return result
+    }
+
     fun pow(x, y) {
-        return math_reflection.pow(x, y)
+        if x == 0 {
+            if y == 0 {
+                return 1
+            } elif y < 0 {
+                throw error(
+                    'could not raise 0 to neg. power'
+                )
+            } else {
+                return 1
+            }
+        }
+        y_int := convert.to_int(y)
+        if y == y_int {
+            y = y_int
+            result := 1.0
+            for _ in 0..abs(y) {
+                result *= x
+            }
+            if y >= 0 {
+                return result
+            } else {
+                return 1.0 / result
+            }
+        } else {
+            return exp(y * log(x))
+        }
     }
 
     fun abs(x) {
@@ -152,21 +189,6 @@ unit math {
             }
             return guess
         }
-    }
-
-    fun exp(x) {
-        // в флоат
-        x = convert.to_float(x)
-
-        // вычисление
-        terms := 30
-        result := 1
-        term := 1
-        for n in 1..terms {
-            term *= x / n
-            result += term
-        }
-        return result
     }
 
     fun log(x) {
