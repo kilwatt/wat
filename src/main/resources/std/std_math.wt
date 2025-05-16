@@ -7,12 +7,6 @@ unit math {
     tau := 6.283185
     epsilon := 0.0000000001
 
-    // рефлекися
-    math_reflection := __refl__.reflect(
-        'com.kilowatt.Compiler.Builtins.Libraries.Std.Math.StdMath',
-        []
-    )
-
     // функции
     fun floor(x) {
         i := convert.to_int(x)
@@ -71,7 +65,7 @@ unit math {
                     'could not raise 0 to neg. power'
                 )
             } else {
-                return 1
+                return 0
             }
         }
         y_int := convert.to_int(y)
@@ -227,6 +221,12 @@ unit math {
     }
 
     fun factorial(n) {
+        if n < 0 {
+            throw error(
+                'could not use factorial with n <= 0',
+                'you can use it with number > 0'
+            )
+        }
         result := 1
         for i in 2..(n+1) {
             result *= i
@@ -239,10 +239,10 @@ unit math {
         x = convert.to_float(x)
         // вычисление
         while x > pi {
-            x -= tui
+            x -= tau
         }
         while x < -pi {
-            x += tui
+            x += tau
         }
         return x
     }
@@ -261,23 +261,27 @@ unit math {
     }
 
     fun asin(x) {
-        // в флоат
         x = convert.to_float(x)
-        // вычисление
+
         if abs(x) > 1 {
             throw error(
-                'could not use asin to |x| > 1: ' + x,
-                'you can use use it with 1, 2, ...'
+                'could not use asin for |x| > 1: ' + x,
+                'asin is only defined in range [-1, 1]'
             )
         }
-        terms := 20
+
         result := 0.0
-        for n in 0..terms {
+        term := x
+        n := 0
+        max_iter := 30
+        while n < max_iter {
             numerator := factorial(2 * n)
             denominator := pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)
-            term := numerator / denominator * pow(x, 2 * n + 1)
+            term = numerator / denominator * pow(x, 2 * n + 1)
             result += term
+            n += 1
         }
+
         return result
     }
 
@@ -321,12 +325,12 @@ unit math {
     }
 
     fun cos(x) {
-        terms := 15
+        terms := 20
         x = normalize_angle(convert.to_float(x))
         result := 0.0
         for n in 0..terms {
-            sign := pow((-1), n)
-            numerator := pow(x, (2 * n))
+            sign := pow((-1.0), n)
+            numerator := pow(x, (2.0 * n))
             denominator := factorial(2 * n)
             result += sign * numerator / denominator
         }
