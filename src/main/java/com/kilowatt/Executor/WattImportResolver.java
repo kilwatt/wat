@@ -81,9 +81,10 @@ public class WattImportResolver {
         analyzer.analyze(result);
         // компилируем
         if (!imported.contains(pathString)) {
-            WattCompiler.compileImport(
-                address,
-                result
+            WattCompiler.compile(
+                fileName,
+                result,
+                true
             );
             imported.add(pathString);
         }

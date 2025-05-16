@@ -52,7 +52,8 @@ public class WattExecutor {
             SemanticAnalyzer analyzer = new SemanticAnalyzer();
             analyzer.analyze(result);
             // компилируем
-            WattCompiler.compile(result);
+            WattCompiler.reset();
+            WattCompiler.compile(filePath.getFileName().toString(), result, false);
             // объявляем функции
             WattBuiltinProvider.provide();
             // запускаем код
@@ -104,7 +105,8 @@ public class WattExecutor {
             SemanticAnalyzer analyzer = new SemanticAnalyzer();
             analyzer.analyze(result);
             // компилируем
-            WattCompiler.compile(result);
+            WattCompiler.reset();
+            WattCompiler.compile(filePath.getFileName().toString(), result, false);
             // объявляем функции
             WattBuiltinProvider.provide();
             // дампим код
@@ -150,7 +152,8 @@ public class WattExecutor {
         SemanticAnalyzer analyzer = new SemanticAnalyzer();
         analyzer.analyze(result);
         // компилируем
-        WattCompiler.compile(result);
+        WattCompiler.reset();
+        WattCompiler.compile(filePath.getFileName().toString(), result, false);
         // объявляем функции
         WattBuiltinProvider.provide();
         // запускаем код

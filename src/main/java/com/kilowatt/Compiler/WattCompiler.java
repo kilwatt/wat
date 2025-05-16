@@ -1,7 +1,8 @@
 package com.kilowatt.Compiler;
 
+import com.kilowatt.Errors.WattColors;
+import com.kilowatt.WattVM.Benchmark.VmBenchmark;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
-import com.kilowatt.WattVM.VmAddress;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.Parser.AST.*;
 import lombok.Getter;
@@ -23,24 +24,29 @@ public class WattCompiler {
     }
 
     // компиляция
-    public static void compile(Node parse) {
-        // ресетаем
-        reset();
+    public static void compile(String filename, Node node, boolean isImport) {
         // компилируем
-        parse.compile();
-    }
-
-    // импорт дефайнов и их компиляция
-    public static void compileImport(VmAddress address, BlockNode block) {
-        // компилируем
-        for (Node node : block.getNodes()) {
-            if (node instanceof UnitNode ||
-                node instanceof TypeNode ||
-                node instanceof FnNode ||
-                node instanceof NativeNode ||
-                node instanceof ImportNode ||
-                node instanceof TraitNode) {
-                node.compile();
+        // если не импорт
+        if (!isImport) {
+            node.compile();
+        }
+        // если импорт
+        else {
+            if (node instanceof BlockNode block) {
+                for (Node inNode : block.getNodes()) {
+                    if (inNode instanceof UnitNode ||
+                            inNode instanceof TypeNode ||
+                            inNode instanceof FnNode ||
+                            inNode instanceof NativeNode ||
+                            inNode instanceof ImportNode ||
+                            inNode instanceof TraitNode) {
+                        inNode.compile();
+                    }
+                }
+            } else {
+                throw new RuntimeException(
+                    "not a block, while importing: " + node
+                );
             }
         }
     }
