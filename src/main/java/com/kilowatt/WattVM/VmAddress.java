@@ -9,7 +9,7 @@ import lombok.ToString;
  */
 @Getter
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"lineText"})
 public class VmAddress {
     // файл
     private final String fileName;

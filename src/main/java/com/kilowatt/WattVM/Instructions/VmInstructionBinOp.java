@@ -69,13 +69,13 @@ public class VmInstructionBinOp implements VmInstruction {
                     }
                 } else {
                     throw new WattRuntimeError(address,
-                            "couldn't use op: " + operator + ". right is not a number: " + r,
+                            "couldn't use op " + operator + ", right is not a number: " + r,
                             "check your code.");
                 }
             }
             else {
                 throw new WattRuntimeError(address,
-                        "couldn't use op: " + operator + ". left is not a number: " + l,
+                        "couldn't use op " + operator + ", left is not a number: " + l,
                         "check your code.");
             }
         }

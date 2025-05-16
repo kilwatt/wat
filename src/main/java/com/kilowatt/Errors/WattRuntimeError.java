@@ -20,10 +20,17 @@ public class WattRuntimeError extends WattError {
     public void panic() {
         System.out.print(WattColors.ANSI_RED);
         System.out.println(WattColors.ANSI_RED + "error: " + WattColors.ANSI_RESET + message);
-        System.out.println();
         System.out.println("┌─ " + address.getFileName() + ":" + address.getLine() + ":" + address.getColumn());
-        System.out.println("│ " + address.getLineText());
-        System.out.println("│ " + " ".repeat(address.getColumn() - 1) + WattColors.ANSI_RED + "^" + WattColors.ANSI_RESET);
+        String lineText = address.getLineText();
+        String strippedLineText = lineText.stripLeading();
+        int strippedAmount = lineText.length() - strippedLineText.length();
+        if (strippedAmount > 0) {
+            System.out.println("│ ... " + strippedLineText);
+            System.out.println("│ " + " ".repeat(address.getColumn() - strippedAmount + 3) + WattColors.ANSI_RED + "^" + WattColors.ANSI_RESET);
+        } else {
+            System.out.println("│ " + strippedLineText);
+            System.out.println("│ " + " ".repeat(address.getColumn() - 1) + WattColors.ANSI_RED + "^" + WattColors.ANSI_RESET);
+        }
         if (!WattCompiler.vm.getCallsHistory().isEmpty()) {
             System.out.println();
             for (VmCallInfo element : WattCompiler.vm.getCallsHistory().reversed()) {

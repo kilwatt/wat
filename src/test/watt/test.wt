@@ -305,16 +305,5 @@ io.println(value.string)
 import 'std.io'
 import 'std.math'
 
-io.println('root(16, 4): ' + math.root(16, 4)) // done
-io.println('sin(pi/2): ' + math.sin(1)) // done
-io.println('cos(pi/2): ' + math.cos(1)) // done
-io.println('acos(1): ' + math.acos(1)) // ~
-io.println('asin(1): ' + math.asin(1)) // ~
-io.println('atan(1): ' + math.atan(1)) // done
-io.println('atan(10): ' + math.atan(10)) // done
-io.println(math.log(2)) // done
-io.println(math.log10(10)) // done
-io.println(math.round(3.7)) // done
-io.println(math.round(3.3)) // done
-io.println(math.floor(4.7)) // done
-io.println(math.ceil(4.7)) // done
+
+        io.println(math.ceil-(4.7)) // done
