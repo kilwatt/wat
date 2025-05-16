@@ -168,7 +168,7 @@ unit math {
     fun sin(x) {
         terms := 15
         x = normalize_angle(x)
-        result := 0
+        result := 0.0
         for n in 0..terms {
             sign := pow((-1), n)
             numerator := pow(x, (2 * n + 1))
@@ -186,7 +186,7 @@ unit math {
             )
         }
         terms := 20
-        result := 0
+        result := 0.0
         for n in 0..terms {
             numerator := factorial(2 * n)
             denominator := pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)
@@ -197,34 +197,30 @@ unit math {
     }
 
     fun acos(x) {
-        return pi / 2 - asin(x)
+        return pi / 2.0 - asin(x)
     }
 
     fun atan(x) {
-        if x == 0 { return 0 }
         terms := 50
-        if abs(x) <= 1 {
-            result := 0
-            for n in 0..terms {
-                sign := -1
-                if n % 2 == 0 {
-                    sign = 1
-                }
-                term := sign * pow(x, (2 * n + 1)) / (2 * n + 1)
-                result += term
-            }
-            return result
-        } else {
+        half_pi := pi / 2.0
+        if abs(x) > 1 {
+            inv := atan(1.0 / abs(x))
+            result := half_pi - inv
             if x > 0 {
-                inv := atan(1 / x)
-                return (pi / 2.0) - inv
+                return result
             } else {
-                inv := atan(1 / abs(x))
-                return -(pi / 2.0) + inv
+                return -result
             }
         }
+        result := 0.0
+        sign := 1
+        for n in 0..terms {
+            term := sign * pow(x, (2 * n + 1)) / (2 * n + 1)
+            result += term
+            sign *= -1
+        }
+        return result
     }
-
     fun cot(x) {
         tan := self.tan(x, terms)
         if tan == 0 {
@@ -242,7 +238,7 @@ unit math {
         result := 0
         for n in 0..terms {
             sign := pow((-1), n)
-            numerator := pow(x, (2 * n ))
+            numerator := pow(x, (2 * n))
             denominator := factorial(2 * n)
             result += sign * numerator / denominator
         }
@@ -251,7 +247,7 @@ unit math {
 
     fun tan(x) {
         cos := self.cos(x)
-        if cos == 0 {
+        if cos == 0.0 {
             throw error(
                 'could not use tan with x: ' + x + ', because cos of x is 0.',
                 'choose other number.'
