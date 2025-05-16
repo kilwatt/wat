@@ -135,14 +135,4 @@ public class VmInstance implements VmFunctionOwner {
                 ", address=" + address +
                 ')';
     }
-
-    /**
-     * Поиск поля
-     * @param address - адрес
-     * @param name - имя
-     * @return значение
-     */
-    public Object lookupField(VmAddress address, String name) {
-        return fields.find(address, name);
-    }
 }
