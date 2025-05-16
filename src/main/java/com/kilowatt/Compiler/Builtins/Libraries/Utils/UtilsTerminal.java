@@ -66,6 +66,8 @@ public class UtilsTerminal {
     public void clear_line() {
         terminal.writer().println("\033[2K");
     }
+
+    // очистка символа
     public void clear_ch() {
         terminal.writer().println("\b \b");
     }
