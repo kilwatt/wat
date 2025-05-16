@@ -70,7 +70,6 @@ public class VmTable<K, V> {
     public V find(VmAddress address, K name) {
         // возвращаем
         if (values.containsKey(name)) return values.get(name);
-        else if (closure != null && closure.has(name)) return closure.lookup(address, name);
         else throw new WattRuntimeError(
             address,
             "not found: " + name,

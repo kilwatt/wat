@@ -73,19 +73,19 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызывает функцю объекта
-    private void callInstanceFunc(WattVM vm, VmTable<String, Object> table, VmInstance vmObj)  {
+    private void callInstanceFunc(WattVM vm, VmTable<String, Object> table, VmInstance instance)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, table);
-        Object val = vmObj.getFields().find(address, name);
+        Object val = instance.lookupField(address, name);
         // функция
         if (val instanceof VmFunction fn) {
-            checkArgs(vmObj.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
+            checkArgs(instance.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
-            vmObj.call(address, name, vm, shouldPushResult);
+            instance.call(address, name, vm, shouldPushResult);
         }
         // нативная функция
         else if (val instanceof VmBuiltinFunction fn) {
-            checkArgs(vmObj.getType().getName() + ":" + name, fn.paramsAmount(), argsAmount);
+            checkArgs(instance.getType().getName() + ":" + name, fn.paramsAmount(), argsAmount);
             // вызов
             fn.exec(vm, address, shouldPushResult);
         }
@@ -98,19 +98,19 @@ public class VmInstructionCall implements VmInstruction {
     }
 
     // Вызывает функцю юнита
-    private void callUnitFunc(WattVM vm, VmTable<String, Object> table, VmUnit vmUnit)  {
+    private void callUnitFunc(WattVM vm, VmTable<String, Object> table, VmUnit unit)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, table);
-        Object val = vmUnit.getFields().find(address, name);
+        Object val = unit.lookupField(address, name);
         // функция
         if (val instanceof VmFunction fn) {
-            checkArgs(vmUnit.getName() + ":" + name, fn.getParams().size(), argsAmount);
+            checkArgs(unit.getName() + ":" + name, fn.getParams().size(), argsAmount);
             // вызов
-            vmUnit.call(address, name, vm, shouldPushResult);
+            unit.call(address, name, vm, shouldPushResult);
         }
         // нативная функция
         else if (val instanceof VmBuiltinFunction fn) {
-            checkArgs(vmUnit.getName() + ":" + name, fn.paramsAmount(), argsAmount);
+            checkArgs(unit.getName() + ":" + name, fn.paramsAmount(), argsAmount);
             // вызов
             fn.exec(vm, address, shouldPushResult);
         }

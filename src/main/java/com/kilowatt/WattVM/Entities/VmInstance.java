@@ -136,9 +136,13 @@ public class VmInstance implements VmFunctionOwner {
                 ')';
     }
 
-    // получение локального скоупа
-    @Override
-    public VmTable<String, Object> getFields() {
-        return fields;
+    /**
+     * Поиск поля
+     * @param address - адрес
+     * @param name - имя
+     * @return значение
+     */
+    public Object lookupField(VmAddress address, String name) {
+        return fields.find(address, name);
     }
 }
