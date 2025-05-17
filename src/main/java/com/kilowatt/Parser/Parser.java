@@ -1062,6 +1062,7 @@ public class Parser {
         if (check(TokenType.DEFAULT)) {
             consume(TokenType.DEFAULT);
             if (check(TokenType.ARROW)) {
+                consume(TokenType.ARROW);
                 defaultCase = new MatchNode.Case(null, statement());
             } else {
                 consume(TokenType.LBRACE);

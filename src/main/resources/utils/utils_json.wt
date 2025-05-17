@@ -134,7 +134,7 @@ unit json {
                             'false', line
                         ))
                     } else {
-                        throw error('undefined json symbol: ' + current + ' at: ' + line, 'check your json.')
+                        advance()
                     }
                 }
             }
@@ -195,7 +195,8 @@ unit json {
             }
             else {
                 throw error(
-                    'unexpected value: ' + get() + ', at: ' + tk.line
+                    'unexpected value: ' + get().value_type + ', at: ' + get().line,
+                    'check your json.'
                 )
             }
         }
@@ -203,6 +204,10 @@ unit json {
         // список
         fun list {
             advance(JsonTokenType.LBRACKET)
+            if (check(JsonTokenType.RBRACKET)) {
+                advance(JsonTokenType.RBRACKET)
+                return []
+            }
             list := [value()]
             while (check(JsonTokenType.COMMA)) {
                 advance(JsonTokenType.COMMA)
@@ -223,6 +228,10 @@ unit json {
         // мапа
         fun map() {
             advance(JsonTokenType.LBRACE)
+            if (check(JsonTokenType.RBRACE)) {
+                advance(JsonTokenType.RBRACE)
+                return []
+            }
             map := {}
             k := key()
             v := value()

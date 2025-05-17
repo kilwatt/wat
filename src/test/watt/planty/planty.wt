@@ -1,0 +1,134 @@
+// Std imports
+import 'std.io'
+import 'std.fs'
+// Utils imports
+import 'utils.json'
+import 'utils.terminal'
+import 'utils.stream.api'
+
+
+// Globals
+plants_path := fs.path_of('./plants.json')
+
+
+// Plant 🌲
+type Plant(id,water,name,description) {
+    fun to_json {
+        return json.encode({
+            'id': id,
+            'water': water,
+            'name': name,
+            'description': description
+        })
+    }
+    fun from_json(data) {
+        self.id = data.get('id')
+        self.water = data.get('water')
+        self.name = data.get('name')
+        self.description = data.get('description')
+        return self
+    }
+}
+
+
+// Planty json 🍷🎋
+unit PlantyJson {
+    fun read_json { return json.parse(fs.read_text(plants_path)) }
+    fun write_json(data) { fs.write_text(plants_path, json.encode(data)) }
+}
+
+// Plants database 📅
+unit PlantyDatabase {
+    plants := []
+    fun apply(plant) { plants.add(plant) }
+    fun search_id(id) {
+        return new Stream(plants)
+            .filter(lambda (it) -> it.id == id)
+            .get()
+            .get(0)
+    }
+    fun search_name(name) {
+        return new Stream(plants)
+            .filter(lambda (it) -> it.name == name)
+            .get()
+            .get(0)
+    }
+    fun search_water(water) {
+        return new Stream(plants)
+            .filter(lambda (it) -> it.water == water)
+            .get()
+            .get(0)
+    }
+    fun save {
+        PlantyJson.write_json({
+            'plants': new Stream(plants)
+                .map(lambda (it) -> it.to_json())
+                .get()
+        })
+    }
+    fun load {
+        plants := new Stream(PlantyJson.read_json().get('plants'))
+            .map(lambda (it) -> new Plant().from_json(it))
+    }
+}
+
+/*
+ Main functions 🗿
+*/
+
+fun show_logo {
+    io.println('The Planty! 🪴')
+}
+
+fun show_plants {
+    io.println('🌱 Plants: ')
+    for plant in PlantyDatabase.plants.iter() {
+        io.println('-----------')
+        io.println('name: ' + plant.name)
+        io.println('id: ' + plant.id)
+        io.println('water: ' + plant.water)
+        io.println('description: ' + plant.description)
+        io.println('-----------')
+    }
+}
+
+fun add_plant {
+    io.println('🌱 Adding plant.')
+    io.println('Name: ')
+    name := io.input()
+    io.println('Water: ')
+    water := io.input()
+    io.println('Description: ')
+    description := io.input()
+    PlantyDatabase.apply(new Plant(PlantyDatabase.plants.size(), name, water, description))
+    io.println('Successfully added ✅')
+    PlantyDatabase.save()
+}
+
+/*
+ Preparing 📐
+*/
+PlantyDatabase.load()
+
+/*
+ Main loop 🌿
+*/
+while true {
+    io.println('Choose an action 🤖:')
+    io.println('(s) ⭐ Show plants.')
+    io.println('(a) ⭐ Add plant.')
+    io.println('(w) ⭐ Search plant by water.')
+    io.println('(n) ⭐ Search plant by name.')
+    io.println('(i) ⭐ Search plant by id.')
+    key := terminal.read_key()
+    match key {
+        case 's' -> show_plants()
+        case 'a' -> add_plant()
+        case 'w' -> search_plant_by_water()
+        case 'n' -> search_plant_by_name()
+        case 'i' -> search_plant_by_id()
+        default -> io.println('Invalid command, key: ' + key + '. 🐞')
+    }
+}
+
+main()
