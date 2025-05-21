@@ -172,5 +172,3 @@ while true {
         default -> io.println('Invalid command, key: ' + key + '. 🐞')
     }
 }
-
-main()
