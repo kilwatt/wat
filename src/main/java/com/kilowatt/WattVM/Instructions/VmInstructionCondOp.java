@@ -110,7 +110,7 @@ public class VmInstructionCondOp implements VmInstruction {
             return compare(address, a, b) == 0;
         }
         else {
-            return false;
+            return l == r;
         }
     }
 

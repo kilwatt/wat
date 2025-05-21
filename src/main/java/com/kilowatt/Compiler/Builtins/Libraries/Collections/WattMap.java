@@ -8,15 +8,16 @@ import com.kilowatt.WattVM.VmAddress;
 import java.util.HashMap;
 
 /*
-Словари
+Мапа (словарь)
  */
 public class WattMap {
+    // мапа
     private final HashMap<Object, Object> map = new HashMap<>();
 
+    // функции
     public void set(Object k, Object v) {
         map.put(k,v);
     }
-
     public void delete(Object k) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
@@ -28,16 +29,13 @@ public class WattMap {
             }
         }
     }
-
     public Object to_string() {
         return this;
     }
-
     @Override
     public String toString() {
         return map.toString();
     }
-
     public Object get(Object k) {
         VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
         for (Object o : map.keySet()) {
@@ -51,7 +49,6 @@ public class WattMap {
             "check key for mistakes."
         );
     }
-
     public Object has_key(Object obj) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
@@ -65,7 +62,6 @@ public class WattMap {
 
         return false;
     }
-
     public Object has_value(Object obj) {
         for (Object o : map.values()) {
             if (VmInstructionCondOp.equal(
@@ -79,7 +75,6 @@ public class WattMap {
 
         return false;
     }
-
     public WattList keys() {
         return WattList.of(map.keySet().stream().toList());
     }
@@ -91,5 +86,8 @@ public class WattMap {
     }
     public float size() {
         return map.size();
+    }
+    public boolean equals(WattMap other) {
+        return this.map.equals(other.map);
     }
 }

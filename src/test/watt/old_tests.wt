@@ -1,0 +1,327 @@
+/* math test:
+unit MathExample {
+    fun square(x) {
+        return x * x
+    }
+    fun perimeter(values) {
+        val := 0
+        for i in 0 to values.size() {
+            val += values.get(i)
+        }
+        return val
+    }
+}
+io.println('square 5: ' + MathExample.square(5))
+io.println('perimeter 3,4,5: ' + MathExample.perimeter([3,4,5]))
+*/
+
+// fib test
+/*
+fun fib(n) {
+    cache := {}  // Создаем словарь для кэширования
+
+    fun fib_inner(n) {
+        if n <= 1 {
+            return n
+        }
+        if cache.has_key(n) {  // Проверяем, есть ли уже вычисленное значение
+            return cache.get(n)
+        }
+        result := fib_inner(n - 1) + fib_inner(n - 2)
+        cache.set(n, result)  // Сохраняем результат в кэше
+        return result
+    }
+    return fib_inner(n)
+}
+
+io.println(fib(1000))  // Теперь выполняется за O(n), почти мгновенно
+*/
+/*
+try {
+    throw 123
+} catch e {
+    io.println('error: ' + e)
+    io.println('error value: ' + e.value())
+}
+*/
+/*
+type A {
+    fun example() {
+        io.println('Hello, world!')
+    }
+}
+object := new test:A()
+object2 := new A()
+object.example()
+object2.example()
+*/
+/*
+fun a() {
+    e := 3
+    fun b() {
+        e = 4
+    }
+    b()
+    io.println(e)
+}
+a()
+*/
+/*
+e := 3
+fun a() {
+    io.println('e: ' + e)
+    e = 4
+}
+a()
+io.println(e)
+*/
+/*
+fun a() {
+    _a := 1
+    fun b() {
+        _b := 2
+        fun c() {
+            _c := 3
+            fun d() {
+                io.println(_a+_b+_c)
+            }
+            d()
+        }
+        c()
+    }
+    b()
+}
+a()
+*/
+// import 'std.io'
+/*
+fun fib(n) {
+    if n <= 1 {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+fib(35)
+*/
+/*
+import 'std.io'
+
+a := 5
+for i in 0 to 1 {
+    a := 1
+    io.println(a)
+}
+io.println(a)
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+vec := new Vec3(3,2,1)
+vec.add(new Vec3(1,2,3))
+io.println(vec)
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+vec := new Vec4(3,4,-5,6)
+io.println(vec.normalize().to_string())
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+complex := new Complex(3, 4)
+complex2 := new Complex(4, 3.3)
+io.println(complex.add(complex2).to_string())
+*/
+/*
+import 'std.typeof'
+import 'std.io'
+
+io.println(typeof(io))
+io.println(full_typeof(io))
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+complex := new Complex(2, 7)
+io.println(complex.conjugate().to_string())
+*/
+/*
+import 'std.sys'
+import 'std.io'
+
+io.println(system.args().to_string())
+system.set_property('banana', 'coco')
+io.println(system.get_property('banana'))
+io.println(system.get_env('JAVA_HOME'))
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+matrix := new Matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+])
+
+matrix2 := new Matrix([
+    [9,8,7],
+    [6,5,4],
+    [3,2,1]
+])
+
+io.println(matrix.add(matrix2).to_string())
+*/
+/*
+import 'std.fs'
+import 'std.io'
+
+path := fs.path_of('C:\Users\MuraDana\Documents\example.txt')
+fs.write_text(path, 'beaver 🔥')
+text := fs.read_text(path)
+io.println(text)
+*/
+/*
+import 'utils.log'
+
+logger.log(LogType.ERROR, 'error')
+logger.log(LogType.NORMAL, 'debug')
+logger.log(LogType.WARNING, 'warn')
+logger.log(4, 'undefined')
+*/
+/*
+import 'std.io'
+import 'utils.tests'
+
+type A {
+    fun example {
+        io.println('self: ' + self)
+    }
+}
+
+tests.run(new A().example)
+*/
+/*
+fun a() {
+    io.println(self)
+}
+
+fun b() {
+    a()
+}
+
+fun c() {
+    b()
+}
+
+c()
+*/
+/*
+import 'utils.json'
+import 'std.io'
+
+json_text := '{"a": 123, "b": true, "c": "string", "d": [134,457,683]}'
+json_dict := json.parse(json_text)
+io.println(json_dict.to_string())
+io.println(json.encode(json_dict))
+*/
+/*
+import 'std.io'
+
+io.println('Hello world! ' + !true + (3 > 5))
+*/
+/*
+import 'std.io'
+list := [1,2,3,4,5]
+for elem in list.iter() {
+    io.println(elem)
+}
+*/
+/*
+import 'std.math'
+import 'std.io'
+
+matrix := new Matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+])
+
+matrix2 := new Matrix([
+    [9,8,7],
+    [6,5,4],
+    [3,2,1]
+])
+
+to_string := lambda(it) -> it.to_string()
+matrix.add(matrix2)
+    |> to_string()
+    |> io.println()
+*/
+/*
+import 'std.io'
+
+trait Trait {
+    fun do()
+}
+
+type Type impl Trait {
+    fun do() {
+        io.println('Hello, world!')
+    }
+}
+
+o := new Type()
+if o impls Trait {
+    o.do()
+}
+*/
+/*
+import 'std.serialization'
+import 'std.io'
+
+type A impl Serializable {
+    fun serialize(stream) {
+        stream.write_int(14)
+        stream.write_string('Hello, world!')
+    }
+
+    fun deserialize(stream) {
+        self.version := stream.read_int()
+        self.string := stream.read_string()
+    }
+}
+
+serialization.serialize('binary.bin', new A())
+value := serialization.deserialize('binary.bin', A)
+io.println(value.version)
+io.println(value.string)
+*/
+/*
+import 'std.io'
+import 'std.math'
+
+io.println('root(16, 4): ' + math.root(16, 4)) // done
+io.println('sin(pi/2): ' + math.sin(1)) // done
+io.println('cos(pi/2): ' + math.cos(1)) // done
+io.println('acos(1): ' + math.acos(1)) // ~
+io.println('asin(1): ' + math.asin(1)) // ~
+io.println('atan(1): ' + math.atan(1)) // done
+io.println('atan(10): ' + math.atan(10)) // done
+io.println(math.log(2)) // done
+io.println(math.log10(10)) // done
+io.println(math.round(3.7)) // done
+io.println(math.round(3.3)) // done
+io.println(math.floor(4.7)) // done
+io.println(math.ceil(4.7)) // done
+io.println(math.mean([1,2,3,4,5,6,7,8,9,17,100,2000]))
+*/
+/*
+import 'std.io'
+io.println(io.println == io.println)
+*/

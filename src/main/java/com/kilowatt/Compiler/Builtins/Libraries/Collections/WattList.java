@@ -15,8 +15,10 @@ import java.util.List;
  */
 @Getter
 public class WattList {
+    // список
     private List<Object> list = new ArrayList<>();
 
+    // функции
     public void add(Object o) {
         list.add(o);
     }
@@ -118,5 +120,8 @@ public class WattList {
     }
     public WattList copy() {
         return WattList.of(list);
+    }
+    public boolean equals(WattList other) {
+        return this.list.equals(other.list);
     }
 }

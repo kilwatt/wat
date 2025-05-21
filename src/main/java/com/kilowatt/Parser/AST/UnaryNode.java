@@ -37,8 +37,8 @@ public class UnaryNode implements Node {
                 ));
                 WattCompiler.code.visitInstruction(
                     new VmInstructionCondOp(
-                            op.asAddress(),
-                            "=="
+                        op.asAddress(),
+                        "=="
                     )
                 );
             }
