@@ -13,20 +13,13 @@ plants_path := fs.path_of('./plants.json')
 
 // Plant 🌲
 type Plant(id,water,name,description) {
-    fun to_json {
-        return json.encode({
+    fun to_dict {
+        return {
             'id': id,
             'water': water,
             'name': name,
             'description': description
-        })
-    }
-    fun from_json(data) {
-        self.id = data.get('id')
-        self.water = data.get('water')
-        self.name = data.get('name')
-        self.description = data.get('description')
-        return self
+        }
     }
 }
 
@@ -34,7 +27,9 @@ type Plant(id,water,name,description) {
 // Planty json 🍷🎋
 unit PlantyJson {
     fun read_json { return json.parse(fs.read_text(plants_path)) }
-    fun write_json(data) { fs.write_text(plants_path, json.encode(data)) }
+    fun write_json(data) {
+        fs.write_text(plants_path, json.encode(data))
+    }
 }
 
 // Plants database 📅
@@ -62,13 +57,20 @@ unit PlantyDatabase {
     fun save {
         PlantyJson.write_json({
             'plants': new Stream(plants)
-                .map(lambda (it) -> it.to_json())
+                .map(lambda (it) -> it.to_dict())
                 .get()
         })
     }
     fun load {
-        plants := new Stream(PlantyJson.read_json().get('plants'))
-            .map(lambda (it) -> new Plant().from_json(it))
+        plants = new Stream(PlantyJson.read_json().get('plants'))
+            .map(lambda (it) -> new Plant(
+                    it.get('id'),
+                    it.get('water'),
+                    it.get('name'),
+                    it.get('description')
+                )
+            )
+            .get()
     }
 }
 
