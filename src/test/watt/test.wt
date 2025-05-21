@@ -318,3 +318,4 @@ io.println(math.round(3.7)) // done
 io.println(math.round(3.3)) // done
 io.println(math.floor(4.7)) // done
 io.println(math.ceil(4.7)) // done
+io.println(math.mean([1,2,3,4,5,6,7,8,9,17,100,2000]))

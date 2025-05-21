@@ -1,4 +1,7 @@
 import 'std.convert'
+import 'std.typeof'
+
+// математика
 
 unit math {
     // константы
@@ -340,6 +343,20 @@ unit math {
             )
         }
         return sin(x) / cos
+    }
+
+    fun mean(list) {
+        result := 0
+        for i in list.iter() {
+            if typeof(i) != 'int' {
+                throw error(
+                    'could not use mean with list, that contains: ' + i,
+                    'list must contains only numbers.'
+                )
+            }
+            result += i
+        }
+        return result / list.size()
     }
 }
 
