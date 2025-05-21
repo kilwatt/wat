@@ -1,6 +1,7 @@
 // Std imports
 import 'std.io'
 import 'std.fs'
+import 'std.convert'
 // Utils imports
 import 'utils.json'
 import 'utils.terminal'
@@ -40,19 +41,16 @@ unit PlantyDatabase {
         return new Stream(plants)
             .filter(lambda (it) -> it.id == id)
             .get()
-            .get(0)
     }
     fun search_name(name) {
         return new Stream(plants)
             .filter(lambda (it) -> it.name == name)
             .get()
-            .get(0)
     }
     fun search_water(water) {
         return new Stream(plants)
             .filter(lambda (it) -> it.water == water)
             .get()
-            .get(0)
     }
     fun save {
         PlantyJson.write_json({
@@ -96,15 +94,57 @@ fun show_plants {
 
 fun add_plant {
     io.println('🌱 Adding plant.')
-    io.println('Name: ')
+    io.print('Name: ')
     name := io.input()
-    io.println('Water: ')
+    io.print('Water: ')
     water := io.input()
-    io.println('Description: ')
+    io.print('Description: ')
     description := io.input()
     PlantyDatabase.apply(new Plant(PlantyDatabase.plants.size(), name, water, description))
     io.println('Successfully added ✅')
     PlantyDatabase.save()
+}
+
+fun search_plant_by_id {
+    io.print('Id: ')
+    id := io.input()
+    io.println('Search results: ')
+    for plant in PlantyDatabase.search_id(convert.parse_int(id)).iter() {
+        io.println('-----------')
+        io.println('name: ' + plant.name)
+        io.println('id: ' + plant.id)
+        io.println('water: ' + plant.water)
+        io.println('description: ' + plant.description)
+        io.println('-----------')
+    }
+}
+
+fun search_plant_by_water {
+    io.print('Water: ')
+    water := io.input()
+    io.println('Search results: ')
+    for plant in PlantyDatabase.search_water(water).iter() {
+        io.println('-----------')
+        io.println('name: ' + plant.name)
+        io.println('id: ' + plant.id)
+        io.println('water: ' + plant.water)
+        io.println('description: ' + plant.description)
+        io.println('-----------')
+    }
+}
+
+fun search_plant_by_name {
+    io.print('Name: ')
+    name := io.input()
+    io.println('Search results: ')
+    for plant in PlantyDatabase.search_name(name).iter() {
+        io.println('-----------')
+        io.println('name: ' + plant.name)
+        io.println('id: ' + plant.id)
+        io.println('water: ' + plant.water)
+        io.println('description: ' + plant.description)
+        io.println('-----------')
+    }
 }
 
 /*

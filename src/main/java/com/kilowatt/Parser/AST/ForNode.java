@@ -104,9 +104,9 @@ public class ForNode implements Node {
                     TokenType.ID,
                 "has_next",
                     name.getLine(),
-                    name.getColumn(),
+                    1,
                     name.getFileName(),
-                    "true"
+                    "has_next"
                 ),
                 new ArrayList<>(),
                 true
