@@ -73,9 +73,9 @@ public class WattCommandsExecutor {
     }
 
     // вывод ошибки
-    public void error(String warning) {
+    public void error(String text) {
         // вывод
-        System.out.println(warning);
+        System.out.println(text);
         // выход
         System.exit(-1);
     }
