@@ -37,16 +37,22 @@ public class WattImportResolver {
         String pathString;
         // загружаем файл
         try {
+            // проверяем библиотеки
             if (!WattLibraries.libraries.containsKey(name)) {
+                // имя файла
                 fileName = name;
+                // путь
                 Path path = localPath.resolve(name);
+                // строка пути
                 pathString = path.toString();
+                // лексер
                 lexer = new Lexer(name, new String(Files.readAllBytes(path)));
             } else {
+                // строка пути
                 pathString = "/" + WattLibraries.libraries.get(name);
-                fileName = pathString.substring(
-            pathString.lastIndexOf("/")+1
-                );
+                // имя файла
+                fileName = Path.of(pathString).getFileName().toString();
+                // чтение
                 try (InputStream stream = WattExecutor.class.getResourceAsStream(pathString)) {
                     if (stream != null) {
                         lexer = new Lexer(fileName, new String(stream.readAllBytes()));
@@ -63,7 +69,9 @@ public class WattImportResolver {
                         "check file exists!");
                 }
             }
-        } catch (IOException e) {
+        }
+        // в случае ошибки
+        catch (IOException e) {
             throw new WattResolveError(
                 address,
                 "couldn't resolve name: " + localPath.resolve(name),

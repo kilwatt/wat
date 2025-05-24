@@ -21,6 +21,15 @@ public class WattRuntimeError extends WattError {
         System.out.print(WattColors.ANSI_RED);
         System.out.println(WattColors.ANSI_RED + "error: " + WattColors.ANSI_RESET + message);
         System.out.println("┌─ " + address.getFileName() + ":" + address.getLine() + ":" + address.getColumn());
+        printErrorLocation();
+        System.out.println();
+        System.out.println(WattColors.ANSI_YELLOW + "hint: " + WattColors.ANSI_RESET + hint);
+        System.out.print(WattColors.ANSI_RESET);
+        System.exit(errorCode());
+    }
+
+    // вывод локации ошибки
+    private void printErrorLocation() {
         String lineText = address.getLineText();
         String strippedLineText = lineText.stripLeading();
         int strippedAmount = lineText.length() - strippedLineText.length();
@@ -37,10 +46,6 @@ public class WattRuntimeError extends WattError {
                 System.out.println("> " + element);
             }
         }
-        System.out.println();
-        System.out.println(WattColors.ANSI_YELLOW + "hint: " + WattColors.ANSI_RESET + hint);
-        System.out.print(WattColors.ANSI_RESET);
-        System.exit(errorCode());
     }
 
     @Override
