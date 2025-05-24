@@ -94,4 +94,8 @@ type HttpServer(port) {
     fun head(path, fn) {
         http_server_reflection.head(app, path, fn)
     }
+
+    fun on_error(code, fn) {
+        http_server_reflection.on_error(app, code, fn)
+    }
 }

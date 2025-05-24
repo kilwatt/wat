@@ -50,7 +50,7 @@ public class NetHttpServer {
         if (fn.getParams().size() != 1) {
             throw new WattRuntimeError(
                 address,
-                "couldn't create handler " + path + ", fn should take 1 param.",
+                "couldn't create handler of " + path + ", fn should take 1 param.",
                 "params: javalin context"
             );
         }
@@ -127,6 +127,17 @@ public class NetHttpServer {
         checkFn(path, fn);
         // установка хэндлера
         app.options(path, ctx -> {
+            WattCompiler.vm.initForThread();
+            WattCompiler.vm.push(ctx);
+            execFnSafely(fn);
+        });
+    }
+
+    public void on_error(Javalin app, Integer code, VmFunction fn) {
+        // проверка функции
+        checkFn(code.toString(), fn);
+        // установка хэндлера
+        app.error(code, ctx -> {
             WattCompiler.vm.initForThread();
             WattCompiler.vm.push(ctx);
             execFnSafely(fn);
