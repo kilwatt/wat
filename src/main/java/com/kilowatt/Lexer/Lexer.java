@@ -244,13 +244,13 @@ public class Lexer {
             if (match('\n')) {
                 throw new WattParseError(
                     new VmAddress(filename, line, column, lineText),
-                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                    "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
                     "did you forget to type ' symbol?");
             }
             if (isAtEnd()) {
                 throw new WattParseError(
                     new VmAddress(filename, line, column, lineText),
-                    "unclosed string quotes." + text.substring(0, Math.min(text.length(), 15)),
+                    "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
                     "did you forget to type ' symbol?");
             }
             text.append(advance());
