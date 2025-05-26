@@ -71,6 +71,10 @@ public class FsPath {
         }
     }
 
+    public boolean is_directory() {
+        return Files.isDirectory(path);
+    }
+
     @Override
     public String toString() {
         return path.toString();
