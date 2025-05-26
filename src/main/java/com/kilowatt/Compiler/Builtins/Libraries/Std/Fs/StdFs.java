@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Std;
+package com.kilowatt.Compiler.Builtins.Libraries.Std.Fs;
 
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
@@ -12,13 +12,13 @@ import java.nio.file.Path;
 Стд -> FS (файловая система)
  */
 public class StdFs {
-    public Path path_of(String path) {
-        return Path.of(path);
+    public FsPath path_of(String path) {
+        return new FsPath(Path.of(path));
     }
 
-    public String read_text(Path path) {
+    public String read_text(FsPath path) {
         try {
-            return Files.readString(path);
+            return Files.readString(path.getPath());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -29,9 +29,9 @@ public class StdFs {
         }
     }
 
-    public void write_text(Path path, String value) {
+    public void write_text(FsPath path, String value) {
         try {
-            Files.writeString(path, value);
+            Files.writeString(path.getPath(), value);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -42,9 +42,9 @@ public class StdFs {
         }
     }
 
-    public byte[] read_bytes(Path path) {
+    public byte[] read_bytes(FsPath path) {
         try {
-            return Files.readAllBytes(path);
+            return Files.readAllBytes(path.getPath());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -55,9 +55,9 @@ public class StdFs {
         }
     }
 
-    public void write_bytes(Path path, byte[] bytes) {
+    public void write_bytes(FsPath path, byte[] bytes) {
         try {
-            Files.write(path, bytes);
+            Files.write(path.getPath(), bytes);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -68,13 +68,13 @@ public class StdFs {
         }
     }
 
-    public boolean is_exists(Path path) {
-        return Files.exists(path);
+    public boolean is_exists(FsPath path) {
+        return Files.exists(path.getPath());
     }
 
-    public void create_file(Path path) {
+    public void create_file(FsPath path) {
         try {
-            Files.createFile(path);
+            Files.createFile(path.getPath());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -85,9 +85,9 @@ public class StdFs {
         }
     }
 
-    public void create_directory(Path path) {
+    public void create_directory(FsPath path) {
         try {
-            Files.createDirectory(path);
+            Files.createDirectory(path.getPath());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -98,9 +98,9 @@ public class StdFs {
         }
     }
 
-    public void delete_path(Path path) {
+    public void delete_path(FsPath path) {
         try {
-            Files.delete(path);
+            Files.delete(path.getPath());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(

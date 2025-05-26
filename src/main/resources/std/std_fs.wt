@@ -1,6 +1,6 @@
 unit fs {
     std_reflection_fs := __refl__.reflect(
-        'com.kilowatt.Compiler.Builtins.Libraries.Std.StdFs',
+        'com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.StdFs',
         []
     )
 
