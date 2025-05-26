@@ -78,7 +78,7 @@ public class StdSystem {
         }
         // запуск
         try {
-            return builder.start().pid();
+            return builder.inheritIO().start().pid();
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
