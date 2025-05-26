@@ -153,9 +153,11 @@ public class VmInstructionCall implements VmInstruction {
                     e.getCause() instanceof WattParseError) {
                 throw e.getCause();
             } else {
+                String message = e.getCause().getMessage() != null ?
+                        e.getCause().getMessage() : e.getCause().getClass().getSimpleName();
                 throw new WattRuntimeError(
                     address,
-                    "jvm call error (" + name + "): " + e.getCause().getMessage(), "check your code."
+                    "jvm call error (" + name + "): " + message, "check your code."
                 );
             }
         }

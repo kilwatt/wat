@@ -96,7 +96,7 @@ public class WattList {
     }
     public static WattList of(Object[] values) {
         WattList arr = new WattList();
-        arr.list = List.of(values);
+        arr.list = new ArrayList<>(List.of(values));
         return arr;
     }
     public void add_java(Object values) {
