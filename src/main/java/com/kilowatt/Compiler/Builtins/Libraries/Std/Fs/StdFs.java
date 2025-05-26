@@ -1,5 +1,6 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std.Fs;
 
+import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.VmAddress;
@@ -139,9 +140,9 @@ public class StdFs {
         }
     }
 
-    public List<Path> files(FsPath path) {
+    public WattList files(FsPath path) {
         try (Stream<Path> stream = Files.list(path.getPath())) {
-            return stream.toList();
+            return WattList.of(stream.toArray());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
