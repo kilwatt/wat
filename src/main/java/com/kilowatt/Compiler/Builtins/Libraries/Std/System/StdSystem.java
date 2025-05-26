@@ -66,9 +66,16 @@ public class StdSystem {
     }
 
     // старт процесса
-    public long process(WattList args) {
+    public long process(WattList args, boolean shouldRedirect) {
+        // билд процесса
         String[] processArgs = convertProcessArgs(args);
         ProcessBuilder builder = new ProcessBuilder(processArgs);
+        // редайрект 'сообщений' процесса
+        if (shouldRedirect) {
+            builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+            builder.redirectError(ProcessBuilder.Redirect.INHERIT);
+        }
+        // запуск
         try {
             return builder.start().pid();
         } catch (IOException e) {
