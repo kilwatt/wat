@@ -1,6 +1,7 @@
 package com.kilowatt.WattVM.Reflection;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
+import com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.FsPath;
 import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.WattVM;
@@ -65,14 +66,14 @@ public class VmReflection {
     }
 
     // загрузка класса
-    public void define(Path path) {
+    public void define(FsPath path) {
         // имя класса
-        String className = path.getFileName().toString().replace(".class", "");
+        String className = path.getPath().getFileName().toString().replace(".class", "");
         // загрузка
         try {
             // загружаем класс
             // чтение файла
-            byte[] classData = Files.readAllBytes(path);
+            byte[] classData = Files.readAllBytes(path.getPath());
             // дефайн класса
             Class<?> clazz = VmJvmClasses.classLoader.define(className, classData);
             // дефайним класс
@@ -183,7 +184,7 @@ public class VmReflection {
     /*
     Компиляция .java в .class
      */
-    public String compile(Path in, Path out) {
+    public String compile(FsPath in, FsPath out) {
         // поток для ошибок
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         // опции компиляции

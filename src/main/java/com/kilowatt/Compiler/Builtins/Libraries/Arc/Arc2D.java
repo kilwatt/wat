@@ -11,13 +11,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.FsPath;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Entities.VmFunction;
 import com.kilowatt.WattVM.Entities.VmInstance;
 import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,14 +96,14 @@ public class Arc2D implements ApplicationListener {
     }
 
     // создание спрайта по пути
-    public Arc2DSprite sprite(Path path) {
+    public Arc2DSprite sprite(FsPath path) {
         return new Arc2DSprite(
             new Sprite(new Texture(Gdx.files.internal(path.toString())))
         );
     }
 
     // создание шрифта по пути
-    public BitmapFont font(Path path, int size) {
+    public BitmapFont font(FsPath path, int size) {
         // генератор
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path.toString()));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -126,7 +126,7 @@ public class Arc2D implements ApplicationListener {
     }
 
     // создание звука
-    public Arc2DSound sound(Path path) {
+    public Arc2DSound sound(FsPath path) {
         return new Arc2DSound(Gdx.audio.newSound(Gdx.files.internal(path.toString())));
     }
 

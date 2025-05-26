@@ -1,6 +1,7 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std.System;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
+import com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.FsPath;
 import com.kilowatt.Executor.WattExecutor;
 import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
@@ -40,8 +41,8 @@ public class StdSystem {
     }
 
     // получение cwd
-    public String cwd() {
-        return Path.of("").toAbsolutePath().toString();
+    public FsPath cwd() {
+        return new FsPath(Path.of("").toAbsolutePath());
     }
 
     // выход из выполнения
