@@ -255,6 +255,8 @@ public class Lexer {
             }
             if (peek() == '\\' && peek(1) == '\"') {
                 text.append("'");
+                advance();
+                continue;
             }
             text.append(advance());
         }
