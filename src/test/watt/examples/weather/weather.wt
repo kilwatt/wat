@@ -2,7 +2,7 @@ import 'net.owm'
 import 'std.io'
 import 'std.fs'
 import 'utils.json'
-import 'std.sys'
+import 'std.system'
 
 path := fs.path_of('./weather.json')
 api_key := ''

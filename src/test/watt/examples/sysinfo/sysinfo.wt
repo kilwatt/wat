@@ -1,4 +1,4 @@
-import 'std.sys'
+import 'std.system'
 import 'std.convert'
 import 'std.jvm'
 import 'std.threads'

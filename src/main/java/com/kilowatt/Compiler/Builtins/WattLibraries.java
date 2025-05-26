@@ -11,7 +11,7 @@ public class WattLibraries {
         put("std.convert", "std/std_convert.wt");
         put("std.math", "std/std_math.wt");
         put("std.random", "std/std_random.wt");
-        put("std.sys", "std/std_sys.wt");
+        put("std.system", "std/std_system.wt");
         put("std.jvm", "std/std_jvm.wt");
         put("std.threads", "std/std_threads.wt");
         put("utils.terminal", "utils/utils_terminal.wt");

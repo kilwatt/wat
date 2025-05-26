@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Std.Sys;
+package com.kilowatt.Compiler.Builtins.Libraries.Std.System;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Executor.WattExecutor;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 /*
 Стд -> Система
  */
-public class StdSys {
+public class StdSystem {
     // инфа о системе
     private final SystemInfo info = new SystemInfo();
 

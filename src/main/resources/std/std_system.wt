@@ -3,7 +3,7 @@ import 'std.typeof'
 unit system {
     // рефлекися
     system_reflection := __refl__.reflect(
-        'com.kilowatt.Compiler.Builtins.Libraries.Std.Sys.StdSys',
+        'com.kilowatt.Compiler.Builtins.Libraries.Std.System.StdSystem',
         []
     )
 
