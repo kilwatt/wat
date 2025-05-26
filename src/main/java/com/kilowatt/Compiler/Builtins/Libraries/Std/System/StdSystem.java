@@ -72,6 +72,7 @@ public class StdSystem {
         ProcessBuilder builder = new ProcessBuilder(processArgs);
         // редайрект 'сообщений' процесса
         if (shouldRedirect) {
+            builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
             builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             builder.redirectError(ProcessBuilder.Redirect.INHERIT);
         }
