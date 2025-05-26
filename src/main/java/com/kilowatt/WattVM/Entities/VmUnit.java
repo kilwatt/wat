@@ -44,8 +44,8 @@ public class VmUnit implements VmFunctionOwner {
         // к конкретному юниту или экземпляру типа. В последствии
         // они привязываются к этому юниту.
         fields.getValues().values().stream()
-            .filter(field -> field instanceof VmFunction fn)
-            .map(field -> (VmFunction) field)
+            .filter(field -> field instanceof VmBindableFunction fn)
+            .map(field -> (VmBindableFunction) field)
             .filter(fn -> fn.getSelfBind() == null)
             .forEach(fn -> fn.setSelfBind(this));
     }

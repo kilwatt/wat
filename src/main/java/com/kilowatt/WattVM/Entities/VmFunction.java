@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @SuppressWarnings("UnnecessaryReturnStatement")
 @Getter
 @RequiredArgsConstructor
-public class VmFunction {
+public class VmFunction implements VmBindableFunction {
     // имя функции
     private final String name;
     // полное имя функции

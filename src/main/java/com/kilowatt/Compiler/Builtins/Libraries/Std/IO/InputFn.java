@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 /*
 IO -> Функция Инпута
  */
-public class InputFn implements VmBuiltinFunction {
+public class InputFn extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // ридер

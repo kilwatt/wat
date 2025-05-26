@@ -8,7 +8,7 @@ import com.kilowatt.WattVM.WattVM;
 /*
 Функция ассерт
  */
-public class WattAssertBuiltinFn implements VmBuiltinFunction {
+public class WattAssertBuiltinFn extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект из стека

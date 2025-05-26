@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /*
 Функция для создания рэнджа из чисел
  */
-public class WattRangeBuiltinFn implements VmBuiltinFunction {
+public class WattRangeBuiltinFn extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объекты из стека

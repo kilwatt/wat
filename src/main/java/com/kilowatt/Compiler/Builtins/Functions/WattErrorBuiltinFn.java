@@ -8,7 +8,7 @@ import com.kilowatt.WattVM.VmAddress;
 /*
 Функция создание рантайм ошибки
  */
-public class WattErrorBuiltinFn implements VmBuiltinFunction {
+public class WattErrorBuiltinFn extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем инфу об ошибке

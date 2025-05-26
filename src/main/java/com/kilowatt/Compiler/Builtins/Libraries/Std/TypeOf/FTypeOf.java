@@ -10,7 +10,7 @@ import com.kilowatt.WattVM.WattVM;
 /*
 TypeOf -> Функция получения полного имени типа объекта
  */
-public class FTypeOf implements VmBuiltinFunction {
+public class FTypeOf extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект

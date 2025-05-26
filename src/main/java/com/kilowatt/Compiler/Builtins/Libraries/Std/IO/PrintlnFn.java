@@ -7,7 +7,7 @@ import com.kilowatt.WattVM.VmAddress;
 /*
 IO -> Функция вывода строки
  */
-public class PrintlnFn implements VmBuiltinFunction {
+public class PrintlnFn extends VmBuiltinFunction {
     @Override
     public void exec(WattVM vm, VmAddress address, boolean shouldPushResult) {
         // получаем объект
