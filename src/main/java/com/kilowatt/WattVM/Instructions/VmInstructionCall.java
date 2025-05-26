@@ -135,6 +135,7 @@ public class VmInstructionCall implements VmInstruction {
                     .map(Object::getClass)
                     .toArray(Class[]::new)
         );
+        fun.setAccessible(true);
         // вызов
         try {
             // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
