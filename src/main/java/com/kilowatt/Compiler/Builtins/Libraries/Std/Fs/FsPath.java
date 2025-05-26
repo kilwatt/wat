@@ -17,8 +17,12 @@ public class FsPath {
         return path.getFileName().toString();
     }
 
-    public FsPath resolve(Path resolve) {
-        return new FsPath(path.resolve(resolve));
+    public FsPath resolve(String second) {
+        return new FsPath(path.resolve(second));
+    }
+
+    public FsPath resolve_path(Path second) {
+        return new FsPath(path.resolve(second));
     }
 
     public FsPath root() {
