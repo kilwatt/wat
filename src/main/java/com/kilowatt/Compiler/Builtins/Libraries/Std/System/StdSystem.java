@@ -88,9 +88,9 @@ public class StdSystem {
         } catch (RuntimeException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address,
-                    "invalid process args: " + args,
-                    "args must be list of strings."
+                address,
+                "invalid process args: " + args + ", error: " + e.getMessage(),
+                "args must be list of strings."
             );
         }
     }
