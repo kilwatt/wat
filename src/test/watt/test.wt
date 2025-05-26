@@ -1,9 +1,2 @@
 import 'std.io'
-import 'std.fs'
-import 'std.system'
-cwd_path := system.cwd()
-files := cwd_path.files()
-files.delete('config.joule')
-files.delete('.target')
-files.delete('.java')
 io.println('Hello, world!')
