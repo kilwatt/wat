@@ -1,9 +1,16 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Std.Fs;
 
+import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
+import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattRuntimeError;
+import com.kilowatt.WattVM.VmAddress;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /*
 Путь в файловой системе
@@ -49,6 +56,19 @@ public class FsPath {
 
     public boolean starts_with(FsPath second) {
         return path.startsWith(second.path);
+    }
+
+    public WattList files() {
+        try (Stream<Path> stream = Files.list(path)) {
+            return WattList.of(stream.map(FsPath::new).toArray());
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                    address,
+                    "io error in fs: " + e.getMessage(),
+                    "check file exists."
+            );
+        }
     }
 
     @Override
