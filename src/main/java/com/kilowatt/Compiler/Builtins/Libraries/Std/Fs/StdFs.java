@@ -142,7 +142,7 @@ public class StdFs {
 
     public WattList files(FsPath path) {
         try (Stream<Path> stream = Files.list(path.getPath())) {
-            return WattList.of(stream.toArray());
+            return WattList.of(stream.map(FsPath::new).toArray());
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
