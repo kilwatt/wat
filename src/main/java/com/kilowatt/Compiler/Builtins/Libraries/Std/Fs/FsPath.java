@@ -38,7 +38,7 @@ public class FsPath {
     }
 
     public FsPath parent() {
-        Path parent = path.getRoot();
+        Path parent = path.getParent();
         return parent == null ? null : new FsPath(parent);
     }
 
