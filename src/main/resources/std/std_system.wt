@@ -53,7 +53,7 @@ unit system {
         return system_reflection.get_env(name)
     }
 
-    fun process(path) {
-        return system_reflection.process(path)
+    fun process(path, should_redirect) {
+        return system_reflection.process(path, should_redirect)
     }
 }
