@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -175,5 +178,27 @@ public class VmReflection {
                     clazz.getSimpleName() + " is not found.",
             "did you type wrong name?"
         );
+    }
+
+    /*
+    Компиляция .java в .class
+     */
+    public String compile(Path in, Path out) {
+        // поток для ошибок
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // опции компиляции
+        String[] options = new String[]{
+            "-d",
+            in.toString()
+        };
+        // компилятор
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        int result = compiler.run(null, null, stream, options);
+        // возвращаем ошибку, если она есть
+        if (result != 0) {
+            return stream.toString();
+        } else {
+            return null;
+        }
     }
 }

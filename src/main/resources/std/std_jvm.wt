@@ -17,6 +17,10 @@ unit jvm {
     }
 
     fun reflect(name, constructor) {
-        return reflection.reflect(name, constructor)
+        return __refl__.reflect(name, constructor)
+    }
+
+    fun compile(path_in, path_out) {
+        return __refl__.compile(path_in, path_out)
     }
 }
