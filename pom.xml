@@ -90,13 +90,13 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype</artifactId>
-            <version>1.12.0</version> <!-- или твоя версия libGDX -->
+            <version>1.12.0</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype-platform</artifactId>
             <version>1.12.0</version>
-            <classifier>natives-desktop</classifier> <!-- если ты делаешь desktop-приложение -->
+            <classifier>natives-desktop</classifier>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -106,13 +106,13 @@
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
-            <version>1.36</version> <!-- Убедитесь, что используете актуальную версию -->
+            <version>1.36</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
-            <version>1.36</version> <!-- Убедитесь, что используете актуальную версию -->
+            <version>1.36</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -120,6 +120,11 @@
             <artifactId>jmh-core</artifactId>
             <version>1.36</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.13.1</version>
         </dependency>
     </dependencies>
     <build>

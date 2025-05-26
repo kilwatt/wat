@@ -3,6 +3,7 @@ package com.kilowatt.Lexer;
 import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -256,7 +257,7 @@ public class Lexer {
             text.append(advance());
         }
         advance();
-        return text.toString();
+        return StringEscapeUtils.unescapeJava(text.toString());
     }
 
     // сканируем число
