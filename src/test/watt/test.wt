@@ -1,2 +1,2 @@
 import 'std.io'
-io.println('Hello, world!')
+io.println('\\')

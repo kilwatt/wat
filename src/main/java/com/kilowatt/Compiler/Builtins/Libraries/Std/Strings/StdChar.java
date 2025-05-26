@@ -1,9 +1,9 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Std;
+package com.kilowatt.Compiler.Builtins.Libraries.Std.Strings;
 
 /*
-Стд -> Строки
+Стд -> Символы
  */
-public class StdStrings {
+public class StdChar {
     // цифра ли это
     public boolean is_digit(char c) {
         return c >= '0' && c <= '9';

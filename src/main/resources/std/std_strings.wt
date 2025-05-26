@@ -1,18 +1,27 @@
 import 'std.typeof'
 
 unit str {
+    // рефлекися
+    strings_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Std.Strings.StdStrings',
+        []
+    )
+
     /*
      Функции
     */
     fun char_at(string, index) {
         return string.charAt(index).toString()
     }
+    fun unescape(string) {
+        return strings_reflection.unescape(string)
+    }
 }
 
 unit char {
     // рефлекися
     chars_reflection := __refl__.reflect(
-        'com.kilowatt.Compiler.Builtins.Libraries.Std.StdStrings',
+        'com.kilowatt.Compiler.Builtins.Libraries.Std.Strings.StdChar',
         []
     )
 

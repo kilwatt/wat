@@ -3,7 +3,6 @@ package com.kilowatt.Lexer;
 import com.kilowatt.Errors.WattParseError;
 import com.kilowatt.WattVM.VmAddress;
 import lombok.Getter;
-import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -244,26 +243,20 @@ public class Lexer {
         while (peek() != '\'') {
             if (match('\n')) {
                 throw new WattParseError(
-                    new VmAddress(filename, line, column, lineText),
-                    "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
-                    "did you forget to type ' symbol?");
+                        new VmAddress(filename, line, column, lineText),
+                        "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
+                        "did you forget to type ' symbol?");
             }
             if (isAtEnd()) {
                 throw new WattParseError(
-                    new VmAddress(filename, line, column, lineText),
-                    "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
-                    "did you forget to type ' symbol?");
+                        new VmAddress(filename, line, column, lineText),
+                        "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
+                        "did you forget to type ' symbol?");
             }
-            if (peek() == '\\' && peek(1) == '\'') {
-                text.append("'");
-                current += 2;
-                column += 2;
-            } else {
-                text.append(advance());
-            }
+            text.append(advance());
         }
         advance();
-        return StringEscapeUtils.unescapeJava(text.toString());
+        return text.toString();
     }
 
     // сканируем число
