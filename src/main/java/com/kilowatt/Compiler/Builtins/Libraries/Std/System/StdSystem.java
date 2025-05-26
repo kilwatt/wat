@@ -66,7 +66,7 @@ public class StdSystem {
     }
 
     // старт процесса
-    public long process(WattList args, boolean shouldRedirect) {
+    public Process process(WattList args, boolean shouldRedirect) {
         // билд процесса
         String[] processArgs = convertProcessArgs(args);
         ProcessBuilder builder = new ProcessBuilder(processArgs);
@@ -78,7 +78,7 @@ public class StdSystem {
         }
         // запуск
         try {
-            return builder.inheritIO().start().pid();
+            return builder.inheritIO().start();
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
