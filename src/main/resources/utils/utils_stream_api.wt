@@ -63,7 +63,7 @@ type Stream(list) {
     }
 
     fun take(n) {
-        if n >= list.size() {
+        if n > list.size() {
             throw error(
                 'could not take: ' + n + ', list size is: ' + list.size(),
                 'you can take any number < ' + list.size()
@@ -78,7 +78,7 @@ type Stream(list) {
     }
 
     fun skip(n) {
-        if n >= list.size() {
+        if n > list.size() {
             throw error(
                 'could not skip: ' + n + ', list size is: ' + list.size(),
                 'you can skip any number < ' + list.size()
