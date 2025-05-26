@@ -189,8 +189,9 @@ public class VmReflection {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         // опции компиляции
         String[] options = new String[]{
+            in.toString(),
             "-d",
-            in.toString()
+            out.toString()
         };
         // компилятор
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
