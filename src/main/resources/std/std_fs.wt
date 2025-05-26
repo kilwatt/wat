@@ -51,6 +51,10 @@ unit fs {
     fun move_path(from, to) {
         std_reflection_fs.move_path(from, to)
     }
+
+    fun list_path(path) {
+        return std_reflection_fs.list_path(path)
+    }
 }
 
 type ReadBytesStream(bytes) {

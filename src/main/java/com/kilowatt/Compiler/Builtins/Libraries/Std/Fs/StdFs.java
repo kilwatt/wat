@@ -7,6 +7,8 @@ import com.kilowatt.WattVM.VmAddress;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Stream;
 
 /*
 Стд -> FS (файловая система)
@@ -127,6 +129,19 @@ public class StdFs {
     public void move_path(FsPath from, FsPath to) {
         try {
             Files.move(from.getPath(), to.getPath());
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                    address,
+                    "io error in fs: " + e.getMessage(),
+                    "check file exists."
+            );
+        }
+    }
+
+    public List<Path> list_path(FsPath path) {
+        try (Stream<Path> stream = Files.list(path.getPath())) {
+            return stream.toList();
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
