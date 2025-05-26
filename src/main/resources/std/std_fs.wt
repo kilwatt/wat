@@ -43,6 +43,14 @@ unit fs {
     fun delete_path(path) {
         std_reflection_fs.delete_path(path)
     }
+
+    fun copy_path(from, to) {
+        std_reflection_fs.copy_path(from, to)
+    }
+
+    fun move_path(from, to) {
+        std_reflection_fs.move_path(from, to)
+    }
 }
 
 type ReadBytesStream(bytes) {

@@ -110,4 +110,30 @@ public class StdFs {
             );
         }
     }
+
+    public void copy_path(FsPath from, FsPath to) {
+        try {
+            Files.copy(from.getPath(), to.getPath());
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                    address,
+                    "io error in fs: " + e.getMessage(),
+                    "check file exists."
+            );
+        }
+    }
+
+    public void move_path(FsPath from, FsPath to) {
+        try {
+            Files.move(from.getPath(), to.getPath());
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                    address,
+                    "io error in fs: " + e.getMessage(),
+                    "check file exists."
+            );
+        }
+    }
 }
