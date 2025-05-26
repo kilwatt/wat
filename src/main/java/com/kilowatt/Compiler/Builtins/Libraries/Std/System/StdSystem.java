@@ -84,7 +84,11 @@ public class StdSystem {
     // конвертация аргументов процесса
     private String[] convertProcessArgs(WattList args) {
         try {
-            return (String[]) args.getList().stream().map(Object::toString).toArray();
+            String[] arr = new String[args.getList().size()];
+            for (int i = 0; i < args.size(); i++) {
+                arr[i] = args.get(i).toString();
+            }
+            return arr;
         } catch (RuntimeException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
