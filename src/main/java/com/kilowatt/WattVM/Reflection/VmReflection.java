@@ -18,7 +18,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 /*
 Рефлексия в ВМ
@@ -66,9 +65,7 @@ public class VmReflection {
     }
 
     // загрузка класса
-    public void define(FsPath path) {
-        // имя класса
-        String className = path.getPath().getFileName().toString().replace(".class", "");
+    public void define(FsPath path, String className) {
         // загрузка
         try {
             // загружаем класс
