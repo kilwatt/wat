@@ -139,7 +139,7 @@ public class StdFs {
         }
     }
 
-    public List<Path> list_path(FsPath path) {
+    public List<Path> files(FsPath path) {
         try (Stream<Path> stream = Files.list(path.getPath())) {
             return stream.toList();
         } catch (IOException e) {

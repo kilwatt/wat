@@ -52,8 +52,8 @@ unit fs {
         std_reflection_fs.move_path(from, to)
     }
 
-    fun list_path(path) {
-        return std_reflection_fs.list_path(path)
+    fun files(path) {
+        return std_reflection_fs.files(path)
     }
 }
 
