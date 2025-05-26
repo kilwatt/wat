@@ -253,6 +253,9 @@ public class Lexer {
                         "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
                         "did you forget to type ' symbol?");
             }
+            if (peek() == '\\' && peek(1) == '\"') {
+                text.append("'");
+            }
             text.append(advance());
         }
         advance();
