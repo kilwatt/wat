@@ -72,9 +72,9 @@ public class StdFs {
         return Files.exists(path);
     }
 
-    public void create_file(String path) {
+    public void create_file(Path path) {
         try {
-            Files.createFile(Path.of(path));
+            Files.createFile(path);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -85,9 +85,9 @@ public class StdFs {
         }
     }
 
-    public void create_directory(String path) {
+    public void create_directory(Path path) {
         try {
-            Files.createDirectory(Path.of(path));
+            Files.createDirectory(path);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
@@ -98,9 +98,9 @@ public class StdFs {
         }
     }
 
-    public void delete_path(String path) {
+    public void delete_path(Path path) {
         try {
-            Files.delete(Path.of(path));
+            Files.delete(path);
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
