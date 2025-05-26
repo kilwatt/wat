@@ -52,4 +52,8 @@ unit system {
     fun get_env(name) {
         return system_reflection.get_env(name)
     }
+
+    fun process(path) {
+        return system_reflection.process(path)
+    }
 }

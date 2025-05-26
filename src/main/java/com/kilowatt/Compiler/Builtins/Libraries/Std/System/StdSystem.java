@@ -2,11 +2,16 @@ package com.kilowatt.Compiler.Builtins.Libraries.Std.System;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.FsPath;
+import com.kilowatt.Compiler.WattCompiler;
+import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.Executor.WattExecutor;
+import com.kilowatt.WattVM.VmAddress;
 import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /*
 Стд -> Система
@@ -58,5 +63,35 @@ public class StdSystem {
     // получение значения переменной среды
     public Object get_env(String name) {
         return System.getenv(name);
+    }
+
+    // старт процесса
+    public long process(WattList args) {
+        String[] processArgs = convertProcessArgs(args);
+        ProcessBuilder builder = new ProcessBuilder(processArgs);
+        try {
+            return builder.start().pid();
+        } catch (IOException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                address,
+                "io error in process(" + Arrays.toString(processArgs) + "): " + e.getMessage(),
+                "check your commands list"
+            );
+        }
+    }
+
+    // конвертация аргументов процесса
+    private String[] convertProcessArgs(WattList args) {
+        try {
+            return (String[]) args.getList().stream().map(String.class::cast).toArray();
+        } catch (RuntimeException e) {
+            VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
+            throw new WattRuntimeError(
+                    address,
+                    "invalid process args: " + args,
+                    "args must be list of strings."
+            );
+        }
     }
 }
