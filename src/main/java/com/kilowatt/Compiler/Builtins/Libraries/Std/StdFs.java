@@ -23,7 +23,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                 address,
-                "io error in fs (" + path + "): " + e.getMessage(),
+                "io error in fs: " + e.getMessage(),
                 "check file exists."
             );
         }
@@ -36,7 +36,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
@@ -49,7 +49,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
@@ -62,7 +62,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
@@ -79,7 +79,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
@@ -92,7 +92,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
@@ -105,7 +105,7 @@ public class StdFs {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
                     address,
-                    "io error in fs (" + path + "): " + e.getMessage(),
+                    "io error in fs: " + e.getMessage(),
                     "check file exists."
             );
         }
