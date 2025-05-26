@@ -254,7 +254,13 @@ public class Lexer {
                     "unclosed string quotes: " + text.substring(0, Math.min(text.length(), 15)),
                     "did you forget to type ' symbol?");
             }
-            text.append(advance());
+            if (peek() == '\\' && peek(1) == '\'') {
+                text.append("'");
+                current += 2;
+                column += 2;
+            } else {
+                text.append(advance());
+            }
         }
         advance();
         return StringEscapeUtils.unescapeJava(text.toString());
