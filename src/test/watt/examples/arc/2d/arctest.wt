@@ -9,21 +9,17 @@ sprite := null
 animation := null
 instance := null
 window.on_start(fun {
-    sprite = window.sprite(
-        window.texture(
-            fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
-        )
-    )
     animation = window.animation(
         [
             window.texture(
-                fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+                fs.path_of('G:\Kilowatt\Watt\src\test\watt\examples\arc\2d\example1.png')
             ),
             window.texture(
-                fs.path_of('G:\SunEnergy\AtticStory\Assets\Match3\Sprites\Gui-02.png')
+                fs.path_of('G:\Kilowatt\Watt\src\test\watt\examples\arc\2d\example2.png')
             )
         ]
     )
+    sprite = window.sprite(animation.keyframe(0))
     instance = animation.play(sprite, true)
 })
 window.on_update(fun {
