@@ -397,6 +397,26 @@ unit math {
             return list.get(floor(size / 2))
         }
     }
+
+    fun max(list) {
+        val := 0
+        for i in list.iter() {
+            if i > val {
+                val = i
+            }
+        }
+        return val
+    }
+
+    fun min(list) {
+        val := max(list)
+        for i in list.iter() {
+            if i < val {
+                val = i
+            }
+        }
+        return val
+    }
 }
 
 // пример:
