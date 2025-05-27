@@ -348,15 +348,54 @@ unit math {
     fun mean(list) {
         result := 0
         for i in list.iter() {
-            if typeof(i) != 'int' {
-                throw error(
-                    'could not use mean with list, that contains: ' + i,
-                    'list must contains only numbers.'
-                )
-            }
             result += i
         }
         return result / list.size()
+    }
+
+    fun sec(x) {
+        return 1 / cos(x)
+    }
+
+    fun csc(x) {
+        return 1 / sin(x)
+    }
+
+    fun mode(list) {
+        frequency := {}
+
+        for elem in list.iter() {
+            f := 1
+            if frequency.has_key(elem) {
+                f += frequency.get(elem)
+            }
+            frequency.set(elem, f)
+        }
+
+        max := 0
+        values := []
+        for elem in frequency.keys().iter() {
+            freq := frequency.get(elem)
+            if freq >= max and !values.contains(elem) {
+                values.add(elem)
+                max = freq
+            }
+        }
+
+        return values
+    }
+
+    fun median(list) {
+        size := list.size()
+        if size % 2 == 0 {
+            mean := self.mean([
+                1.0 * list.get(floor(size)/2),
+                1.0 * list.get(floor(size)/2)+1
+            ]) - 1
+            return mean
+        } else {
+            return list.get(floor(size / 2))
+        }
     }
 }
 

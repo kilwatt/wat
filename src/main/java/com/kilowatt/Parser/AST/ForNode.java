@@ -29,6 +29,7 @@ public class ForNode implements Node {
         compileBody();
         WattCompiler.code.endWrite();
         WattCompiler.code.visitInstruction(loop);
+        compileIteratorDelete();
     }
 
     @Override
@@ -55,6 +56,23 @@ public class ForNode implements Node {
             iteratorName,
             iterable
         ).compile();
+    }
+
+    private void compileIteratorDelete() {
+        // итератор
+        Token iteratorName = new Token(
+            TokenType.ID,
+            "@"+name.value,
+            name.getLine(),
+            name.getColumn(),
+            name.getFileName(),
+            "true"
+        );
+        // дефайн итератора
+        WattCompiler.code.visitInstruction(new VmInstructionDelLocal(
+            iteratorName.asAddress(),
+            iteratorName.value
+        ));
     }
 
     private void compileBody() {
