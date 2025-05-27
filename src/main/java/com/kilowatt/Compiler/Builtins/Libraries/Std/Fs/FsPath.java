@@ -64,9 +64,9 @@ public class FsPath {
         } catch (IOException e) {
             VmAddress address = WattCompiler.vm.getCallsHistory().getLast().getAddress();
             throw new WattRuntimeError(
-                    address,
-                    "io error in fs: " + e.getMessage(),
-                    "check file exists."
+                address,
+                "io error in fs: " + e.getMessage(),
+                "check file exists."
             );
         }
     }

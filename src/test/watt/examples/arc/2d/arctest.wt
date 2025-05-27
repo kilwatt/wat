@@ -6,63 +6,29 @@ import 'std.random'
 window := new Arc2D(720, 640, 'SomeWindow')
 
 sprite := null
-sprite2 := null
+animation := null
+instance := null
 window.on_start(fun {
     sprite = window.sprite(
-        fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+        window.texture(
+            fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+        )
     )
-    sprite2 = window.sprite(
-        fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+    animation = window.animation(
+        [
+            window.texture(
+                fs.path_of('C:\Users\MuraDana\Pictures\Screenshots\Снимок экрана 2025-03-24 013709.png')
+            ),
+            window.texture(
+                fs.path_of('G:\SunEnergy\AtticStory\Assets\Match3\Sprites\Gui-02.png')
+            )
+        ]
     )
-    sprite.set_x(500)
-    window.on_collision(sprite, sprite2, fun(sprite, sprite2) {
-        io.println('collision detected')
-    })
+    instance = animation.play(sprite, true)
 })
 window.on_update(fun {
+    sprite.set_texture(instance.texture())
+    instance.step()
     window.draw_sprite(sprite)
-    window.draw_sprite(sprite2)
-})
-window.on_key_down(fun(key) {
-    io.println('key down: ' + key)
 })
 window.run()
-
-/*
-window.set_filled(false)
-window.on_start(fun {
-    audio := window.sound(fs.path_of('C:\Users\MuraDana\Downloads\1.mp3'))
-    audio.loop(1)
-})
-x := random.int(0, 720)
-y := random.int(0, 360)
-chosen := random.int(0, 3)
-frames := 0
-max_frames := 2000
-amount := 3
-// new Vec2(370,320)
-window.on_update(fun {
-    for _ in 0..amount {
-        if chosen == 0 {
-            window.draw_arc(new Vec2(x, y), random.int(0, 360), random.int(0, 360), random.int(0, 360), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
-        } elif chosen == 1 {
-            window.draw_rectangle(new Vec2(x, y), new Vec2(random.int(0, 360), random.int(0, 360)), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
-        } elif chosen == 2 {
-            window.draw_triangle(new Vec2(x, y), new Vec2(random.int(0, 360), random.int(0, 360)), new Vec2(random.int(0, 360), random.int(0, 360)), new Color(random.float(0, 1), random.float(0, 1), random.float(0, 1), 1))
-        }
-        frames += 1
-        if frames > max_frames {
-            chosen = random.int(0, 3)
-            frames := 0
-            x = random.int(0, 720)
-            y = random.int(0, 360)
-            max_frames -= 1
-            if amount + 1 < 30 {
-                amount += 1
-            }
-        }
-    }
-})
-
-window.run()
-*/

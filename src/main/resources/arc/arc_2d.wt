@@ -74,8 +74,8 @@ type Arc2D(width,height,title) {
         self.arc_reflection.on_collision(first, second, fn)
     }
 
-    fun sprite(path) {
-        return self.arc_reflection.sprite(path)
+    fun sprite(texture) {
+        return self.arc_reflection.sprite(texture)
     }
 
     fun font(path) {
@@ -88,6 +88,14 @@ type Arc2D(width,height,title) {
 
     fun sound(path) {
         return self.arc_reflection.sound(path)
+    }
+
+    fun texture(path) {
+        return self.arc_reflection.texture(path)
+    }
+
+    fun animation(textures) {
+        return self.arc_reflection.animation(textures)
     }
 
     fun draw_sprite(sprite) {
@@ -125,4 +133,17 @@ type Arc2D(width,height,title) {
     fun get_delta_time {
         return self.arc_reflection.get_delta_time()
     }
+
+    fun timer_after(delay, fn) {
+        return self.arc_reflection.timer_after(delay, fn)
+    }
+
+    fun timer_every(interval, fn) {
+        return self.arc_reflection.timer_every(interval, fn)
+    }
+
+    fun timer_cancel(task) {
+        task.cancel()
+    }
+
 }

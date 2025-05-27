@@ -1,5 +1,6 @@
 package com.kilowatt.Compiler.Builtins.Libraries.Arc;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,6 @@ public class Arc2DSprite {
     public float get_scale_x() { return sprite.getScaleX(); }
     public float get_scale_y() { return sprite.getScaleY(); }
     public Rectangle get_rect() { return sprite.getBoundingRectangle(); }
+    public void set_texture(Texture texture) { this.sprite.setTexture(texture); }
+    public Texture get_texture() { return this.sprite.getTexture(); }
 }

@@ -6,11 +6,11 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Timer;
+import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.Builtins.Libraries.Std.Fs.FsPath;
 import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.WattVM.Entities.VmFunction;
@@ -95,11 +95,21 @@ public class Arc2D implements ApplicationListener {
         this.onCollision.add(new Arc2DCollision(first, second, onCollision));
     }
 
-    // создание спрайта по пути
-    public Arc2DSprite sprite(FsPath path) {
+    // создание спрайта по текстуре
+    public Arc2DSprite sprite(Texture texture) {
         return new Arc2DSprite(
-            new Sprite(new Texture(Gdx.files.internal(path.toString())))
+            new Sprite(texture)
         );
+    }
+
+    // создание текстуры по пути
+    public Texture texture(FsPath path) {
+        return new Texture(Gdx.files.internal(path.toString()));
+    }
+
+    // создание спрайта из атласа
+    public Arc2DAnimation animation(WattList textures) {
+        return new Arc2DAnimation(textures);
     }
 
     // создание шрифта по пути
@@ -233,6 +243,25 @@ public class Arc2D implements ApplicationListener {
     // получение дельта тайма
     public float get_delta_time() {
         return Gdx.graphics.getDeltaTime();
+    }
+
+    // таймеры
+    public Timer.Task timer_after(float seconds, VmFunction fn) {
+        return Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                fn.exec(WattCompiler.vm, false);
+            }
+        }, seconds);
+    }
+
+    public Timer.Task timer_every(float interval, VmFunction fn) {
+        return Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                fn.exec(WattCompiler.vm, false);
+            }
+        }, interval, interval);
     }
 
     // запуск
