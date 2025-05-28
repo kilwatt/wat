@@ -40,11 +40,11 @@ public class VmInstructionSet implements VmInstruction {
             Object last = vm.pop(address);
             switch (last) {
                 case VmInstance instance -> {
-                    instance.getFields().put(address, name, value.runAndGet(vm, scope, address));
+                    instance.getFields().setLocal(address, name, value.runAndGet(vm, scope, address));
                     break;
                 }
                 case VmUnit unit -> {
-                    unit.getFields().put(address, name, value.runAndGet(vm, scope, address));
+                    unit.getFields().setLocal(address, name, value.runAndGet(vm, scope, address));
                     break;
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + last +
