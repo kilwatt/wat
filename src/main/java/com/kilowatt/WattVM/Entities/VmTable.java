@@ -111,7 +111,7 @@ public class VmTable<K, V> {
      * @param name - имя значения
      * @param val - значение
      */
-    public void setCurrent(VmAddress address, K name, V val) {
+    public void put(VmAddress address, K name, V val) {
         // проверка фрэйма
         if (values.containsKey(name)) {
             values.put(name, val);
