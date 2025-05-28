@@ -106,6 +106,23 @@ public class VmTable<K, V> {
     }
 
     /**
+     * Устанавливает значение в фрейм, не учитывая предыдущие
+     * @param address - адрес
+     * @param name - имя значения
+     * @param val - значение
+     */
+    public void setCurrent(VmAddress address, K name, V val) {
+        // проверка фрэйма
+        if (values.containsKey(name)) {
+            values.put(name, val);
+            return;
+        }
+        // ошибка
+        throw new WattRuntimeError(address,
+                "variable is not defined: " + name, "verify you already defined it with := op.");
+    }
+
+    /**
      * Устанавливает значение в фрейм принудительно
      * @param address - адрес
      * @param name - имя значения

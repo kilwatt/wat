@@ -1,8 +1,7 @@
 import 'std.io'
-import 'std.math'
-list := [1,2,3,4,5,6,7,9,10,200,300,456,1,12,3,231,12,-12]
-io.println('mode: ' + math.mode(list))
-io.println('median: ' + math.median([1,2,3]))
-io.println('median 2: ' + math.median([1,2,3,4]))
-io.println('min: ' + math.min(list))
-io.println('max: ' + math.max(list))
+a := 5
+type A {
+}
+b := new A()
+b.a = 7
+io.println(a)
