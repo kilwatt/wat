@@ -1,6 +1,7 @@
 unit uuid {
-    reflect := __refl__.reflect('com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsUuid',[])
+    uuid_reflection := __refl__.reflect('com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsUuid',[])
+
     fun uuid {
-        return reflect.uuid()
+        return uuid_reflection.uuid()
     }
 }

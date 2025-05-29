@@ -1,13 +1,9 @@
 unit wfiglet {
-    // рефлекися
     figlet_reflection := __refl__.reflect(
         'com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsFiglet',
         []
     )
 
-    /*
-     Функции
-    */
     fun art(font_path, text) {
         return figlet_reflection.art(font_path, text)
     }
