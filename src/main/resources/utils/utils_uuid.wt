@@ -1,0 +1,6 @@
+unit uuid {
+    reflect := __refl__.reflect('com.kilowatt.Compiler.Builtins.Libraries.Utils.UtilsUuid',[])
+    fun uuid {
+        return reflect.uuid()
+    }
+}

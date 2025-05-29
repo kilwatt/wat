@@ -34,5 +34,6 @@ public class WattLibraries {
         put("utils.stream.api", "utils/utils_stream_api.wt");
         put("utils.crypto", "utils/utils_crypto.wt");
         put("utils.features", "utils/utils_features.wt");
+        put("utils.uuid", "utils/utils_uuid.wt");
     }};
 }
