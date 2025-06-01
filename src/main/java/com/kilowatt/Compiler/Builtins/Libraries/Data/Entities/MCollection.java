@@ -80,8 +80,8 @@ public class MCollection {
     @SuppressWarnings("resource")
     public boolean exists(String collectionName, MDocument filter) {
         return collection.find(filter.getDocument())
-                .iterator()
-                .hasNext();
+            .iterator()
+            .hasNext();
     }
 
     public void drop() {
