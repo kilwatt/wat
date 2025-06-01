@@ -73,8 +73,15 @@ public class MCollection {
         return WattList.of(results);
     }
 
-    public long count_specific(MDocument what) {
+    public long count(MDocument what) {
         return collection.countDocuments(what.getDocument());
+    }
+
+    @SuppressWarnings("resource")
+    public boolean exists(String collectionName, MDocument filter) {
+        return collection.find(filter.getDocument())
+                .iterator()
+                .hasNext();
     }
 
     public void drop() {
