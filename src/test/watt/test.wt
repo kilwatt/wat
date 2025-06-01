@@ -1,7 +1,2 @@
 import 'std.io'
-a := 5
-type A {
-}
-b := new A()
-b.a = 7
-io.println(a)
+io.println('Hello, world!')

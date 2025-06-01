@@ -35,5 +35,6 @@ public class WattLibraries {
         put("utils.crypto", "utils/utils_crypto.wt");
         put("utils.features", "utils/utils_features.wt");
         put("utils.uuid", "utils/utils_uuid.wt");
+        put("data.mongo", "data/data_mongo.wt");
     }};
 }

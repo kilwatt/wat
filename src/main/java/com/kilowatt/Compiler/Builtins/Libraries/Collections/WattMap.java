@@ -4,15 +4,18 @@ import com.kilowatt.Compiler.WattCompiler;
 import com.kilowatt.Errors.WattRuntimeError;
 import com.kilowatt.WattVM.Instructions.VmInstructionCondOp;
 import com.kilowatt.WattVM.VmAddress;
+import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /*
 Мапа (словарь)
  */
+@Getter
 public class WattMap {
     // мапа
-    private final HashMap<Object, Object> map = new HashMap<>();
+    private Map<Object, Object> map = new HashMap<>();
 
     // функции
     public void set(Object k, Object v) {
@@ -49,7 +52,7 @@ public class WattMap {
             "check key for mistakes."
         );
     }
-    public Object has_key(Object obj) {
+    public boolean has_key(Object obj) {
         for (Object o : map.keySet()) {
             if (VmInstructionCondOp.equal(
                     WattCompiler.vm.getCallsHistory().getLast().getAddress(),
@@ -62,7 +65,7 @@ public class WattMap {
 
         return false;
     }
-    public Object has_value(Object obj) {
+    public boolean has_value(Object obj) {
         for (Object o : map.values()) {
             if (VmInstructionCondOp.equal(
                     WattCompiler.vm.getCallsHistory().getLast().getAddress(),
@@ -89,5 +92,11 @@ public class WattMap {
     }
     public boolean equals(WattMap other) {
         return this.map.equals(other.map);
+    }
+    @SuppressWarnings("unchecked")
+    public static <K, V> WattMap of(Map<K, V> map) {
+        WattMap wattMap = new WattMap();
+        wattMap.map = (Map<Object, Object>) map;
+        return wattMap;
     }
 }

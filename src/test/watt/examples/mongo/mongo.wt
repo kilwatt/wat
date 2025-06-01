@@ -1,0 +1,17 @@
+import 'data.mongo'
+import 'std.io'
+
+fun initialize_mongo {
+    io.println('initializing mongo...')
+    mongo := new Mongo('mongodb://localhost:27017')
+    io.println('success!')
+    return mongo
+}
+mongo := initialize_mongo()
+ducks_db := mongo.get_database('ducks')
+ducks := ducks_db.get_collection('ducks')
+ducks.insert(mongo.document({
+    'name': 'Luke ⚡',
+    'age': 100
+}))
+io.println(ducks.all())

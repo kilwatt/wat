@@ -67,7 +67,7 @@ public class VmTable<K, V> {
      * @param name - имя значения
      * @return возвращает значение
      */
-    public V find(VmAddress address, K name) {
+    public V lookupLocal(VmAddress address, K name) {
         // возвращаем
         if (values.containsKey(name)) return values.get(name);
         else throw new WattRuntimeError(

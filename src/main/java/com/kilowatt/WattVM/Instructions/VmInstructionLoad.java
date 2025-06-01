@@ -57,11 +57,11 @@ public class VmInstructionLoad implements VmInstruction {
             Object last = vm.pop(address);
             switch (last) {
                 case VmInstance type -> {
-                    vm.push(type.getFields().find(address, name));
+                    vm.push(type.getFields().lookupLocal(address, name));
                     break;
                 }
                 case VmUnit unit -> {
-                    vm.push(unit.getFields().find(address, name));
+                    vm.push(unit.getFields().lookupLocal(address, name));
                     break;
                 }
                 case null -> throw new IllegalStateException(

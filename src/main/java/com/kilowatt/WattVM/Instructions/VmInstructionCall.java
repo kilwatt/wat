@@ -76,7 +76,7 @@ public class VmInstructionCall implements VmInstruction {
     private void callInstanceFunc(WattVM vm, VmTable<String, Object> table, VmInstance instance)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, table);
-        Object val = instance.getFields().find(address, name);
+        Object val = instance.getFields().lookupLocal(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(instance.getType().getName() + ":" + name, fn.getParams().size(), argsAmount);
@@ -101,7 +101,7 @@ public class VmInstructionCall implements VmInstruction {
     private void callUnitFunc(WattVM vm, VmTable<String, Object> table, VmUnit unit)  {
         // аргументы и поиск функции
         int argsAmount = passArgs(vm, table);
-        Object val = unit.getFields().find(address, name);
+        Object val = unit.getFields().lookupLocal(address, name);
         // функция
         if (val instanceof VmFunction fn) {
             checkArgs(unit.getName() + ":" + name, fn.getParams().size(), argsAmount);

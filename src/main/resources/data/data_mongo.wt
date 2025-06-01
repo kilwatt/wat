@@ -1,0 +1,44 @@
+type Mongo(url) {
+    fun init {
+        self.reflection := __refl__.reflect(
+            'com.kilowatt.Compiler.Builtins.Libraries.Data.DataMongo',
+            [url]
+        )
+    }
+
+    fun get_database(name) {
+        return self.reflection.get_database(name)
+    }
+
+    fun delete_database(name) {
+        self.reflection.delete_database(name)
+    }
+
+    fun document(map) {
+        return self.reflection.document(map)
+    }
+
+    fun filter_eq(key, to) {
+        return self.reflection.filter_eq(key, to)
+    }
+
+    fun filter_neq(key, to) {
+        return self.reflection.filter_neq(key, to)
+    }
+
+    fun filter_gt(key, to) {
+        return self.reflection.filter_gt(key, to)
+    }
+
+    fun filter_lt(key, to) {
+        return self.reflection.filter_lt(key, to)
+    }
+
+    fun filter_gte(key, to) {
+        return self.reflection.filter_gte(key, to)
+    }
+
+    fun filter_lte(key, to) {
+        return self.reflection.filter_lte(key, to)
+    }
+}
