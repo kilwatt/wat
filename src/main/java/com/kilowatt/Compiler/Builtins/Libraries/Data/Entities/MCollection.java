@@ -73,6 +73,10 @@ public class MCollection {
         return WattList.of(results);
     }
 
+    public long count_specific(MDocument what) {
+        return collection.countDocuments(what.getDocument());
+    }
+
     public void drop() {
         collection.drop();
     }
