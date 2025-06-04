@@ -1,7 +1,7 @@
 type Mongo(url) {
     fun init {
         self.reflection := __refl__.reflect(
-            'com.kilowatt.Compiler.Builtins.Libraries.Data.DataMongo',
+            'com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo.DataMongo',
             [url]
         )
     }
