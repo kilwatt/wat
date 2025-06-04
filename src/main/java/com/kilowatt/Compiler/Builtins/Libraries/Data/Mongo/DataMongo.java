@@ -1,8 +1,8 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Data;
+package com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattMap;
-import com.kilowatt.Compiler.Builtins.Libraries.Data.Entities.MDatabase;
-import com.kilowatt.Compiler.Builtins.Libraries.Data.Entities.MDocument;
+import com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo.Entities.MDatabase;
+import com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo.Entities.MDocument;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.Filters;

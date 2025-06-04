@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Data.Entities;
+package com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo.Entities;
 
 import com.kilowatt.Compiler.Builtins.Libraries.Collections.WattList;
 import com.kilowatt.Compiler.WattCompiler;

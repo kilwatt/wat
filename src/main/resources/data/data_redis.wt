@@ -1,0 +1,14 @@
+unit redis {
+    redis_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Data.Redis.DataRedis',
+        []
+    )
+
+    fun cluster(map) {
+        return redis_reflection.cluster(map)
+    }
+
+    fun pool(host, port) {
+        return redis_reflection.pool(map)
+    }
+}

@@ -1,4 +1,4 @@
-package com.kilowatt.Compiler.Builtins.Libraries.Data.Entities;
+package com.kilowatt.Compiler.Builtins.Libraries.Data.Mongo.Entities;
 
 import com.mongodb.client.MongoDatabase;
 import lombok.AllArgsConstructor;
