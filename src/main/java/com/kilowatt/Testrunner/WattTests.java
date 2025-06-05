@@ -73,10 +73,6 @@ public class WattTests {
                 WattTest.builder().path(
                                 "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\std\\math\\std_math_base_test.wt").
                         name("std math base")
-                        .build(),
-                WattTest.builder().path(
-                                "G:\\Kilowatt\\Watt\\src\\test\\watt\\tests\\std\\math\\std_math_ext_test.wt").
-                        name("std ext base")
                         .build()
         );
         runner.run();

@@ -21,6 +21,6 @@ public class VmCallInfo {
     // в строку
     @Override
     public String toString() {
-        return name + " call at " + address.getFileName() + ":" + address.getLine();
+        return name + " call at " + address.getFileName() + ":" + address.getLine() + ":" + address.getColumn();
     }
 }
