@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
-Фрейм стека - дженерик, являющийся
+Таблице - дженерик, являющийся
 хранилищем для ВМ
  */
 @SuppressWarnings({"StringTemplateMigration"})
@@ -16,10 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class VmTable<K, V> {
     // значения для хранения
     private final ConcurrentHashMap<K, V> values = new ConcurrentHashMap<>();
-    /* рутовый фрейм, предназначен для поиска
-       в случае отсутствия в текущем фрейме переменной.
+    /* рутовая таблица, предназначена для поиска
+       в случае отсутствия в текущей таблице переменной.
        выглядит в виде иерархии:
-       функци -> класс -> глобал
+       функция -> класс -> глобал
      */
     private VmTable<K, V> root;
     // замыкание
@@ -27,12 +27,12 @@ public class VmTable<K, V> {
     private VmTable<K, V> closure;
 
     /**
-     * Содержится ли объект в этом фрэйме или
+     * Содержится ли объект в этой таблице или
      * в замыкании
      * @param name - имя значения
      * @return да или нет
      */
-    private boolean existsInFrameOrClosure(K name) {
+    private boolean existsLocal(K name) {
         return (values.containsKey(name)) ||
                 (closure != null && closure.has(name));
     }
@@ -44,9 +44,10 @@ public class VmTable<K, V> {
      * @return возвращает значение
      */
     public V lookup(VmAddress address, K name) {
+        // текущая таблица
         VmTable<K, V> current = this;
-        // фрэймы
-        while (!current.existsInFrameOrClosure(name)) {
+        // таблицы
+        while (!current.existsLocal(name)) {
             if (current.root == null) {
                 throw new WattRuntimeError(
                     address,
@@ -78,21 +79,22 @@ public class VmTable<K, V> {
     }
 
     /**
-     * Устанавливает значение в фрейм, учитывая предыдущие
+     * Устанавливает значение в таблице, учитывая верхние
+     * таблицы
      * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
     public void set(VmAddress address, K name, V val) {
         VmTable<K, V> current = this;
-        // фрэймы
+        // проверяем таблицы
         while (current != null) {
-            // проверка фрэйма
+            // проверка таблицы
             if (current.values.containsKey(name)) {
                 current.values.put(name, val);
                 return;
             }
-            // проверка замыкания фрэйма
+            // проверка замыкания таблицы
             else if (current.closure != null && current.closure.has(name)) {
                 current.closure.set(address, name, val);
                 return;
@@ -106,13 +108,14 @@ public class VmTable<K, V> {
     }
 
     /**
-     * Устанавливает значение в фрейм, не учитывая предыдущие
+     * Устанавливает значение в таблице,
+     * не учитывая верхние таблицы
      * @param address - адрес
      * @param name - имя значения
      * @param val - значение
      */
     public void setLocal(VmAddress address, K name, V val) {
-        // проверка фрэйма
+        // проверка таблицы
         if (values.containsKey(name)) {
             values.put(name, val);
             return;
@@ -123,7 +126,8 @@ public class VmTable<K, V> {
     }
 
     /**
-     * Устанавливает значение в фрейм принудительно
+     * Устанавливает значение в таблицу
+     * принудительно
      * @param address - адрес
      * @param name - имя значения
      * @param val - значение
@@ -133,7 +137,8 @@ public class VmTable<K, V> {
     }
 
     /**
-     * Устанавливает значение в фрейм, не учитывая предыдущие
+     * Устанавливает значение в таблице,
+     * не учитывая предыдущие таблицы
      * @param address - адрес
      * @param name - имя значения
      * @param val - значение
@@ -150,14 +155,17 @@ public class VmTable<K, V> {
 
     /**
      * Возвращает бул показывающий
-     * на то, найдено ли во фрейме
+     * на то, найдено ли в этой таблице
+     * или верхних значение с именем name
+     * @param name - имя
      * @return - найдено ли (бул)
      */
     public boolean has(K name) {
+        // текущая таблица
         VmTable<K, V> current = this;
-        // фрэймы
+        // таблицы
         while (current != null) {
-            if (current.existsInFrameOrClosure(name)) {
+            if (current.existsLocal(name)) {
                 return true;
             }
             current = current.root;
@@ -167,30 +175,30 @@ public class VmTable<K, V> {
     }
 
     /**
-     * Установка рут фрейма, если у
-     * этого фрейма уже есть рут,
+     * Установка рут таблицы, если у
+     * этой таблицы уже есть рут,
      * то ставиться рут для рут... и тд.
      * <p>
      * Рут не ставиться в случае если он уже есть
      * в иерархии рутов.
      * </p>
-     * @param rootFrame - фрейм
+     * @param rootTable - таблица
      */
-    public void setRoot(VmTable<K, V> rootFrame) {
+    public void setRoot(VmTable<K, V> rootTable) {
         // проверка на цикличную зависимость
-        if (this.root == rootFrame || this == rootFrame) { return; }
+        if (this.root == rootTable || this == rootTable) { return; }
         // ищем объект с пустым рутом
         VmTable<K, V> current = this;
         while (current.root != null) {
-            if (current.root == rootFrame || current == rootFrame) { return; }
+            if (current.root == rootTable || current == rootTable) { return; }
             current = current.root;
         }
         // устанавливаем рут
-        current.root = rootFrame;
+        current.root = rootTable;
     }
 
     /**
-     * Удаленние фрейма
+     * Удаленние рут таблицы
      */
     public void delRoot() {
         root = null;

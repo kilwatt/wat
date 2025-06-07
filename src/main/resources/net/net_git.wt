@@ -1,0 +1,114 @@
+// бранчи
+type Branches(repo) {
+    fun create(name, force) {
+        git.branch(repo.repo, name, force)
+    }
+    fun delete(name, force) {
+        git.branch_delete(repo.repo, name, force)
+    }
+    fun rename(old, name) {
+        git.branch_rename(repo.repo, old, name)
+    }
+    fun list {
+        return git.branch_list(repo.repo)
+    }
+}
+
+// аутентификация
+trait GitAuth {
+    fun get_username()
+    fun get_password()
+}
+
+// по юзер-нейму и паролю
+type PswdGitAuth(username, password) impl GitAuth {
+    fun get_username {
+        return self.username
+    }
+    fun get_password {
+        return self.password
+    }
+}
+
+// по токену
+type TokenGitAuth(token) impl GitAuth {
+    fun get_username {
+        return 'token'
+    }
+    fun get_password {
+        return self.token
+    }
+}
+
+// автор
+type GitCommitAuthor(name, mail) {}
+
+// репо
+type GitRepository(repo) {
+    // бранчи
+    branches := new Branches(self)
+    // управление
+    fun commit(name, verify, author) {
+        git.git_reflection.commit(
+            self.repo,
+            self.name,
+            self.verify,
+            self.author.name,
+            self.author.mail
+        )
+    }
+    fun push(origin, force, credentials) {
+        if credentials impls GitAuth {
+            git.git_reflection.push(
+                self.repo,
+                origin,
+                force,
+                credentials.get_username(),
+                credentials.get_password()
+            )
+        } else {
+            throw error(
+                'could not use: ' + credentials + ' as git credentials.',
+                'you can use TokenGitAuth or PswdGitAuth.'
+            )
+        }
+    }
+    fun pull(origin) {
+        git.git_reflection.pull(
+            self.repo,
+            origin,
+            force
+        )
+    }
+    fun add(file) {
+        git.git_reflection.add(
+            self.repo,
+            file
+        )
+    }
+    fun checkout(commit, path, force) {
+        git.git_reflection.checkout(
+            self.repo,
+            commit,
+            path,
+            force
+        )
+    }
+}
+
+// гит
+unit git {
+    git_reflection := __refl__.reflect(
+        'com.kilowatt.Compiler.Builtins.Libraries.Net.NetGit',
+        []
+    )
+    fun open_repo(path) {
+        return git_reflection.open(path)
+    }
+    fun init_repo(path) {
+        return git_reflection.Path(path)
+    }
+    fun clone_repo(url, branch, path) {
+        return git_reflection.clone(url, branch, path)
+    }
+}

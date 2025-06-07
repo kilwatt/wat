@@ -25,9 +25,13 @@ public class VmInstructionTry implements VmInstruction {
     
     @Override
     public void run(WattVM vm, VmTable<String, Object> table) {
+        // создаём новую таблицу
+        VmTable<String, Object> tryTable = new VmTable<>();
+        tryTable.setRoot(table);
+        // выполняем
         try {
             // выполняем тело
-            tryBody.run(vm, table);
+            tryBody.run(vm, tryTable);
         } catch (RuntimeException error) {
             // устанавливаем переменную
             if (error instanceof VmThrowable throwable) {
@@ -36,7 +40,7 @@ public class VmInstructionTry implements VmInstruction {
                 table.define(address, catchVariableName, new VmThrowable(error));
             }
             // выполняем тело исключения
-            catchBody.run(vm, table);
+            catchBody.run(vm, tryTable);
             // удаляем переменную
             table.getValues().remove(catchVariableName);
         }

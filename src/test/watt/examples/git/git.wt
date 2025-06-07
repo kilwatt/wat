@@ -1,0 +1,8 @@
+import 'net.git'
+import 'std.fs'
+
+git.clone_repo(
+    'https://github.com/octo-test/octo-repo',
+    'master',
+    fs.path_of('./octo_test_path')
+)

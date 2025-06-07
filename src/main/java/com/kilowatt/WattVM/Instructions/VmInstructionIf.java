@@ -29,15 +29,15 @@ public class VmInstructionIf implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmTable<String, Object> table) {
-        // создаём новый фрэйм
-        VmTable<String, Object> ifFrame = new VmTable<>();
-        ifFrame.setRoot(table);
+        // создаём новую таблицу
+        VmTable<String, Object> ifTable = new VmTable<>();
+        ifTable.setRoot(table);
         // выполняем инструкции условий
-        Object val = conditions.runAndGet(vm, ifFrame, address);
+        Object val = conditions.runAndGet(vm, ifTable, address);
         // проверяем условия
         if (((Boolean) val)) {
             // выполняем тело
-            body.run(vm, ifFrame);
+            body.run(vm, ifTable);
         }
         // в ином случае
         else {

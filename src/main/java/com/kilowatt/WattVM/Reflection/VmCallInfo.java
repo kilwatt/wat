@@ -15,7 +15,7 @@ public class VmCallInfo {
     private final VmAddress address;
     // имя функции
     private final String name;
-    // фрэйм вызова
+    // таблица вызова
     private final VmTable<String, Object> table;
 
     // в строку

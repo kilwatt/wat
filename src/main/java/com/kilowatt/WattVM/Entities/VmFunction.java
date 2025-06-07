@@ -39,7 +39,7 @@ public class VmFunction implements VmBindableFunction {
      * @param shouldPushResult - положить ли результат в стек
      */
     public void exec(WattVM vm, boolean shouldPushResult)  {
-        // новый фрэйм
+        // новая таблица
         VmTable<String, Object> table = new VmTable<>();
         // замыкание
         if (getClosure() != null) {

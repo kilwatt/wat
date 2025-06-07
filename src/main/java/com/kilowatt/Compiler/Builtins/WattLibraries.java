@@ -37,5 +37,6 @@ public class WattLibraries {
         put("utils.uuid", "utils/utils_uuid.wt");
         put("data.mongo", "data/data_mongo.wt");
         put("data.redis", "data/data_redis.wt");
+        put("net.git", "net/net_git.wt");
     }};
 }

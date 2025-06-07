@@ -29,13 +29,13 @@ public class VmInstructionLoop implements VmInstruction {
 
     @Override
     public void run(WattVM vm, VmTable<String, Object> table) {
-        // создаём новый фрэйм для цикла
-        VmTable<String, Object> loopFrame = new VmTable<>();
-        loopFrame.setRoot(table);
+        // создаём новую таблицу для цикла
+        VmTable<String, Object> loopTable = new VmTable<>();
+        loopTable.setRoot(table);
         // цикл
         while (true) {
             try {
-                body.run(vm, loopFrame);
+                body.run(vm, loopTable);
             } catch (VmLoopBreak loopEnd) {
                 if (!loopEnd.isCurrentIteration()) {
                     break;
