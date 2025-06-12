@@ -1,7 +1,5 @@
 package com.kilowatt.Compiler;
 
-import com.kilowatt.Errors.WattColors;
-import com.kilowatt.WattVM.Benchmark.VmBenchmark;
 import com.kilowatt.WattVM.Codegen.WattVmCode;
 import com.kilowatt.WattVM.WattVM;
 import com.kilowatt.Parser.AST.*;
