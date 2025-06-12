@@ -1,2 +1,13 @@
 import 'std.io'
-io.println('Hello, world!')
+
+fun factorial(n) {
+	f := 1
+	r := 1
+	while f < n {
+		f += 1
+        r *= f
+	}
+	return r
+}
+
+io.println(factorial(15))

@@ -89,7 +89,14 @@ public class VmInstructionBinOp implements VmInstruction {
         } else if (a instanceof Long || b instanceof Long) {
             return a.longValue() + b.longValue();
         } else {
-            return a.intValue() + b.intValue();
+            int primitiveA = a.intValue();
+            int primitiveB = b.intValue();
+            long result = (long) primitiveA + (long) primitiveB;
+            if (result > Integer.MAX_VALUE) {
+                return result;
+            } else {
+                return primitiveA + primitiveB;
+            }
         }
     }
 
@@ -101,7 +108,14 @@ public class VmInstructionBinOp implements VmInstruction {
         } else if (a instanceof Long || b instanceof Long) {
             return a.longValue() - b.longValue();
         } else {
-            return a.intValue() - b.intValue();
+            int primitiveA = a.intValue();
+            int primitiveB = b.intValue();
+            long result = (long) primitiveA - (long) primitiveB;
+            if (result > Integer.MAX_VALUE) {
+                return result;
+            } else {
+                return primitiveA - primitiveB;
+            }
         }
     }
 
@@ -113,7 +127,14 @@ public class VmInstructionBinOp implements VmInstruction {
         } else if (a instanceof Long || b instanceof Long) {
             return a.longValue() * b.longValue();
         } else {
-            return a.intValue() * b.intValue();
+            int primitiveA = a.intValue();
+            int primitiveB = b.intValue();
+            long result = (long) primitiveA * (long) primitiveB;
+            if (result > Integer.MAX_VALUE) {
+                return result;
+            } else {
+                return primitiveA * primitiveB;
+            }
         }
     }
 
@@ -125,7 +146,14 @@ public class VmInstructionBinOp implements VmInstruction {
         } else if (a instanceof Long || b instanceof Long) {
             return a.longValue() / b.longValue();
         } else {
-            return a.intValue() / b.intValue();
+            int primitiveA = a.intValue();
+            int primitiveB = b.intValue();
+            long result = (long) primitiveA / (long) primitiveB;
+            if (result > Integer.MAX_VALUE) {
+                return result;
+            } else {
+                return primitiveA / primitiveB;
+            }
         }
     }
 
